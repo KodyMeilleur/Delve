@@ -4,11 +4,11 @@
     <div class="world-container">
       <div class="world-box">
         <div class="landmass">
-          <!-- <div class="row" v-for="row in map.schema" v-bind:key="row.length + Math.random()">
-              <Tile v-for="cell in row"
+          <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
+              <Tile v-for="cell in row" :tile="cell"
                    v-bind:key="cell.density + Math.random()"
               />
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
-// import Tile from './Tile.vue';
+import Tile from './Tile.vue';
 
 export default {
   name: 'World',
@@ -26,16 +26,18 @@ export default {
     msg: String,
   },
   components: {
-    // Tile,
+    Tile,
   },
   data () {
     return {
       repositories: [],
     }
   },
-  computed: mapState('world' , {
-    world: state => state.map,
-  }),
+  computed: {
+    ...mapGetters('world', [
+      'map',
+    ])
+  }
 }
 </script>
 
@@ -48,18 +50,16 @@ export default {
 .world-box {
   width: 640px;
   height: 448px;
-  overflow: hidden;
+  overflow: scroll;
   background-color: #33232a;
 }
 .landmass {
-  height: 900px;
-  width: 300px;
-  background-color: red;
+  /* overflow: inherit; */
   position: relative;
   top: 0;
   left: 0;
 }
 .row {
-  display: flex;
+  display: inline-flex
 }
 </style>

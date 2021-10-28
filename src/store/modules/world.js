@@ -1,3 +1,5 @@
+import CONST from '../../CONST';
+
 // initial state
 const state = () => ({
   map: [],
@@ -36,6 +38,26 @@ const mutations = {
   },
 
   setMap (state, map) {
+    state.map = map;
+  },
+
+  mergeFirstLandmass (state, landmass) {
+    let map = state.map;
+    const landmassPotentialRowSize = CONST.normalRowSize;
+    const landmassPotentialColumnSize = CONST.normalColumnSize;
+    const boardSize = CONST.defaultRowAndColumnCount;
+
+    const startingCellX = (boardSize / 2) - (landmassPotentialRowSize / 2);
+    const startingCellY = (boardSize / 2) - (landmassPotentialColumnSize / 2);
+
+    for (let i = (landmassPotentialRowSize - 1); i >= 0; i--) { // array position
+       for (let k = (landmassPotentialColumnSize - 1); k >= 0; k--) {
+         map[startingCellX + i][startingCellY + k] = landmass[i][k];
+       }
+    }
+
+    // console.log(state.map)
+    state.map = []; // TODO: Find a better way to set arrays in data store
     state.map = map;
   },
 

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { refineLandmass } from '../services/generateLand';
 
 
@@ -23,8 +23,19 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations('world', [
+      'mergeFirstLandmass',
+    ]),
     generateContinent () {
-      refineLandmass();
+      const randomLandmass = refineLandmass();
+
+      // let longestRowInIteration = 0;
+      // randomLandmass.forEach((row) => {
+      //   longestRowInIteration = (row.length > longestRowInIteration) ? row.length : longestRowInIteration;
+      // })
+
+      // 12 x 14
+      this.mergeFirstLandmass(randomLandmass);
     },
   },
 }

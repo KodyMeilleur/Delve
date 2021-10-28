@@ -34,20 +34,22 @@ export function refineLandmass() {
     const orientationHorizontal = (chosenSide === 1 || chosenSide === 3);
 
     const maxSideRange = orientationHorizontal ? CONST.normalRowSize : CONST.normalColumnSize;
+    const removalSideSize = orientationHorizontal ? CONST.normalColumnSize : CONST.normalRowSize;
+
     // index value of where to start removing chunks
-    let startRemovalCell = getRandomInt(0, maxSideRange - 1); // Array Position
+    let startRemovalCell = getRandomInt(0, removalSideSize - 1); // Array Position
     const currentBlockLength = orientationHorizontal ? block[0].length : block.length;
 
-    // 10 3 14 2
-    console.log(startRemovalCell, currentBlockLength, maxSideRange, chosenSide)
-    // make sure block chunks arent falling out of bounds of array
 
+    // make sure block chunks arent falling out of bounds of array
     // if horizontal, check startingCell + block[0].length <= CONST.normalColumnSize
     // if vertical, check startingCell + block.length <= CONST.normalRowSize
-    if (((startRemovalCell + 1) + currentBlockLength) >= maxSideRange) {
+    // console.log(startRemovalCell, removalSideSize, currentBlockLength, chosenSide);
 
-      startRemovalCell = (maxSideRange - 2) - currentBlockLength;
-      console.log('modified removal', startRemovalCell)
+
+    if (((startRemovalCell + 1) + currentBlockLength) >= removalSideSize) {
+
+      startRemovalCell = ((removalSideSize - 1) - currentBlockLength);
     }
 
     const CURRENT_BLOCK_X_LENGTH = block.length;
@@ -56,7 +58,6 @@ export function refineLandmass() {
     for (let blockX = 0; blockX < CURRENT_BLOCK_X_LENGTH; blockX++) {
       for (let blockY = 0; blockY < CURRENT_BLOCK_Y_LENGTH; blockY++) {
 
-        // 13 7
           // side // x, y
           // 1 // ((0 + iterationX), (startRemovalCell + iterationY))
           // 2 // ((startRemovalCell + iterationX), ((maxSideRange - currentBlockLength) + iterationY))
@@ -65,19 +66,18 @@ export function refineLandmass() {
         const finalHorX = chosenSide === 1 ? (0 + blockX) : ((maxSideRange - 1) - blockX);
         const finalHorY = (startRemovalCell + blockY);
         const finalVertX = (startRemovalCell + blockX);
-        const finalVertY = chosenSide === 4 ? (0 + blockY) : (((maxSideRange - 1) - currentBlockLength) + blockY);
+        const finalVertY = chosenSide === 4 ? (0 + blockY) : (((CONST.normalColumnSize - 1) - (currentBlockLength - 1)) + blockY);
 
         const cellToRemove = orientationHorizontal ?
           recursePositionHorizontal(emptyLandmass, chosenSide, finalHorX, finalHorY) :
           recursePositionVertical(emptyLandmass, chosenSide, finalVertX, finalVertY) ;
 
-        console.log(cellToRemove)
-        emptyLandmass[cellToRemove.x][cellToRemove.y] = null;
+        emptyLandmass[cellToRemove.x][cellToRemove.y] = new VoidTile(cellToRemove.x, cellToRemove.y);
       }
     }
   })
-  console.log(emptyLandmass)
 
+  return emptyLandmass;
 }
 
 export function createEmptyLandmass(row, column) {
@@ -117,7 +117,7 @@ export function getRandomInt(min, max) {
 }
 
 export function recursePositionHorizontal(emptyLandmass, chosenSide, x, y) {
-  console.log(emptyLandmass, x, y)
+
   if (emptyLandmass[x][y]) {
     // return cell to remove
     return emptyLandmass[x][y];
@@ -131,7 +131,6 @@ export function recursePositionHorizontal(emptyLandmass, chosenSide, x, y) {
 }
 
 export function recursePositionVertical(emptyLandmass, chosenSide, x, y) {
-  console.log(emptyLandmass, x, y)
   if (emptyLandmass[x][y]) {
     // return cell to remove
     return emptyLandmass[x][y];
