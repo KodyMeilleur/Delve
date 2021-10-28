@@ -32,34 +32,51 @@ export function refineLandmass() {
     }
     chosenSide = SidePool.splice(chosenIndex, 1)[0];
     const orientationHorizontal = (chosenSide === 1 || chosenSide === 3);
+
     const maxSideRange = orientationHorizontal ? CONST.normalRowSize : CONST.normalColumnSize;
+    // index value of where to start removing chunks
     let startRemovalCell = getRandomInt(0, maxSideRange - 1); // Array Position
     const currentBlockLength = orientationHorizontal ? block[0].length : block.length;
 
+    // 10 3 14 2
+    console.log(startRemovalCell, currentBlockLength, maxSideRange, chosenSide)
     // make sure block chunks arent falling out of bounds of array
-    if ((startRemovalCell + currentBlockLength) > maxSideRange) {
 
-      startRemovalCell = maxSideRange - currentBlockLength;
+    // if horizontal, check startingCell + block[0].length <= CONST.normalColumnSize
+    // if vertical, check startingCell + block.length <= CONST.normalRowSize
+    if (((startRemovalCell + 1) + currentBlockLength) >= maxSideRange) {
+
+      startRemovalCell = (maxSideRange - 2) - currentBlockLength;
+      console.log('modified removal', startRemovalCell)
     }
 
-    for (let i = currentBlockLength; i > 0; i--) {
-      if (orientationHorizontal) {
-        console.log(chosenSide)
-        const chosenSideToArray = chosenSide === 1 ? 0 : maxSideRange - 1; // Array Position
-        const cellToRemove = recursePositionHorizontal(emptyLandmass, chosenSideToArray, startRemovalCell);
-        if (cellToRemove) {
-          console.log('remove', cellToRemove)
-          emptyLandmass[cellToRemove.x][cellToRemove.y] = null;
-        }
+    const CURRENT_BLOCK_X_LENGTH = block.length;
+    const CURRENT_BLOCK_Y_LENGTH = block[0].length;
+    // x = ^v y = <>
+    for (let blockX = 0; blockX < CURRENT_BLOCK_X_LENGTH; blockX++) {
+      for (let blockY = 0; blockY < CURRENT_BLOCK_Y_LENGTH; blockY++) {
 
-      } else {
-        // console.log('else vertical removal')
+        // 13 7
+          // side // x, y
+          // 1 // ((0 + iterationX), (startRemovalCell + iterationY))
+          // 2 // ((startRemovalCell + iterationX), ((maxSideRange - currentBlockLength) + iterationY))
+          // 3 // ((maxSideRange - iterationX), (startRemovalCell + iterationY))
+          // 4 // ((startRemovalCell + iterationX), (0 + iterationY))
+        const finalHorX = chosenSide === 1 ? (0 + blockX) : ((maxSideRange - 1) - blockX);
+        const finalHorY = (startRemovalCell + blockY);
+        const finalVertX = (startRemovalCell + blockX);
+        const finalVertY = chosenSide === 4 ? (0 + blockY) : (((maxSideRange - 1) - currentBlockLength) + blockY);
+
+        const cellToRemove = orientationHorizontal ?
+          recursePositionHorizontal(emptyLandmass, chosenSide, finalHorX, finalHorY) :
+          recursePositionVertical(emptyLandmass, chosenSide, finalVertX, finalVertY) ;
+
+        console.log(cellToRemove)
+        emptyLandmass[cellToRemove.x][cellToRemove.y] = null;
       }
     }
-
-
-    console.log(chosenSide, maxSideRange, startRemovalCell, currentBlockLength)
   })
+  console.log(emptyLandmass)
 
 }
 
@@ -99,13 +116,30 @@ export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function recursePositionHorizontal(emptyLandmass, x, y) {
-  console.log(x, y, emptyLandmass)
+export function recursePositionHorizontal(emptyLandmass, chosenSide, x, y) {
+  console.log(emptyLandmass, x, y)
   if (emptyLandmass[x][y]) {
-    // remove
+    // return cell to remove
     return emptyLandmass[x][y];
   } else {
+    // if chosenSide is 1, look downward i.e addition
+    // else 3 look upward by subtracting
+    const directionBump = chosenSide === 1 ? (x + 1) : (x - 1);
 
-    return recursePositionHorizontal(emptyLandmass, x, y + 1)
+    return recursePositionHorizontal(emptyLandmass, chosenSide, directionBump, y)
+  }
+}
+
+export function recursePositionVertical(emptyLandmass, chosenSide, x, y) {
+  console.log(emptyLandmass, x, y)
+  if (emptyLandmass[x][y]) {
+    // return cell to remove
+    return emptyLandmass[x][y];
+  } else {
+    // if chosenSide is 2, look left i.e subtraction
+    // else 4 look right by addition
+    const directionBump = chosenSide === 2 ? (y - 1) : (y + 1);
+
+    return recursePositionVertical(emptyLandmass, chosenSide, x, directionBump)
   }
 }
