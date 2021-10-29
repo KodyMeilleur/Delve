@@ -57,7 +57,7 @@ const mutations = {
     }
 
     // console.log(state.map)
-    state.map = []; // TODO: Find a better way to set arrays in data store
+    state.map = []; // TODO: Find a better way to set arrays in data store. Maybe an action and then a mutation?
     state.map = map;
   },
 

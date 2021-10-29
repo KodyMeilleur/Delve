@@ -80,6 +80,65 @@ export function refineLandmass() {
   return emptyLandmass;
 }
 
+export function cleanLandmass (landmass) {
+  let validPool = [];
+  let invalidPool = [];
+  let permPool = [];
+
+  function recursiveCellCheck(cell) {
+    if (cell.visited !== true) {
+      cell.visited = true;
+      if (cell.density === 0) {
+        // check all directions for cells
+         validPool.push(cell);
+        // north
+        if (cell.x - 1 >= 0) {
+          recursiveCellCheck(landmass[cell.x - 1][cell.y] )
+        }
+        // east
+        if (cell.y + 1 < CONST.normalColumnSize) {
+          recursiveCellCheck(landmass[cell.x][cell.y + 1] )
+        } // south
+        if (cell.x + 1 < CONST.normalRowSize) {
+          recursiveCellCheck(landmass[cell.x + 1][cell.y] )
+        } // west
+        if (cell.y - 1 >= 0) {
+          recursiveCellCheck(landmass[cell.x][cell.y - 1] )
+        }
+      }
+    }
+  }
+
+
+  for (let i = 0; i < landmass.length; i++) {
+    for (let k = 0; k < landmass[i].length; k++) {
+
+      const currentCell = landmass[i][k];
+      if (currentCell.visited !== true) {
+        recursiveCellCheck(currentCell);
+
+        // TODO: arbitrary filter on splintered landmass
+        if (validPool.length < 18) {
+          invalidPool = invalidPool.concat(validPool);
+        } else {
+          permPool.push(...validPool);
+        }
+      }
+      validPool = [];
+    }
+  }
+
+  invalidPool.forEach((cell) => {
+    const x = cell.x,
+    y = cell.y;
+
+    landmass[x][y] = new VoidTile(x, y);
+
+    // TODO: Re-add Tiles that are removed?
+  })
+
+}
+
 export function createEmptyLandmass(row, column) {
   const defaultLandArray = [];
 
