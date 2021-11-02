@@ -4,7 +4,9 @@ import CONST from '../../CONST';
 const state = () => ({
   map: [],
   continents: [],
-  disasterOngoing: false
+  disasterOngoing: false,
+  sprites: [],
+  frame: 1,
 })
 
 // getters
@@ -14,6 +16,12 @@ const getters = {
   },
   map: (state) => {
     return state.map;
+  },
+  sprites: (state) => {
+    return state.sprites;
+  },
+  frame: (state) => {
+    return state.frame;
   },
 }
 
@@ -41,7 +49,18 @@ const mutations = {
     state.map = map;
   },
 
+  updateFrame (state, frame) {
+    state.frame = frame;
+  },
+
+  addSpritesToAnimate (state, sprites) {
+    console.log([...sprites])
+    state.sprites = state.sprites.concat([...sprites]);
+  },
+
   mergeFirstLandmass (state, landmass) {
+    // clear sprites on first land generation
+    state.sprites = [];
     let map = state.map;
     const landmassPotentialRowSize = CONST.normalRowSize;
     const landmassPotentialColumnSize = CONST.normalColumnSize;
@@ -59,6 +78,9 @@ const mutations = {
     // console.log(state.map)
     state.map = []; // TODO: Find a better way to set arrays in data store. Maybe an action and then a mutation?
     state.map = map;
+    console.log(`map sprites: `, map)
+    state.sprites = state.sprites.concat(map);
+
   },
 
   setContinents (state, continents) {

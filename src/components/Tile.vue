@@ -6,12 +6,13 @@
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
-  {{tile.density}}
+  {{frame}}
   </div>
 </template>
 
 <script>
 import CONST from '../CONST';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Tile',
@@ -26,6 +27,11 @@ export default {
       height: CONST.tileHeight,
     }
   },
+  computed: {
+      ...mapGetters('world', [
+      'frame',
+    ])
+  }
 }
 </script>
 
@@ -33,6 +39,12 @@ export default {
 <style scoped>
 .tile-component {
   display: inline-block;
+}
+.tile-component:hover {
+  outline:2px white solid;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 2;
 }
 .active {
   background-color: green;

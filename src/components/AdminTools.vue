@@ -8,7 +8,6 @@
 import { mapGetters, mapMutations } from 'vuex'
 import { refineLandmass, cleanLandmass } from '../services/generateLand';
 
-
 export default {
   name: 'AdminTools',
   props: {},
@@ -25,6 +24,7 @@ export default {
   methods: {
     ...mapMutations('world', [
       'mergeFirstLandmass',
+      'updateFrame'
     ]),
     generateContinent () {
       const randomLandmass = refineLandmass();
