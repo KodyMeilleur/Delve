@@ -1,9 +1,6 @@
 <template>
   <div>
     <h1>{{ msg }}</h1>
-    <span class="turn-order">
-      Current Turn: {{ currentTurn && currentTurn.name }}
-    </span>
     <div class="world-container">
       <div class="world-box">
         <div class="landmass">
@@ -30,9 +27,10 @@ import Player from './Player.vue';
 
 export default {
   name: 'World',
-  props: {
-    msg: String,
-  },
+  props: [
+    'msg',
+    'currentTurn'
+  ],
   components: {
     Tile,
     Player,
@@ -46,7 +44,7 @@ export default {
     ...mapGetters('world', [
       'map',
       'players',
-      'currentTurn',
+      // 'currentTurn',
     ])
   }
 }

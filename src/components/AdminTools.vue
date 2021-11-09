@@ -42,6 +42,7 @@ export default {
     },
     endTurn () {
       this.cycleTurn();
+      // this.$emit('cycleTurn');
     },
   },
 }

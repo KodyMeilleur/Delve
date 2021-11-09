@@ -1,15 +1,22 @@
 <template>
   <div id="app">
-    <AdminTools/>
+    <Cache ref="Cache"/>
+    <AdminTools />
+    <div class="banner">
+      <span class="turn-order">
+        Current Turn: {{ currentTurn && currentTurn.name }}
+      </span>
+    </div>
     <World msg="Delve"/>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState, mapGetters } from 'vuex';
 
 import World from './components/World.vue';
 import AdminTools from './components/AdminTools.vue';
+import Cache from './components/Cache.vue'
 import CONST from './CONST';
 import { createEmptyLandmass } from './services/generateLand';
 
@@ -17,10 +24,12 @@ export default {
   name: 'App',
   components: {
     World,
-    AdminTools
+    AdminTools,
+    Cache
   },
   data () {
-    return {}
+    return {
+    }
   },
   mounted() {
     console.log('App Loaded, initializing world..');
@@ -109,6 +118,9 @@ export default {
       ...mapState('world', {
         world: state => state.map,
       }),
+      ...mapGetters('world', [
+        'currentTurn',
+      ])
   }
 }
 </script>
@@ -121,6 +133,4 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
-
 </style>
