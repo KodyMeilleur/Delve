@@ -1,6 +1,8 @@
 <template>
   <div class="tools">
     <button @click="generateContinent">Generate Continent</button>
+    <button @click="addPlayerToGame">Add Player</button>
+    <button @click="endTurn">End Turn</button>
   </div>
 </template>
 
@@ -24,13 +26,22 @@ export default {
   methods: {
     ...mapMutations('world', [
       'mergeFirstLandmass',
-      'updateFrame'
+      'updateFrame',
+      'addNewPlayerToGame',
+      'cycleTurn',
     ]),
     generateContinent () {
       const randomLandmass = refineLandmass();
 
       cleanLandmass(randomLandmass);
       this.mergeFirstLandmass(randomLandmass);
+    },
+    addPlayerToGame () {
+      const name = window.prompt('Player Name:', '');
+      this.addNewPlayerToGame(name);
+    },
+    endTurn () {
+      this.cycleTurn();
     },
   },
 }
@@ -40,5 +51,10 @@ export default {
 <style scoped>
 .tools {
   display: flex;
+  justify-content: flex-start;
+}
+button {
+  margin: 0 2px;
+  cursor: pointer;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <AdminTools/>
-    <World msg="Test World"/>
+    <World msg="Delve"/>
   </div>
 </template>
 
@@ -50,11 +50,21 @@ export default {
     },
     gameLoop : function() {
       const self = this;
+      // fallback on setTimeout function
+      window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame    ||
+                function( callback ){
+                  window.setTimeout(callback, 1000 / CONST.FPS);
+                };
+      })();
+
       let secondsPassed;
       // let fps;
       let now;
       let oldTimeStamp;
-      // js setTimeout has +/- 18ms per second drift to account for
+      // js TODO: setTimeout has +/- 18ms per second drift to account for
       let frame = 1;
       let interval;
 
@@ -67,6 +77,7 @@ export default {
         secondsPassed = (now - oldTimeStamp) / 1000;
         update();
 
+        window.requestAnimFrame(loop);
         // every 4th of a second?
         if (secondsPassed > .25) {
           if (frame === 4) {
@@ -80,7 +91,7 @@ export default {
           draw();
           clearInterval(interval);
         }
-        interval = setInterval(loop, 1000 / 4);
+        // interval = setInterval(loop, 1000 / CONST.FPS);
       };
 
       function update() {
@@ -88,7 +99,7 @@ export default {
       }
 
       function draw() {
-
+        // console.log('draw')
       }
 
       loop();

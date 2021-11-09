@@ -1,18 +1,20 @@
 import CONST from '../CONST';
 
-export function DefaultPlayer(x, y) {
+export function DefaultPlayer(name, x, y) {
   // LOCATION
   this.x = x;
   this.y = y;
 
+  this.name = name;
+
   // STATS
   this.hp = CONST.defaultHP;
   this.en = CONST.defaultEN;
-  this.str = defaultStartingStat;
-  this.def = defaultStartingStat;
-  this.int = defaultStartingStat;
-  this.wis = defaultStartingStat;
-  this.pts = startingStatPoints;
+  this.str = CONST.defaultStartingStat;
+  this.def = CONST.defaultStartingStat;
+  this.int = CONST.defaultStartingStat;
+  this.wis = CONST.defaultStartingStat;
+  this.pts = CONST.startingStatPoints;
 
   this.technologies = [];
   this.items = [];

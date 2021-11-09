@@ -6,7 +6,7 @@
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
-  {{frame}}
+  {{ frame }}
   </div>
 </template>
 
@@ -38,7 +38,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .tile-component {
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .tile-component:hover {
   outline:2px white solid;

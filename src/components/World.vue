@@ -1,9 +1,16 @@
 <template>
   <div>
     <h1>{{ msg }}</h1>
+    <span class="turn-order">
+      Current Turn: {{ currentTurn && currentTurn.name }}
+    </span>
     <div class="world-container">
       <div class="world-box">
         <div class="landmass">
+          <div class="players">
+            <!-- Player has a reference inside Tile Objects, but also layers seperately-->
+            <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
+          </div>
           <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
               <Tile v-for="cell in row" :tile="cell"
                    v-bind:key="cell.density + Math.random()"
@@ -19,6 +26,7 @@
 import { mapGetters } from 'vuex';
 
 import Tile from './Tile.vue';
+import Player from './Player.vue';
 
 export default {
   name: 'World',
@@ -27,6 +35,7 @@ export default {
   },
   components: {
     Tile,
+    Player,
   },
   data () {
     return {
@@ -36,6 +45,8 @@ export default {
   computed: {
     ...mapGetters('world', [
       'map',
+      'players',
+      'currentTurn',
     ])
   }
 }
@@ -52,14 +63,27 @@ export default {
   height: 448px;
   overflow: scroll;
   background-color: #33232a;
+  position: relative;
 }
 .landmass {
   /* overflow: inherit; */
   position: relative;
+  width: inherit;
+  height: inherit;
   top: 0;
   left: 0;
 }
 .row {
   display: inline-flex
+}
+.players {
+  width: inherit;
+  height: inherit;
+  float: left;
+  position: absolute;
+}
+.turn-order {
+  position: relative;
+  top: -10px;
 }
 </style>

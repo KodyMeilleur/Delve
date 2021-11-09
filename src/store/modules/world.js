@@ -1,4 +1,5 @@
 import CONST from '../../CONST';
+import { DefaultPlayer } from '../../models/Player';
 
 // initial state
 const state = () => ({
@@ -7,6 +8,9 @@ const state = () => ({
   disasterOngoing: false,
   sprites: [],
   frame: 1,
+  players: [],
+  currentTurn: null, // player object
+  turnIndex: 0,
 })
 
 // getters
@@ -22,6 +26,12 @@ const getters = {
   },
   frame: (state) => {
     return state.frame;
+  },
+  players: (state) => {
+    return state.players;
+  },
+  currentTurn: (state) => {
+    return state.currentTurn;
   },
 }
 
@@ -56,6 +66,26 @@ const mutations = {
   addSpritesToAnimate (state, sprites) {
     console.log([...sprites])
     state.sprites = state.sprites.concat([...sprites]);
+  },
+
+  addNewPlayerToGame (state, name) {
+    const newPlayer = new DefaultPlayer(name, 25, 25);
+    if (state.players.length === 0) {
+      state.currentTurn = newPlayer;
+    }
+    state.players.push(newPlayer)
+    state.map[25][25].players.push(newPlayer);
+  },
+
+  cycleTurn (state) {
+    const playerArrayLength = state.players.length - 1; // minus 1 for array position
+    if (state.turnIndex + 1 > playerArrayLength) {
+      state.turnIndex = 0;
+    } else {
+      state.turnIndex = (state.turnIndex + 1);
+    }
+
+    state.currentTurn = state.players[state.turnIndex];
   },
 
   mergeFirstLandmass (state, landmass) {
