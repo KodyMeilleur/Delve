@@ -4,6 +4,7 @@ export function VoidTile(x, y) {
   this.x = x;
   this.y = y;
   this.visited = false;
+  this.isTile = true;
   this.players = [];
   this.structure = null;
   this.enemies = [];
@@ -17,6 +18,7 @@ export function PlainsTile(x, y) {
   this.x = x;
   this.y = y;
   this.visited = false;
+  this.isTile = true;
   this.players = [];
   this.structure = null;
   this.enemies = [];
@@ -28,6 +30,7 @@ export function GenericTile(x, y, spritePath) {
   this.x = x;
   this.y = y;
   this.visited = false;
+  this.isTile = true;
   this.players = [];
   this.structure = null;
   this.enemies = [];

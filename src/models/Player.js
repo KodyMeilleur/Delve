@@ -6,7 +6,7 @@ export function DefaultPlayer(name, x, y) {
   this.y = y;
 
   this.name = name;
-  this.isPlayer = true;
+  this.isCreature = true;
   // STATS
   this.hp = CONST.defaultHP;
   this.en = CONST.defaultEN;

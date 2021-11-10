@@ -5,6 +5,7 @@
     top: (player.x * CONST.tileHeight) + 'px',
     left: (player.y * CONST.tileWidth) + 'px',
   }"
+  v-on:click="setEntity"
   class="player-component"
   >
   {{ player.name }} ({{ player.x }},{{ player.y }})
@@ -13,7 +14,7 @@
 
 <script>
 import CONST from '../CONST';
-// import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'Player',
@@ -27,6 +28,14 @@ export default {
       width: CONST.tileWidth,
       height: CONST.tileHeight,
       CONST: CONST,
+    }
+  },
+  methods: {
+    ...mapMutations('world', [
+      'setfocusedEntity',
+    ]),
+    setEntity () {
+      this.setfocusedEntity(this.player);
     }
   },
   // computed: {

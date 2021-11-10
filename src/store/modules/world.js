@@ -69,12 +69,7 @@ const mutations = {
         state.focusedEntity.y === focusedEntity.y) {
           state.focusedEntity = null;
     } else {
-      if (focusedEntity.players.length) {
-        // TODO: Can more than 1 player be in a tile? Can change tile model of player to be object
-        state.focusedEntity = focusedEntity.players[0];
-      } else {
-        state.focusedEntity = focusedEntity;
-      }
+      state.focusedEntity = focusedEntity;
     }
   },
 
