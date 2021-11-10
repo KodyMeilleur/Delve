@@ -41,5 +41,6 @@ export default {
 <style scoped>
 .player-component {
   position: absolute;
+  cursor: default;
 }
 </style>

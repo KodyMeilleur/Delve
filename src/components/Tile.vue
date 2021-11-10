@@ -6,7 +6,13 @@
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
-  {{ frame }}
+    <span class="tile-sprite">
+      <img :src="publicPath + tile.sprite" class="tile-sprite-img"/>
+    </span>
+    <span class="frame-counter">{{ frame }}</span>
+    <span class="location">
+      ({{ tile.x }},{{ tile.y }})
+    </span>
   </div>
 </template>
 
@@ -25,13 +31,19 @@ export default {
     return {
       width: CONST.tileWidth,
       height: CONST.tileHeight,
+      publicPath: process.env.BASE_URL,
     }
   },
   computed: {
       ...mapGetters('world', [
       'frame',
     ])
-  }
+  },
+  methods: {
+    getImgUrl(path) {
+      return `${path}`
+    },
+  },
 }
 </script>
 
@@ -42,14 +54,34 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 .tile-component:hover {
   outline:2px white solid;
   border-radius: 5px;
   cursor: pointer;
   z-index: 2;
+  color: rgba(255, 255, 255, 0.5);
 }
 .active {
   background-color: green;
+}
+.location {
+  font-size: 8px;
+  position: absolute;
+  bottom: 0px;
+}
+.tile-sprite {
+  width: 64px;
+  height: 64px;
+  position: relative;
+}
+.tile-sprite-img {
+  /* position: relative;
+  top: 2px; */
+}
+.frame-counter {
+  position: absolute;
 }
 </style>

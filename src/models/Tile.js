@@ -7,7 +7,7 @@ export function VoidTile(x, y) {
   this.players = [];
   this.structure = null;
   this.enemies = [];
-  this.sprite = '/assets/Tiles/Void/void.png';
+  this.sprite = 'assets/Tiles/Void/void.png';
   this.density = 1;
   this.width = CONST.tileWidth;
   this.height = CONST.tileHeight;
@@ -20,7 +20,7 @@ export function PlainsTile(x, y) {
   this.players = [];
   this.structure = null;
   this.enemies = [];
-  this.sprite = '../assets/Tiles/Plains/plains.png';
+  this.sprite = 'assets/Tiles/Plains/3a.png';
   this.density = 0;
 }
 

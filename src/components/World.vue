@@ -64,21 +64,22 @@ export default {
   position: relative;
 }
 .landmass {
-  /* overflow: inherit; */
+  display: flex;
+  flex-direction: column;
   position: relative;
-  width: inherit;
-  height: inherit;
   top: 0;
   left: 0;
 }
 .row {
-  display: inline-flex
+  display: inline-flex;
+  height: 64px;
 }
 .players {
-  width: inherit;
-  height: inherit;
+  width: 0;
+  height: 0;
   float: left;
   position: absolute;
+  z-index: 1;
 }
 .turn-order {
   position: relative;

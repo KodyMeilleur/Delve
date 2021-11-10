@@ -38,7 +38,9 @@ export default {
     },
     addPlayerToGame () {
       const name = window.prompt('Player Name:', '');
-      this.addNewPlayerToGame(name);
+      const x = window.prompt("x position to spawn: ", '');
+      const y = window.prompt("y position to spawn: ", '');
+      this.addNewPlayerToGame({name, x, y});
     },
     endTurn () {
       this.cycleTurn();

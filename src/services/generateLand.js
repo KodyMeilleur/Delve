@@ -142,10 +142,10 @@ export function cleanLandmass (landmass) {
 export function createEmptyLandmass(row, column) {
   const defaultLandArray = [];
 
-  for (let i = row; i > 0; i--) {
+  for (let i = 0; i < row; i++) {
     const newRow = [];
-     for (let k = column; k > 0; k--) {
-       let tile = new VoidTile(i,k);
+     for (let k = 0; k < column; k++) {
+       let tile = new VoidTile(i, k);
        newRow.push(tile);
      }
     defaultLandArray.push(newRow);

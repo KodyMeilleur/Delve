@@ -68,13 +68,13 @@ const mutations = {
     state.sprites = state.sprites.concat([...sprites]);
   },
 
-  addNewPlayerToGame (state, name) {
-    const newPlayer = new DefaultPlayer(name, 25, 25);
+  addNewPlayerToGame (state, pc) {
+    const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {
       state.currentTurn = newPlayer;
     }
     state.players.push(newPlayer)
-    state.map[25][25].players.push(newPlayer);
+    state.map[pc.x][pc.y].players.push(newPlayer);
   },
 
   cycleTurn (state) {
@@ -99,8 +99,10 @@ const mutations = {
     const startingCellX = (boardSize / 2) - (landmassPotentialRowSize / 2);
     const startingCellY = (boardSize / 2) - (landmassPotentialColumnSize / 2);
 
-    for (let i = (landmassPotentialRowSize - 1); i >= 0; i--) { // array position
-       for (let k = (landmassPotentialColumnSize - 1); k >= 0; k--) {
+    for (let i = 0; i <= (landmassPotentialRowSize - 1); i++) { // array position
+       for (let k = 0; k <= (landmassPotentialColumnSize - 1); k++) {
+         landmass[i][k].x = startingCellX + i;
+         landmass[i][k].y = startingCellY + k;
          map[startingCellX + i][startingCellY + k] = landmass[i][k];
        }
     }
