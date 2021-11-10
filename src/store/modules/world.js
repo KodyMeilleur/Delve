@@ -11,6 +11,7 @@ const state = () => ({
   players: [],
   currentTurn: null, // player object
   turnIndex: 0,
+  focusedEntity: null,
 })
 
 // getters
@@ -32,6 +33,9 @@ const getters = {
   },
   currentTurn: (state) => {
     return state.currentTurn;
+  },
+  focusedEntity: (state) => {
+    return state.focusedEntity;
   },
 }
 
@@ -57,6 +61,21 @@ const mutations = {
 
   setMap (state, map) {
     state.map = map;
+  },
+
+  setfocusedEntity (state, focusedEntity) {
+    console.log(focusedEntity)
+    if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
+        state.focusedEntity.y === focusedEntity.y) {
+          state.focusedEntity = null;
+    } else {
+      if (focusedEntity.players.length) {
+        // TODO: Can more than 1 player be in a tile? Can change tile model of player to be object
+        state.focusedEntity = focusedEntity.players[0];
+      } else {
+        state.focusedEntity = focusedEntity;
+      }
+    }
   },
 
   updateFrame (state, frame) {

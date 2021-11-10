@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <div class="world-container">
       <div class="world-box">
+        <SelectedEntity />
         <div class="landmass">
           <div class="players">
             <!-- Player has a reference inside Tile Objects, but also layers seperately-->
@@ -24,6 +25,7 @@ import { mapGetters } from 'vuex';
 
 import Tile from './Tile.vue';
 import Player from './Player.vue';
+import SelectedEntity from './selectedEntity.vue';
 
 export default {
   name: 'World',
@@ -34,6 +36,7 @@ export default {
   components: {
     Tile,
     Player,
+    SelectedEntity,
   },
   data () {
     return {

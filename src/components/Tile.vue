@@ -3,11 +3,16 @@
     width: width + 'px',
     height: height + 'px'
   }"
+  v-on:click="setEntity"
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
     <span class="tile-sprite">
-      <img :src="publicPath + tile.sprite" class="tile-sprite-img"/>
+      <img
+
+      :src="publicPath + tile.sprite"
+      class="tile-sprite-img"
+      />
     </span>
     <span class="frame-counter">{{ frame }}</span>
     <span class="location">
@@ -18,7 +23,7 @@
 
 <script>
 import CONST from '../CONST';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Tile',
@@ -40,9 +45,15 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations('world', [
+      'setfocusedEntity',
+    ]),
     getImgUrl(path) {
       return `${path}`
     },
+    setEntity () {
+      this.setfocusedEntity(this.tile);
+    }
   },
 }
 </script>
@@ -65,7 +76,7 @@ export default {
   color: rgba(255, 255, 255, 0.5);
 }
 .active {
-  background-color: green;
+  background-color: #47394a;
 }
 .location {
   font-size: 8px;
