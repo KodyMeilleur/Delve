@@ -7,6 +7,9 @@ export function DefaultPlayer(name, x, y) {
 
   this.name = name;
   this.isCreature = true;
+  this.tilesToTravel = 0;
+  this.movingDirection = 0; // 1,2,3,4 for directions, 0 non moving
+  this.mp = 2; // moving points
   // STATS
   this.hp = CONST.defaultHP;
   this.en = CONST.defaultEN;

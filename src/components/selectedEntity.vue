@@ -17,6 +17,7 @@
     <span class="info-row">DEF: {{ focusedEntity.def }}</span>
     <span class="info-row">INT: {{ focusedEntity.int }}</span>
     <span class="info-row">WIS: {{ focusedEntity.wis }}</span>
+    <span class="info-row">MP: {{ focusedEntity.mp }}</span>
   </div>
 </div>
 </template>
