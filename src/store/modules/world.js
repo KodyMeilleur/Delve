@@ -12,6 +12,8 @@ const state = () => ({
   currentTurn: null, // player object
   turnIndex: 0,
   focusedEntity: null,
+  isMoving: false,
+  moveTiles: [], // list of highlighted movement tiles for ease of toggling
 })
 
 // getters
@@ -37,6 +39,9 @@ const getters = {
   focusedEntity: (state) => {
     return state.focusedEntity;
   },
+  isMoving: (state) => {
+    return state.isMoving;
+  },
 }
 
 // actions
@@ -61,6 +66,46 @@ const mutations = {
 
   setMap (state, map) {
     state.map = map;
+  },
+
+  toggleMovingTiles (state) {
+    if (state.moveTiles.length) {
+      state.moveTiles.forEach((tile) => {
+        tile.moveHighlighted = false;
+      })
+      state.moveTiles = [];
+    } else {
+      // highlight x tiles from focusedEntity based on density
+      for (let i= 1; i <= state.focusedEntity.mp; i++) {
+        const entityX = parseInt(state.focusedEntity.x, 10);
+        const entityY = parseInt(state.focusedEntity.y, 10);
+
+        // check north
+        const northTile = state.map[entityX - i] && state.map[entityX - i][entityY];
+        if (northTile && northTile.density == 0) {
+          northTile.moveHighlighted = true;
+          state.moveTiles.push(northTile);
+        }
+        // check east
+        const eastTile = state.map[entityX][entityY + i];
+        if (eastTile && eastTile.density == 0) {
+          eastTile.moveHighlighted = true;
+          state.moveTiles.push(eastTile);
+        }
+        // check south
+        const southTile = state.map[entityX + i] && state.map[entityX + i][entityY];
+        if (southTile && southTile.density == 0) {
+          southTile.moveHighlighted = true;
+          state.moveTiles.push(southTile);
+        }
+        // check west
+        const westTile = state.map[entityX][entityY - i];
+        if (westTile && westTile.density == 0) {
+          westTile.moveHighlighted = true;
+          state.moveTiles.push(westTile);
+        }
+      }
+    }
   },
 
   setfocusedEntity (state, focusedEntity) {

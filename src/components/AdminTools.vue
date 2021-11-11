@@ -2,6 +2,7 @@
   <div class="tools">
     <button @click="generateContinent">Generate Continent</button>
     <button @click="addPlayerToGame">Add Player</button>
+    <button @click="movePlayer">Move Player</button>
     <button @click="endTurn">End Turn</button>
   </div>
 </template>
@@ -21,6 +22,7 @@ export default {
   computed: {
     ...mapGetters('world', [
       'map',
+      'isMoving',
     ])
   },
   methods: {
@@ -29,6 +31,7 @@ export default {
       'updateFrame',
       'addNewPlayerToGame',
       'cycleTurn',
+      'toggleMovingTiles',
     ]),
     generateContinent () {
       const randomLandmass = refineLandmass();
@@ -41,6 +44,12 @@ export default {
       const x = window.prompt("x position to spawn: ", '');
       const y = window.prompt("y position to spawn: ", '');
       this.addNewPlayerToGame({name, x, y});
+    },
+    movePlayer () {
+      if (this.isMoving === false) {
+        this.toggleMovingTiles();
+      }
+
     },
     endTurn () {
       this.cycleTurn();

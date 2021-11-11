@@ -7,6 +7,8 @@
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
+  <span v-if="tile.moveHighlighted" class="highlighted">
+  </span>
     <span class="tile-sprite">
       <img
 
@@ -93,6 +95,15 @@ export default {
   top: 2px; */
 }
 .frame-counter {
+  position: absolute;
+}
+.highlighted {
+  border-radius: 5px;
+  border: 1px solid blue;
+  background-color: rgba(200, 200, 255, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 10;
   position: absolute;
 }
 </style>
