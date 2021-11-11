@@ -97,7 +97,7 @@ export default {
           self.updateFrame(frame);
           oldTimeStamp = now;
           // console.log('secondsPassed: ', secondsPassed)
-          draw();
+          // draw();
           clearInterval(interval);
         }
         // interval = setInterval(loop, 1000 / CONST.FPS);
@@ -107,9 +107,9 @@ export default {
 
       }
 
-      function draw() {
-        // console.log('draw')
-      }
+      // function draw() {
+      //   // console.log('draw')
+      // }
 
       loop();
     }

@@ -78,7 +78,7 @@ export default {
   color: rgba(255, 255, 255, 0.5);
 }
 .active {
-  background-color: #47394a;
+  background-color: #200b24;
 }
 .location {
   font-size: 8px;
