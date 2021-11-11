@@ -22,7 +22,7 @@ export function PlainsTile(x, y) {
   this.players = [];
   this.structure = null;
   this.enemies = [];
-  this.sprite = 'assets/Tiles/Plains/3a.png';
+  this.sprite = 'assets/Tiles/Plains/plains_1.png';
   this.density = 0;
 }
 
