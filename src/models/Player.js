@@ -1,9 +1,14 @@
 import CONST from '../CONST';
+import { v4 as uuidv4 } from 'uuid';
 
 export function DefaultPlayer(name, x, y) {
+
+  this.id = uuidv4();
   // LOCATION
   this.x = x;
   this.y = y;
+  this.movingVerticalOffset = 0;
+  this.movingHorizontalOffset = 0;
 
   this.name = name;
   this.isCreature = true;

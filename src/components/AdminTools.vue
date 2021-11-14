@@ -23,6 +23,7 @@ export default {
     ...mapGetters('world', [
       'map',
       'isMoving',
+      'canMove',
     ])
   },
   methods: {
@@ -46,7 +47,7 @@ export default {
       this.addNewPlayerToGame({name, x, y});
     },
     movePlayer () {
-      if (this.isMoving === false) {
+      if (this.isMoving === false && this.canMove) {
         this.toggleMovingTiles();
       }
 

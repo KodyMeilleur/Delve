@@ -2,8 +2,8 @@
   <div v-bind:style="{
     width: width + 'px',
     height: height + 'px',
-    top: (player.x * CONST.tileHeight) + 'px',
-    left: (player.y * CONST.tileWidth) + 'px',
+    top: ((player.x * CONST.tileHeight) + player.movingVerticalOffset) + 'px',
+    left: ((player.y * CONST.tileWidth) + player.movingHorizontalOffset) + 'px',
   }"
   v-on:click="setEntity"
   class="player-component"

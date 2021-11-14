@@ -38,6 +38,9 @@ export default {
     Player,
     SelectedEntity,
   },
+  updated () {
+    console.log('world re-render')
+  },
   data () {
     return {
       repositories: [],

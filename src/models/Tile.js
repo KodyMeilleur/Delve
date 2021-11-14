@@ -1,6 +1,8 @@
 import CONST from '../CONST';
+import { v4 as uuidv4 } from 'uuid';
 
 export function VoidTile(x, y) {
+  this.id = uuidv4();
   this.x = x;
   this.y = y;
   this.visited = false;
@@ -16,6 +18,7 @@ export function VoidTile(x, y) {
 }
 
 export function PlainsTile(x, y) {
+  this.id = uuidv4();
   this.x = x;
   this.y = y;
   this.visited = false;
@@ -29,6 +32,7 @@ export function PlainsTile(x, y) {
 }
 
 export function GenericTile(x, y, spritePath) {
+  this.id = uuidv4();
   this.x = x;
   this.y = y;
   this.visited = false;

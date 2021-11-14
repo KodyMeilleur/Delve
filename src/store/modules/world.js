@@ -39,9 +39,13 @@ const getters = {
   focusedEntity: (state) => {
     return state.focusedEntity;
   },
+  canMove: (state) => {
+    return state.focusedEntity && state.currentTurn.id === state.focusedEntity.id;
+  },
   isMoving: (state) => {
     return state.isMoving;
   },
+
 }
 
 // actions
@@ -67,7 +71,87 @@ const mutations = {
   setMap (state, map) {
     state.map = map;
   },
+  moveToTile (state, tile) {
+    // determine direction to move in
+    // 1,2,3,4 for directions, 0 non moving
+    // 1N, 2E, 3S, 4W
+    // determine number of tiles to move
+    // 16px per tick, 1 sec moves a full tile and shows 4 frames?
+    const moveToX = tile.x;
+    const moveToY = tile.y;
 
+    const moveUp = moveToX < state.currentTurn.x ? 1 : null;
+    const moveDown = moveToX > state.currentTurn.x ? 3 : null;
+    const moveRight = moveToY > state.currentTurn.y ? 2 : null;
+    const moveLeft = moveToY < state.currentTurn.y ? 4 : null;
+
+    const moveDirection = moveUp || moveDown || moveRight || moveLeft;
+
+    let tilesToMove;
+    if (moveDirection === 1) {
+      tilesToMove = state.currentTurn.x - moveToX;
+    }
+    if (moveDirection === 2) {
+      tilesToMove = moveToY - state.currentTurn.y;
+    }
+    if (moveDirection === 3) {
+      tilesToMove = moveToX - state.currentTurn.x;
+    }
+    if (moveDirection === 4) {
+      tilesToMove = state.currentTurn.y - moveToY;
+    }
+
+    state.isMoving = true;
+    state.currentTurn.movingDirection = moveDirection;
+    state.currentTurn.tilesToTravel = tilesToMove;
+    if (state.moveTiles.length) {
+      state.moveTiles.forEach((tile) => {
+        tile.moveHighlighted = false;
+      })
+      state.moveTiles = [];
+    }
+  },
+  updateMove (state) {
+    const moveDirection = state.currentTurn.movingDirection;
+    if (moveDirection === 3) {
+      state.currentTurn.movingVerticalOffset += 16;
+      if (state.currentTurn.movingVerticalOffset === 64) {
+        state.currentTurn.tilesToTravel -= 1;
+        state.currentTurn.movingVerticalOffset = 0;
+        state.currentTurn.x = (parseInt(state.currentTurn.x, 10)) + 1;
+      }
+    }
+    if (moveDirection === 2) {
+      state.currentTurn.movingHorizontalOffset += 16;
+      if (state.currentTurn.movingHorizontalOffset === 64) {
+        state.currentTurn.tilesToTravel -= 1;
+        state.currentTurn.movingHorizontalOffset = 0;
+        state.currentTurn.y = (parseInt(state.currentTurn.y, 10) + 1);
+      }
+    }
+    if (moveDirection === 1) {
+      state.currentTurn.movingVerticalOffset -= 16;
+      console.log(state.currentTurn.x, state.currentTurn.movingVerticalOffset, state.currentTurn.tilesToTravel)
+      if (state.currentTurn.movingVerticalOffset === -64) {
+        state.currentTurn.tilesToTravel -= 1;
+        state.currentTurn.movingVerticalOffset = 0;
+        state.currentTurn.x = (parseInt(state.currentTurn.x, 10) - 1);
+      }
+    }
+    if (moveDirection === 4) {
+      state.currentTurn.movingHorizontalOffset -= 16;
+      if (state.currentTurn.movingHorizontalOffset === -64) {
+        console.log(state.currentTurn.movingHorizontalOffset, state.currentTurn.tilesToTravel)
+        state.currentTurn.tilesToTravel -= 1;
+        state.currentTurn.movingHorizontalOffset = 0;
+        state.currentTurn.y = (parseInt(state.currentTurn.y, 10) - 1);
+      }
+    }
+
+    if (state.currentTurn.tilesToTravel === 0) {
+      state.isMoving = false;
+    }
+  },
   toggleMovingTiles (state) {
     if (state.moveTiles.length) {
       state.moveTiles.forEach((tile) => {
@@ -109,7 +193,6 @@ const mutations = {
   },
 
   setfocusedEntity (state, focusedEntity) {
-    console.log(focusedEntity)
     if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
         state.focusedEntity.y === focusedEntity.y) {
           state.focusedEntity = null;
@@ -169,7 +252,7 @@ const mutations = {
     // console.log(state.map)
     state.map = []; // TODO: Find a better way to set arrays in data store. Maybe an action and then a mutation?
     state.map = map;
-    console.log(`map sprites: `, map)
+    // console.log(`map sprites: `, map)
     state.sprites = state.sprites.concat(map);
 
   },

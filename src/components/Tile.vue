@@ -7,7 +7,10 @@
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
-  <span v-if="tile.moveHighlighted" class="highlighted">
+  <span v-if="tile.moveHighlighted"
+  v-on:click="goToTile"
+  class="highlighted"
+  >
   </span>
     <span class="tile-sprite">
       <img
@@ -49,12 +52,16 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
+      'moveToTile'
     ]),
     getImgUrl(path) {
       return `${path}`
     },
     setEntity () {
       this.setfocusedEntity(this.tile);
+    },
+    goToTile () {
+      this.moveToTile(this.tile);
     }
   },
 }

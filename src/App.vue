@@ -35,17 +35,11 @@ export default {
     console.log('App Loaded, initializing world..');
     this.initializeWorld();
   },
-  // watch: {
-  //   sprites (newCount) {
-  //     // Our fancy notification (2).
-  //     console.log(`We have ${newCount.length} sprites now, yay!`)
-  //     setSprites(newCount);
-  //   }
-  // },
   methods: {
     ...mapMutations('world', [
       'setMap',
-      'updateFrame'
+      'updateFrame',
+      'updateMove',
     ]),
     initializeWorld () {
       const defaultRowAndColumnCount = CONST.defaultRowAndColumnCount;
@@ -70,10 +64,8 @@ export default {
       })();
 
       let secondsPassed;
-      // let fps;
       let now;
       let oldTimeStamp;
-      // js TODO: setTimeout has +/- 18ms per second drift to account for
       let frame = 1;
       let interval;
 
@@ -84,11 +76,12 @@ export default {
         // Calculate the number of seconds passed since the last frame
 
         secondsPassed = (now - oldTimeStamp) / 1000;
-        update();
+
 
         window.requestAnimFrame(loop);
         // every 4th of a second?
-        if (secondsPassed > .25) {
+        // every 10th of a second?
+        if (secondsPassed > .1) {
           if (frame === 4) {
             frame = 1;
           } else {
@@ -97,19 +90,17 @@ export default {
           self.updateFrame(frame);
           oldTimeStamp = now;
           // console.log('secondsPassed: ', secondsPassed)
-          // draw();
+          update();
           clearInterval(interval);
         }
-        // interval = setInterval(loop, 1000 / CONST.FPS);
       };
 
       function update() {
-
+        // check movement?
+        if (self.isMoving) {
+          self.updateMove();
+        }
       }
-
-      // function draw() {
-      //   // console.log('draw')
-      // }
 
       loop();
     }
@@ -120,6 +111,7 @@ export default {
       }),
       ...mapGetters('world', [
         'currentTurn',
+        'isMoving',
       ])
   }
 }
