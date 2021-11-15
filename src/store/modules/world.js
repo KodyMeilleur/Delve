@@ -14,6 +14,8 @@ const state = () => ({
   focusedEntity: null,
   isMoving: false,
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
+  leftOffset: 0,
+  topOffset: 0,
 })
 
 // getters
@@ -23,6 +25,12 @@ const getters = {
   },
   map: (state) => {
     return state.map;
+  },
+  leftOffset: (state) => {
+    return state.leftOffset;
+  },
+  topOffset: (state) => {
+    return state.topOffset;
   },
   sprites: (state) => {
     return state.sprites;
@@ -67,7 +75,10 @@ const mutations = {
       quantity: 1
     })
   },
-
+  setScroll (state, { scrollLeft, scrollTop}) {
+    state.leftOffset = scrollLeft;
+    state.topOffset = scrollTop;
+  },
   setMap (state, map) {
     state.map = map;
   },
@@ -114,7 +125,7 @@ const mutations = {
   updateMove (state) {
     const moveDirection = state.currentTurn.movingDirection;
     if (moveDirection === 3) {
-      state.currentTurn.movingVerticalOffset += 16;
+      state.currentTurn.movingVerticalOffset += CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingVerticalOffset === 64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingVerticalOffset = 0;
@@ -122,7 +133,7 @@ const mutations = {
       }
     }
     if (moveDirection === 2) {
-      state.currentTurn.movingHorizontalOffset += 16;
+      state.currentTurn.movingHorizontalOffset += CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === 64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingHorizontalOffset = 0;
@@ -130,8 +141,7 @@ const mutations = {
       }
     }
     if (moveDirection === 1) {
-      state.currentTurn.movingVerticalOffset -= 16;
-      console.log(state.currentTurn.x, state.currentTurn.movingVerticalOffset, state.currentTurn.tilesToTravel)
+      state.currentTurn.movingVerticalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingVerticalOffset === -64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingVerticalOffset = 0;
@@ -139,7 +149,7 @@ const mutations = {
       }
     }
     if (moveDirection === 4) {
-      state.currentTurn.movingHorizontalOffset -= 16;
+      state.currentTurn.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === -64) {
         console.log(state.currentTurn.movingHorizontalOffset, state.currentTurn.tilesToTravel)
         state.currentTurn.tilesToTravel -= 1;

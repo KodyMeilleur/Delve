@@ -2,7 +2,10 @@
   <div>
     <h1>{{ msg }}</h1>
     <div class="world-container">
-      <div class="world-box">
+      <div
+      v-on:scroll.passive="handleScroll"
+      class="world-box"
+      >
         <SelectedEntity />
         <div class="landmass">
           <div class="players">
@@ -21,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 import Tile from './Tile.vue';
 import Player from './Player.vue';
@@ -40,10 +43,13 @@ export default {
   },
   updated () {
     console.log('world re-render')
+    this.setScroll({scrollLeft: this.scrollLeftCache += 2, scrollTop: this.scrollTopCache += 2});
   },
   data () {
     return {
       repositories: [],
+      scrollLeftCache: 0,
+      scrollTopCache: 0,
     }
   },
   computed: {
@@ -52,6 +58,27 @@ export default {
       'players',
       // 'currentTurn',
     ])
+  },
+  methods: {
+    ...mapMutations('world', [
+      'setScroll',
+    ]),
+    handleScroll ($event) {
+      // console.log($event);
+      const that = this;
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+
+      this.timeout = setTimeout(() => {
+        // your action
+        const scrollLeft = parseInt($event.srcElement.scrollLeft);
+        const scrollTop = parseInt($event.srcElement.scrollTop);
+        that.scrollLeftCache = scrollLeft;
+        that.scrollTopCache = scrollTop;
+        that.setScroll({scrollLeft, scrollTop});
+      }, 1); // delay
+    }
   }
 }
 </script>

@@ -1,28 +1,30 @@
 <template>
   <div v-bind:style="{
-    width: width + 'px',
-    height: height + 'px'
+    minWidth: width + 'px',
+    minHeight: height + 'px'
   }"
   v-on:click="setEntity"
   v-bind:class="{ active: tile.density === 0 }"
   class="tile-component"
   >
-  <span v-if="tile.moveHighlighted"
-  v-on:click="goToTile"
-  class="highlighted"
-  >
-  </span>
-    <span class="tile-sprite">
-      <img
-
-      :src="publicPath + tile.sprite"
-      class="tile-sprite-img"
-      />
+  <div v-if="shouldShow">
+    <span v-if="tile.moveHighlighted"
+    v-on:click="goToTile"
+    class="highlighted"
+    >
     </span>
-    <span class="frame-counter">{{ frame }}</span>
-    <span class="location">
-      ({{ tile.x }},{{ tile.y }})
-    </span>
+      <div class="tile-sprite">
+        <!-- Add frame here -->
+        <span class="frame-counter">{{ frame }}</span>
+        <img
+        :src="publicPath + tile.sprite"
+        class="tile-sprite-img"
+        />
+      </div>
+      <span class="location">
+        ({{ tile.x }},{{ tile.y }})
+      </span>
+    </div>
   </div>
 </template>
 
@@ -42,11 +44,27 @@ export default {
       width: CONST.tileWidth,
       height: CONST.tileHeight,
       publicPath: process.env.BASE_URL,
+      shouldShow: false,
     }
+  },
+  // updated() {
+  //   console.log('tile updated');
+  // },
+  watch: {
+    leftOffset: function (val) {
+      const yRange = ((this.tile.y * CONST.tileWidth));
+      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640 + (CONST.tileWidth * 2)));
+    },
+    topOffset: function (val) {
+      const xRange = ((this.tile.x * CONST.tileWidth));
+      this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
+    },
   },
   computed: {
       ...mapGetters('world', [
       'frame',
+      'leftOffset',
+      'topOffset',
     ])
   },
   methods: {
@@ -78,10 +96,10 @@ export default {
   position: relative;
 }
 .tile-component:hover {
-  outline:2px white solid;
+  outline: 2px white solid;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
   color: rgba(255, 255, 255, 0.5);
 }
 .active {
@@ -91,11 +109,14 @@ export default {
   font-size: 8px;
   position: absolute;
   bottom: 0px;
+  left: 19px;
 }
 .tile-sprite {
-  width: 64px;
-  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
   position: relative;
+  max-width: 64px;
+  max-height: 64px;
 }
 .tile-sprite-img {
   /* position: relative;
@@ -103,14 +124,17 @@ export default {
 }
 .frame-counter {
   position: absolute;
+  left: 28px;
+  top: 22px;
 }
 .highlighted {
   border-radius: 5px;
-  border: 1px solid blue;
+  outline: 1px solid blue;
   background-color: rgba(200, 200, 255, 0.5);
   width: 100%;
   height: 100%;
   z-index: 10;
   position: absolute;
+  left: 0;
 }
 </style>

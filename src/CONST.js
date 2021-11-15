@@ -8,5 +8,6 @@ export default {
   defaultEN: 15,
   defaultStartingStat: 3,
   startingStatPoints: 12,
-  FPS: 12,
+  FPS: 30,
+  moveAnimationPixelBump: 8,
 }
