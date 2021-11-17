@@ -9,7 +9,13 @@
   v-bind:class="{ selected: focusedEntity === this.player}"
   class="player-component"
   >
-  {{ player.name }} ({{ player.x }},{{ player.y }})
+  <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div>
+  <div class="player-sprite">
+    <img
+    :src="publicPath + player.sprite + player.animation.state + '/' + direction + '/' + player.animation.currentFrame + '.png'"
+    class="tile-sprite-img"
+    />
+  </div>
   </div>
 </template>
 
@@ -29,6 +35,7 @@ export default {
       width: CONST.tileWidth,
       height: CONST.tileHeight,
       CONST: CONST,
+      publicPath: process.env.BASE_URL,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
     }
@@ -60,6 +67,23 @@ export default {
       ...mapGetters('world', [
       'focusedEntity',
     ]),
+    direction: function () {
+      // 1N, 2E, 3S, 4W,  0 non moving South
+      switch (this.player.movingDirection) {
+        case 0:
+          return 'South'
+        case 1:
+          return 'North'
+        case 2:
+          return 'East'
+        case 3:
+          return 'South'
+        case 4:
+          return 'West'
+        default:
+          return '';
+      }
+    }
   },
 }
 </script>
@@ -76,5 +100,15 @@ export default {
   cursor: pointer;
   z-index: 10;
   color: rgba(255, 255, 255, 0.5);
+}
+.player-sprite {
+  position: absolute;
+  min-width: 64px;
+  max-width: 64px;
+  min-height: 64px;
+  max-height: 64px;
+}
+.player-info {
+  position: absolute;
 }
 </style>

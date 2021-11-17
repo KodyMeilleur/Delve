@@ -15,9 +15,9 @@
     </span>
       <div class="tile-sprite">
         <!-- Add frame here -->
-        <span class="frame-counter">{{ frame }}</span>
+        <!-- <span class="frame-counter">{{ frame }}</span> -->
         <img
-        :src="publicPath + tile.sprite"
+        :src="publicPath + tile.sprite + currentFrame + '.png'"
         class="tile-sprite-img"
         />
       </div>
@@ -45,6 +45,7 @@ export default {
       height: CONST.tileHeight,
       publicPath: process.env.BASE_URL,
       shouldShow: false,
+      currentFrame: 0,
     }
   },
   // updated() {
@@ -53,12 +54,15 @@ export default {
   watch: {
     leftOffset: function (val) {
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640 + (CONST.tileWidth * 2)));
+      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640 + (CONST.tileWidth)));
     },
     topOffset: function (val) {
       const xRange = ((this.tile.x * CONST.tileWidth));
-      this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
+      this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth));
     },
+    frame: function () {
+      this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : (this.currentFrame + 1);
+    }
   },
   computed: {
       ...mapGetters('world', [

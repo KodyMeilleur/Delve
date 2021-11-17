@@ -1,11 +1,11 @@
 const skipFrameMap = {
   // delay frames
-  walk: [2, 2]
+  Jump: [2, 2]
 }
 
 const bumpAnimationMap = {
   // pixels to bump by on frame
-  walk: {
+  Jump: {
     2: {
       vertical: -32,
       horizontal: 0

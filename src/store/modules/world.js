@@ -123,7 +123,7 @@ const mutations = {
       state.moveTiles = [];
     }
     state.focusedEntity = null;
-    state.currentTurn.animation = new Animation(6, 'walk', true);
+    state.currentTurn.animation = new Animation(8, 'Jump', true);
   },
   updateMove (state) {
     const moveDirection = state.currentTurn.movingDirection;
@@ -163,7 +163,7 @@ const mutations = {
     if (state.currentTurn.tilesToTravel === 0) {
       state.isMoving = false;
       // TODO: maybe check players whose tilesToTravel is 0?
-      state.currentTurn.animation = new Animation(4, 'idle', true);
+      state.currentTurn.animation = new Animation(1, 'Idle', true);
     }
   },
   updatePlayerAnimations (state) {
@@ -181,7 +181,7 @@ const mutations = {
           player.animation.currentFrame = 0;
           player.animation.refreshSkipFrames();
         } else {
-          player.animation = new Animation(4, 'idle', true);
+          player.animation = new Animation(1, 'Idle', true);
         }
       }
     });

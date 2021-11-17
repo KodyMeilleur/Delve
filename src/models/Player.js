@@ -10,12 +10,13 @@ export function DefaultPlayer(name, x, y) {
   this.y = y;
   this.movingVerticalOffset = 0;
   this.movingHorizontalOffset = 0;
-  this.animation = new Animation(4, 'idle', true);
+  this.sprite = 'assets/Characters/Human/';
+  this.animation = new Animation(1, 'Idle', true);
 
   this.name = name;
   this.isCreature = true;
   this.tilesToTravel = 0;
-  this.movingDirection = 0; // 1,2,3,4 for directions, 0 non moving
+  this.movingDirection = 0; // 1N, 2E, 3S, 4W,  0 non moving South
   this.mp = 2; // moving points
   // STATS
   this.hp = CONST.defaultHP;

@@ -11,7 +11,8 @@ export function VoidTile(x, y) {
   this.players = [];
   this.structure = null;
   this.enemies = [];
-  this.sprite = 'assets/Tiles/Void/void.png';
+  this.sprite = 'assets/Tiles/Void/Move/';
+  this.animationFrames = 2;
   this.density = 1;
   this.width = CONST.tileWidth;
   this.height = CONST.tileHeight;
@@ -27,7 +28,8 @@ export function PlainsTile(x, y) {
   this.players = [];
   this.structure = null;
   this.enemies = [];
-  this.sprite = 'assets/Tiles/Plains/plains_1.png';
+  this.sprite = 'assets/Tiles/Plains/Move/';
+  this.animationFrames = 9;
   this.density = 0;
 }
 
