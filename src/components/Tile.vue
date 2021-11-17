@@ -4,7 +4,7 @@
     minHeight: height + 'px'
   }"
   v-on:click="setEntity"
-  v-bind:class="{ active: tile.density === 0 }"
+  v-bind:class="{ active: tile.density === 0, selected: focusedEntity === this.tile}"
   class="tile-component"
   >
   <div v-if="shouldShow">
@@ -65,6 +65,7 @@ export default {
       'frame',
       'leftOffset',
       'topOffset',
+      'focusedEntity',
     ])
   },
   methods: {
@@ -95,11 +96,11 @@ export default {
   color: rgba(0, 0, 0, 0.1);
   position: relative;
 }
-.tile-component:hover {
+.selected,.tile-component:hover {
   outline: 2px white solid;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 10;
+  z-index: 1;
   color: rgba(255, 255, 255, 0.5);
 }
 .active {

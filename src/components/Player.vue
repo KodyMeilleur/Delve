@@ -6,6 +6,7 @@
     left: ((player.y * CONST.tileWidth) + player.movingHorizontalOffset) + 'px',
   }"
   v-on:click="setEntity"
+  v-bind:class="{ selected: focusedEntity === this.player}"
   class="player-component"
   >
   {{ player.name }} ({{ player.x }},{{ player.y }})
@@ -14,7 +15,7 @@
 
 <script>
 import CONST from '../CONST';
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Player',
@@ -38,11 +39,11 @@ export default {
       this.setfocusedEntity(this.player);
     }
   },
-  // computed: {
-  //     ...mapGetters('world', [
-  //     'frame',
-  //   ])
-  // }
+  computed: {
+      ...mapGetters('world', [
+      'focusedEntity',
+    ])
+  },
 }
 </script>
 
@@ -51,5 +52,12 @@ export default {
 .player-component {
   position: absolute;
   cursor: default;
+}
+.selected,.player-component:hover {
+  outline: 2px white solid;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.5);
 }
 </style>

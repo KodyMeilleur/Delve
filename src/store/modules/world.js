@@ -121,6 +121,8 @@ const mutations = {
       })
       state.moveTiles = [];
     }
+    state.focusedEntity = null;
+    console.log(state.focusedEntity)
   },
   updateMove (state) {
     const moveDirection = state.currentTurn.movingDirection;
@@ -151,7 +153,6 @@ const mutations = {
     if (moveDirection === 4) {
       state.currentTurn.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === -64) {
-        console.log(state.currentTurn.movingHorizontalOffset, state.currentTurn.tilesToTravel)
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingHorizontalOffset = 0;
         state.currentTurn.y = (parseInt(state.currentTurn.y, 10) - 1);
@@ -206,7 +207,7 @@ const mutations = {
     if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
         state.focusedEntity.y === focusedEntity.y) {
           state.focusedEntity = null;
-    } else {
+    } else if (state.isMoving === false){
       state.focusedEntity = focusedEntity;
     }
   },
