@@ -1,5 +1,6 @@
 import CONST from '../../CONST';
 import { DefaultPlayer } from '../../models/Player';
+import { Animation } from '../../models/Animation.js';
 
 // initial state
 const state = () => ({
@@ -122,7 +123,7 @@ const mutations = {
       state.moveTiles = [];
     }
     state.focusedEntity = null;
-    console.log(state.focusedEntity)
+    state.currentTurn.animation = new Animation(6, 'walk', true);
   },
   updateMove (state) {
     const moveDirection = state.currentTurn.movingDirection;
@@ -161,7 +162,29 @@ const mutations = {
 
     if (state.currentTurn.tilesToTravel === 0) {
       state.isMoving = false;
+      // TODO: maybe check players whose tilesToTravel is 0?
+      state.currentTurn.animation = new Animation(4, 'idle', true);
     }
+  },
+  updatePlayerAnimations (state) {
+    const players = state.players;
+    players.forEach((player) => {
+      let animation = player.animation;
+      if (animation.skipFrames.length &&
+          animation.currentFrame === animation.skipFrames[0]) {
+        animation.skipFrames.shift();
+      } else {
+        player.animation.currentFrame += 1;
+      }
+      if (animation.currentFrame >= animation.maxNumberOfFrames) {
+        if (animation.shouldLoop === true) {
+          player.animation.currentFrame = 0;
+          player.animation.refreshSkipFrames();
+        } else {
+          player.animation = new Animation(4, 'idle', true);
+        }
+      }
+    });
   },
   toggleMovingTiles (state) {
     if (state.moveTiles.length) {

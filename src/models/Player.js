@@ -1,5 +1,6 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
+import { Animation } from './Animation.js';
 
 export function DefaultPlayer(name, x, y) {
 
@@ -9,6 +10,7 @@ export function DefaultPlayer(name, x, y) {
   this.y = y;
   this.movingVerticalOffset = 0;
   this.movingHorizontalOffset = 0;
+  this.animation = new Animation(4, 'idle', true);
 
   this.name = name;
   this.isCreature = true;

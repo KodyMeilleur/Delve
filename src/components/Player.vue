@@ -2,8 +2,8 @@
   <div v-bind:style="{
     width: width + 'px',
     height: height + 'px',
-    top: ((player.x * CONST.tileHeight) + player.movingVerticalOffset) + 'px',
-    left: ((player.y * CONST.tileWidth) + player.movingHorizontalOffset) + 'px',
+    top: ((player.x * CONST.tileHeight) + player.movingVerticalOffset + bumpVerticalFramePosition) + 'px',
+    left: ((player.y * CONST.tileWidth) + player.movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.player}"
@@ -29,7 +29,24 @@ export default {
       width: CONST.tileWidth,
       height: CONST.tileHeight,
       CONST: CONST,
+      bumpVerticalFramePosition: 0,
+      bumpHorizontalFramePosition: 0,
     }
+  },
+  watch: {
+    'player.animation': {
+       handler(animation){
+         const bumpFrames = animation.bumpFrames && animation.bumpFrames[animation.currentFrame]
+         if (bumpFrames) {
+           this.bumpVerticalFramePosition = bumpFrames.vertical;
+           this.bumpHorizontalFramePosition = bumpFrames.horizontal;
+         } else {
+           this.bumpVerticalFramePosition = 0;
+           this.bumpHorizontalFramePosition = 0;
+         }
+       },
+       deep: true
+     }
   },
   methods: {
     ...mapMutations('world', [
@@ -42,7 +59,7 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
-    ])
+    ]),
   },
 }
 </script>

@@ -40,6 +40,7 @@ export default {
       'setMap',
       'updateFrame',
       'updateMove',
+      'updatePlayerAnimations',
     ]),
     initializeWorld () {
       const defaultRowAndColumnCount = CONST.defaultRowAndColumnCount;
@@ -100,6 +101,9 @@ export default {
         if (self.isMoving) {
           self.updateMove();
         }
+        if (self.players.length) {
+          self.updatePlayerAnimations();
+        }
       }
 
       loop();
@@ -112,6 +116,7 @@ export default {
       ...mapGetters('world', [
         'currentTurn',
         'isMoving',
+        'players'
       ])
   }
 }
