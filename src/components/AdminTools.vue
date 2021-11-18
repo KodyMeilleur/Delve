@@ -1,22 +1,30 @@
 <template>
   <div class="tools">
-    <button @click="generateContinent">Generate Continent</button>
-    <button @click="addPlayerToGame">Add Player</button>
-    <button @click="movePlayer">Move Player</button>
-    <button @click="endTurn">End Turn</button>
+    <div class="btn-container">
+      <button @click="generateContinent">Generate Continent</button>
+      <button @click="addPlayerToGame">Add Player</button>
+      <button @click="toggleCreatureSpawner">Add Monster</button>
+      <button @click="movePlayer">Move Player</button>
+      <button @click="endTurn">End Turn</button>
+    </div>
+    <CreatureSpawner :shouldShow="showCreatureSpawner" v-on:close="toggleCreatureSpawner"/>
   </div>
 </template>
 
 <script>
+import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations } from 'vuex'
 import { refineLandmass, cleanLandmass } from '../services/generateLand';
 
 export default {
   name: 'AdminTools',
+  components: {
+    CreatureSpawner,
+  },
   props: {},
   data () {
     return {
-      repositories: [],
+      showCreatureSpawner: false,
     }
   },
   computed: {
@@ -46,6 +54,9 @@ export default {
       const y = window.prompt("y position to spawn: ", '');
       this.addNewPlayerToGame({name, x, y});
     },
+    toggleCreatureSpawner() {
+      this.showCreatureSpawner = !this.showCreatureSpawner;
+    },
     movePlayer () {
       if (this.isMoving === false && this.canMove) {
         this.toggleMovingTiles();
@@ -64,7 +75,7 @@ export default {
 <style scoped>
 .tools {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 button {
   margin: 0 2px;
