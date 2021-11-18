@@ -16,10 +16,14 @@
       <div class="tile-sprite">
         <!-- Add frame here -->
         <!-- <span class="frame-counter">{{ frame }}</span> -->
-        <img
-        :src="publicPath + tile.sprite + currentFrame + '.png'"
-        class="tile-sprite-img"
-        />
+        <div
+        v-bind:style="{
+          'background-image': 'url(' + publicPath + tile.sprite + ')',
+          'background-position': (64 * currentFrame) + 'px ' + (64 * currentFrame) + 'px'
+        }"
+        class="tile-sprite tile-sprite-img"
+        >
+        </div>
       </div>
       <span class="location">
         ({{ tile.x }},{{ tile.y }})
