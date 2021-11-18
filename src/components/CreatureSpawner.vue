@@ -2,13 +2,13 @@
   <div class="creature-container" v-if="shouldShow">
     <div class="body">
       <div>
-        <input type="radio" name="monster" value="skeleton"
+        <input type="radio" id="skeleton" name="monster" value="skeleton"
                checked>
         <label for="skeleton">Skeleton</label>
       </div>
 
       <!-- <div>
-        <input type="radio" name="monster" value="goblin">
+        <input type="radio" id="goblin" name="monster" value="goblin">
         <label for="goblin">Goblin</label>
       </div> -->
 
