@@ -9,7 +9,7 @@
   v-bind:class="{ selected: focusedEntity === this.player}"
   class="player-component"
   >
-  <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div>
+  <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
   <div class="player-sprite">
     <img
     :src="publicPath + player.sprite + player.animation.state + '/' + direction + '/' + player.animation.currentFrame + '.png'"

@@ -58,11 +58,11 @@ export default {
   watch: {
     leftOffset: function (val) {
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640 + (CONST.tileWidth)));
+      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640 + (CONST.tileWidth * 2)));
     },
     topOffset: function (val) {
       const xRange = ((this.tile.x * CONST.tileWidth));
-      this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth));
+      this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
     },
     frame: function () {
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : (this.currentFrame + 1);
