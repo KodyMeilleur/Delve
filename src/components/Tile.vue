@@ -35,6 +35,7 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
+import { getRandomInt } from '../services/generateLand';
 
 export default {
   name: 'Tile',
@@ -65,7 +66,9 @@ export default {
       this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
     },
     frame: function () {
-      this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : (this.currentFrame + 1);
+      const delayOption = this.getRandomIntBetween(0,1);
+      let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
+      this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
     }
   },
   computed: {
@@ -89,6 +92,9 @@ export default {
     },
     goToTile () {
       this.moveToTile(this.tile);
+    },
+    getRandomIntBetween(min, max) {
+      return getRandomInt(min, max);
     }
   },
 }
