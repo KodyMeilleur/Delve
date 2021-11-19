@@ -8,9 +8,8 @@
       >
         <SelectedEntity />
         <div class="landmass">
-          <div class="players">
-            <!-- Player has a reference inside Tile Objects, but also layers seperately-->
-            <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
+          <div class="entities">
+            <EntityLayer />
           </div>
           <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
               <Tile v-for="cell in row" :tile="cell"
@@ -27,8 +26,8 @@
 import { mapGetters, mapMutations } from 'vuex';
 
 import Tile from './Tile.vue';
-import Player from './Player.vue';
 import SelectedEntity from './selectedEntity.vue';
+import EntityLayer from './EntityLayer.vue';
 
 export default {
   name: 'World',
@@ -38,8 +37,8 @@ export default {
   ],
   components: {
     Tile,
-    Player,
     SelectedEntity,
+    EntityLayer,
   },
   updated () {
     console.log('world re-render')
@@ -107,7 +106,7 @@ export default {
   display: inline-flex;
   height: 64px;
 }
-.players {
+.entities {
   width: 0;
   height: 0;
   float: left;

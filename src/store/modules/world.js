@@ -10,6 +10,7 @@ const state = () => ({
   sprites: [],
   frame: 1,
   players: [],
+  monsters: [],
   currentTurn: null, // player object
   turnIndex: 0,
   focusedEntity: null,
@@ -41,6 +42,9 @@ const getters = {
   },
   players: (state) => {
     return state.players;
+  },
+  monsters: (state) => {
+    return state.monsters;
   },
   currentTurn: (state) => {
     return state.currentTurn;
@@ -251,6 +255,10 @@ const mutations = {
     }
     state.players.push(newPlayer)
     state.map[pc.x][pc.y].players.push(newPlayer);
+  },
+  addMonsterToGame (state, monster) {
+    state.monsters.push(monster)
+    state.map[monster.x][monster.y].monsters.push(monster);
   },
 
   cycleTurn (state) {

@@ -69,6 +69,9 @@ export default {
       const delayOption = this.getRandomIntBetween(0,1);
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
+      if (delayOption) {
+        this.$forceUpdate();
+      }
     }
   },
   computed: {

@@ -9,6 +9,7 @@ export function VoidTile(x, y) {
   this.isTile = true;
   this.moveHighlighted = false;
   this.players = [];
+  this.monsters = [];
   this.structure = null;
   this.enemies = [];
   this.sprite = 'assets/Tiles/Void/Move/sheet.png';
@@ -26,6 +27,7 @@ export function PlainsTile(x, y) {
   this.isTile = true;
   this.moveHighlighted = false;
   this.players = [];
+  this.monsters = [];
   this.structure = null;
   this.enemies = [];
   this.sprite = 'assets/Tiles/Plains/Move/sheet.png';
@@ -41,6 +43,7 @@ export function GenericTile(x, y, spritePath) {
   this.isTile = true;
   this.moveHighlighted = false;
   this.players = [];
+  this.monsters = [];
   this.structure = null;
   this.enemies = [];
   this.sprite = spritePath; // ../assets/Tiles/Plains/plains.png

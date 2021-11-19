@@ -11,7 +11,7 @@
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
-    <span class="info-row">Name: {{ focusedEntity.name }}</span>
+    <span class="info-row">Name: {{ focusedEntity.name || focusedEntity.type }}</span>
     <span class="info-row">HP: {{ focusedEntity.hp }}</span>
     <span class="info-row">STR: {{ focusedEntity.str }}</span>
     <span class="info-row">DEF: {{ focusedEntity.def }}</span>

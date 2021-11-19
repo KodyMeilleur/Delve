@@ -2,18 +2,28 @@
   <div class="creature-container" v-if="shouldShow">
     <div class="body">
       <div>
-        <input type="radio" id="skeleton" name="monster" value="skeleton"
-               checked>
-        <label for="skeleton">Skeleton</label>
+        <input
+        @change="changeValue"
+        type="radio"
+        id="Skeleton"
+        name="monster"
+        value="Skeleton"
+        >
+        <label for="Skeleton">Skeleton</label>
       </div>
-
-      <!-- <div>
-        <input type="radio" id="goblin" name="monster" value="goblin">
-        <label for="goblin">Goblin</label>
-      </div> -->
-
     </div>
     <div class="footer">
+      <div class="grid-location">
+        <div class="grid-position">
+          <label for="xPosition">X:</label>
+          <input type="number" id="xPosition" name="xPosition" v-model="xPosition">
+        </div>
+        <div class="grid-position">
+          <label for="yPosition">Y:</label>
+          <input type="number" id="yPosition" name="yPosition" v-model="yPosition">
+        </div>
+      </div>
+      <button @click="create" :disabled="!selectedEntity">Create</button>
       <button @click="close">Close</button>
     </div>
   </div>
@@ -21,7 +31,8 @@
 
 <script>
 // import CONST from '../CONST';
-// import { mapGetters } from 'vuex';
+import { Skeleton } from '../models/monsters/Skeleton';
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'CreatureSpawner',
@@ -31,6 +42,9 @@ export default {
   data () {
     return {
       publicPath: process.env.BASE_URL,
+      selectedEntity: null,
+      xPosition: null,
+      yPosition: null,
     }
   },
   computed: {
@@ -39,8 +53,27 @@ export default {
     // ])
   },
   methods: {
+    ...mapMutations('world', [
+      'addMonsterToGame',
+    ]),
     close () {
+      this.selectedEntity = null;
       this.$emit('close');
+    },
+    changeValue ($event) {
+      this.selectedEntity = $event.target.value;
+    },
+    create () {
+      let creature;
+      switch (this.selectedEntity) {
+        case 'Skeleton':
+          creature = new Skeleton(this.xPosition,this.yPosition);
+          break;
+        default:
+          break;
+      }
+      console.log(creature)
+      this.addMonsterToGame(creature);
     }
   },
 }
@@ -62,5 +95,13 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+.grid-location {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.grid-position > input {
+  width: 69px;
 }
 </style>
