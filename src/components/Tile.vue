@@ -4,8 +4,8 @@
     minHeight: height + 'px'
   }"
   v-on:click="setEntity"
-  v-bind:class="{ active: tile.density === 0, selected: focusedEntity === this.tile}"
-  class="tile-component"
+  v-bind:class="{ selected: focusedEntity === this.tile}"
+  class="active tile-component"
   >
   <div v-if="shouldShow">
     <span v-if="tile.moveHighlighted"
