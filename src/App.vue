@@ -41,7 +41,6 @@ export default {
       'updateFrame',
       'updateMove',
       'updatePlayerAnimations',
-      'updateMonsterAnimations',
     ]),
     initializeWorld () {
       const defaultRowAndColumnCount = CONST.defaultRowAndColumnCount;
@@ -69,7 +68,6 @@ export default {
       let now;
       let oldTimeStamp;
       let frame = 1;
-      let interval;
 
       const loop = () => {
         now = new Date().getTime();
@@ -93,7 +91,6 @@ export default {
           oldTimeStamp = now;
           // console.log('secondsPassed: ', secondsPassed)
           update();
-          clearInterval(interval);
         }
       };
 
@@ -101,12 +98,6 @@ export default {
         // check movement?
         if (self.isMoving) {
           self.updateMove();
-        }
-        if (self.players.length) {
-          self.updatePlayerAnimations();
-        }
-        if (self.monsters.length) {
-          self.updateMonsterAnimations();
         }
       }
 

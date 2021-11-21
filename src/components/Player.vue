@@ -10,16 +10,10 @@
   class="player-component"
   >
   <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
-  <!-- <div class="player-sprite">
-    <img
-    :src="publicPath + player.sprite + player.animation.state + '/' + direction + '/' + player.animation.currentFrame + '.png'"
-    class="tile-sprite-img"
-    />
-  </div> -->
   <div
   v-bind:style="{
     'background-image': 'url(' + publicPath + player.sprite + player.animation.state + '/' + direction + '/sheet.png)',
-    'background-position': (64 * player.animation.currentFrame) + 'px ' + (64 * player.animation.currentFrame) + 'px'
+    'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="player-sprite"
   >
@@ -46,21 +40,45 @@ export default {
       publicPath: process.env.BASE_URL,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
+      currentFrame: 0,
+      animation: { ...this.player.animation },
+      skipFrames: [],
     }
   },
   watch: {
     'player.animation': {
-       handler(animation){
-         const bumpFrames = animation.bumpFrames && animation.bumpFrames[animation.currentFrame]
-         if (bumpFrames) {
-           this.bumpVerticalFramePosition = bumpFrames.vertical;
-           this.bumpHorizontalFramePosition = bumpFrames.horizontal;
+      handler(animation){
+        this.animation = Object.assign({}, animation);
+        this.skipFrames = [ ...this.animation.skipFrames];
+      },
+       // deep: true
+     },
+     frame: function () {
+       let animation = this.animation;
+       const player = this.player;
+       const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
+
+       if (this.skipFrames.length &&
+           this.currentFrame === this.skipFrames[0]) {
+         this.skipFrames.shift(); // problem
+       } else {
+         this.currentFrame += 1;
+       }
+       if (this.currentFrame >= animation.maxNumberOfFrames) {
+         this.currentFrame = 0;
+         if (animation.shouldLoop === true) {
+           animation.refreshSkipFrames();
          } else {
-           this.bumpVerticalFramePosition = 0;
-           this.bumpHorizontalFramePosition = 0;
+           this.animation = player.defaultAnimation;
          }
-       },
-       deep: true
+       }
+       if (bumpFrames) {
+         this.bumpVerticalFramePosition = bumpFrames.vertical;
+         this.bumpHorizontalFramePosition = bumpFrames.horizontal;
+       } else {
+         this.bumpVerticalFramePosition = 0;
+         this.bumpHorizontalFramePosition = 0;
+       }
      }
   },
   methods: {
@@ -74,6 +92,7 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
+      'frame'
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South

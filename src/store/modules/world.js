@@ -180,46 +180,6 @@ const mutations = {
       state.currentTurn.animation = new Animation(2, 'Idle', true);
     }
   },
-  updatePlayerAnimations (state) {
-    const players = state.players;
-    players.forEach((player) => {
-      let animation = player.animation;
-      if (animation.skipFrames.length &&
-          animation.currentFrame === animation.skipFrames[0]) {
-        animation.skipFrames.shift();
-      } else {
-        player.animation.currentFrame += 1;
-      }
-      if (animation.currentFrame >= animation.maxNumberOfFrames) {
-        if (animation.shouldLoop === true) {
-          player.animation.currentFrame = 0;
-          player.animation.refreshSkipFrames();
-        } else {
-          player.animation = new Animation(2, 'Idle', true);
-        }
-      }
-    });
-  },
-  updateMonsterAnimations (state) {
-    const monsters = state.monsters;
-    monsters.forEach((monster) => {
-      let animation = monster.animation;
-      if (animation.skipFrames.length &&
-          animation.currentFrame === animation.skipFrames[0]) {
-        animation.skipFrames.shift();
-      } else {
-        monster.animation.currentFrame += 1;
-      }
-      if (animation.currentFrame >= animation.maxNumberOfFrames) {
-        if (animation.shouldLoop === true) {
-          monster.animation.currentFrame = 0;
-          monster.animation.refreshSkipFrames();
-        } else {
-          monster.animation = new Animation(2, 'Idle', true);
-        }
-      }
-    });
-  },
   toggleMovingTiles (state) {
     if (state.moveTiles.length) {
       state.moveTiles.forEach((tile) => {

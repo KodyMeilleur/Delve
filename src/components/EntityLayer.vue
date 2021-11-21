@@ -23,6 +23,9 @@ export default {
       CONST: CONST,
     }
   },
+  updated () {
+    console.log('entitylayer re-render')
+  },
   methods: {
     // ...mapMutations('world', [
     //   'cycleTurn',

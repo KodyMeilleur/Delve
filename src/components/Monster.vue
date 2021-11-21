@@ -11,9 +11,9 @@
   >
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
   <div
+  style="background-image: url('/assets/Monsters/Skeleton/Idle/South/sheet.png')"
   v-bind:style="{
-    'background-image': 'url(' + publicPath + monster.sprite + monster.animation.state + '/' + direction + '/sheet.png)',
-    'background-position': (64 * monster.animation.currentFrame) + 'px ' + (64 * monster.animation.currentFrame) + 'px'
+    'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="monster-sprite"
   >
@@ -40,21 +40,45 @@ export default {
       publicPath: process.env.BASE_URL,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
+      currentFrame: 0,
+      animation: { ...this.monster.animation },
+      skipFrames: [],
     }
   },
   watch: {
     'monster.animation': {
        handler(animation){
-         const bumpFrames = animation.bumpFrames && animation.bumpFrames[animation.currentFrame]
-         if (bumpFrames) {
-           this.bumpVerticalFramePosition = bumpFrames.vertical;
-           this.bumpHorizontalFramePosition = bumpFrames.horizontal;
-         } else {
-           this.bumpVerticalFramePosition = 0;
-           this.bumpHorizontalFramePosition = 0;
-         }
+         this.animation = animation;
+         this.skipFrames = [ ...this.animation.skipFrames];
        },
-       deep: true
+       // deep: true
+     },
+     frame: function () {
+       let animation = this.animation;
+       const monster = this.monster;
+       const bumpFrames = animation.bumpFrames && animation.bumpFrames[this.currentFrame];
+
+       if (this.skipFrames.length &&
+           this.currentFrame === this.skipFrames[0]) {
+         this.skipFrames.shift(); // problem
+       } else {
+         this.currentFrame += 1;
+       }
+       if (this.currentFrame >= animation.maxNumberOfFrames) {
+         this.currentFrame = 0;
+         if (animation.shouldLoop === true) {
+           animation.refreshSkipFrames();
+         } else {
+           this.animation = monster.defaultAnimation;
+         }
+       }
+       if (bumpFrames) {
+         this.bumpVerticalFramePosition = bumpFrames.vertical;
+         this.bumpHorizontalFramePosition = bumpFrames.horizontal;
+       } else {
+         this.bumpVerticalFramePosition = 0;
+         this.bumpHorizontalFramePosition = 0;
+       }
      }
   },
   methods: {
@@ -68,6 +92,7 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
+      'frame'
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
