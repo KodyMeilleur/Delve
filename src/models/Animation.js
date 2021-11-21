@@ -20,9 +20,11 @@ export function Animation(maxNumberOfFrames, state, loop) {
   this.shouldLoop = loop;
   this.skipFrames = [];
   this.bumpFrames = bumpAnimationMap[state] || null;
+  // on creation check for skip frame data
   if (skipFrameMap[state]) {
     this.skipFrames = skipFrameMap[state].slice();
   }
+  
   this.refreshSkipFrames = function() {
     if (skipFrameMap[this.state]) {
       this.skipFrames = skipFrameMap[this.state].slice();

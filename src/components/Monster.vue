@@ -9,13 +9,15 @@
   v-bind:class="{ selected: focusedEntity === this.monster}"
   class="monster-component"
   >
-  <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div>
-  <!-- <div class="monster-sprite">
-    <img
-    :src="publicPath + monster.sprite + monster.animation.state + '/' + direction + '/' + monster.animation.currentFrame + '.png'"
-    class="tile-sprite-img"
-    />
-  </div> -->
+  <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
+  <div
+  v-bind:style="{
+    'background-image': 'url(' + publicPath + monster.sprite + monster.animation.state + '/' + direction + '/sheet.png)',
+    'background-position': (64 * monster.animation.currentFrame) + 'px ' + (64 * monster.animation.currentFrame) + 'px'
+  }"
+  class="monster-sprite"
+  >
+  </div>
   </div>
 </template>
 

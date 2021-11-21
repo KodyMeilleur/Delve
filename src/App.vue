@@ -41,6 +41,7 @@ export default {
       'updateFrame',
       'updateMove',
       'updatePlayerAnimations',
+      'updateMonsterAnimations',
     ]),
     initializeWorld () {
       const defaultRowAndColumnCount = CONST.defaultRowAndColumnCount;
@@ -104,6 +105,9 @@ export default {
         if (self.players.length) {
           self.updatePlayerAnimations();
         }
+        if (self.monsters.length) {
+          self.updateMonsterAnimations();
+        }
       }
 
       loop();
@@ -116,7 +120,8 @@ export default {
       ...mapGetters('world', [
         'currentTurn',
         'isMoving',
-        'players'
+        'players',
+        'monsters',
       ])
   }
 }

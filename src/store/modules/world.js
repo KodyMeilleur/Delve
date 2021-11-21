@@ -177,7 +177,7 @@ const mutations = {
     if (state.currentTurn.tilesToTravel === 0) {
       state.isMoving = false;
       // TODO: maybe check players whose tilesToTravel is 0?
-      state.currentTurn.animation = new Animation(1, 'Idle', true);
+      state.currentTurn.animation = new Animation(2, 'Idle', true);
     }
   },
   updatePlayerAnimations (state) {
@@ -195,7 +195,27 @@ const mutations = {
           player.animation.currentFrame = 0;
           player.animation.refreshSkipFrames();
         } else {
-          player.animation = new Animation(1, 'Idle', true);
+          player.animation = new Animation(2, 'Idle', true);
+        }
+      }
+    });
+  },
+  updateMonsterAnimations (state) {
+    const monsters = state.monsters;
+    monsters.forEach((monster) => {
+      let animation = monster.animation;
+      if (animation.skipFrames.length &&
+          animation.currentFrame === animation.skipFrames[0]) {
+        animation.skipFrames.shift();
+      } else {
+        monster.animation.currentFrame += 1;
+      }
+      if (animation.currentFrame >= animation.maxNumberOfFrames) {
+        if (animation.shouldLoop === true) {
+          monster.animation.currentFrame = 0;
+          monster.animation.refreshSkipFrames();
+        } else {
+          monster.animation = new Animation(2, 'Idle', true);
         }
       }
     });
