@@ -46,6 +46,6 @@ export function GenericTile(x, y, spritePath) {
   this.monsters = [];
   this.structure = null;
   this.enemies = [];
-  this.sprite = spritePath; // ../assets/Tiles/Plains/plains.png
+  this.sprite = spritePath;
   this.density = 0;
 }

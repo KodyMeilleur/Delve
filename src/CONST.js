@@ -10,4 +10,7 @@ export default {
   startingStatPoints: 12,
   FPS: 30,
   moveAnimationPixelBump: 8,
+  world: {
+    name: 'World'
+  }
 }

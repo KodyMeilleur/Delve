@@ -10,11 +10,19 @@
   class="player-component"
   >
   <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
-  <div class="player-sprite">
+  <!-- <div class="player-sprite">
     <img
     :src="publicPath + player.sprite + player.animation.state + '/' + direction + '/' + player.animation.currentFrame + '.png'"
     class="tile-sprite-img"
     />
+  </div> -->
+  <div
+  v-bind:style="{
+    'background-image': 'url(' + publicPath + player.sprite + player.animation.state + '/' + direction + '/sheet.png)',
+    'background-position': (64 * player.animation.currentFrame) + 'px ' + (64 * player.animation.currentFrame) + 'px'
+  }"
+  class="player-sprite"
+  >
   </div>
   </div>
 </template>

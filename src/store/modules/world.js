@@ -63,12 +63,22 @@ const getters = {
 
 // actions
 const actions = {
-  addContinent ({ commit }, continent) {
+  addContinent ({ commit, state }, continent) {
     const savedContinents = [...state.continents]
     savedContinents.push(continent);
-    // empty cart
-    commit('setContinents', savedContinents)
-    // do something else eventually
+
+    commit('setContinents', savedContinents);
+  },
+  cycleTurn ({ commit, state }) {
+    const playerArrayLength = state.players.length - 1; // minus 1 for array position
+
+    if (state.turnIndex + 1 > playerArrayLength) {
+      // commit world turn mutation, set turnIndex to -1
+      commit('worldTurn');
+    } else {
+
+      commit('cycleTurn');
+    }
   },
 }
 
@@ -262,14 +272,14 @@ const mutations = {
   },
 
   cycleTurn (state) {
-    const playerArrayLength = state.players.length - 1; // minus 1 for array position
-    if (state.turnIndex + 1 > playerArrayLength) {
-      state.turnIndex = 0;
-    } else {
-      state.turnIndex = (state.turnIndex + 1);
-    }
 
+    state.turnIndex = (state.turnIndex + 1);
     state.currentTurn = state.players[state.turnIndex];
+  },
+
+  worldTurn (state) {
+    state.turnIndex = -1;
+    state.currentTurn = CONST.world;
   },
 
   mergeFirstLandmass (state, landmass) {

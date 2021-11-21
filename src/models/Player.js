@@ -48,14 +48,11 @@ export function DefaultPlayer(name, x, y) {
     bnd: 0
   };
 
-
-  // this.sprite = '/assets/Tiles/Void/void.png';
   this.density = 1;
   this.width = CONST.tileWidth;
   this.height = CONST.tileHeight;
 }
 
-// TODO: Loadfile argument order
 export function Player() {
 
 }

@@ -13,7 +13,7 @@
 
 <script>
 import CreatureSpawner from './CreatureSpawner.vue';
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { refineLandmass, cleanLandmass } from '../services/generateLand';
 
 export default {
@@ -39,8 +39,10 @@ export default {
       'mergeFirstLandmass',
       'updateFrame',
       'addNewPlayerToGame',
-      'cycleTurn',
       'toggleMovingTiles',
+    ]),
+    ...mapActions('world', [
+      'cycleTurn',
     ]),
     generateContinent () {
       const randomLandmass = refineLandmass();
