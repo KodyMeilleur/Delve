@@ -80,23 +80,23 @@ export default {
           horizontal: 0
         },
         3: {
-          vertical: -2,
+          vertical: -4,
           horizontal: 0
         },
         4: {
-          vertical: -1,
+          vertical: -3,
           horizontal: 0
         },
         5: {
-          vertical: -0,
+          vertical: -2,
           horizontal: 0
         },
         6: {
-          vertical: 1,
+          vertical: -1,
           horizontal: 0
         },
         7: {
-          vertical: 2,
+          vertical: 0,
           horizontal: 0
         },
         8: {
