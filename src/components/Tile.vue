@@ -16,6 +16,18 @@
       <div class="tile-sprite">
         <!-- Add frame here -->
         <!-- <span class="frame-counter">{{ frame }}</span> -->
+        <div class="tile-structure" v-if="tile.structure">
+          <div
+          v-bind:style="{
+            'background-image': 'url(' + publicPath + tile.structure.path + ')',
+            'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
+            top: (bumpVerticalFramePosition) + 'px',
+            left: (bumpHorizontalFramePosition) + 'px',
+          }"
+          class="structure-sprite"
+          >
+          </div>
+        </div>
         <div
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
@@ -51,6 +63,51 @@ export default {
       publicPath: process.env.BASE_URL,
       shouldShow: false,
       currentFrame: 0,
+      bumpVerticalFramePosition: 0,
+      bumpHorizontalFramePosition: 0,
+      bumpAnimationMap : {
+        // pixels to bump by on frame
+        0: {
+          vertical: -1,
+          horizontal: 0
+        },
+        1: {
+          vertical: -2,
+          horizontal: 0
+        },
+        2: {
+          vertical: -3,
+          horizontal: 0
+        },
+        3: {
+          vertical: -2,
+          horizontal: 0
+        },
+        4: {
+          vertical: -1,
+          horizontal: 0
+        },
+        5: {
+          vertical: -0,
+          horizontal: 0
+        },
+        6: {
+          vertical: 1,
+          horizontal: 0
+        },
+        7: {
+          vertical: 2,
+          horizontal: 0
+        },
+        8: {
+          vertical: 1,
+          horizontal: 0
+        },
+        9: {
+          vertical: 0,
+          horizontal: 0
+        },
+      },
     }
   },
   // updated() {
@@ -66,9 +123,21 @@ export default {
       this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
     },
     frame: function () {
+      const bumpFrames = this.bumpAnimationMap;
+
       const delayOption = this.getRandomIntBetween(0,1);
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
+
+      const bFrame = bumpFrames[this.currentFrame];
+      if (bFrame) {
+        this.bumpVerticalFramePosition = bFrame.vertical;
+        this.bumpHorizontalFramePosition = bFrame.horizontal;
+      } else {
+        this.bumpVerticalFramePosition = 0;
+        this.bumpHorizontalFramePosition = 0;
+      }
+
       if (delayOption) {
         this.$forceUpdate();
       }
@@ -154,5 +223,13 @@ export default {
   z-index: 10;
   position: absolute;
   left: 0;
+}
+.structure-sprite {
+  min-width: 64px;
+  min-height: 64px;
+  position: absolute;
+  max-width: 64px;
+  max-height: 64px;
+  z-index: 1;
 }
 </style>

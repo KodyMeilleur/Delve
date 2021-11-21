@@ -1,5 +1,6 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
+import { getRandomInt } from '../services/generateLand';
 
 export function VoidTile(x, y) {
   this.id = uuidv4();
@@ -28,9 +29,9 @@ export function PlainsTile(x, y) {
   this.moveHighlighted = false;
   this.players = [];
   this.monsters = [];
-  this.structure = null;
+  this.structure = (getRandomInt(0, 3) === 2) ? { type: 'Woods', path: 'assets/Tiles/Plains/Woods/sheet.png'} : null;
   this.enemies = [];
-  this.sprite = 'assets/Tiles/Plains/Move/sheet.png';
+  this.sprite = 'assets/Tiles/Plains/Normal/sheet.png';
   this.animationFrames = 9;
   this.density = 0;
 }
