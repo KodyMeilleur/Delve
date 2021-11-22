@@ -13,8 +13,12 @@ const bumpAnimationMap = {
     },
   },
   Idle: {
-    1: {
+    0: {
       vertical: 0,
+      horizontal: 0
+    },
+    1: {
+      vertical: -1,
       horizontal: 0
     },
     2: {
@@ -34,11 +38,11 @@ const bumpAnimationMap = {
       horizontal: 0
     },
     6: {
-      vertical: -1,
+      vertical: -2,
       horizontal: 0
     },
     7: {
-      vertical: 0,
+      vertical: -1,
       horizontal: 0
     },
     8: {

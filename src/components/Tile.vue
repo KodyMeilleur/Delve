@@ -88,11 +88,11 @@ export default {
           horizontal: 0
         },
         5: {
-          vertical: -1,
+          vertical: -2,
           horizontal: 0
         },
         6: {
-          vertical: 0,
+          vertical: -1,
           horizontal: 0
         },
         7: {
@@ -100,7 +100,7 @@ export default {
           horizontal: 0
         },
         8: {
-          vertical: 0,
+          vertical: -1,
           horizontal: 0
         },
       },
