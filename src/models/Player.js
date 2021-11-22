@@ -11,7 +11,7 @@ export function DefaultPlayer(name, x, y) {
   this.movingVerticalOffset = 0;
   this.movingHorizontalOffset = 0;
   this.sprite = 'assets/Characters/Human/';
-  this.animation = new Animation(2, 'Idle', true);
+  this.animation = new Animation(9, 'Idle', true);
   this.defaultAnimation = this.animation;
 
   this.name = name;

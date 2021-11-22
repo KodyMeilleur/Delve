@@ -1,6 +1,7 @@
 const skipFrameMap = {
   // delay frames
-  Jump: [2, 2]
+  Jump: [2, 2],
+  Idle: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8]
 }
 
 const bumpAnimationMap = {
@@ -8,6 +9,40 @@ const bumpAnimationMap = {
   Jump: {
     2: {
       vertical: -32,
+      horizontal: 0
+    },
+  },
+  Idle: {
+    1: {
+      vertical: 0,
+      horizontal: 0
+    },
+    2: {
+      vertical: -1,
+      horizontal: 0
+    },
+    3: {
+      vertical: -2,
+      horizontal: 0
+    },
+    4: {
+      vertical: -3,
+      horizontal: 0
+    },
+    5: {
+      vertical: -2,
+      horizontal: 0
+    },
+    6: {
+      vertical: -1,
+      horizontal: 0
+    },
+    7: {
+      vertical: 0,
+      horizontal: 0
+    },
+    8: {
+      vertical: -1,
       horizontal: 0
     },
   },
