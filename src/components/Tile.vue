@@ -68,42 +68,38 @@ export default {
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
-          vertical: -1,
-          horizontal: 0
-        },
-        1: {
-          vertical: -2,
-          horizontal: 0
-        },
-        2: {
-          vertical: -3,
-          horizontal: 0
-        },
-        3: {
-          vertical: -4,
-          horizontal: 0
-        },
-        4: {
-          vertical: -3,
-          horizontal: 0
-        },
-        5: {
-          vertical: -2,
-          horizontal: 0
-        },
-        6: {
-          vertical: -1,
-          horizontal: 0
-        },
-        7: {
           vertical: 0,
           horizontal: 0
         },
-        8: {
-          vertical: 1,
+        1: {
+          vertical: -1,
           horizontal: 0
         },
-        9: {
+        2: {
+          vertical: -2,
+          horizontal: 0
+        },
+        3: {
+          vertical: -3,
+          horizontal: 0
+        },
+        4: {
+          vertical: -2,
+          horizontal: 0
+        },
+        5: {
+          vertical: -1,
+          horizontal: 0
+        },
+        6: {
+          vertical: 0,
+          horizontal: 0
+        },
+        7: {
+          vertical: -1,
+          horizontal: 0
+        },
+        8: {
           vertical: 0,
           horizontal: 0
         },

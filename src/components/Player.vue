@@ -13,7 +13,7 @@
   <div
   v-bind:style="{
     'background-image': 'url(' + publicPath + player.sprite + player.animation.state + '/' + direction + '/sheet.png)',
-    'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
+    'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="player-sprite"
   >
@@ -42,16 +42,15 @@ export default {
       bumpHorizontalFramePosition: 0,
       currentFrame: 0,
       animation: { ...this.player.animation },
-      skipFrames: [],
+      skipFrames: [ ...this.player.animation.skipFrames ],
     }
   },
   watch: {
-    'player.animation': {
-      handler(animation){
-        this.animation = Object.assign({}, animation);
+    'animation': {
+      handler(){
         this.skipFrames = [ ...this.animation.skipFrames];
       },
-       // deep: true
+       deep: true
      },
      frame: function () {
        let animation = this.animation;
