@@ -15,6 +15,7 @@
 import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { refineLandmass, cleanLandmass } from '../services/generateLand';
+import { findPath } from '../services/pathfinding';
 
 export default {
   name: 'AdminTools',
@@ -48,6 +49,7 @@ export default {
       const randomLandmass = refineLandmass();
 
       cleanLandmass(randomLandmass);
+      findPath(randomLandmass, {x: 4, y: 4}, {x: 6, y: 6});
       this.mergeFirstLandmass(randomLandmass);
     },
     addPlayerToGame () {

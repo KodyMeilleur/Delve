@@ -180,6 +180,7 @@ const mutations = {
       state.currentTurn.animation = new Animation(2, 'Idle', true);
     }
   },
+  //TODO: Will need a search function for finding all tiles within an MP limit
   toggleMovingTiles (state) {
     if (state.moveTiles.length) {
       state.moveTiles.forEach((tile) => {

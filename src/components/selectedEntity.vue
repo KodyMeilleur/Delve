@@ -50,10 +50,10 @@ export default {
 .entity-ui {
   position: sticky;
   top: 0;
-  left: 538px;
+  left: 518px;
   float: right;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
   z-index: 5;
   pointer-events: none;
@@ -65,7 +65,7 @@ export default {
 }
 .entity-info {
   color: white;
-  font-size: 6px;
+  font-size: 8px;
 }
 .info-row {
   display: block;
