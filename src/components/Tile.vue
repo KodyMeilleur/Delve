@@ -31,6 +31,7 @@
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
+          :key="frame"
           class="structure-sprite"
           >
           </div>
@@ -71,9 +72,11 @@ export default {
       publicPath: process.env.BASE_URL,
       shouldShow: false,
       currentFrame: 0,
+      moveHighlighted: false,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
       overTimeout: null,
+      travelPath: null,
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
@@ -115,12 +118,11 @@ export default {
       },
     }
   },
-  // updated() {
-  //   console.log('tile updated');
+  // updated () {
+  //
   // },
   destroyed() {
     clearInterval(this.overTimeout);
-    clearInterval(this.exitTimeout);
   },
   watch: {
     leftOffset: function (val) {
@@ -131,10 +133,16 @@ export default {
       const xRange = ((this.tile.x * CONST.tileWidth));
       this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
     },
+    'tile.moveHighlighted': function (newVal) {
+      this.moveHighlighted = newVal;
+    },
     frame: function () {
       const bumpFrames = this.bumpAnimationMap;
 
       const delayOption = this.getRandomIntBetween(0,1);
+      if (delayOption) {
+        this.$forceUpdate();
+      }
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
 
@@ -146,11 +154,18 @@ export default {
         this.bumpVerticalFramePosition = 0;
         this.bumpHorizontalFramePosition = 0;
       }
-
-      if (delayOption) {
-        this.$forceUpdate();
-      }
-    }
+    },
+    // 'tile.players.length': {
+    //   handler: function(newVal) {
+    //     console.log(newVal, this.tile);
+    //     if (newVal) {
+    //       if (this.tile.event) {
+    //         this.tile.event.script();
+    //       }
+    //     }
+    //   },
+    //   deep: true
+    // },
   },
   computed: {
       ...mapGetters('world', [
@@ -159,12 +174,13 @@ export default {
       'leftOffset',
       'topOffset',
       'focusedEntity',
+      'currentTurn',
     ])
   },
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
-      'moveToTile',
+      'setPath',
       'lightPotentialPath',
       'clearPotentialPath'
     ]),
@@ -175,7 +191,9 @@ export default {
       this.setfocusedEntity(this.tile);
     },
     goToTile () {
-      this.moveToTile(this.tile);
+      if (this.travelPath) {
+        this.setPath({entity: this.currentTurn, path: this.travelPath});
+      }
     },
     getRandomIntBetween(min, max) {
       return getRandomInt(min, max);
@@ -186,12 +204,13 @@ export default {
       }
       this.overTimeout = setTimeout(() => {
         this.lookForPath();
-      }, 500)
+      }, 100)
     },
     lookForPath() {
       if (this.tile.moveHighlighted) {
         const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
-        const path = findPath(areaAroundPlayer, {x: this.focusedEntity.x, y: this.focusedEntity.y, mp: this.focusedEntity.mp}, {x: this.tile.x, y: this.tile.y});
+        const path = findPath(areaAroundPlayer, {x: this.currentTurn.x, y: this.currentTurn.y, mp: this.currentTurn.mp}, {x: this.tile.x, y: this.tile.y});
+        this.travelPath = path;
         this.lightPotentialPath(path);
       }
     },
@@ -202,6 +221,7 @@ export default {
       if (this.tile.potentialPath) {
         this.clearPotentialPath();
       }
+      this.travelPath = null;
     },
   },
 }

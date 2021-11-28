@@ -33,7 +33,8 @@ export default {
       'map',
       'isMoving',
       'canMove',
-      'focusedEntity'
+      'focusedEntity',
+      'moveTiles'
     ])
   },
   methods: {
@@ -63,8 +64,11 @@ export default {
     },
     movePlayer () {
       if (this.isMoving === false && this.canMove) {
-        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
-        const tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
+        let tilesToLight;
+        if (this.moveTiles.length === 0) {
+          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
+          tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
+        }
         this.toggleMovingTiles(tilesToLight);
       }
     },

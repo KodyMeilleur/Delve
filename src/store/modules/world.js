@@ -1,6 +1,7 @@
 import CONST from '../../CONST';
 import { DefaultPlayer } from '../../models/Player';
 import { Animation } from '../../models/Animation.js';
+import { getEntityDirection } from '../../services/pathfinding';
 
 // initial state
 const state = () => ({
@@ -62,7 +63,9 @@ const getters = {
   isMoving: (state) => {
     return state.isMoving;
   },
-
+  moveTiles: (state) => {
+    return state.moveTiles;
+  },
 }
 
 // actions
@@ -94,87 +97,102 @@ const mutations = {
       quantity: 1
     })
   },
-  setScroll (state, { scrollLeft, scrollTop}) {
+  setScroll (state, { scrollLeft, scrollTop }) {
     state.leftOffset = scrollLeft;
     state.topOffset = scrollTop;
   },
   setMap (state, map) {
     state.map = map;
   },
-  moveToTile (state, tile) {
-    // determine direction to move in
-    // 1,2,3,4 for directions, 0 non moving
-    // 1N, 2E, 3S, 4W
-    // determine number of tiles to move
-    // 16px per tick, 1 sec moves a full tile and shows 4 frames?
-    const moveToX = tile.x;
-    const moveToY = tile.y;
-
-    const moveUp = moveToX < state.currentTurn.x ? 1 : null;
-    const moveDown = moveToX > state.currentTurn.x ? 3 : null;
-    const moveRight = moveToY > state.currentTurn.y ? 2 : null;
-    const moveLeft = moveToY < state.currentTurn.y ? 4 : null;
-
-    const moveDirection = moveUp || moveDown || moveRight || moveLeft;
-
-    let tilesToMove;
-    if (moveDirection === 1) {
-      tilesToMove = state.currentTurn.x - moveToX;
-    }
-    if (moveDirection === 2) {
-      tilesToMove = moveToY - state.currentTurn.y;
-    }
-    if (moveDirection === 3) {
-      tilesToMove = moveToX - state.currentTurn.x;
-    }
-    if (moveDirection === 4) {
-      tilesToMove = state.currentTurn.y - moveToY;
-    }
-
+  setPath(state, { entity, path }) {
+    entity.tilesToTravel = path.length;
+    entity.path = path;
     state.isMoving = true;
-    state.currentTurn.movingDirection = moveDirection;
-    state.currentTurn.tilesToTravel = tilesToMove;
-    if (state.moveTiles.length) {
-      state.moveTiles.forEach((tile) => {
-        tile.moveHighlighted = false;
-      })
-      state.moveTiles = [];
-    }
+    state.moveTiles.forEach((tile) => {
+      state.map[tile.x][tile.y].moveHighlighted = false;
+      state.map[tile.x][tile.y].potentialPath = false;
+    })
+    state.moveTiles = [];
     state.focusedEntity = null;
-    state.currentTurn.animation = new Animation(8, 'Jump', true);
   },
   updateMove (state) {
+    if (state.currentTurn.movingVerticalOffset === 0 && state.currentTurn.movingHorizontalOffset === 0) {
+      state.currentTurn.movingDirection = getEntityDirection(state.currentTurn);
+      state.currentTurn.animation = new Animation(8, 'Jump', true);
+    }
     const moveDirection = state.currentTurn.movingDirection;
+    // 1N, 2E, 3S, 4W
+
+    // south
     if (moveDirection === 3) {
       state.currentTurn.movingVerticalOffset += CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingVerticalOffset === 64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingVerticalOffset = 0;
+        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        lastOccupiedTile.players = [];
         state.currentTurn.x = (parseInt(state.currentTurn.x, 10)) + 1;
+        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        nextOccupiedTile.players = [state.currentTurn];
+        nextOccupiedTile.event && nextOccupiedTile.event.script();
+        state.currentTurn.path.shift();
+        if (state.currentTurn.path.length) {
+          state.currentTurn.movingDirection = 0;
+        }
       }
     }
+    // east
     if (moveDirection === 2) {
       state.currentTurn.movingHorizontalOffset += CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === 64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingHorizontalOffset = 0;
+        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        lastOccupiedTile.players = [];
         state.currentTurn.y = (parseInt(state.currentTurn.y, 10) + 1);
+        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        nextOccupiedTile.players = [state.currentTurn];
+        nextOccupiedTile.event && nextOccupiedTile.event.script();
+        state.currentTurn.path.shift();
+        if (state.currentTurn.path.length) {
+          state.currentTurn.movingDirection = 0;
+        }
       }
     }
+    // north
     if (moveDirection === 1) {
       state.currentTurn.movingVerticalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingVerticalOffset === -64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingVerticalOffset = 0;
+        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        lastOccupiedTile.players = [];
         state.currentTurn.x = (parseInt(state.currentTurn.x, 10) - 1);
+        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        nextOccupiedTile.players = [state.currentTurn];
+        nextOccupiedTile.event && nextOccupiedTile.event.script();
+        state.currentTurn.path.shift();
+        if (state.currentTurn.path.length) {
+          state.currentTurn.movingDirection = 0;
+        }
       }
     }
+    // west
     if (moveDirection === 4) {
       state.currentTurn.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === -64) {
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingHorizontalOffset = 0;
+        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        lastOccupiedTile.players = [];
         state.currentTurn.y = (parseInt(state.currentTurn.y, 10) - 1);
+        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
+        nextOccupiedTile.players = [state.currentTurn];
+        nextOccupiedTile.event && nextOccupiedTile.event.script();
+        state.currentTurn.path.shift();
+        if (state.currentTurn.path.length) {
+          state.currentTurn.movingDirection = 0;
+        }
       }
     }
 
@@ -188,19 +206,14 @@ const mutations = {
   toggleMovingTiles (state, tilesToLight) {
     if (state.moveTiles.length) {
       state.moveTiles.forEach((tile) => {
-        tile.moveHighlighted = false;
-        tile.potentialPath = false;
+        state.map[tile.x][tile.y].moveHighlighted = false;
       })
       state.moveTiles = [];
     } else {
-      const moveTiles = [];
+      state.moveTiles = tilesToLight;
       tilesToLight.forEach((tile) => {
-        const realMapTile = state.map[tile.x][tile.y];
-        realMapTile.moveHighlighted = true;
-        moveTiles.push(realMapTile);
-      });
-
-      state.moveTiles = moveTiles;
+        state.map[tile.x][tile.y].moveHighlighted = true;
+      })
     }
   },
   lightPotentialPath(state, path) {
@@ -234,7 +247,6 @@ const mutations = {
   },
 
   addSpritesToAnimate (state, sprites) {
-    console.log([...sprites])
     state.sprites = state.sprites.concat([...sprites]);
   },
 

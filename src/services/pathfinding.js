@@ -145,11 +145,31 @@ export function toggleMoveTiles(startEntity, map) {
     return row.map((cell) => {
       const cellMovementCost = (Math.abs(startX - cell.x) + Math.abs(startY - cell.y));
       const isStartingCell = startX === cell.x && startY === cell.y;
-      if (cellMovementCost <= startEntity.mp && isStartingCell === false) {
+      if (cellMovementCost <= startEntity.mp && isStartingCell === false && cell.density === 0) {
         tileList.push(cell)
       }
     })
   });
 
   return tileList;
+}
+
+export function getEntityDirection(entity) {
+    const tileToMoveTo = entity.path[0];
+    // determine direction to move in
+    // 1,2,3,4 for directions, 0 non moving
+    // 1N, 2E, 3S, 4W
+    // determine number of tiles to move
+    // 16px per tick, 1 sec moves a full tile and shows 4 frames?
+    const moveToX = tileToMoveTo.x;
+    const moveToY = tileToMoveTo.y;
+
+    const moveUp = moveToX < entity.x ? 1 : null;
+    const moveDown = moveToX > entity.x ? 3 : null;
+    const moveRight = moveToY > entity.y ? 2 : null;
+    const moveLeft = moveToY < entity.y ? 4 : null;
+
+    const moveDirection = moveUp || moveDown || moveRight || moveLeft;
+
+    return moveDirection;
 }

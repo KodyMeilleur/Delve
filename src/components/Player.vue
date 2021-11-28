@@ -46,12 +46,18 @@ export default {
     }
   },
   watch: {
-    'animation': {
-      handler(){
+    'player.animation': {
+      handler(newVal){
+        this.animation = Object.assign({}, newVal);
         this.skipFrames = [ ...this.animation.skipFrames];
       },
        deep: true
      },
+     'animation.skipFrames': {
+       handler(newVal){
+         this.skipFrames = [ ...newVal];
+       }
+      },
      frame: function () {
        let animation = this.animation;
        const player = this.player;
@@ -71,6 +77,7 @@ export default {
            this.animation = player.defaultAnimation;
          }
        }
+       // console.log(bumpFrames, this.currentFrame, animation);
        if (bumpFrames) {
          this.bumpVerticalFramePosition = bumpFrames.vertical;
          this.bumpHorizontalFramePosition = bumpFrames.horizontal;

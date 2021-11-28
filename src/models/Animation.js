@@ -65,7 +65,7 @@ export function Animation(maxNumberOfFrames, state, loop) {
 
   this.refreshSkipFrames = function() {
     if (skipFrameMap[this.state]) {
-      this.currentFrame = 0;
+      // this.currentFrame = 0;
       this.skipFrames = skipFrameMap[this.state].slice();
     }
   }
