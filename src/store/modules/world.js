@@ -15,6 +15,7 @@ const state = () => ({
   turnIndex: 0,
   focusedEntity: null,
   isMoving: false,
+  potentialPath: [],
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
   leftOffset: 0,
   topOffset: 0,
@@ -54,6 +55,9 @@ const getters = {
   },
   canMove: (state) => {
     return state.focusedEntity && state.currentTurn.id === state.focusedEntity.id;
+  },
+  potentialPath: (state) => {
+    return state.potentialPath;
   },
   isMoving: (state) => {
     return state.isMoving;
@@ -181,46 +185,41 @@ const mutations = {
     }
   },
   //TODO: Will need a search function for finding all tiles within an MP limit
-  toggleMovingTiles (state) {
+  toggleMovingTiles (state, tilesToLight) {
     if (state.moveTiles.length) {
       state.moveTiles.forEach((tile) => {
         tile.moveHighlighted = false;
+        tile.potentialPath = false;
       })
       state.moveTiles = [];
     } else {
-      // highlight x tiles from focusedEntity based on density
-      for (let i= 1; i <= state.focusedEntity.mp; i++) {
-        const entityX = parseInt(state.focusedEntity.x, 10);
-        const entityY = parseInt(state.focusedEntity.y, 10);
+      const moveTiles = [];
+      tilesToLight.forEach((tile) => {
+        const realMapTile = state.map[tile.x][tile.y];
+        realMapTile.moveHighlighted = true;
+        moveTiles.push(realMapTile);
+      });
 
-        // check north
-        const northTile = state.map[entityX - i] && state.map[entityX - i][entityY];
-        if (northTile && northTile.density == 0) {
-          northTile.moveHighlighted = true;
-          state.moveTiles.push(northTile);
-        }
-        // check east
-        const eastTile = state.map[entityX][entityY + i];
-        if (eastTile && eastTile.density == 0) {
-          eastTile.moveHighlighted = true;
-          state.moveTiles.push(eastTile);
-        }
-        // check south
-        const southTile = state.map[entityX + i] && state.map[entityX + i][entityY];
-        if (southTile && southTile.density == 0) {
-          southTile.moveHighlighted = true;
-          state.moveTiles.push(southTile);
-        }
-        // check west
-        const westTile = state.map[entityX][entityY - i];
-        if (westTile && westTile.density == 0) {
-          westTile.moveHighlighted = true;
-          state.moveTiles.push(westTile);
-        }
-      }
+      state.moveTiles = moveTiles;
     }
   },
+  lightPotentialPath(state, path) {
+    const moveTiles = [];
+    path.forEach((tile) => {
+      const realMapTile = state.map[tile.x][tile.y];
+      realMapTile.potentialPath = true;
+      moveTiles.push(realMapTile);
+    });
 
+    state.potentialPath = moveTiles;
+  },
+  clearPotentialPath(state) {
+    state.potentialPath.forEach((tile) => {
+      tile.potentialPath = false;
+    });
+
+    state.potentialPath = [];
+  },
   setfocusedEntity (state, focusedEntity) {
     if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
         state.focusedEntity.y === focusedEntity.y) {

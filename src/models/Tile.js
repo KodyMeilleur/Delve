@@ -20,6 +20,7 @@ export function VoidTile(x, y) {
   this.width = CONST.tileWidth;
   this.height = CONST.tileHeight;
   this.event = null;
+  this.potentialPath = false;
 }
 
 export function PlainsTile(x, y) {
@@ -37,6 +38,7 @@ export function PlainsTile(x, y) {
   this.density = 0;
   this.event = (this.structure === null && (getRandomInt(0, 3) === 2)) ? new Event('Alert') : null;
   this.sprite = `assets/Tiles/Plains/${ this.event ? 'Event' : 'Normal'}/sheet.png`;
+  this.potentialPath = false;
 }
 
 export function GenericTile(x, y, spritePath) {
@@ -53,4 +55,5 @@ export function GenericTile(x, y, spritePath) {
   this.sprite = spritePath;
   this.density = 0;
   this.event = null;
+  this.potentialPath = false;
 }

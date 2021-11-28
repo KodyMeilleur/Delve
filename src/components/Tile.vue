@@ -3,6 +3,8 @@
     minWidth: width + 'px',
     minHeight: height + 'px'
   }"
+  v-on:mouseover="onMouseOver"
+  v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.tile}"
   class="active tile-component"
@@ -11,6 +13,11 @@
     <span v-if="tile.moveHighlighted"
     v-on:click="goToTile"
     class="highlighted"
+    >
+    </span>
+    <span v-if="tile.potentialPath"
+    v-on:click="goToTile"
+    class="potentialPath"
     >
     </span>
       <div class="tile-sprite">
@@ -48,6 +55,7 @@
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
 import { getRandomInt } from '../services/generateLand';
+import { findPath, returnShallowMapChunk } from '../services/pathfinding';
 
 export default {
   name: 'Tile',
@@ -65,6 +73,7 @@ export default {
       currentFrame: 0,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
+      overTimeout: null,
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
@@ -109,6 +118,10 @@ export default {
   // updated() {
   //   console.log('tile updated');
   // },
+  destroyed() {
+    clearInterval(this.overTimeout);
+    clearInterval(this.exitTimeout);
+  },
   watch: {
     leftOffset: function (val) {
       const yRange = ((this.tile.y * CONST.tileWidth));
@@ -141,6 +154,7 @@ export default {
   },
   computed: {
       ...mapGetters('world', [
+      'map',
       'frame',
       'leftOffset',
       'topOffset',
@@ -150,7 +164,9 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
-      'moveToTile'
+      'moveToTile',
+      'lightPotentialPath',
+      'clearPotentialPath'
     ]),
     getImgUrl(path) {
       return `${path}`
@@ -163,7 +179,30 @@ export default {
     },
     getRandomIntBetween(min, max) {
       return getRandomInt(min, max);
-    }
+    },
+    onMouseOver() {
+      if (this.overTimeout) {
+        clearTimeout(this.overTimeout);
+      }
+      this.overTimeout = setTimeout(() => {
+        this.lookForPath();
+      }, 500)
+    },
+    lookForPath() {
+      if (this.tile.moveHighlighted) {
+        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
+        const path = findPath(areaAroundPlayer, {x: this.focusedEntity.x, y: this.focusedEntity.y, mp: this.focusedEntity.mp}, {x: this.tile.x, y: this.tile.y});
+        this.lightPotentialPath(path);
+      }
+    },
+    onMouseExit() {
+      if (this.overTimeout) {
+        clearTimeout(this.overTimeout);
+      }
+      if (this.tile.potentialPath) {
+        this.clearPotentialPath();
+      }
+    },
   },
 }
 </script>
@@ -214,6 +253,16 @@ export default {
   border-radius: 5px;
   outline: 1px solid blue;
   background-color: rgba(200, 200, 255, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  position: absolute;
+  left: 0;
+}
+.potentialPath {
+  border-radius: 5px;
+  outline: 1px solid blue;
+  background-color: rgba(200, 200, 30, 0.5);
   width: 100%;
   height: 100%;
   z-index: 10;

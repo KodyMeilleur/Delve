@@ -16,12 +16,18 @@ export function findPath(maze, startCoords, endCoords) {
       }
     })
   })
+
   let openList = [];
   const finalPath = [];
-  const startCell = mazeClone[startCoords.x][startCoords.y];
+  // const startCell = mazeClone[startCoords.x][startCoords.y];
+  const startCell = mazeClone.flat().filter((cell) => {
+    return (cell.x == startCoords.x) && (cell.y == startCoords.y)
+  })[0];
   // add startCell to openList
   startCell.visited = true;
   openList.push(startCell);
+  const gridAdjustmentX = startCoords.x - startCoords.mp;
+  const gridAdjustmentY = startCoords.y - startCoords.mp;
 
   function cardinalCellCheck(cell) {
       // check all directions for cells
@@ -30,8 +36,8 @@ export function findPath(maze, startCoords, endCoords) {
         return cell;
       }
       // north
-      if (cell.x - 1 >= 0) {
-        const northCell = mazeClone[cell.x - 1][cell.y];
+      if ((cell.x - gridAdjustmentX) - 1 >= 0) {
+        const northCell = mazeClone[(cell.x - gridAdjustmentX) - 1][(cell.y - gridAdjustmentY)];
         if (northCell && northCell.density === 0 && northCell.visited === false) {
           northCell.g = Math.abs(northCell.x - endCoords.x) + Math.abs(northCell.y - endCoords.y);
           northCell.f = northCell.g + northCell.heur;
@@ -41,8 +47,8 @@ export function findPath(maze, startCoords, endCoords) {
         }
       }
       // east
-      if (cell.y + 1 < CONST.normalColumnSize) {
-        const eastCell = mazeClone[cell.x][cell.y + 1];
+      if ((cell.y - gridAdjustmentY) + 1 < CONST.normalColumnSize) {
+        const eastCell = mazeClone[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) + 1];
         if (eastCell && eastCell.density === 0 && eastCell.visited === false) {
           eastCell.g = Math.abs(eastCell.x - endCoords.x) + Math.abs(eastCell.y - endCoords.y);
           eastCell.f = eastCell.g + eastCell.heur;
@@ -51,8 +57,8 @@ export function findPath(maze, startCoords, endCoords) {
           openList.push(eastCell);
         }
       } // south
-      if (cell.x + 1 < CONST.normalRowSize) {
-        const southCell = mazeClone[cell.x + 1][cell.y];
+      if ((cell.x - gridAdjustmentX) + 1 < CONST.normalRowSize) {
+        const southCell = mazeClone[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
         if (southCell && southCell.density === 0 && southCell.visited === false) {
           southCell.g = Math.abs(southCell.x - endCoords.x) + Math.abs(southCell.y - endCoords.y);
           southCell.f = southCell.g + southCell.heur;
@@ -61,8 +67,8 @@ export function findPath(maze, startCoords, endCoords) {
           openList.push(southCell);
         }
       } // west
-      if (cell.y - 1 >= 0) {
-        const westCell = mazeClone[cell.x][cell.y - 1];
+      if ((cell.y - gridAdjustmentY) - 1 >= 0) {
+        const westCell = mazeClone[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) - 1];
         if (westCell && westCell.density === 0 && westCell.visited === false) {
           westCell.g = Math.abs(westCell.x - endCoords.x) + Math.abs(westCell.y - endCoords.y);
           westCell.f = westCell.g + westCell.heur;
@@ -98,6 +104,52 @@ export function findPath(maze, startCoords, endCoords) {
       }
     }
 
-    console.log(finalPath, mazeClone)
-    return finalPath;
+    return finalPath.reverse().slice(1);
+}
+
+export function returnShallowMapChunk(startEntity, fullMap) {
+  const rowColumnSize = (startEntity.mp * 2);
+  const startX = (startEntity.x - startEntity.mp);
+  const startY = (startEntity.y - startEntity.mp);
+
+  const mazeClone = [];
+
+  for (let i= 0; i <= rowColumnSize; i++) {
+    const row = [];
+    for (let k= 0; k <= rowColumnSize; k++) {
+      const currentCellPointer = fullMap[startX + i][startY + k];
+      const shallowCell = {
+        density: currentCellPointer.density,
+        visited: false,
+        parent: null,
+        x: currentCellPointer.x,
+        y: currentCellPointer.y,
+        g: null,
+        f: null,
+        heur: null,
+      }
+      row.push(shallowCell);
+    }
+    mazeClone.push(row);
+  }
+
+  return mazeClone;
+}
+
+export function toggleMoveTiles(startEntity, map) {
+  const tileList = [];
+  const startX = parseInt(startEntity.x);
+  const startY = parseInt(startEntity.y);
+
+  map.map((row) => {
+    return row.map((cell) => {
+      const cellMovementCost = (Math.abs(startX - cell.x) + Math.abs(startY - cell.y));
+      const isStartingCell = startX === cell.x && startY === cell.y;
+      if (cellMovementCost <= startEntity.mp && isStartingCell === false) {
+        tileList.push(cell)
+      }
+    })
+  });
+
+  return tileList;
 }

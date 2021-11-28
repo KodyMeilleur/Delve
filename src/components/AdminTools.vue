@@ -15,7 +15,7 @@
 import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { refineLandmass, cleanLandmass } from '../services/generateLand';
-import { findPath } from '../services/pathfinding';
+import { returnShallowMapChunk, toggleMoveTiles } from '../services/pathfinding';
 
 export default {
   name: 'AdminTools',
@@ -33,6 +33,7 @@ export default {
       'map',
       'isMoving',
       'canMove',
+      'focusedEntity'
     ])
   },
   methods: {
@@ -49,7 +50,6 @@ export default {
       const randomLandmass = refineLandmass();
 
       cleanLandmass(randomLandmass);
-      findPath(randomLandmass, {x: 4, y: 4}, {x: 6, y: 6});
       this.mergeFirstLandmass(randomLandmass);
     },
     addPlayerToGame () {
@@ -63,9 +63,10 @@ export default {
     },
     movePlayer () {
       if (this.isMoving === false && this.canMove) {
-        this.toggleMovingTiles();
+        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
+        const tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
+        this.toggleMovingTiles(tilesToLight);
       }
-
     },
     endTurn () {
       this.cycleTurn();

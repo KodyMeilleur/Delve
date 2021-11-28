@@ -18,7 +18,7 @@ export function DefaultPlayer(name, x, y) {
   this.isCreature = true;
   this.tilesToTravel = 0;
   this.movingDirection = 0; // 1N, 2E, 3S, 4W,  0 non moving South
-  this.mp = 2; // moving points
+  this.mp = 3; // moving points
   // STATS
   this.hp = CONST.defaultHP;
   this.en = CONST.defaultEN;
