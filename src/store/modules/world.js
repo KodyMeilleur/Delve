@@ -118,7 +118,7 @@ const mutations = {
   updateMove (state) {
     if (state.currentTurn.movingVerticalOffset === 0 && state.currentTurn.movingHorizontalOffset === 0) {
       state.currentTurn.movingDirection = getEntityDirection(state.currentTurn);
-      state.currentTurn.animation = new Animation(8, 'Jump', true);
+      state.currentTurn.animation = new Animation(8, 'Jump', false);
     }
     const moveDirection = state.currentTurn.movingDirection;
     // 1N, 2E, 3S, 4W

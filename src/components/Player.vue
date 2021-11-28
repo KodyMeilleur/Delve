@@ -49,6 +49,7 @@ export default {
     'player.animation': {
       handler(newVal){
         this.animation = Object.assign({}, newVal);
+        this.currentFrame = 0;
         this.skipFrames = [ ...this.animation.skipFrames];
       },
        deep: true
@@ -77,7 +78,6 @@ export default {
            this.animation = player.defaultAnimation;
          }
        }
-       // console.log(bumpFrames, this.currentFrame, animation);
        if (bumpFrames) {
          this.bumpVerticalFramePosition = bumpFrames.vertical;
          this.bumpHorizontalFramePosition = bumpFrames.horizontal;

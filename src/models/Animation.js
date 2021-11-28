@@ -1,13 +1,13 @@
 const skipFrameMap = {
-  // delay frames
-  Jump: [2, 2],
+  // delay frames, minimum must match max number of frames
+  Jump: [0, 0, 1, 1, 1, 1, 1, 1],
   Idle: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8]
 }
 
 const bumpAnimationMap = {
   // pixels to bump by on frame
   Jump: {
-    2: {
+    1: {
       vertical: -32,
       horizontal: 0
     },

@@ -204,7 +204,7 @@ export default {
       }
       this.overTimeout = setTimeout(() => {
         this.lookForPath();
-      }, 100)
+      }, 50)
     },
     lookForPath() {
       if (this.tile.moveHighlighted) {
