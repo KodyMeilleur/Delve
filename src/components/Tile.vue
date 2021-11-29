@@ -22,7 +22,7 @@
     </span>
       <div class="tile-sprite">
         <!-- Add frame here -->
-        <span class="frame-counter">{{ currentFrame }}</span>
+        <span class="frame-counter">{{ frame }}</span>
         <div class="tile-structure" v-if="tile.structure">
           <div
           v-bind:style="{
@@ -276,6 +276,7 @@ export default {
   position: absolute;
   left: 28px;
   top: 22px;
+  visibility: hidden
 }
 .highlighted {
   border-radius: 5px;
