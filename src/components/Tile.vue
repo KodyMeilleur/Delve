@@ -22,7 +22,7 @@
     </span>
       <div class="tile-sprite">
         <!-- Add frame here -->
-        <!-- <span class="frame-counter">{{ frame }}</span> -->
+        <span class="frame-counter">{{ currentFrame }}</span>
         <div class="tile-structure" v-if="tile.structure">
           <div
           v-bind:style="{
@@ -31,7 +31,6 @@
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
-          :key="frame"
           class="structure-sprite"
           >
           </div>
@@ -80,7 +79,7 @@ export default {
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
-          vertical: -5,
+          vertical: -7,
           horizontal: 0
         },
         1: {
@@ -88,35 +87,35 @@ export default {
           horizontal: 0
         },
         2: {
-          vertical: -6,
+          vertical: -5,
           horizontal: 0
         },
         3: {
-          vertical: -7,
+          vertical: -4,
           horizontal: 0
         },
         4: {
-          vertical: -7,
+          vertical: -3,
           horizontal: 0
         },
         5: {
-          vertical: -7,
+          vertical: -3,
           horizontal: 0
         },
         6: {
-          vertical: -6,
+          vertical: -4,
           horizontal: 0
         },
         7: {
-          vertical: -6,
+          vertical: -4,
           horizontal: 0
         },
         8: {
-          vertical: -6,
+          vertical: -5,
           horizontal: 0
         },
         9: {
-          vertical: -5,
+          vertical: -6,
           horizontal: 0
         },
       },

@@ -193,7 +193,7 @@ const mutations = {
     if (state.currentTurn.tilesToTravel === 0) {
       state.isMoving = false;
       // TODO: maybe check players whose tilesToTravel is 0?
-      state.currentTurn.animation = new Animation(2, 'Idle', true);
+      state.currentTurn.animation = new Animation(9, 'Idle', true);
     }
   },
   //TODO: Will need a search function for finding all tiles within an MP limit
@@ -345,7 +345,7 @@ const mutations = {
     }
 
     if (currentMonster.tilesToTravel === 0) {
-      currentMonster.animation = new Animation(2, 'Idle', true);
+      currentMonster.animation = new Animation(9, 'Idle', true);
       state.monsterTurns.shift();
       if (state.monsterTurns.length === 0) {
         state.isMonsterMoving = false;

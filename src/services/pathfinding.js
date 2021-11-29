@@ -58,7 +58,6 @@ export function findPath(maze, startCoords, endCoords) {
       } // south
       if ((cell.x - gridAdjustmentX) + 1 < mazeClone.length) {
         const southCell = mazeClone[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
-        console.log(cell, southCell, endCoords);
         if (southCell && southCell.density === 0 && southCell.visited === false) {
           southCell.g = Math.abs(southCell.x - endCoords.x) + Math.abs(southCell.y - endCoords.y);
           southCell.f = southCell.g + southCell.heur;
@@ -156,7 +155,6 @@ export function toggleMoveTiles(startEntity, map) {
 }
 
 export function getEntityDirection(entity) {
-    console.log(entity);
     const tileToMoveTo = entity.path && entity.path[0];
     // determine direction to move in
     // 1,2,3,4 for directions, 0 non moving
