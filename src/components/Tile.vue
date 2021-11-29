@@ -13,7 +13,6 @@
     <span v-if="tile.moveHighlighted"
     v-on:click="goToTile"
     class="highlighted"
-    :key="tile.moveHighlighted"
     >
     </span>
     <span v-if="tile.potentialPath"
@@ -32,6 +31,7 @@
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
+          :key="frame"
           class="structure-sprite"
           >
           </div>
@@ -147,9 +147,7 @@ export default {
       const bumpFrames = this.bumpAnimationMap;
 
       const delayOption = this.getRandomIntBetween(0, 1);
-      if (delayOption) {
-        this.$forceUpdate();
-      }
+
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
 
