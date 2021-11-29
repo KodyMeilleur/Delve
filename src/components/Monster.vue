@@ -48,7 +48,7 @@ export default {
   watch: {
     'monster.animation': {
        handler(animation){
-         this.animation = animation;
+         this.animation = Object.assign({}, animation);
          this.skipFrames = [ ...this.animation.skipFrames];
        },
        // deep: true
@@ -69,7 +69,7 @@ export default {
          if (animation.shouldLoop === true) {
            animation.refreshSkipFrames();
          } else {
-           this.animation = monster.defaultAnimation;
+           this.animation = Object.assign({}, monster.defaultAnimation);
          }
        }
        if (bumpFrames) {

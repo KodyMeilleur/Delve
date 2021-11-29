@@ -1,4 +1,3 @@
-import CONST from '../CONST';
 
 export function findPath(maze, startCoords, endCoords) {
   const mazeClone = maze.map((row) => {
@@ -47,7 +46,7 @@ export function findPath(maze, startCoords, endCoords) {
         }
       }
       // east
-      if ((cell.y - gridAdjustmentY) + 1 < CONST.normalColumnSize) {
+      if ((cell.y - gridAdjustmentY) + 1 < mazeClone[0].length) {
         const eastCell = mazeClone[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) + 1];
         if (eastCell && eastCell.density === 0 && eastCell.visited === false) {
           eastCell.g = Math.abs(eastCell.x - endCoords.x) + Math.abs(eastCell.y - endCoords.y);
@@ -57,8 +56,9 @@ export function findPath(maze, startCoords, endCoords) {
           openList.push(eastCell);
         }
       } // south
-      if ((cell.x - gridAdjustmentX) + 1 < CONST.normalRowSize) {
+      if ((cell.x - gridAdjustmentX) + 1 < mazeClone.length) {
         const southCell = mazeClone[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
+        console.log(cell, southCell, endCoords);
         if (southCell && southCell.density === 0 && southCell.visited === false) {
           southCell.g = Math.abs(southCell.x - endCoords.x) + Math.abs(southCell.y - endCoords.y);
           southCell.f = southCell.g + southCell.heur;
@@ -108,6 +108,7 @@ export function findPath(maze, startCoords, endCoords) {
 }
 
 export function returnShallowMapChunk(startEntity, fullMap) {
+  console.log(startEntity);
   const rowColumnSize = (startEntity.mp * 2);
   const startX = (startEntity.x - startEntity.mp);
   const startY = (startEntity.y - startEntity.mp);
@@ -155,21 +156,25 @@ export function toggleMoveTiles(startEntity, map) {
 }
 
 export function getEntityDirection(entity) {
-    const tileToMoveTo = entity.path[0];
+    console.log(entity);
+    const tileToMoveTo = entity.path && entity.path[0];
     // determine direction to move in
     // 1,2,3,4 for directions, 0 non moving
     // 1N, 2E, 3S, 4W
     // determine number of tiles to move
     // 16px per tick, 1 sec moves a full tile and shows 4 frames?
-    const moveToX = tileToMoveTo.x;
-    const moveToY = tileToMoveTo.y;
 
-    const moveUp = moveToX < entity.x ? 1 : null;
-    const moveDown = moveToX > entity.x ? 3 : null;
-    const moveRight = moveToY > entity.y ? 2 : null;
-    const moveLeft = moveToY < entity.y ? 4 : null;
+    if (tileToMoveTo) {
+      const moveToX = tileToMoveTo.x;
+      const moveToY = tileToMoveTo.y;
 
-    const moveDirection = moveUp || moveDown || moveRight || moveLeft;
+      const moveUp = moveToX < entity.x ? 1 : null;
+      const moveDown = moveToX > entity.x ? 3 : null;
+      const moveRight = moveToY > entity.y ? 2 : null;
+      const moveLeft = moveToY < entity.y ? 4 : null;
 
-    return moveDirection;
+      const moveDirection = moveUp || moveDown || moveRight || moveLeft;
+
+      return moveDirection;
+    }
 }

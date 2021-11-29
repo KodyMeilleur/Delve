@@ -40,6 +40,7 @@ export default {
       'setMap',
       'updateFrame',
       'updateMove',
+      'updateMonsterMove',
       'updatePlayerAnimations',
     ]),
     initializeWorld () {
@@ -81,7 +82,7 @@ export default {
         window.requestAnimFrame(loop);
         // every 4th of a second?
         // every 10th of a second?
-        if (secondsPassed > .1) {
+        if (secondsPassed > .075) {
           if (frame === 4) {
             frame = 1;
           } else {
@@ -99,6 +100,9 @@ export default {
         if (self.isMoving) {
           self.updateMove();
         }
+        if (self.isMonsterMoving) {
+          self.updateMonsterMove();
+        }
       }
 
       loop();
@@ -111,6 +115,7 @@ export default {
       ...mapGetters('world', [
         'currentTurn',
         'isMoving',
+        'isMonsterMoving',
         'players',
         'monsters',
       ])

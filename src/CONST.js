@@ -10,6 +10,7 @@ export default {
   startingStatPoints: 12,
   FPS: 30,
   moveAnimationPixelBump: 4,
+  monsterAnimationPixelBump: 8,
   world: {
     name: 'World'
   }

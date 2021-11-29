@@ -13,6 +13,7 @@
     <span v-if="tile.moveHighlighted"
     v-on:click="goToTile"
     class="highlighted"
+    :key="tile.moveHighlighted"
     >
     </span>
     <span v-if="tile.potentialPath"
@@ -31,7 +32,6 @@
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
-          :key="frame"
           class="structure-sprite"
           >
           </div>
@@ -80,39 +80,43 @@ export default {
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
-          vertical: 0,
+          vertical: -5,
           horizontal: 0
         },
         1: {
-          vertical: -1,
+          vertical: -6,
           horizontal: 0
         },
         2: {
-          vertical: -2,
+          vertical: -6,
           horizontal: 0
         },
         3: {
-          vertical: -3,
+          vertical: -7,
           horizontal: 0
         },
         4: {
-          vertical: -2,
+          vertical: -7,
           horizontal: 0
         },
         5: {
-          vertical: -2,
+          vertical: -7,
           horizontal: 0
         },
         6: {
-          vertical: -1,
+          vertical: -6,
           horizontal: 0
         },
         7: {
-          vertical: -1,
+          vertical: -6,
           horizontal: 0
         },
         8: {
-          vertical: -1,
+          vertical: -6,
+          horizontal: 0
+        },
+        9: {
+          vertical: -5,
           horizontal: 0
         },
       },
@@ -133,13 +137,16 @@ export default {
       const xRange = ((this.tile.x * CONST.tileWidth));
       this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
     },
-    'tile.moveHighlighted': function (newVal) {
-      this.moveHighlighted = newVal;
+    'tile.moveHighlighted': {
+      handler: function (newVal) {
+        this.moveHighlighted = newVal;
+      },
+      deep: true
     },
     frame: function () {
       const bumpFrames = this.bumpAnimationMap;
 
-      const delayOption = this.getRandomIntBetween(0,1);
+      const delayOption = this.getRandomIntBetween(0, 1);
       if (delayOption) {
         this.$forceUpdate();
       }
@@ -175,6 +182,7 @@ export default {
       'topOffset',
       'focusedEntity',
       'currentTurn',
+      'potentialPath',
     ])
   },
   methods: {
@@ -203,6 +211,9 @@ export default {
         clearTimeout(this.overTimeout);
       }
       this.overTimeout = setTimeout(() => {
+        if (this.potentialPath.length) {
+          this.clearPotentialPath();
+        }
         this.lookForPath();
       }, 50)
     },

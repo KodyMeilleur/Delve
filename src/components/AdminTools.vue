@@ -5,7 +5,7 @@
       <button @click="addPlayerToGame">Add Player</button>
       <button @click="toggleCreatureSpawner">Add Monster</button>
       <button @click="movePlayer">Move Player</button>
-      <button @click="endTurn">End Turn</button>
+      <button :disabled="isMonsterMoving === true" @click="endTurn">End Turn</button>
     </div>
     <CreatureSpawner :shouldShow="showCreatureSpawner" v-on:close="toggleCreatureSpawner"/>
   </div>
@@ -34,7 +34,8 @@ export default {
       'isMoving',
       'canMove',
       'focusedEntity',
-      'moveTiles'
+      'moveTiles',
+      'isMonsterMoving'
     ])
   },
   methods: {
