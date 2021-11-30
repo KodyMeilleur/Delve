@@ -2,8 +2,8 @@
   <div v-bind:style="{
     width: width + 'px',
     height: height + 'px',
-    top: ((monster.x * CONST.tileHeight) + monster.movingVerticalOffset + bumpVerticalFramePosition) + 'px',
-    left: ((monster.y * CONST.tileWidth) + monster.movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
+    top: ((x * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
+    left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.monster}"
@@ -11,8 +11,8 @@
   >
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
   <div
-  style="background-image: url('/assets/Monsters/Skeleton/Idle/South/sheet.png')"
   v-bind:style="{
+    'background-image': 'url(' + publicPath + monster.sprite + animation.state + '/' + (direction || 'South') + '/sheet.png)',
     'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="monster-sprite"
@@ -24,6 +24,8 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
+import { getEntityDirection } from '../services/pathfinding';
+import { Animation } from '../models/Animation.js';
 
 export default {
   name: 'Monster',
@@ -40,18 +42,28 @@ export default {
       publicPath: process.env.BASE_URL,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
+      movingVerticalOffset: 0,
+      movingHorizontalOffset: 0,
+      movingDirection: 0,
+      x: this.monster.x,
+      y: this.monster.y,
       currentFrame: 0,
-      animation: { ...this.monster.animation },
+      tilesToTravel: 0,
+      path: [],
+      animation: { ...this.monster.defaultAnimation },
       skipFrames: [],
+      isMoving: false,
     }
   },
   watch: {
-    'monster.animation': {
-       handler(animation){
-         this.animation = Object.assign({}, animation);
-         this.skipFrames = [ ...this.animation.skipFrames];
-       },
-       // deep: true
+     currentTurn: {
+        handler (currentTurn) {
+          if (currentTurn.name === 'World') {
+            this.tilesToTravel = this.monster.path.length;
+            this.path = this.monster.path;
+            this.isMoving = true;
+          }
+        },
      },
      frame: function () {
        let animation = this.animation;
@@ -79,24 +91,94 @@ export default {
          this.bumpVerticalFramePosition = 0;
          this.bumpHorizontalFramePosition = 0;
        }
-     }
+
+       if (this.isMoving) {
+         this.updateMonsterMove();
+       }
+     },
   },
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
+      'updateMonsterPosition'
     ]),
     setEntity () {
       this.setfocusedEntity(this.monster);
-    }
+    },
+    updateMonsterMove () {
+      const currentMonster = this.monster;
+
+      if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0) {
+        this.movingDirection = getEntityDirection(currentMonster);
+        this.animation = new Animation(8, 'Jump', false);
+      }
+      const moveDirection = this.movingDirection;
+      // 1N, 2E, 3S, 4W
+
+      // south
+      if (moveDirection === 3) {
+        this.movingVerticalOffset += CONST.monsterAnimationPixelBump;
+        if (this.movingVerticalOffset === 64) {
+          this.tilesToTravel -= 1;
+          this.movingVerticalOffset = 0;
+          this.x = parseInt(this.x) + 1;
+          this.path.shift();
+        }
+      }
+      // east
+      if (moveDirection === 2) {
+        this.movingHorizontalOffset += CONST.monsterAnimationPixelBump;
+        if (this.movingHorizontalOffset === 64) {
+          this.tilesToTravel -= 1;
+          this.movingHorizontalOffset = 0;
+          this.y = parseInt(this.y) + 1;
+          this.path.shift();
+        }
+      }
+      // north
+      if (moveDirection === 1) {
+        this.movingVerticalOffset -= CONST.monsterAnimationPixelBump;
+        if (this.movingVerticalOffset === -64) {
+          this.tilesToTravel -= 1;
+          this.movingVerticalOffset = 0;
+          this.x = parseInt(this.x) - 1;
+          this.path.shift();
+        }
+      }
+      // west
+      if (moveDirection === 4) {
+        this.movingHorizontalOffset -= CONST.monsterAnimationPixelBump;
+        if (this.movingHorizontalOffset === -64) {
+          this.tilesToTravel -= 1;
+          this.movingHorizontalOffset = 0;
+          this.y = parseInt(this.y) - 1;
+          this.path.shift();
+        }
+      }
+
+      if (this.tilesToTravel === 0) {
+        console.log('done moving');
+        this.updateMonsterPosition({
+          monster: this.monster,
+          coords: {
+            x: this.x,
+            y: this.y,
+          }
+        })
+        this.animation = new Animation(9, 'Idle', true);
+        this.isMoving = false;
+      }
+    },
   },
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
-      'frame'
+      'frame',
+      'currentTurn'
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
-      switch (this.monster.movingDirection) {
+      switch (this.movingDirection) {
         case 0:
           return 'South'
         case 1:
@@ -134,6 +216,10 @@ export default {
   max-width: 64px;
   min-height: 64px;
   max-height: 64px;
+  transition: background-image .1s ease-in-out;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility:    hidden;
+  -ms-backface-visibility:     hidden;
 }
 .monster-info {
   position: absolute;

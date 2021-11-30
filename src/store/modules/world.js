@@ -133,6 +133,7 @@ const mutations = {
     if (moveDirection === 3) {
       state.currentTurn.movingVerticalOffset += CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingVerticalOffset === 64) {
+        state.currentTurn.mp -= 1;
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingVerticalOffset = 0;
         const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
@@ -148,6 +149,7 @@ const mutations = {
     if (moveDirection === 2) {
       state.currentTurn.movingHorizontalOffset += CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === 64) {
+        state.currentTurn.mp -= 1;
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingHorizontalOffset = 0;
         const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
@@ -163,6 +165,7 @@ const mutations = {
     if (moveDirection === 1) {
       state.currentTurn.movingVerticalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingVerticalOffset === -64) {
+        state.currentTurn.mp -= 1;
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingVerticalOffset = 0;
         const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
@@ -178,6 +181,7 @@ const mutations = {
     if (moveDirection === 4) {
       state.currentTurn.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
       if (state.currentTurn.movingHorizontalOffset === -64) {
+        state.currentTurn.mp -= 1;
         state.currentTurn.tilesToTravel -= 1;
         state.currentTurn.movingHorizontalOffset = 0;
         const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
@@ -257,104 +261,28 @@ const mutations = {
     state.map[monster.x][monster.y].monsters.push(monster);
   },
 
+  updateMonsterPosition (state, { monster, coords}) {
+    const storeMonster = state.monsters.filter(ent => ent == monster)[0];
+    storeMonster.x = parseInt(coords.x);
+    storeMonster.y = parseInt(coords.y);
+  },
+
   cycleTurn (state) {
 
     state.turnIndex = (state.turnIndex + 1);
     state.currentTurn = state.players[state.turnIndex];
+    state.currentTurn.mp = state.currentTurn.maxMp;
   },
 
   worldTurn (state) {
-    state.turnIndex = -1;
     state.currentTurn = CONST.world;
-    state.monsterTurns = [ ...state.monsters ];
-    state.monsterTurns.forEach((monster) => {
+    state.turnIndex = -1;
+    state.monsters.forEach((monster) => {
       const areaAroundMonster = returnShallowMapChunk(monster, state.map);
       const cellToTravelTo = areaAroundMonster[getRandomInt(0, areaAroundMonster.length - 1)][getRandomInt(0, areaAroundMonster.length - 1)];
       const path = findPath(areaAroundMonster, {x: monster.x, y: monster.y, mp: monster.mp}, {x: cellToTravelTo.x, y: cellToTravelTo.y});
       monster.path = path;
-      monster.tilesToTravel = path.length;
     })
-    if (state.monsterTurns.length) {
-      state.isMonsterMoving = true;
-    }
-  },
-
-  updateMonsterMove (state) {
-    const currentMonster = state.monsterTurns[0];
-
-    if (currentMonster.movingVerticalOffset === 0 && currentMonster.movingHorizontalOffset === 0) {
-      currentMonster.movingDirection = getEntityDirection(currentMonster);
-      currentMonster.animation = new Animation(8, 'Jump', false);
-    }
-    const moveDirection = currentMonster.movingDirection;
-    // 1N, 2E, 3S, 4W
-
-    // south
-    if (moveDirection === 3) {
-      currentMonster.movingVerticalOffset += CONST.monsterAnimationPixelBump;
-      if (currentMonster.movingVerticalOffset === 64) {
-        currentMonster.tilesToTravel -= 1;
-        currentMonster.movingVerticalOffset = 0;
-        const lastOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        lastOccupiedTile.monsters = [];
-        currentMonster.x = (parseInt(currentMonster.x, 10)) + 1;
-        const nextOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        nextOccupiedTile.monsters = [currentMonster];
-        currentMonster.path.shift();
-      }
-    }
-    // east
-    if (moveDirection === 2) {
-      currentMonster.movingHorizontalOffset += CONST.monsterAnimationPixelBump;
-      if (currentMonster.movingHorizontalOffset === 64) {
-        currentMonster.tilesToTravel -= 1;
-        currentMonster.movingHorizontalOffset = 0;
-        const lastOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        lastOccupiedTile.monsters = [];
-        currentMonster.y = (parseInt(currentMonster.y, 10) + 1);
-        const nextOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        nextOccupiedTile.monsters = [currentMonster];
-        currentMonster.path.shift();
-      }
-    }
-    // north
-    if (moveDirection === 1) {
-      currentMonster.movingVerticalOffset -= CONST.monsterAnimationPixelBump;
-      if (currentMonster.movingVerticalOffset === -64) {
-        currentMonster.tilesToTravel -= 1;
-        currentMonster.movingVerticalOffset = 0;
-        const lastOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        lastOccupiedTile.monsters = [];
-        currentMonster.x = (parseInt(currentMonster.x, 10) - 1);
-        const nextOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        nextOccupiedTile.monsters = [currentMonster];
-        currentMonster.path.shift();
-      }
-    }
-    // west
-    if (moveDirection === 4) {
-      currentMonster.movingHorizontalOffset -= CONST.monsterAnimationPixelBump;
-      if (currentMonster.movingHorizontalOffset === -64) {
-        currentMonster.tilesToTravel -= 1;
-        currentMonster.movingHorizontalOffset = 0;
-        const lastOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        lastOccupiedTile.monsters = [];
-        currentMonster.y = (parseInt(currentMonster.y, 10) - 1);
-        const nextOccupiedTile = state.map[currentMonster.x][currentMonster.y];
-        nextOccupiedTile.monsters = [currentMonster];
-        currentMonster.path.shift();
-      }
-    }
-
-    if (currentMonster.tilesToTravel === 0) {
-      currentMonster.animation = new Animation(9, 'Idle', true);
-      state.monsterTurns.shift();
-      if (state.monsterTurns.length === 0) {
-        state.isMonsterMoving = false;
-        state.turnIndex = (state.turnIndex + 1);
-        state.currentTurn = state.players[state.turnIndex];
-      }
-    }
   },
 
   mergeFirstLandmass (state, landmass) {

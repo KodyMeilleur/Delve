@@ -5,19 +5,22 @@
   <div v-if="focusedEntity && focusedEntity.isTile" class="entity-info">
     <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
+    <span class="info-row">MovingDirection: {{ focusedEntity.movingDirection }}</span>
     <span class="info-row">Tile Density: {{ focusedEntity.density }}</span>
-      <span class="info-row">Structures: {{ focusedEntity.structure }}</span>
+    <span class="info-row">Structures: {{ focusedEntity.structure }}</span>
   </div>
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
     <span class="info-row">Name: {{ focusedEntity.name || focusedEntity.type }}</span>
+    <span class="info-row">MovingDirection {{ focusedEntity.movingDirection }}</span>
     <span class="info-row">HP: {{ focusedEntity.hp }}</span>
     <span class="info-row">STR: {{ focusedEntity.str }}</span>
     <span class="info-row">DEF: {{ focusedEntity.def }}</span>
     <span class="info-row">INT: {{ focusedEntity.int }}</span>
     <span class="info-row">WIS: {{ focusedEntity.wis }}</span>
     <span class="info-row">MP: {{ focusedEntity.mp }}</span>
+    <!-- <span class="info-row">Path: {{ focusedEntity.path.length }}</span> -->
   </div>
 </div>
 </template>

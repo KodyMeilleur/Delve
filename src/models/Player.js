@@ -8,17 +8,21 @@ export function DefaultPlayer(name, x, y) {
   // LOCATION
   this.x = x;
   this.y = y;
+
+  // TODO: Move to vue component only
   this.movingVerticalOffset = 0;
   this.movingHorizontalOffset = 0;
+  this.tilesToTravel = 0;
+  this.movingDirection = 0; // 1N, 2E, 3S, 4W,  0 non moving South
+  this.path = null;
+
   this.sprite = 'assets/Characters/Human/';
   this.animation = new Animation(9, 'Idle', true);
   this.defaultAnimation = this.animation;
 
   this.name = name;
   this.isCreature = true;
-  this.tilesToTravel = 0;
-  this.movingDirection = 0; // 1N, 2E, 3S, 4W,  0 non moving South
-  this.path = null;
+  this.maxMp = 3; // moving points
   this.mp = 3; // moving points
   // STATS
   this.hp = CONST.defaultHP;

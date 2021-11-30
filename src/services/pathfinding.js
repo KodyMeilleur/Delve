@@ -174,4 +174,6 @@ export function getEntityDirection(entity) {
 
       return moveDirection;
     }
+
+    return 3;
 }

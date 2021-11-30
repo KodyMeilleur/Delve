@@ -4,7 +4,7 @@
       <button @click="generateContinent">Generate Continent</button>
       <button @click="addPlayerToGame">Add Player</button>
       <button @click="toggleCreatureSpawner">Add Monster</button>
-      <button @click="movePlayer">Move Player</button>
+      <button :disabled="!currentTurn || currentTurn && currentTurn.mp <= 0" @click="movePlayer">Move Player</button>
       <button :disabled="isMonsterMoving === true" @click="endTurn">End Turn</button>
     </div>
     <CreatureSpawner :shouldShow="showCreatureSpawner" v-on:close="toggleCreatureSpawner"/>
@@ -35,7 +35,8 @@ export default {
       'canMove',
       'focusedEntity',
       'moveTiles',
-      'isMonsterMoving'
+      'isMonsterMoving',
+      'currentTurn',
     ])
   },
   methods: {

@@ -7,13 +7,9 @@ export function Monster(x, y) {
     // LOCATION
     this.x = x;
     this.y = y;
-    this.movingVerticalOffset = 0;
-    this.movingHorizontalOffset = 0;
 
     this.isCreature = true;
-    this.tilesToTravel = 0;
-    this.movingDirection = 0; // 1N, 2E, 3S, 4W,  0 non moving South
-    this.path = null;
+
     // limit 3 for a monster?
     this.technologies = [];
     this.items = [];

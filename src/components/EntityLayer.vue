@@ -21,10 +21,20 @@ export default {
   data () {
     return {
       CONST: CONST,
+      totalMonsterCount: 0,
+      // currentFinishedMonsterTurns: 0,
     }
   },
   updated () {
-    console.log('entitylayer re-render')
+    console.log('entitylayer render...')
+  },
+  watch: {
+    'monsters.length': {
+      handler (newVal) {
+        this.totalMonsterCount = newVal;
+      },
+       deep: true
+     },
   },
   methods: {
     // ...mapMutations('world', [

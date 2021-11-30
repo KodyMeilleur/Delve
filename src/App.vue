@@ -100,9 +100,9 @@ export default {
         if (self.isMoving) {
           self.updateMove();
         }
-        if (self.isMonsterMoving) {
-          self.updateMonsterMove();
-        }
+        // if (self.isMonsterMoving) {
+        //   self.updateMonsterMove();
+        // }
       }
 
       loop();
