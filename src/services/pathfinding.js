@@ -107,7 +107,6 @@ export function findPath(maze, startCoords, endCoords) {
 }
 
 export function returnShallowMapChunk(startEntity, fullMap) {
-  console.log(startEntity);
   const rowColumnSize = (startEntity.mp * 2);
   const startX = (startEntity.x - startEntity.mp);
   const startY = (startEntity.y - startEntity.mp);

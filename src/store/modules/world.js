@@ -274,7 +274,9 @@ const mutations = {
       monster.path = path;
       monster.tilesToTravel = path.length;
     })
-    state.isMonsterMoving = true;
+    if (state.monsterTurns.length) {
+      state.isMonsterMoving = true;
+    }
   },
 
   updateMonsterMove (state) {
