@@ -6,7 +6,7 @@
     left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.monster}"
+  v-bind:class="{ selected: focusedEntity === this.monster }"
   class="monster-component"
   >
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
@@ -106,15 +106,26 @@ export default {
       this.setfocusedEntity(this.monster);
     },
     updateMonsterMove () {
-      const currentMonster = this.monster;
+      if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
+        this.movingDirection = getEntityDirection({
+          x: this.x,
+          y: this.y,
+          path: this.path
+        });
 
-      if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0) {
-        this.movingDirection = getEntityDirection(currentMonster);
         this.animation = new Animation(8, 'Jump', false);
       }
       const moveDirection = this.movingDirection;
-      // 1N, 2E, 3S, 4W
 
+      // Failsafe for no found path
+      if (this.path.length <= 0) {
+        this.isMoving = false;
+        this.$emit('turnEnded');
+
+        return;
+      }
+
+      // 1N, 2E, 3S, 4W
       // south
       if (moveDirection === 3) {
         this.movingVerticalOffset += CONST.monsterAnimationPixelBump;
@@ -157,7 +168,6 @@ export default {
       }
 
       if (this.tilesToTravel === 0) {
-        console.log('done moving');
         this.updateMonsterPosition({
           monster: this.monster,
           coords: {
@@ -167,6 +177,7 @@ export default {
         })
         this.animation = new Animation(9, 'Idle', true);
         this.isMoving = false;
+        this.$emit('turnEnded'); // trigger event on the current instance
       }
     },
   },

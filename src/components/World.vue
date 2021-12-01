@@ -12,8 +12,11 @@
             <EntityLayer />
           </div>
           <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
-              <Tile v-for="cell in row" :tile="cell"
-                   v-bind:key="cell.density + Math.random()"
+              <Tile v-for="cell in row"
+                :tile="cell"
+                v-on:potentialPathCalc="updatePotentialPath"
+                v-on:clearPotentialPath="clearPotentialPath"
+                v-bind:key="cell.density + Math.random()"
               />
           </div>
         </div>
@@ -49,6 +52,7 @@ export default {
       repositories: [],
       scrollLeftCache: 0,
       scrollTopCache: 0,
+      potentialPath: [],
     }
   },
   computed: {
@@ -62,6 +66,15 @@ export default {
     ...mapMutations('world', [
       'setScroll',
     ]),
+    updatePotentialPath (path) {
+      this.potentialPath = path;
+      this.$emit('updateTilePaths', this.potentialPath);
+    },
+    clearPotentialPath () {
+      this.potentialPath = [];
+      this.$emit('updateTilePaths', this.potentialPath);
+
+    },
     handleScroll ($event) {
       // console.log($event);
       const that = this;

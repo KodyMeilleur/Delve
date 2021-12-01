@@ -15,7 +15,7 @@
     class="highlighted"
     >
     </span>
-    <span v-if="tile.potentialPath"
+    <span v-if="potentialPath"
     v-on:click="goToTile"
     class="potentialPath"
     >
@@ -76,6 +76,7 @@ export default {
       bumpHorizontalFramePosition: 0,
       overTimeout: null,
       travelPath: null,
+      potentialPath: false,
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
@@ -121,9 +122,9 @@ export default {
       },
     }
   },
-  // updated () {
-  //
-  // },
+  created: function() {
+    this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
+  },
   destroyed() {
     clearInterval(this.overTimeout);
   },
@@ -159,17 +160,6 @@ export default {
         this.bumpHorizontalFramePosition = 0;
       }
     },
-    // 'tile.players.length': {
-    //   handler: function(newVal) {
-    //     console.log(newVal, this.tile);
-    //     if (newVal) {
-    //       if (this.tile.event) {
-    //         this.tile.event.script();
-    //       }
-    //     }
-    //   },
-    //   deep: true
-    // },
   },
   computed: {
       ...mapGetters('world', [
@@ -179,15 +169,12 @@ export default {
       'topOffset',
       'focusedEntity',
       'currentTurn',
-      'potentialPath',
     ])
   },
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
       'setPath',
-      'lightPotentialPath',
-      'clearPotentialPath'
     ]),
     getImgUrl(path) {
       return `${path}`
@@ -203,14 +190,23 @@ export default {
     getRandomIntBetween(min, max) {
       return getRandomInt(min, max);
     },
+    isPotentialPathTile(path) {
+      if (path.length && this.shouldShow) {
+        for (let i = 0; i < path.length; i++) {
+          if(path[i].x === this.tile.x && path[i].y === this.tile.y) {
+            this.potentialPath = true;
+          }
+        }
+      } else {
+        this.potentialPath = false;
+      }
+
+    },
     onMouseOver() {
       if (this.overTimeout) {
         clearTimeout(this.overTimeout);
       }
       this.overTimeout = setTimeout(() => {
-        if (this.potentialPath.length) {
-          this.clearPotentialPath();
-        }
         this.lookForPath();
       }, 50)
     },
@@ -219,15 +215,16 @@ export default {
         const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
         const path = findPath(areaAroundPlayer, {x: this.currentTurn.x, y: this.currentTurn.y, mp: this.currentTurn.mp}, {x: this.tile.x, y: this.tile.y});
         this.travelPath = path;
-        this.lightPotentialPath(path);
+        this.$emit('potentialPathCalc', path)
+        // this.lightPotentialPath(path);
       }
     },
     onMouseExit() {
       if (this.overTimeout) {
         clearTimeout(this.overTimeout);
       }
-      if (this.tile.potentialPath) {
-        this.clearPotentialPath();
+      if (this.potentialPath) {
+        this.$emit('clearPotentialPath')
       }
       this.travelPath = null;
     },

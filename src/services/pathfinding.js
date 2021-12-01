@@ -15,7 +15,6 @@ export function findPath(maze, startCoords, endCoords) {
       }
     })
   })
-
   let openList = [];
   const finalPath = [];
   // const startCell = mazeClone[startCoords.x][startCoords.y];
@@ -160,7 +159,6 @@ export function getEntityDirection(entity) {
     // 1N, 2E, 3S, 4W
     // determine number of tiles to move
     // 16px per tick, 1 sec moves a full tile and shows 4 frames?
-
     if (tileToMoveTo) {
       const moveToX = tileToMoveTo.x;
       const moveToY = tileToMoveTo.y;

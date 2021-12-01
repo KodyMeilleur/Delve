@@ -19,7 +19,6 @@ const state = () => ({
   focusedEntity: null,
   isMoving: false,
   isMonsterMoving: false,
-  potentialPath: [],
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
   leftOffset: 0,
   topOffset: 0,
@@ -59,9 +58,6 @@ const getters = {
   },
   canMove: (state) => {
     return state.focusedEntity && state.currentTurn.id === state.focusedEntity.id;
-  },
-  potentialPath: (state) => {
-    return state.potentialPath;
   },
   isMoving: (state) => {
     return state.isMoving;
@@ -116,7 +112,6 @@ const mutations = {
     state.isMoving = true;
     state.moveTiles.forEach((tile) => {
       state.map[tile.x][tile.y].moveHighlighted = false;
-      state.map[tile.x][tile.y].potentialPath = false;
     })
     state.moveTiles = [];
     state.focusedEntity = null;
@@ -214,23 +209,28 @@ const mutations = {
       })
     }
   },
-  lightPotentialPath(state, path) {
-    const moveTiles = [];
-    path.forEach((tile) => {
-      const realMapTile = state.map[tile.x][tile.y];
-      realMapTile.potentialPath = true;
-      moveTiles.push(realMapTile);
-    });
-
-    state.potentialPath = moveTiles;
-  },
-  clearPotentialPath(state) {
-    state.potentialPath.forEach((tile) => {
-      tile.potentialPath = false;
-    });
-
-    state.potentialPath = [];
-  },
+  // lightPotentialPath(state, path) {
+  //   console.log(state.potentialPath.length);
+  //   if (state.potentialPath.length === 0) {
+  //     const moveTiles = [];
+  //     path.forEach((tile) => {
+  //       const realMapTile = state.map[tile.x][tile.y];
+  //       moveTiles.push(realMapTile);
+  //     });
+  //
+  //     state.potentialPath = moveTiles;
+  //     state.potentialPath.forEach((cell) => {
+  //       cell.potentialPath = true;
+  //     });
+  //   }
+  // },
+  // clearPotentialPath(state) {
+  //   state.potentialPath.forEach((tile) => {
+  //     tile.potentialPath = false;
+  //   });
+  //
+  //   state.potentialPath = [];
+  // },
   setfocusedEntity (state, focusedEntity) {
     if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
         state.focusedEntity.y === focusedEntity.y) {

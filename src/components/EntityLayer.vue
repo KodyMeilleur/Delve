@@ -1,13 +1,13 @@
 <template>
   <div>
     <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
-    <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster"/>
+    <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
   </div>
 </template>
 
 <script>
 import CONST from '../CONST';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Player from './Player.vue';
 import Monster from './Monster.vue';
 
@@ -22,11 +22,11 @@ export default {
     return {
       CONST: CONST,
       totalMonsterCount: 0,
-      // currentFinishedMonsterTurns: 0,
+      currentFinishedMonsterTurns: 0,
     }
   },
   updated () {
-    console.log('entitylayer render...')
+    console.log('entitylayer render...');
   },
   watch: {
     'monsters.length': {
@@ -40,6 +40,17 @@ export default {
     // ...mapMutations('world', [
     //   'cycleTurn',
     // ]),
+    ...mapActions('world', [
+      'cycleTurn',
+    ]),
+    incrementTurnsCompleted () {
+      this.currentFinishedMonsterTurns += 1;
+      if (this.currentFinishedMonsterTurns === this.totalMonsterCount) {
+        console.log('All monster turns over!');
+        this.currentFinishedMonsterTurns = 0;
+        this.cycleTurn();
+      }
+    }
   },
   computed: {
     ...mapGetters('world', [
