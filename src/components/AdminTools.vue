@@ -51,8 +51,9 @@ export default {
     ]),
     generateContinent () {
       const randomLandmass = refineLandmass();
-
       cleanLandmass(randomLandmass);
+      // TODO: Add generation functions? Or move cleanLandmass to a parent function
+
       this.mergeFirstLandmass(randomLandmass);
     },
     addPlayerToGame () {

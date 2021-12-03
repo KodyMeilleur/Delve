@@ -209,28 +209,6 @@ const mutations = {
       })
     }
   },
-  // lightPotentialPath(state, path) {
-  //   console.log(state.potentialPath.length);
-  //   if (state.potentialPath.length === 0) {
-  //     const moveTiles = [];
-  //     path.forEach((tile) => {
-  //       const realMapTile = state.map[tile.x][tile.y];
-  //       moveTiles.push(realMapTile);
-  //     });
-  //
-  //     state.potentialPath = moveTiles;
-  //     state.potentialPath.forEach((cell) => {
-  //       cell.potentialPath = true;
-  //     });
-  //   }
-  // },
-  // clearPotentialPath(state) {
-  //   state.potentialPath.forEach((tile) => {
-  //     tile.potentialPath = false;
-  //   });
-  //
-  //   state.potentialPath = [];
-  // },
   setfocusedEntity (state, focusedEntity) {
     if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
         state.focusedEntity.y === focusedEntity.y) {
