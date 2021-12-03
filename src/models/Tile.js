@@ -39,7 +39,7 @@ export function PlainsTile(x, y) {
   this.density = 0;
   this.event = null;
   // this.event = (this.structure === null && (getRandomInt(0, 3) === 2)) ? new Event('Alert') : null;
-  this.sprite = `assets/Tiles/Plains/${ this.event ? 'Event' : 'Normal'}/sheet.png`;
+  this.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
   this.potentialPath = false;
 }
 
