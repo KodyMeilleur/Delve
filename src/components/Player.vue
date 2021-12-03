@@ -32,9 +32,16 @@ export default {
       default: {},
     },
   },
+  // created: function() {
+  //   this.$parent.$parent.$on('frameBump', this.frameAdvance);
+  // },
   created: function() {
-    this.$parent.$parent.$on('frameBump', this.frameAdvance);
+    // this.$parent.$parent.$parent.$on('Updated', (() => {console.log('wtf');}));
+    this.$parent.$on('frameBump', this.frameAdvance);
   },
+  // beforeDestroy() {
+  //   this.$parent.$parent.$off('frameBump');
+  // },
   data () {
     return {
       width: CONST.tileWidth,
@@ -71,7 +78,7 @@ export default {
       let animation = this.animation;
       const player = this.player;
       const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
-
+      console.log(animation);
       if (this.skipFrames.length &&
           this.currentFrame === this.skipFrames[0]) {
         this.skipFrames.shift(); // problem

@@ -34,9 +34,15 @@ export default {
       default: {},
     },
   },
-  created: function() {
-    this.$parent.$parent.$on('frameBump', this.frameAdvance);
+  // created: function() {
+  //   this.$parent.$parent.$on('frameBump', this.frameAdvance);
+  // },
+  mounted: function() {
+    this.$parent.$on('frameBump', this.frameAdvance);
   },
+  // beforeDestroy() {
+  //   this.$parent.$parent.$off('frameBump');
+  // },
   data () {
     return {
       width: CONST.tileWidth,

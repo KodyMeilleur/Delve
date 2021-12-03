@@ -39,7 +39,6 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setMap',
-      'updateFrame',
       'updateMove',
       'updateMonsterMove',
       'updatePlayerAnimations',
@@ -90,7 +89,6 @@ export default {
             frame++;
           }
           self.frame = frame;
-          // self.updateFrame(frame);
           oldTimeStamp = now;
           // console.log('secondsPassed: ', secondsPassed)
           update();

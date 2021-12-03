@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Player :frame="frame" v-for="player in players" v-bind:key="player.name" :player="player"/>
-    <Monster :frame="frame" v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
+    <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
+    <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
   </div>
 </template>
 
@@ -25,10 +25,14 @@ export default {
       CONST: CONST,
       totalMonsterCount: 0,
       currentFinishedMonsterTurns: 0,
+      currentFrame: 0,
     }
   },
   updated () {
     console.log('entitylayer render...');
+  },
+  created: function() {
+    this.$parent.$on('frameBump', this.frameAdvance);
   },
   watch: {
     'monsters.length': {
@@ -45,6 +49,9 @@ export default {
     ...mapActions('world', [
       'cycleTurn',
     ]),
+    frameAdvance (frame) {
+      this.$emit('frameBump', frame);
+    },
     incrementTurnsCompleted () {
       this.currentFinishedMonsterTurns += 1;
       if (this.currentFinishedMonsterTurns === this.totalMonsterCount) {

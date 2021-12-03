@@ -9,7 +9,7 @@
         <SelectedEntity />
         <div class="landmass">
           <div class="entities">
-            <EntityLayer />
+            <EntityLayer :frame="frame"/>
           </div>
           <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
               <Tile v-for="cell in row"
@@ -56,11 +56,11 @@ export default {
       potentialPath: [],
     }
   },
-  watch: {
-    frame: function (frame) {
-      this.$emit('frameBump', frame);
-    },
-  },
+  // watch: {
+  //   frame: function (frame) {
+  //     this.$emit('frameBump', frame);
+  //   },
+  // },
   computed: {
     ...mapGetters('world', [
       'map',

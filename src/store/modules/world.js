@@ -218,10 +218,6 @@ const mutations = {
     }
   },
 
-  updateFrame (state, frame) {
-    state.frame = frame;
-  },
-
   addSpritesToAnimate (state, sprites) {
     state.sprites = state.sprites.concat([...sprites]);
   },

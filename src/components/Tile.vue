@@ -123,11 +123,13 @@ export default {
       },
     }
   },
-  created: function() {
+  mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
     this.$parent.$on('frameBump', this.frameAdvance);
   },
-  destroyed() {
+  beforeDestroy() {
+    this.$parent.$off('updateTilePaths');
+    this.$parent.$off('frameBump');
     clearInterval(this.overTimeout);
   },
   watch: {
@@ -161,6 +163,9 @@ export default {
       'setPath',
     ]),
     frameAdvance (frame) {
+      if (!this.shouldShow) {
+        return;
+      }
       this.frame = frame;
       const bumpFrames = this.bumpAnimationMap;
 
