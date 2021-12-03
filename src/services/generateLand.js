@@ -95,40 +95,40 @@ export function refineLandmass() {
   return blankLandmass;
 }
 
-export function placeResourceStructures (landmass, type, formationCount) {
-  let tries = CONST.continentResourceStructurePlacementAttempts;
-  const rowLength = landmass[0].length - 1;
-  const columnLength = landmass.length - 1;
-
-  while (tries && formationCount) {
-    const randomX = getRandomInt(0, rowLength);
-    const randomY = getRandomInt(0, columnLength);
-    const seedCell = landmass[randomX][randomY];
-
-    if (seedCell.density === 0) {
-      const placementZoneClear = checkOrientation(landmass, randomX, randomY);
-
-      if (placementZoneClear) {
-        placeZone(landmass, formationCount[0]);
-        formationCount.shift();
-      }
-    }
-    // pick a random cell
-    // check each of 4 orientations to place 3x3 resource formation
-    tries--;
-  }
-}
-
-function checkOrientation (landmass, x, y) {
-  const anchorCell = landmass[x][y];
-
-
-  return false;
-}
-
-function placeZone (landmass, formation) {
-
-}
+// export function placeResourceStructures (landmass, type, formationCount) {
+//   let tries = CONST.continentResourceStructurePlacementAttempts;
+//   const rowLength = landmass[0].length - 1;
+//   const columnLength = landmass.length - 1;
+//
+//   while (tries && formationCount) {
+//     const randomX = getRandomInt(0, rowLength);
+//     const randomY = getRandomInt(0, columnLength);
+//     const seedCell = landmass[randomX][randomY];
+//
+//     if (seedCell.density === 0) {
+//       const placementZoneClear = checkOrientation(landmass, randomX, randomY);
+//
+//       if (placementZoneClear) {
+//         placeZone(landmass, formationCount[0]);
+//         formationCount.shift();
+//       }
+//     }
+//     // pick a random cell
+//     // check each of 4 orientations to place 3x3 resource formation
+//     tries--;
+//   }
+// }
+//
+// function checkOrientation (landmass, x, y) {
+//   const anchorCell = landmass[x][y];
+//
+//
+//   return false;
+// }
+//
+// function placeZone (landmass, formation) {
+//
+// }
 
 export function cleanLandmass (landmass) {
   let validPool = [];
