@@ -70,6 +70,7 @@ export default {
       height: CONST.tileHeight,
       publicPath: process.env.BASE_URL,
       shouldShow: false,
+      frame: 0,
       currentFrame: 0,
       moveHighlighted: false,
       bumpVerticalFramePosition: 0,
@@ -124,6 +125,7 @@ export default {
   },
   created: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
+    this.$parent.$on('frameBump', this.frameAdvance);
   },
   destroyed() {
     clearInterval(this.overTimeout);
@@ -143,7 +145,23 @@ export default {
       },
       deep: true
     },
-    frame: function () {
+  },
+  computed: {
+      ...mapGetters('world', [
+      'map',
+      'leftOffset',
+      'topOffset',
+      'focusedEntity',
+      'currentTurn',
+    ])
+  },
+  methods: {
+    ...mapMutations('world', [
+      'setfocusedEntity',
+      'setPath',
+    ]),
+    frameAdvance (frame) {
+      this.frame = frame;
       const bumpFrames = this.bumpAnimationMap;
 
       const delayOption = this.getRandomIntBetween(0, 1);
@@ -160,22 +178,6 @@ export default {
         this.bumpHorizontalFramePosition = 0;
       }
     },
-  },
-  computed: {
-      ...mapGetters('world', [
-      'map',
-      'frame',
-      'leftOffset',
-      'topOffset',
-      'focusedEntity',
-      'currentTurn',
-    ])
-  },
-  methods: {
-    ...mapMutations('world', [
-      'setfocusedEntity',
-      'setPath',
-    ]),
     getImgUrl(path) {
       return `${path}`
     },

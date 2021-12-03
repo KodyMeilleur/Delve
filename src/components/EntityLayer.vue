@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
-    <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
+    <Player :frame="frame" v-for="player in players" v-bind:key="player.name" :player="player"/>
+    <Monster :frame="frame" v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
   </div>
 </template>
 
@@ -13,7 +13,9 @@ import Monster from './Monster.vue';
 
 export default {
   name: 'EntityLayer',
-  props: {},
+  props: {
+    frame: Number,
+  },
   components: {
     Player,
     Monster,

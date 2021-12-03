@@ -32,6 +32,9 @@ export default {
       default: {},
     },
   },
+  created: function() {
+    this.$parent.$parent.$on('frameBump', this.frameAdvance);
+  },
   data () {
     return {
       width: CONST.tileWidth,
@@ -59,38 +62,38 @@ export default {
          this.skipFrames = [ ...newVal];
        }
       },
-     frame: function () {
-       let animation = this.animation;
-       const player = this.player;
-       const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
-
-       if (this.skipFrames.length &&
-           this.currentFrame === this.skipFrames[0]) {
-         this.skipFrames.shift(); // problem
-       } else {
-         this.currentFrame += 1;
-       }
-       if (this.currentFrame >= animation.maxNumberOfFrames) {
-         this.currentFrame = 0;
-         if (animation.shouldLoop === true) {
-           animation.refreshSkipFrames();
-         } else {
-           this.animation = player.defaultAnimation;
-         }
-       }
-       if (bumpFrames) {
-         this.bumpVerticalFramePosition = bumpFrames.vertical;
-         this.bumpHorizontalFramePosition = bumpFrames.horizontal;
-       } else {
-         this.bumpVerticalFramePosition = 0;
-         this.bumpHorizontalFramePosition = 0;
-       }
-     }
   },
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
     ]),
+    frameAdvance () {
+      let animation = this.animation;
+      const player = this.player;
+      const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
+
+      if (this.skipFrames.length &&
+          this.currentFrame === this.skipFrames[0]) {
+        this.skipFrames.shift(); // problem
+      } else {
+        this.currentFrame += 1;
+      }
+      if (this.currentFrame >= animation.maxNumberOfFrames) {
+        this.currentFrame = 0;
+        if (animation.shouldLoop === true) {
+          animation.refreshSkipFrames();
+        } else {
+          this.animation = player.defaultAnimation;
+        }
+      }
+      if (bumpFrames) {
+        this.bumpVerticalFramePosition = bumpFrames.vertical;
+        this.bumpHorizontalFramePosition = bumpFrames.horizontal;
+      } else {
+        this.bumpVerticalFramePosition = 0;
+        this.bumpHorizontalFramePosition = 0;
+      }
+    },
     setEntity () {
       this.setfocusedEntity(this.player);
     }
@@ -98,7 +101,6 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
-      'frame'
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South

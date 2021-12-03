@@ -7,7 +7,7 @@
         Current Turn: {{ currentTurn && currentTurn.name }}
       </span>
     </div>
-    <World msg="Delve"/>
+    <World :frame="frame" msg="Delve"/>
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
   },
   data () {
     return {
+      frame: 0
     }
   },
   mounted() {
@@ -88,7 +89,8 @@ export default {
           } else {
             frame++;
           }
-          self.updateFrame(frame);
+          self.frame = frame;
+          // self.updateFrame(frame);
           oldTimeStamp = now;
           // console.log('secondsPassed: ', secondsPassed)
           update();

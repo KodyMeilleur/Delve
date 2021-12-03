@@ -34,6 +34,9 @@ export default {
       default: {},
     },
   },
+  created: function() {
+    this.$parent.$parent.$on('frameBump', this.frameAdvance);
+  },
   data () {
     return {
       width: CONST.tileWidth,
@@ -65,43 +68,43 @@ export default {
           }
         },
      },
-     frame: function () {
-       let animation = this.animation;
-       const monster = this.monster;
-       const bumpFrames = animation.bumpFrames && animation.bumpFrames[this.currentFrame];
-
-       if (this.skipFrames.length &&
-           this.currentFrame === this.skipFrames[0]) {
-         this.skipFrames.shift(); // problem
-       } else {
-         this.currentFrame += 1;
-       }
-       if (this.currentFrame >= animation.maxNumberOfFrames) {
-         this.currentFrame = 0;
-         if (animation.shouldLoop === true) {
-           animation.refreshSkipFrames();
-         } else {
-           this.animation = Object.assign({}, monster.defaultAnimation);
-         }
-       }
-       if (bumpFrames) {
-         this.bumpVerticalFramePosition = bumpFrames.vertical;
-         this.bumpHorizontalFramePosition = bumpFrames.horizontal;
-       } else {
-         this.bumpVerticalFramePosition = 0;
-         this.bumpHorizontalFramePosition = 0;
-       }
-
-       if (this.isMoving) {
-         this.updateMonsterMove();
-       }
-     },
   },
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
       'updateMonsterPosition'
     ]),
+    frameAdvance () {
+      let animation = this.animation;
+      const monster = this.monster;
+      const bumpFrames = animation.bumpFrames && animation.bumpFrames[this.currentFrame];
+
+      if (this.skipFrames.length &&
+          this.currentFrame === this.skipFrames[0]) {
+        this.skipFrames.shift(); // problem
+      } else {
+        this.currentFrame += 1;
+      }
+      if (this.currentFrame >= animation.maxNumberOfFrames) {
+        this.currentFrame = 0;
+        if (animation.shouldLoop === true) {
+          animation.refreshSkipFrames();
+        } else {
+          this.animation = Object.assign({}, monster.defaultAnimation);
+        }
+      }
+      if (bumpFrames) {
+        this.bumpVerticalFramePosition = bumpFrames.vertical;
+        this.bumpHorizontalFramePosition = bumpFrames.horizontal;
+      } else {
+        this.bumpVerticalFramePosition = 0;
+        this.bumpHorizontalFramePosition = 0;
+      }
+
+      if (this.isMoving) {
+        this.updateMonsterMove();
+      }
+    },
     setEntity () {
       this.setfocusedEntity(this.monster);
     },
@@ -184,7 +187,6 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
-      'frame',
       'currentTurn'
     ]),
     direction: function () {

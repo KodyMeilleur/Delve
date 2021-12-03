@@ -36,7 +36,8 @@ export default {
   name: 'World',
   props: [
     'msg',
-    'currentTurn'
+    'currentTurn',
+    'frame'
   ],
   components: {
     Tile,
@@ -54,6 +55,11 @@ export default {
       scrollTopCache: 0,
       potentialPath: [],
     }
+  },
+  watch: {
+    frame: function (frame) {
+      this.$emit('frameBump', frame);
+    },
   },
   computed: {
     ...mapGetters('world', [
