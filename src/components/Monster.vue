@@ -34,15 +34,12 @@ export default {
       default: {},
     },
   },
-  // created: function() {
-  //   this.$parent.$parent.$on('frameBump', this.frameAdvance);
-  // },
   mounted: function() {
-    this.$parent.$on('frameBump', this.frameAdvance);
+    this.$root.$on('frameBump', this.frameAdvance);
   },
-  // beforeDestroy() {
-  //   this.$parent.$parent.$off('frameBump');
-  // },
+  beforeDestroy() {
+    this.$root.$off('frameBump');
+  },
   data () {
     return {
       width: CONST.tileWidth,
@@ -74,6 +71,13 @@ export default {
           }
         },
      },
+     'map': {
+       handler (val) {
+         if (val.length)
+           this.$root.$on('frameBump', this.frameAdvance);
+       },
+        deep: false
+      },
   },
   methods: {
     ...mapMutations('world', [

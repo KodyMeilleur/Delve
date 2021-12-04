@@ -9,7 +9,7 @@
         <SelectedEntity />
         <div class="landmass">
           <div class="entities">
-            <EntityLayer :frame="frame"/>
+            <EntityLayer />
           </div>
           <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
               <Tile v-for="cell in row"

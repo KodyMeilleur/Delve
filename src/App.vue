@@ -7,7 +7,7 @@
         Current Turn: {{ currentTurn && currentTurn.name }}
       </span>
     </div>
-    <World :frame="frame" msg="Delve"/>
+    <World msg="Delve"/>
   </div>
 </template>
 
@@ -29,7 +29,6 @@ export default {
   },
   data () {
     return {
-      frame: 0
     }
   },
   mounted() {
@@ -88,8 +87,8 @@ export default {
           } else {
             frame++;
           }
-          self.frame = frame;
           oldTimeStamp = now;
+          this.$root.$emit('frameBump', frame)
           // console.log('secondsPassed: ', secondsPassed)
           update();
         }

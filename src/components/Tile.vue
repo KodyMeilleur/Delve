@@ -125,11 +125,11 @@ export default {
   },
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
-    this.$parent.$on('frameBump', this.frameAdvance);
+    this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
     this.$parent.$off('updateTilePaths');
-    this.$parent.$off('frameBump');
+    this.$root.$off('frameBump');
     clearInterval(this.overTimeout);
   },
   watch: {

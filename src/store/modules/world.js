@@ -10,7 +10,6 @@ const state = () => ({
   continents: [],
   disasterOngoing: false,
   sprites: [],
-  frame: 1,
   players: [],
   monsters: [],
   monsterTurns: [],
@@ -40,9 +39,6 @@ const getters = {
   },
   sprites: (state) => {
     return state.sprites;
-  },
-  frame: (state) => {
-    return state.frame;
   },
   players: (state) => {
     return state.players;
@@ -218,10 +214,6 @@ const mutations = {
     }
   },
 
-  addSpritesToAnimate (state, sprites) {
-    state.sprites = state.sprites.concat([...sprites]);
-  },
-
   addNewPlayerToGame (state, pc) {
     const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {
@@ -261,7 +253,6 @@ const mutations = {
 
   mergeFirstLandmass (state, landmass) {
     // clear sprites on first land generation
-    state.sprites = [];
     let map = state.map;
     const landmassPotentialRowSize = CONST.normalRowSize;
     const landmassPotentialColumnSize = CONST.normalColumnSize;
@@ -281,9 +272,6 @@ const mutations = {
     // console.log(state.map)
     state.map = []; // TODO: Find a better way to set arrays in data store. Maybe an action and then a mutation?
     state.map = map;
-    // console.log(`map sprites: `, map)
-    state.sprites = state.sprites.concat(map);
-
   },
 
   setContinents (state, continents) {

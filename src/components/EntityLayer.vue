@@ -31,9 +31,6 @@ export default {
   updated () {
     console.log('entitylayer render...');
   },
-  created: function() {
-    this.$parent.$on('frameBump', this.frameAdvance);
-  },
   watch: {
     'monsters.length': {
       handler (newVal) {
@@ -49,9 +46,6 @@ export default {
     ...mapActions('world', [
       'cycleTurn',
     ]),
-    frameAdvance (frame) {
-      this.$emit('frameBump', frame);
-    },
     incrementTurnsCompleted () {
       this.currentFinishedMonsterTurns += 1;
       if (this.currentFinishedMonsterTurns === this.totalMonsterCount) {

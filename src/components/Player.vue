@@ -32,16 +32,12 @@ export default {
       default: {},
     },
   },
-  // created: function() {
-  //   this.$parent.$parent.$on('frameBump', this.frameAdvance);
-  // },
-  created: function() {
-    // this.$parent.$parent.$parent.$on('Updated', (() => {console.log('wtf');}));
-    this.$parent.$on('frameBump', this.frameAdvance);
+  mounted: function() {
+    this.$root.$on('frameBump', this.frameAdvance);
   },
-  // beforeDestroy() {
-  //   this.$parent.$parent.$off('frameBump');
-  // },
+  beforeDestroy() {
+    this.$root.$off('frameBump');
+  },
   data () {
     return {
       width: CONST.tileWidth,
@@ -69,6 +65,13 @@ export default {
          this.skipFrames = [ ...newVal];
        }
       },
+      'map': {
+        handler (val) {
+          if (val.length)
+            this.$root.$on('frameBump', this.frameAdvance);
+        },
+         deep: false
+       },
   },
   methods: {
     ...mapMutations('world', [
@@ -78,7 +81,7 @@ export default {
       let animation = this.animation;
       const player = this.player;
       const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
-      console.log(animation);
+
       if (this.skipFrames.length &&
           this.currentFrame === this.skipFrames[0]) {
         this.skipFrames.shift(); // problem
@@ -108,6 +111,7 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
+      'map',
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
