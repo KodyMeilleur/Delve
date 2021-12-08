@@ -126,7 +126,7 @@ function checkOrientation (landmass, x, y) {
 
   for(let i = 0; i < 3; i++) {
     const tileRow = landmass[x + i] && landmass[x + i].slice(y, y + 3);
-    if (obstruction || (tileRow && tileRow.length < 3)) {
+    if (obstruction || !tileRow || tileRow.length < 3) {
       return true;
     }
 
