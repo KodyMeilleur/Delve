@@ -104,7 +104,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
   while (tries && formationCount) {
     const randomX = getRandomInt(0, columnLength - 1);
     const randomY = getRandomInt(0, rowLength - 1);
-    console.log(landmass, randomX, randomY);
+    // console.log(landmass, randomX, randomY);
     const seedCell = landmass[randomX][randomY];
 
     if (seedCell.density === 0) {
@@ -125,11 +125,11 @@ function checkOrientation (landmass, x, y) {
   let obstruction = false;
 
   for(let i = 0; i < 3; i++) {
-    const tileRow = landmass[x + i].slice(y, y + 3);
-    if (obstruction || tileRow.length < 3) {
+    const tileRow = landmass[x + i] && landmass[x + i].slice(y, y + 3);
+    if (obstruction || (tileRow && tileRow.length < 3)) {
       return true;
     }
-    console.log(tileRow);
+
     obstruction = tileRow.find(cell => cell.density === 1) || false;
   }
 
@@ -142,7 +142,7 @@ function placeZone (landmass, seedCell, type) {
   };
   const formation = WoodFormations[getRandomInt(0, WoodFormations.length - 1)];
 
-  console.log(seedCell, type, formation);
+  // console.log(seedCell, type, formation);
 
   for(let i = 0; i < 3; i++) {
     for(let k = 0; k < 3; k++) {
