@@ -1,16 +1,16 @@
-import { Wood } from '../items/resources/Wood.js';
+import { Stone } from '../items/resources/Stone.js';
 
-export function Woods () {
-  this.type = 'Woods';
-  this.sprite = 'assets/Tiles/Plains/Woods/sheet';
-  this.hp = 3;
+export function Mountains () {
+  this.type = 'Mountains';
+  this.sprite = 'assets/Tiles/Plains/Mountains/sheet';
+  this.hp = 10;
 
   this.loot = [
-    Wood,
+    Stone,
   ];
 }
 
-const WoodFormations = [
+const MountainFormations = [
   [
     [0, 1, 0],
     [0, 1, 0],
@@ -38,4 +38,4 @@ const WoodFormations = [
   ],
 ];
 
-export {WoodFormations};
+export {MountainFormations};

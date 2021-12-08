@@ -54,6 +54,7 @@ export default {
       cleanLandmass(randomLandmass);
       // TODO: Add generation functions? Or move cleanLandmass to a parent function
       placeResourceStructures(randomLandmass, 'Woods', 6);
+      placeResourceStructures(randomLandmass, 'Mountains', 1);
       this.mergeFirstLandmass(randomLandmass);
     },
     addPlayerToGame () {

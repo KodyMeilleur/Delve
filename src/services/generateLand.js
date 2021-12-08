@@ -1,5 +1,7 @@
 import { VoidTile, PlainsTile } from '../models/Tile';
 import { Woods, WoodFormations } from '../models/structures/Woods';
+import { Mountains, MountainFormations } from '../models/structures/Mountains';
+
 import CONST from '../CONST';
 
 
@@ -138,16 +140,17 @@ function checkOrientation (landmass, x, y) {
 
 function placeZone (landmass, seedCell, type) {
   const structureTypes = {
-    'Woods': Woods,
+    'Woods': {structure: Woods, formations: WoodFormations},
+    'Mountains': {structure: Mountains, formations: MountainFormations},
   };
-  const formation = WoodFormations[getRandomInt(0, WoodFormations.length - 1)];
+  const formation = structureTypes[type].formations[getRandomInt(0, structureTypes[type].formations.length - 1)];
 
   // console.log(seedCell, type, formation);
 
   for(let i = 0; i < 3; i++) {
     for(let k = 0; k < 3; k++) {
       const currentCell = landmass[seedCell.x + i][seedCell.y + k];
-      currentCell.structure = formation[i][k] ? new structureTypes[type]() : null;
+      currentCell.structure = formation[i][k] ? new structureTypes[type].structure() : null;
     }
   }
 
