@@ -12,7 +12,7 @@
   <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
   <div
   v-bind:style="{
-    'background-image': 'url(' + publicPath + player.sprite + player.animation.state + '/' + direction + '/sheet.png)',
+    'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + player.animation.state + '/' + direction + '/sheet.png)',
     'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="player-sprite"
