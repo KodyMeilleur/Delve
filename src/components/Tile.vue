@@ -22,11 +22,11 @@
     </span>
       <div class="tile-sprite">
         <!-- Add frame here -->
-        <span class="frame-counter">{{ frame }}</span>
-        <div class="tile-structure" v-if="tile.structure">
+        <span class="frame-counter">{{ frame }} </span>
+        <div class="tile-structure" v-if="tile && tile.structure">
           <div
           v-bind:style="{
-            'background-image': 'url(' + publicPath + tile.structure.path + ')',
+            'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
             'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
