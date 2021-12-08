@@ -1,4 +1,7 @@
 import { VoidTile, PlainsTile } from '../models/Tile';
+import { Woods, WoodFormations } from '../models/structures/Woods';
+import { Mountains, MountainFormations } from '../models/structures/Mountains';
+
 import CONST from '../CONST';
 
 
@@ -95,40 +98,63 @@ export function refineLandmass() {
   return blankLandmass;
 }
 
-// export function placeResourceStructures (landmass, type, formationCount) {
-//   let tries = CONST.continentResourceStructurePlacementAttempts;
-//   const rowLength = landmass[0].length - 1;
-//   const columnLength = landmass.length - 1;
-//
-//   while (tries && formationCount) {
-//     const randomX = getRandomInt(0, rowLength);
-//     const randomY = getRandomInt(0, columnLength);
-//     const seedCell = landmass[randomX][randomY];
-//
-//     if (seedCell.density === 0) {
-//       const placementZoneClear = checkOrientation(landmass, randomX, randomY);
-//
-//       if (placementZoneClear) {
-//         placeZone(landmass, formationCount[0]);
-//         formationCount.shift();
-//       }
-//     }
-//     // pick a random cell
-//     // check each of 4 orientations to place 3x3 resource formation
-//     tries--;
-//   }
-// }
-//
-// function checkOrientation (landmass, x, y) {
-//   const anchorCell = landmass[x][y];
-//
-//
-//   return false;
-// }
-//
-// function placeZone (landmass, formation) {
-//
-// }
+export function placeResourceStructures (landmass, type, formationCount) {
+  let tries = CONST.continentResourceStructurePlacementAttempts;
+  const rowLength = landmass[0].length - 1;
+  const columnLength = landmass.length - 1;
+
+  while (tries && formationCount) {
+    const randomX = getRandomInt(0, columnLength - 1);
+    const randomY = getRandomInt(0, rowLength - 1);
+    // console.log(landmass, randomX, randomY);
+    const seedCell = landmass[randomX][randomY];
+
+    if (seedCell.density === 0) {
+      const placementZoneObstructed = checkOrientation(landmass, randomX, randomY);
+
+      if (placementZoneObstructed === false) {
+        placeZone(landmass, seedCell, type);
+        formationCount--;
+      }
+    }
+    // pick a random cell
+    // check each of 4 orientations to place 3x3 resource formation
+    tries--;
+  }
+}
+
+function checkOrientation (landmass, x, y) {
+  let obstruction = false;
+
+  for(let i = 0; i < 3; i++) {
+    const tileRow = landmass[x + i] && landmass[x + i].slice(y, y + 3);
+    if (obstruction || !tileRow || tileRow.length < 3) {
+      return true;
+    }
+
+    obstruction = tileRow.find(cell => cell.density === 1) || false;
+  }
+
+  return false;
+}
+
+function placeZone (landmass, seedCell, type) {
+  const structureTypes = {
+    'Woods': {structure: Woods, formations: WoodFormations},
+    'Mountains': {structure: Mountains, formations: MountainFormations},
+  };
+  const formation = structureTypes[type].formations[getRandomInt(0, structureTypes[type].formations.length - 1)];
+
+  // console.log(seedCell, type, formation);
+
+  for(let i = 0; i < 3; i++) {
+    for(let k = 0; k < 3; k++) {
+      const currentCell = landmass[seedCell.x + i][seedCell.y + k];
+      currentCell.structure = formation[i][k] ? new structureTypes[type].structure() : null;
+    }
+  }
+
+}
 
 export function cleanLandmass (landmass) {
   let validPool = [];
