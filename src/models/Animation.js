@@ -24,48 +24,6 @@ const bumpAnimationMap = {
   //     horizontal: 0
   //   },
   // },
-  Idle: {
-    0: {
-      vertical: -6,
-      horizontal: 0
-    },
-    1: {
-      vertical: -6,
-      horizontal: 0
-    },
-    2: {
-      vertical: -5,
-      horizontal: 0
-    },
-    3: {
-      vertical: -4,
-      horizontal: 0
-    },
-    4: {
-      vertical: -3,
-      horizontal: 0
-    },
-    5: {
-      vertical: -3,
-      horizontal: 0
-    },
-    6: {
-      vertical: -4,
-      horizontal: 0
-    },
-    7: {
-      vertical: -4,
-      horizontal: 0
-    },
-    8: {
-      vertical: -5,
-      horizontal: 0
-    },
-    9: {
-      vertical: -6,
-      horizontal: 0
-    },
-  },
 }
 
 export function Animation(maxNumberOfFrames, state, loop) {
