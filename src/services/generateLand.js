@@ -111,6 +111,7 @@ export function refineLandmass() {
         }
       }
     })
+    chosenSide = null;
   })
 
   return blankLandmass;
@@ -174,10 +175,12 @@ function placeZone (landmass, seedCell, type) {
   for(let i = 0; i < 3; i++) {
     for(let k = 0; k < 3; k++) {
       const currentCell = landmass[seedCell.x + i][seedCell.y + k];
-      currentCell.structure = formation[i][k] ? new structureTypes[type].structure() : null;
+      if (formation[i][k]) {
+        currentCell.structure = new structureTypes[type].structure();
+        currentCell.density = 1;
+      }
     }
   }
-
 }
 
 export function cleanLandmass (landmass) {
