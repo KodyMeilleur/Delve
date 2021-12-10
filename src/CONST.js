@@ -11,7 +11,7 @@ export default {
   FPS: 15,
   moveAnimationPixelBump: 4,
   monsterAnimationPixelBump: 8,
-  continentResourceStructurePlacementAttempts: 16,
+  continentResourceStructurePlacementAttempts: 20,
   world: {
     name: 'World'
   }

@@ -9,22 +9,31 @@ export function refineLandmass() {
   // 12 x 16 (192 Tiles)
   let blankLandmass = createFilledLandmass(CONST.normalRowSize, CONST.normalColumnSize, PlainsTile);
   // create pool of removal blocks, (80 tiles)
-  const blocks = [
-    createEmptyLandmass(6, 1), //md
+  const blocksX = [
     createEmptyLandmass(1, 6), //md
     createEmptyLandmass(2, 3), //md
+    createEmptyLandmass(2, 2), //sm
+    createEmptyLandmass(2, 2), //sm
+    createEmptyLandmass(2, 2), //sm
+    createEmptyLandmass(2, 2), //sm
+    createEmptyLandmass(1, 2), //sm
+    createEmptyLandmass(1, 2), //sm
+    createEmptyLandmass(1, 2), //sm
+    createEmptyLandmass(1, 1), //sm
+    createEmptyLandmass(1, 1), //sm
+    createEmptyLandmass(1, 1), //sm
+    createEmptyLandmass(1, 1), //sm
+    createEmptyLandmass(1, 1), //sm
+    createEmptyLandmass(1, 1), //sm
+  ];
+  const blocksY = [
+    createEmptyLandmass(6, 1), //md
+    createEmptyLandmass(6, 1), //md
     createEmptyLandmass(3, 2), //md 24
     createEmptyLandmass(2, 2), //sm
     createEmptyLandmass(2, 2), //sm
     createEmptyLandmass(2, 2), //sm
-    createEmptyLandmass(2, 2), //sm
-    createEmptyLandmass(2, 2), //sm
-    createEmptyLandmass(2, 2), //sm
-    createEmptyLandmass(2, 2), //sm
     createEmptyLandmass(2, 2), //sm 32
-    createEmptyLandmass(1, 2), //sm
-    createEmptyLandmass(1, 2), //sm
-    createEmptyLandmass(1, 2), //sm
     createEmptyLandmass(1, 2), //sm
     createEmptyLandmass(1, 2), //sm
     createEmptyLandmass(1, 2), //sm 12
@@ -33,66 +42,75 @@ export function refineLandmass() {
     createEmptyLandmass(1, 1), //sm
     createEmptyLandmass(1, 1), //sm
     createEmptyLandmass(1, 1), //sm
-    createEmptyLandmass(1, 1), //sm
-    createEmptyLandmass(1, 1), //sm
-    createEmptyLandmass(1, 1), //sm
-    createEmptyLandmass(1, 1), //sm
-    createEmptyLandmass(1, 1), //sm
-    createEmptyLandmass(1, 1), //sm
     createEmptyLandmass(1, 1), //sm 12
-  ];
+  ]
 
   //        1
   //     ________
   // 4  |       |  2
   //    --------
   //        3
-  const SidePool = [1, 2, 3, 4];
+  const SidePoolX = [1, 3];
+  const SidePoolY = [2, 4];
+
+  const blockPool = [
+    {
+      blocks: blocksX,
+      sidePool: SidePoolX,
+    },
+    {
+      blocks: blocksY,
+      sidePool: SidePoolY,
+    },
+  ]
+
   let chosenSide = null;
-  blocks.forEach((block) => {
+  blockPool.forEach((pool) => {
+    pool.blocks.forEach((block) => {
 
-    let chosenIndex = getRandomInt(0, SidePool.length - 1);
-    // push back previously chosen side only after a new side is picked
-    if (chosenSide) {
-      SidePool.push(chosenSide)
-    }
-    chosenSide = SidePool.splice(chosenIndex, 1)[0];
-    const orientationHorizontal = (chosenSide === 1 || chosenSide === 3);
-
-    const maxSideRange = orientationHorizontal ? CONST.normalRowSize : CONST.normalColumnSize;
-    const removalSideSize = orientationHorizontal ? (CONST.normalColumnSize - 1) : (CONST.normalRowSize - 1);
-
-    // index value of where to start removing chunks
-    let startRemovalCell = getRandomInt(0, removalSideSize); // Array Position
-    const currentBlockLength = orientationHorizontal ? block[0].length : block.length;
-
-    // make sure block chunks arent falling out of bounds of array
-    // if horizontal, check startingCell + block[0].length <= CONST.normalColumnSize
-    // if vertical, check startingCell + block.length <= CONST.normalRowSize
-
-    if ((startRemovalCell + (currentBlockLength)) > removalSideSize) {
-      startRemovalCell = (removalSideSize) - currentBlockLength;
-    }
-
-    const CURRENT_BLOCK_ROWS = block.length;
-    const CURRENT_BLOCK_COLUMNS = block[0].length;
-    // x = ^v y = <>
-
-    for (let blockX = 0; blockX < CURRENT_BLOCK_ROWS; blockX++) {
-      for (let blockY = 0; blockY < CURRENT_BLOCK_COLUMNS; blockY++) {
-
-        const finalHorX = chosenSide === 1 ? (0 + blockX) : ((maxSideRange - 1) - blockX);
-        const finalHorY = (startRemovalCell + blockY);
-        const finalVertX = (startRemovalCell + blockX);
-        const finalVertY = chosenSide === 4 ? (0 + blockY) : ((maxSideRange - 1) - blockY);
-
-        const cellToRemove = orientationHorizontal ?
-          recursePositionHorizontal(blankLandmass, chosenSide, finalHorX, finalHorY) :
-          recursePositionVertical(blankLandmass, chosenSide, finalVertX, finalVertY) ;
-
-        blankLandmass[cellToRemove.x][cellToRemove.y] = new VoidTile(cellToRemove.x, cellToRemove.y);
+      let chosenIndex = getRandomInt(0, pool.sidePool.length - 1);
+      // push back previously chosen side only after a new side is picked
+      if (chosenSide) {
+        pool.sidePool.push(chosenSide)
       }
-    }
+      chosenSide = pool.sidePool.splice(chosenIndex, 1)[0];
+      const orientationHorizontal = (chosenSide === 1 || chosenSide === 3);
+
+      const maxSideRange = orientationHorizontal ? CONST.normalRowSize : CONST.normalColumnSize;
+      const removalSideSize = orientationHorizontal ? (CONST.normalColumnSize - 1) : (CONST.normalRowSize - 1);
+
+      // index value of where to start removing chunks
+      let startRemovalCell = getRandomInt(0, removalSideSize); // Array Position
+      const currentBlockLength = orientationHorizontal ? block[0].length : block.length;
+
+      // make sure block chunks arent falling out of bounds of array
+      // if horizontal, check startingCell + block[0].length <= CONST.normalColumnSize
+      // if vertical, check startingCell + block.length <= CONST.normalRowSize
+
+      if ((startRemovalCell + (currentBlockLength)) > removalSideSize) {
+        startRemovalCell = (removalSideSize) - currentBlockLength;
+      }
+
+      const CURRENT_BLOCK_ROWS = block.length;
+      const CURRENT_BLOCK_COLUMNS = block[0].length;
+      // x = ^v y = <>
+
+      for (let blockX = 0; blockX < CURRENT_BLOCK_ROWS; blockX++) {
+        for (let blockY = 0; blockY < CURRENT_BLOCK_COLUMNS; blockY++) {
+
+          const finalHorX = chosenSide === 1 ? (0 + blockX) : ((maxSideRange - 1) - blockX);
+          const finalHorY = (startRemovalCell + blockY);
+          const finalVertX = (startRemovalCell + blockX);
+          const finalVertY = chosenSide === 4 ? (0 + blockY) : ((maxSideRange - 1) - blockY);
+
+          const cellToRemove = orientationHorizontal ?
+            recursePositionHorizontal(blankLandmass, chosenSide, finalHorX, finalHorY) :
+            recursePositionVertical(blankLandmass, chosenSide, finalVertX, finalVertY) ;
+
+          blankLandmass[cellToRemove.x][cellToRemove.y] = new VoidTile(cellToRemove.x, cellToRemove.y);
+        }
+      }
+    })
   })
 
   return blankLandmass;
@@ -125,17 +143,23 @@ export function placeResourceStructures (landmass, type, formationCount) {
 
 function checkOrientation (landmass, x, y) {
   let obstruction = false;
+  let obstructed = false;
 
-  for(let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++) {
     const tileRow = landmass[x + i] && landmass[x + i].slice(y, y + 3);
-    if (obstruction || !tileRow || tileRow.length < 3) {
-      return true;
+
+    if (!tileRow) {
+      obstructed = true;
+    } else {
+      obstruction = tileRow.find(cell => cell.density === 1) || false;
+      if (obstruction || tileRow.length < 3) {
+        obstructed = true;
+      }
     }
 
-    obstruction = tileRow.find(cell => cell.density === 1) || false;
   }
 
-  return false;
+  return obstructed;
 }
 
 function placeZone (landmass, seedCell, type) {
