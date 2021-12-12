@@ -127,7 +127,7 @@ export default {
   },
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
-    this.$root.$on('frameBump', this.frameAdvance);
+    // this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
     this.$parent.$off('updateTilePaths');
@@ -137,11 +137,23 @@ export default {
   watch: {
     leftOffset: function (val) {
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640 + (CONST.tileWidth * 2)));
+      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640));
+      if (this.shouldShow) {
+        this.$root.$off('frameBump', this.frameAdvance);
+        this.$root.$on('frameBump', this.frameAdvance);
+      } else {
+        this.$root.$off('frameBump', this.frameAdvance);
+      }
     },
     topOffset: function (val) {
       const xRange = ((this.tile.x * CONST.tileWidth));
       this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
+      if (this.shouldShow) {
+        this.$root.$off('frameBump', this.frameAdvance);
+        this.$root.$on('frameBump', this.frameAdvance);
+      } else {
+        this.$root.$off('frameBump', this.frameAdvance);
+      }
     },
     'tile.moveHighlighted': {
       handler: function (newVal) {
