@@ -127,7 +127,6 @@ export default {
   },
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
-    // this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
     this.$parent.$off('updateTilePaths');
