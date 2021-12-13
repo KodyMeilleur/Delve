@@ -73,6 +73,9 @@ export default {
       publicPath: process.env.BASE_URL,
       shouldShow: false,
       frame: 0,
+      // Variables for scroll data
+      xOffset: 0,
+      yOffset: 0,
       currentFrame: 0,
       moveHighlighted: false,
       bumpVerticalFramePosition: 0,
@@ -135,8 +138,11 @@ export default {
   },
   watch: {
     leftOffset: function (val) {
+      this.yOffset = val;
+      const xRange = ((this.tile.x * CONST.tileWidth));
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (val - (CONST.tileWidth * 2)) && (yRange <= val + 640));
+      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 640)) &&
+        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 448 + (CONST.tileWidth * 2));
       if (this.shouldShow) {
         this.$root.$off('frameBump', this.frameAdvance);
         this.$root.$on('frameBump', this.frameAdvance);
@@ -145,8 +151,11 @@ export default {
       }
     },
     topOffset: function (val) {
+      this.xOffset = val;
       const xRange = ((this.tile.x * CONST.tileWidth));
-      this.shouldShow = (xRange >= (val - (CONST.tileWidth * 2)) && xRange <= val + 448 + (CONST.tileWidth * 2));
+      const yRange = ((this.tile.y * CONST.tileWidth));
+      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 640)) &&
+        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 448 + (CONST.tileWidth * 2));
       if (this.shouldShow) {
         this.$root.$off('frameBump', this.frameAdvance);
         this.$root.$on('frameBump', this.frameAdvance);
