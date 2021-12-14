@@ -72,15 +72,20 @@ export default {
       },
        deep: true
      },
-      'animation': {
-        handler (val) {
-          if (val.length) {
-            this.$root.$off('frameBump', this.frameAdvance);
-            this.$root.$on('frameBump', this.frameAdvance);
-          }
-        },
-         deep: true
+    'leftOffset': {
+      handler () {
+        this.$root.$off('frameBump', this.frameAdvance);
+        this.$root.$on('frameBump', this.frameAdvance);
+      },
+       deep: false
+     },
+     'topOffset': {
+       handler () {
+         this.$root.$off('frameBump', this.frameAdvance);
+         this.$root.$on('frameBump', this.frameAdvance);
        },
+        deep: false
+      },
   },
   methods: {
     ...mapMutations('world', [
@@ -191,6 +196,8 @@ export default {
       ...mapGetters('world', [
       'focusedEntity',
       'map',
+      'leftOffset',
+      'topOffset',
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
