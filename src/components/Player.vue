@@ -231,10 +231,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.player-component {
-  position: absolute;
-  cursor: default;
-}
 .selected,.player-component:hover {
   outline: 2px white solid;
   border-radius: 5px;
@@ -251,5 +247,19 @@ export default {
 }
 .player-info {
   position: absolute;
+}
+.player-component {
+  position: absolute;
+  cursor: default;
+  -webkit-transform: scale(1) rotate(0.01deg);
+  transform: scale(1) rotate(0.01deg);
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+}
+.player-component.movingToStructure {
+  -webkit-transform: scale(0.5) rotate(0.01deg);
+  transform: scale(0.5) rotate(0.01deg);
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
 }
 </style>
