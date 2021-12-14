@@ -3,20 +3,23 @@
     minWidth: width + 'px',
     minHeight: height + 'px'
   }"
+
+  class="active tile-component"
+  >
+  <div
+  v-if="shouldShow"
   v-on:mouseover="onMouseOver"
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.tile}"
-  class="active tile-component"
   >
-  <div v-if="shouldShow">
     <span v-if="tile.moveHighlighted"
-    v-on:click="goToTile"
+    v-on:click.stop="goToTile"
     class="highlighted"
     >
     </span>
     <span v-if="potentialPath"
-    v-on:click="goToTile"
+    v-on:click.stop="goToTile"
     class="potentialPath"
     >
     </span>
@@ -141,7 +144,7 @@ export default {
       this.yOffset = val;
       const xRange = ((this.tile.x * CONST.tileWidth));
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 640)) &&
+      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 640 + (CONST.tileWidth * 2))) &&
         (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 448 + (CONST.tileWidth * 2));
       if (this.shouldShow) {
         this.$root.$off('frameBump', this.frameAdvance);

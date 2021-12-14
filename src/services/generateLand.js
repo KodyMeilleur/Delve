@@ -191,7 +191,7 @@ export function cleanLandmass (landmass) {
   function recursiveCellCheck(cell) {
     if (cell.visited !== true) {
       cell.visited = true;
-      if (cell.density === 0) {
+      if (cell.type !== 'Void') {
         // check all directions for cells
          validPool.push(cell);
         // north
@@ -208,6 +208,8 @@ export function cleanLandmass (landmass) {
         if (cell.y - 1 >= 0) {
           recursiveCellCheck(landmass[cell.x][cell.y - 1] )
         }
+      } else {
+        invalidPool.push(cell)
       }
     }
   }

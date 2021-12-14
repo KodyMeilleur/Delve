@@ -1,7 +1,6 @@
 import CONST from '../../CONST';
 import { DefaultPlayer } from '../../models/Player';
-import { Animation } from '../../models/Animation.js';
-import { getEntityDirection, returnShallowMapChunk, findPath } from '../../services/pathfinding';
+import { returnShallowMapChunk, findPath } from '../../services/pathfinding';
 import { getRandomInt } from '../../services/generateLand';
 
 // initial state
@@ -103,93 +102,12 @@ const mutations = {
     state.map = map;
   },
   setPath(state, { entity, path }) {
-    entity.tilesToTravel = path.length;
     entity.path = path;
-    state.isMoving = true;
     state.moveTiles.forEach((tile) => {
       state.map[tile.x][tile.y].moveHighlighted = false;
     })
     state.moveTiles = [];
     state.focusedEntity = null;
-  },
-  updateMove (state) {
-    if (state.currentTurn.movingVerticalOffset === 0 && state.currentTurn.movingHorizontalOffset === 0) {
-      state.currentTurn.movingDirection = getEntityDirection(state.currentTurn);
-      state.currentTurn.animation = new Animation(5, 'Jump', false);
-    }
-    const moveDirection = state.currentTurn.movingDirection;
-    // 1N, 2E, 3S, 4W
-
-    // south
-    if (moveDirection === 3) {
-      state.currentTurn.movingVerticalOffset += CONST.moveAnimationPixelBump;
-      if (state.currentTurn.movingVerticalOffset === 64) {
-        state.currentTurn.mp -= 1;
-        state.currentTurn.tilesToTravel -= 1;
-        state.currentTurn.movingVerticalOffset = 0;
-        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        lastOccupiedTile.players = [];
-        state.currentTurn.x = (parseInt(state.currentTurn.x, 10)) + 1;
-        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        nextOccupiedTile.players = [state.currentTurn];
-        nextOccupiedTile.event && nextOccupiedTile.event.script();
-        state.currentTurn.path.shift();
-      }
-    }
-    // east
-    if (moveDirection === 2) {
-      state.currentTurn.movingHorizontalOffset += CONST.moveAnimationPixelBump;
-      if (state.currentTurn.movingHorizontalOffset === 64) {
-        state.currentTurn.mp -= 1;
-        state.currentTurn.tilesToTravel -= 1;
-        state.currentTurn.movingHorizontalOffset = 0;
-        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        lastOccupiedTile.players = [];
-        state.currentTurn.y = (parseInt(state.currentTurn.y, 10) + 1);
-        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        nextOccupiedTile.players = [state.currentTurn];
-        nextOccupiedTile.event && nextOccupiedTile.event.script();
-        state.currentTurn.path.shift();
-      }
-    }
-    // north
-    if (moveDirection === 1) {
-      state.currentTurn.movingVerticalOffset -= CONST.moveAnimationPixelBump;
-      if (state.currentTurn.movingVerticalOffset === -64) {
-        state.currentTurn.mp -= 1;
-        state.currentTurn.tilesToTravel -= 1;
-        state.currentTurn.movingVerticalOffset = 0;
-        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        lastOccupiedTile.players = [];
-        state.currentTurn.x = (parseInt(state.currentTurn.x, 10) - 1);
-        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        nextOccupiedTile.players = [state.currentTurn];
-        nextOccupiedTile.event && nextOccupiedTile.event.script();
-        state.currentTurn.path.shift();
-      }
-    }
-    // west
-    if (moveDirection === 4) {
-      state.currentTurn.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
-      if (state.currentTurn.movingHorizontalOffset === -64) {
-        state.currentTurn.mp -= 1;
-        state.currentTurn.tilesToTravel -= 1;
-        state.currentTurn.movingHorizontalOffset = 0;
-        const lastOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        lastOccupiedTile.players = [];
-        state.currentTurn.y = (parseInt(state.currentTurn.y, 10) - 1);
-        const nextOccupiedTile = state.map[state.currentTurn.x][state.currentTurn.y];
-        nextOccupiedTile.players = [state.currentTurn];
-        nextOccupiedTile.event && nextOccupiedTile.event.script();
-        state.currentTurn.path.shift();
-      }
-    }
-
-    if (state.currentTurn.tilesToTravel === 0) {
-      state.isMoving = false;
-      // TODO: maybe check players whose tilesToTravel is 0?
-      state.currentTurn.animation = new Animation(9, 'Idle', true);
-    }
   },
   //TODO: Will need a search function for finding all tiles within an MP limit
   toggleMovingTiles (state, tilesToLight) {
@@ -205,11 +123,12 @@ const mutations = {
       })
     }
   },
+
   setfocusedEntity (state, focusedEntity) {
     if (state.focusedEntity && state.focusedEntity.x === focusedEntity.x &&
         state.focusedEntity.y === focusedEntity.y) {
           state.focusedEntity = null;
-    } else if (state.isMoving === false){
+    } else if (state.isMoving === false) {
       state.focusedEntity = focusedEntity;
     }
   },
@@ -222,6 +141,7 @@ const mutations = {
     state.players.push(newPlayer)
     state.map[pc.x][pc.y].players.push(newPlayer);
   },
+
   addMonsterToGame (state, monster) {
     state.monsters.push(monster)
     state.map[monster.x][monster.y].monsters.push(monster);
@@ -231,6 +151,12 @@ const mutations = {
     const storeMonster = state.monsters.filter(ent => ent == monster)[0];
     storeMonster.x = parseInt(coords.x);
     storeMonster.y = parseInt(coords.y);
+  },
+
+  updatePlayerPosition (state, { player, coords}) {
+    const storePlayer = state.players.filter(ent => ent == player)[0];
+    storePlayer.x = parseInt(coords.x);
+    storePlayer.y = parseInt(coords.y);
   },
 
   cycleTurn (state) {

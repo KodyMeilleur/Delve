@@ -9,7 +9,7 @@ export default {
   defaultStartingStat: 3,
   startingStatPoints: 12,
   FPS: 15,
-  moveAnimationPixelBump: 4,
+  moveAnimationPixelBump: 8,
   monsterAnimationPixelBump: 8,
   continentResourceStructurePlacementAttempts: 20,
   world: {

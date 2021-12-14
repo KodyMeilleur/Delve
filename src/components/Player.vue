@@ -2,8 +2,8 @@
   <div v-bind:style="{
     width: width + 'px',
     height: height + 'px',
-    top: ((player.x * CONST.tileHeight) + player.movingVerticalOffset + bumpVerticalFramePosition) + 'px',
-    left: ((player.y * CONST.tileWidth) + player.movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
+    top: ((x * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
+    left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.player}"
@@ -12,7 +12,7 @@
   <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
   <div
   v-bind:style="{
-    'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + player.animation.state + '/' + direction + '/sheet.png)',
+    'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + animation.state + '/' + direction + '/sheet.png)',
     'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="player-sprite"
@@ -24,6 +24,8 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
+import { getEntityDirection } from '../services/pathfinding';
+import { Animation } from '../models/Animation.js';
 
 export default {
   name: 'Player',
@@ -46,29 +48,35 @@ export default {
       publicPath: process.env.BASE_URL,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
+      movingVerticalOffset: 0,
+      movingHorizontalOffset: 0,
+      movingDirection: 0,
+      isMoving: false,
+      x: this.player.x,
+      y: this.player.y,
       currentFrame: 0,
+      tilesToTravel: 0,
+      path: [],
       animation: { ...this.player.animation },
       skipFrames: [ ...this.player.animation.skipFrames ],
     }
   },
   watch: {
-    'player.animation': {
-      handler(newVal){
-        this.animation = Object.assign({}, newVal);
-        this.currentFrame = 0;
-        this.skipFrames = [ ...this.animation.skipFrames];
+    'player.path': {
+      handler (newVal) {
+        this.path = Object.assign([], newVal);
+        this.tilesToTravel = this.path.length;
+        if (this.path.length) {
+          this.isMoving = true;
+        }
       },
        deep: true
      },
-     'animation.skipFrames': {
-       handler(newVal){
-         this.skipFrames = [ ...newVal];
-       }
-      },
       'map': {
         handler (val) {
-          if (val.length)
+          if (val.length) {
             this.$root.$on('frameBump', this.frameAdvance);
+          }
         },
          deep: false
        },
@@ -76,10 +84,10 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
+      'updatePlayerPosition'
     ]),
     frameAdvance () {
       let animation = this.animation;
-      const player = this.player;
       const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
 
       if (this.skipFrames.length &&
@@ -92,8 +100,6 @@ export default {
         this.currentFrame = 0;
         if (animation.shouldLoop === true) {
           animation.refreshSkipFrames();
-        } else {
-          this.animation = player.defaultAnimation;
         }
       }
       if (bumpFrames) {
@@ -102,6 +108,76 @@ export default {
       } else {
         this.bumpVerticalFramePosition = 0;
         this.bumpHorizontalFramePosition = 0;
+      }
+
+      if (this.isMoving) {
+        this.updatePlayerMove();
+      }
+    },
+    updatePlayerMove () {
+      if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
+        this.movingDirection = getEntityDirection({
+          x: this.x,
+          y: this.y,
+          path: this.path
+        });
+        this.animation = new Animation(8, 'Jump', false);
+
+      }
+      const moveDirection = this.movingDirection;
+
+      // 1N, 2E, 3S, 4W
+      // south
+      if (moveDirection === 3) {
+        this.movingVerticalOffset += CONST.moveAnimationPixelBump;
+        if (this.movingVerticalOffset === 64) {
+          this.tilesToTravel -= 1;
+          this.movingVerticalOffset = 0;
+          this.x = parseInt(this.x) + 1;
+          this.path.shift();
+        }
+      }
+      // east
+      if (moveDirection === 2) {
+        this.movingHorizontalOffset += CONST.moveAnimationPixelBump;
+        if (this.movingHorizontalOffset === 64) {
+          this.tilesToTravel -= 1;
+          this.movingHorizontalOffset = 0;
+          this.y = parseInt(this.y) + 1;
+          this.path.shift();
+        }
+      }
+      // north
+      if (moveDirection === 1) {
+        this.movingVerticalOffset -= CONST.moveAnimationPixelBump;
+        if (this.movingVerticalOffset === -64) {
+          this.tilesToTravel -= 1;
+          this.movingVerticalOffset = 0;
+          this.x = parseInt(this.x) - 1;
+          this.path.shift();
+        }
+      }
+      // west
+      if (moveDirection === 4) {
+        this.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
+        if (this.movingHorizontalOffset === -64) {
+          this.tilesToTravel -= 1;
+          this.movingHorizontalOffset = 0;
+          this.y = parseInt(this.y) - 1;
+          this.path.shift();
+        }
+      }
+
+      if (this.tilesToTravel === 0) {
+        this.updatePlayerPosition({
+          player: this.player,
+          coords: {
+            x: this.x,
+            y: this.y,
+          }
+        })
+        this.animation = new Animation(9, 'Idle', true);
+        this.isMoving = false;
       }
     },
     setEntity () {
@@ -115,7 +191,7 @@ export default {
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
-      switch (this.player.movingDirection) {
+      switch (this.movingDirection) {
         case 0:
           return 'South'
         case 1:

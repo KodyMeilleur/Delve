@@ -53,7 +53,6 @@ export default {
       this.gameLoop();
     },
     gameLoop : function() {
-      const self = this;
       // fallback on setTimeout function
       window.requestAnimFrame = (function(){
         return  window.requestAnimationFrame       ||
@@ -81,7 +80,7 @@ export default {
         window.requestAnimFrame(loop);
         // every 4th of a second?
         // every 10th of a second?
-        if (secondsPassed > .1) {
+        if (secondsPassed > .075) {
           if (frame === 4) {
             frame = 1;
           } else {
@@ -89,20 +88,8 @@ export default {
           }
           oldTimeStamp = now;
           this.$root.$emit('frameBump', frame)
-          // console.log('secondsPassed: ', secondsPassed)
-          update();
         }
       };
-
-      function update() {
-        // check movement?
-        if (self.isMoving) {
-          self.updateMove();
-        }
-        // if (self.isMonsterMoving) {
-        //   self.updateMonsterMove();
-        // }
-      }
 
       loop();
     }
