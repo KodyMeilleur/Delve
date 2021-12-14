@@ -72,13 +72,14 @@ export default {
       },
        deep: true
      },
-      'map': {
+      'animation': {
         handler (val) {
           if (val.length) {
+            this.$root.$off('frameBump', this.frameAdvance);
             this.$root.$on('frameBump', this.frameAdvance);
           }
         },
-         deep: false
+         deep: true
        },
   },
   methods: {

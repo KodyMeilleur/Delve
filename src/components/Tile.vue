@@ -166,12 +166,6 @@ export default {
         this.$root.$off('frameBump', this.frameAdvance);
       }
     },
-    'tile.moveHighlighted': {
-      handler: function (newVal) {
-        this.moveHighlighted = newVal;
-      },
-      deep: true
-    },
   },
   computed: {
       ...mapGetters('world', [
@@ -217,6 +211,7 @@ export default {
     goToTile () {
       if (this.travelPath) {
         this.setPath({entity: this.currentTurn, path: this.travelPath});
+        this.$emit('clearPotentialPath');
       }
     },
     getRandomIntBetween(min, max) {
@@ -256,7 +251,7 @@ export default {
         clearTimeout(this.overTimeout);
       }
       if (this.potentialPath) {
-        this.$emit('clearPotentialPath')
+        this.$emit('clearPotentialPath');
       }
       this.travelPath = null;
     },

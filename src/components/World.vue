@@ -56,11 +56,6 @@ export default {
       potentialPath: [],
     }
   },
-  // watch: {
-  //   frame: function (frame) {
-  //     this.$emit('frameBump', frame);
-  //   },
-  // },
   computed: {
     ...mapGetters('world', [
       'map',
@@ -82,7 +77,6 @@ export default {
 
     },
     handleScroll ($event) {
-      // console.log($event);
       const that = this;
       if (this.timeout) {
         clearTimeout(this.timeout);

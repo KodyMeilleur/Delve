@@ -116,6 +116,7 @@ const mutations = {
         state.map[tile.x][tile.y].moveHighlighted = false;
       })
       state.moveTiles = [];
+      state.focusedEntity = null;
     } else {
       state.moveTiles = tilesToLight;
       tilesToLight.forEach((tile) => {
