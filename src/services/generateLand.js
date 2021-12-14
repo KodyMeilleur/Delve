@@ -178,6 +178,7 @@ function placeZone (landmass, seedCell, type) {
       if (formation[i][k]) {
         currentCell.structure = new structureTypes[type].structure();
         currentCell.mpCost = currentCell.structure.mpCost;
+        currentCell.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
       }
     }
   }
