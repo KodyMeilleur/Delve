@@ -6,7 +6,7 @@
     left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.player}"
+  v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure}"
   class="player-component"
   >
   <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
@@ -59,6 +59,7 @@ export default {
       path: [],
       animation: { ...this.player.animation },
       skipFrames: [ ...this.player.animation.skipFrames ],
+      movingToStructure: false,
     }
   },
   watch: {
@@ -123,13 +124,17 @@ export default {
     },
     updatePlayerMove () {
       if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
-        this.movingDirection = getEntityDirection({
+        const fullDirection = getEntityDirection({
           x: this.x,
           y: this.y,
           path: this.path
         });
+        this.movingDirection = fullDirection.direction;
         this.animation = new Animation(8, 'Jump', false);
-
+        if (fullDirection.movingToStructure) {
+          console.log('moving');
+          this.movingToStructure = true;
+        }
       }
       const moveDirection = this.movingDirection;
 
@@ -142,6 +147,7 @@ export default {
           this.movingVerticalOffset = 0;
           this.x = parseInt(this.x) + 1;
           this.path.shift();
+          this.movingToStructure = false;
         }
       }
       // east
@@ -152,6 +158,7 @@ export default {
           this.movingHorizontalOffset = 0;
           this.y = parseInt(this.y) + 1;
           this.path.shift();
+          this.movingToStructure = false;
         }
       }
       // north
@@ -162,6 +169,7 @@ export default {
           this.movingVerticalOffset = 0;
           this.x = parseInt(this.x) - 1;
           this.path.shift();
+          this.movingToStructure = false;
         }
       }
       // west
@@ -172,6 +180,7 @@ export default {
           this.movingHorizontalOffset = 0;
           this.y = parseInt(this.y) - 1;
           this.path.shift();
+          this.movingToStructure = false;
         }
       }
 

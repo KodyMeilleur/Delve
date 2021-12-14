@@ -12,6 +12,7 @@ export function findPath(maze, startCoords, endCoords) {
         parent: null,
         x: cell.x,
         y: cell.y,
+        structure: cell.structure ? true: false,
       }
     })
   })
@@ -125,7 +126,8 @@ export function returnShallowMapChunk(startEntity, fullMap) {
         g: null,
         f: null,
         heur: null,
-        mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1
+        mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1,
+        structure: currentCellPointer.structure ? true : false,
       }
       row.push(shallowCell);
     }
@@ -216,8 +218,8 @@ export function getEntityDirection(entity) {
 
       const moveDirection = moveUp || moveDown || moveRight || moveLeft;
 
-      return moveDirection;
+      return {direction: moveDirection, movingToStructure: tileToMoveTo && tileToMoveTo.structure };
     }
 
-    return 3;
+    return {direction: 3, movingToStructure: tileToMoveTo};
 }

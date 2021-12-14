@@ -120,11 +120,12 @@ export default {
     },
     updateMonsterMove () {
       if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
-        this.movingDirection = getEntityDirection({
+        const fullDirection = getEntityDirection({
           x: this.x,
           y: this.y,
           path: this.path
         });
+        this.movingDirection = fullDirection.direction;
 
         this.animation = new Animation(8, 'Jump', false);
       }
