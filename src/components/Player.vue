@@ -100,6 +100,7 @@ export default {
         this.currentFrame = 0;
         if (animation.shouldLoop === true) {
           animation.refreshSkipFrames();
+          this.skipFrames = this.animation.skipFrames;
         }
       }
       if (bumpFrames) {
