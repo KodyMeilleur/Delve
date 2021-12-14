@@ -22,6 +22,7 @@ export function VoidTile(x, y) {
   this.event = null;
   this.potentialPath = false;
   this.type = 'Void';
+  this.mpCost = 100;
 }
 
 export function PlainsTile(x, y) {
@@ -43,6 +44,7 @@ export function PlainsTile(x, y) {
   this.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
   this.potentialPath = false;
   this.type = 'Plains';
+  this.mpCost = 1;
 }
 
 export function GenericTile(x, y, spritePath) {
@@ -61,4 +63,5 @@ export function GenericTile(x, y, spritePath) {
   this.event = null;
   this.potentialPath = false;
   this.type = 'Generic';
+  this.mpCost = 1;
 }

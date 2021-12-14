@@ -177,7 +177,7 @@ function placeZone (landmass, seedCell, type) {
       const currentCell = landmass[seedCell.x + i][seedCell.y + k];
       if (formation[i][k]) {
         currentCell.structure = new structureTypes[type].structure();
-        currentCell.density = 1;
+        currentCell.mpCost = currentCell.structure.mpCost;
       }
     }
   }
@@ -191,7 +191,7 @@ export function cleanLandmass (landmass) {
   function recursiveCellCheck(cell) {
     if (cell.visited !== true) {
       cell.visited = true;
-      if (cell.type !== 'Void') {
+      if (cell.density === 0) {
         // check all directions for cells
          validPool.push(cell);
         // north

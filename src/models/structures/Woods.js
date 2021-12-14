@@ -4,9 +4,10 @@ export function Woods () {
   this.type = 'Woods';
   this.sprite = 'assets/Tiles/Plains/Woods/sheet';
   this.hp = 3;
+  this.mpCost = 2;
 
   this.loot = [
-    Wood,
+    new Wood(1),
   ];
 }
 

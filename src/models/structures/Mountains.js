@@ -4,9 +4,10 @@ export function Mountains () {
   this.type = 'Mountains';
   this.sprite = 'assets/Tiles/Plains/Mountains/sheet';
   this.hp = 10;
+  this.mpCost = 3;
 
   this.loot = [
-    Stone,
+    new Stone(3),
   ];
 }
 

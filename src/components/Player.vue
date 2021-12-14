@@ -177,7 +177,8 @@ export default {
             y: this.y,
           }
         })
-        this.animation = new Animation(9, 'Idle', true);
+        this.animation = new Animation(4, 'Idle', true);
+        this.skipFrames = this.animation.skipFrames;
         this.isMoving = false;
       }
     },

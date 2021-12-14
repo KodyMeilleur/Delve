@@ -5,7 +5,7 @@ export function findPath(maze, startCoords, endCoords) {
       return {
         density: cell.density,
         // Manhattan Heurestic for cardinals
-        heur: Math.abs(startCoords.x - endCoords.x) + Math.abs(startCoords.y - endCoords.y),
+        heur: Math.abs(startCoords.x - endCoords.x) + Math.abs(startCoords.y - endCoords.y) + cell.mpCost,
         g: 0,
         f: 0,
         visited: false,
@@ -125,6 +125,7 @@ export function returnShallowMapChunk(startEntity, fullMap) {
         g: null,
         f: null,
         heur: null,
+        mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1
       }
       row.push(shallowCell);
     }
@@ -135,21 +136,66 @@ export function returnShallowMapChunk(startEntity, fullMap) {
 }
 
 export function toggleMoveTiles(startEntity, map) {
-  const tileList = [];
+  const tilesToCheck = [];
   const startX = parseInt(startEntity.x);
   const startY = parseInt(startEntity.y);
+  let totalMP = startEntity.mp;
+  const gridAdjustmentX = startX - totalMP;
+  const gridAdjustmentY = startY - totalMP;
 
-  map.map((row) => {
-    return row.map((cell) => {
-      const cellMovementCost = (Math.abs(startX - cell.x) + Math.abs(startY - cell.y));
-      const isStartingCell = startX === cell.x && startY === cell.y;
-      if (cellMovementCost <= startEntity.mp && isStartingCell === false && cell.density === 0) {
-        tileList.push(cell)
+  function cardinalCellCheck(cell, lastMPCost) {
+
+      // north
+      if ((cell.x - gridAdjustmentX) - 1 >= 0) {
+        const northCell = map[(cell.x - gridAdjustmentX) - 1][(cell.y - gridAdjustmentY)];
+        const mpRange = (lastMPCost + northCell.mpCost) <= totalMP;
+        if (northCell && northCell.density === 0 && mpRange) {
+          if ((northCell.x === startCell.x && northCell.y === startCell.y) === false) {
+            tilesToCheck.push(northCell);
+            cardinalCellCheck(northCell, lastMPCost + northCell.mpCost);
+          }
+        }
       }
-    })
-  });
+      // east
+      if ((cell.y - gridAdjustmentY) + 1 < map[0].length) {
+        const eastCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) + 1];
+        const mpRange = (lastMPCost + eastCell.mpCost) <= totalMP;
+        if (eastCell && eastCell.density === 0 && mpRange) {
+          if ((eastCell.x === startCell.x && eastCell.y === startCell.y) === false) {
+            tilesToCheck.push(eastCell);
+            cardinalCellCheck(eastCell, lastMPCost + eastCell.mpCost);
+          }
+        }
+      } // south
+      if ((cell.x - gridAdjustmentX) + 1 < map.length) {
+        const southCell = map[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
+        const mpRange = (lastMPCost + southCell.mpCost) <= totalMP;
+        if (southCell && southCell.density === 0 && mpRange) {
+          if ((southCell.x === startCell.x && southCell.y === startCell.y) === false) {
+            tilesToCheck.push(southCell);
+            cardinalCellCheck(southCell, lastMPCost + southCell.mpCost);
+          }
+        }
+      } // west
+      if ((cell.y - gridAdjustmentY) - 1 >= 0) {
+        const westCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) - 1];
+        const mpRange = (lastMPCost + westCell.mpCost) <= totalMP;
+        if (westCell && westCell.density === 0 && mpRange) {
+          if ((westCell.x === startCell.x && westCell.y === startCell.y) === false) {
+            tilesToCheck.push(westCell);
+            cardinalCellCheck(westCell, lastMPCost + westCell.mpCost);
+          }
+        }
+      }
 
-  return tileList;
+      return false;
+    }
+
+    const startCell = map[startX - gridAdjustmentX][startY - gridAdjustmentY];
+
+    cardinalCellCheck(startCell, 0);
+
+    return tilesToCheck;
 }
 
 export function getEntityDirection(entity) {
