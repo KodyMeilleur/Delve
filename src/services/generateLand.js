@@ -128,7 +128,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
     // console.log(landmass, randomX, randomY);
     const seedCell = landmass[randomX][randomY];
 
-    if (seedCell.density === 0) {
+    if (seedCell.density === 0 && seedCell.structure === null) {
       const placementZoneObstructed = checkOrientation(landmass, randomX, randomY);
 
       if (placementZoneObstructed === false) {
@@ -152,7 +152,7 @@ function checkOrientation (landmass, x, y) {
     if (!tileRow) {
       obstructed = true;
     } else {
-      obstruction = tileRow.find(cell => cell.density === 1) || false;
+      obstruction = tileRow.find(cell => cell.structure !== null) || false;
       if (obstruction || tileRow.length < 3) {
         obstructed = true;
       }
