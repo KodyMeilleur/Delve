@@ -2,6 +2,8 @@ import { VoidTile, PlainsTile } from '../models/Tile';
 import { Woods, WoodFormations } from '../models/structures/Woods';
 import { Mountains, MountainFormations } from '../models/structures/Mountains';
 import { PlainsCity } from '../models/structures/PlainsCity';
+import { Totem } from '../models/totems/Totem';
+
 import CONST from '../CONST';
 
 
@@ -125,7 +127,6 @@ export function placeResourceStructures (landmass, type, formationCount) {
   while (tries && formationCount) {
     const randomX = getRandomInt(0, columnLength - 1);
     const randomY = getRandomInt(0, rowLength - 1);
-    // console.log(landmass, randomX, randomY);
     const seedCell = landmass[randomX][randomY];
 
     if (seedCell.density === 0 && seedCell.structure === null) {
@@ -206,21 +207,20 @@ function placeZone (landmass, seedCell, type) {
   }
 }
 
-export function placeFeatures (landmass) {
+export function placeAnchor (landmass) {
   const xCenter = (landmass.length / 2);
   const xRangeLower = xCenter - 3;
   const xRangeUpper = xCenter + 3;
 
   const yCenter = (landmass[0].length / 2);
-  const yRangeLower = yCenter - 6;
-  const yRangeUpper = yCenter + 6;
+  const yRangeLower = yCenter - 4;
+  const yRangeUpper = yCenter + 4;
 
   function findAnchorZone() {
     const anchorX = getRandomInt(xRangeLower, xRangeUpper);
     const anchorY = getRandomInt(yRangeLower, yRangeUpper);
 
     const potentialAnchor = landmass[anchorX][anchorY];
-
     if (potentialAnchor.type !== 'Void' || potentialAnchor.structure === null) {
       const placementZoneObstructed = checkObstructionZoneMiddle(landmass, anchorX, anchorY);
       if (placementZoneObstructed === false) {
@@ -235,11 +235,72 @@ export function placeFeatures (landmass) {
 
   const anchorZone = findAnchorZone();
 
-  console.log(anchorZone);
   anchorZone.structure = new PlainsCity();
   anchorZone.mpCost = anchorZone.structure.mpCost;
   anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+}
 
+export function placeTotems (landmass, count) {
+  //        1
+  //     ________
+  // 4  |       |  2
+  //    --------
+  //        3
+  const SidePool = [1, 2, 3, 4];
+  let findAnchorZone;
+  while (count) {
+    let chosenIndex = getRandomInt(0, SidePool.length - 1);
+    let chosenSide = SidePool.splice(chosenIndex, 1)[0];
+    let xCenter;
+    let xRangeLower;
+    let xRangeUpper;
+    let yCenter;
+    let yRangeLower;
+    let yRangeUpper;
+
+    findAnchorZone = function() {
+      const anchorX = getRandomInt(xRangeLower, xRangeUpper);
+      const anchorY = getRandomInt(yRangeLower, yRangeUpper);
+
+      const potentialAnchor = landmass[anchorX][anchorY];
+      if (potentialAnchor.type !== 'Void' && potentialAnchor.structure === null) {
+        return potentialAnchor;
+      }
+
+        return findAnchorZone();
+    }
+    if (chosenSide === 1 || chosenSide === 3) {
+      xCenter = chosenSide === 1 ? 2 : landmass.length - 3;
+      xRangeLower = xCenter - 2;
+      xRangeUpper = xCenter + 1;
+
+      yCenter = chosenSide === 1 ? 2 : landmass[0].length - 3;
+      yRangeLower = yCenter - 2;
+      yRangeUpper = yCenter + 2;
+      const anchorZone = findAnchorZone();
+
+      anchorZone.structure = new Totem();
+      anchorZone.mpCost = anchorZone.structure.mpCost;
+      anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+    }
+
+    if (chosenSide === 2 || chosenSide === 4) {
+      xCenter = (landmass.length / 2);
+      xRangeLower = xCenter - 3;
+      xRangeUpper = xCenter + 3;
+
+      yCenter = chosenSide === 4 ? 2 : landmass[0].length - 3;
+      yRangeLower = yCenter - 2;
+      yRangeUpper = yCenter + 2;
+      const anchorZone = findAnchorZone();
+
+      anchorZone.structure = new Totem();
+      anchorZone.mpCost = anchorZone.structure.mpCost;
+      anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+    }
+
+    count--;
+  }
 }
 
 export function cleanLandmass (landmass) {

@@ -14,7 +14,7 @@
 <script>
 import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { refineLandmass, cleanLandmass, placeResourceStructures, placeFeatures } from '../services/generateLand';
+import { refineLandmass, cleanLandmass, placeResourceStructures, placeAnchor , placeTotems} from '../services/generateLand';
 import { returnShallowMapChunk, toggleMoveTiles } from '../services/pathfinding';
 
 export default {
@@ -55,7 +55,8 @@ export default {
       placeResourceStructures(randomLandmass, 'Woods', 10);
       placeResourceStructures(randomLandmass, 'Mountains', 2);
       cleanLandmass(randomLandmass);
-      placeFeatures(randomLandmass);
+      placeAnchor(randomLandmass);
+      placeTotems(randomLandmass, 2);
       // console.log(randomLandmass);
       this.mergeFirstLandmass(randomLandmass);
     },

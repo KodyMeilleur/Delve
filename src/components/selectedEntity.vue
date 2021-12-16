@@ -52,8 +52,8 @@ export default {
 <style scoped>
 .entity-ui {
   position: sticky;
-  top: 0;
-  left: 518px;
+  top: 32px;
+  left: 750px;
   float: right;
   width: 100px;
   height: 100px;

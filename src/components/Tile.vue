@@ -30,7 +30,7 @@
           <div
           v-bind:style="{
             'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
-            'background-position': (64 * frame) + 'px ' + (0) + 'px',
+            'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
