@@ -93,38 +93,30 @@ export default {
           horizontal: 0
         },
         1: {
-          vertical: -6,
+          vertical: -7,
           horizontal: 0
         },
         2: {
-          vertical: -5,
+          vertical: -6,
           horizontal: 0
         },
         3: {
-          vertical: -4,
+          vertical: -6,
           horizontal: 0
         },
         4: {
-          vertical: -3,
-          horizontal: 0
-        },
-        5: {
-          vertical: -3,
-          horizontal: 0
-        },
-        6: {
-          vertical: -4,
-          horizontal: 0
-        },
-        7: {
-          vertical: -4,
-          horizontal: 0
-        },
-        8: {
           vertical: -5,
           horizontal: 0
         },
-        9: {
+        5: {
+          vertical: -5,
+          horizontal: 0
+        },
+        6: {
+          vertical: -6,
+          horizontal: 0
+        },
+        7: {
           vertical: -6,
           horizontal: 0
         },

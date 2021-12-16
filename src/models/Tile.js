@@ -38,7 +38,7 @@ export function PlainsTile(x, y) {
   this.structure = null;
   // this.structure = (getRandomInt(0, 3) === 2) ? { type: 'Woods', path: 'assets/Tiles/Plains/Woods/sheet.png'} : null;
   this.enemies = [];
-  this.animationFrames = 9;
+  this.animationFrames = 7;
   this.density = 0;
   this.event = null;
   // this.event = (this.structure === null && (getRandomInt(0, 3) === 2)) ? new Event('Alert') : null;
