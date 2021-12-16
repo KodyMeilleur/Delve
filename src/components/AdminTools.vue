@@ -14,7 +14,7 @@
 <script>
 import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { refineLandmass, cleanLandmass, placeResourceStructures } from '../services/generateLand';
+import { refineLandmass, cleanLandmass, placeResourceStructures, placeFeatures } from '../services/generateLand';
 import { returnShallowMapChunk, toggleMoveTiles } from '../services/pathfinding';
 
 export default {
@@ -52,9 +52,11 @@ export default {
     generateContinent () {
       const randomLandmass = refineLandmass();
       // TODO: Add generation functions? Or move cleanLandmass to a parent function
-      placeResourceStructures(randomLandmass, 'Woods', 6);
-      placeResourceStructures(randomLandmass, 'Mountains', 1);
+      placeResourceStructures(randomLandmass, 'Woods', 10);
+      placeResourceStructures(randomLandmass, 'Mountains', 2);
       cleanLandmass(randomLandmass);
+      placeFeatures(randomLandmass);
+      // console.log(randomLandmass);
       this.mergeFirstLandmass(randomLandmass);
     },
     addPlayerToGame () {

@@ -1,7 +1,7 @@
 export default {
   defaultRowAndColumnCount: 50,
-  normalRowSize : 12,
-  normalColumnSize : 16,
+  normalRowSize : 14,
+  normalColumnSize : 18,
   tileWidth: 64,
   tileHeight: 64,
   defaultHP: 15,

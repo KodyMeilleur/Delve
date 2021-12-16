@@ -30,7 +30,7 @@
           <div
           v-bind:style="{
             'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
-            'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
+            'background-position': (64 * frame) + 'px ' + (0) + 'px',
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
@@ -136,8 +136,8 @@ export default {
       this.yOffset = val;
       const xRange = ((this.tile.x * CONST.tileWidth));
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 640 + (CONST.tileWidth * 2))) &&
-        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 448 + (CONST.tileWidth * 2));
+      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 896)) &&
+        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 576 + (CONST.tileWidth));
       if (this.shouldShow) {
         this.$root.$off('frameBump', this.frameAdvance);
         this.$root.$on('frameBump', this.frameAdvance);
@@ -149,8 +149,8 @@ export default {
       this.xOffset = val;
       const xRange = ((this.tile.x * CONST.tileWidth));
       const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 640)) &&
-        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 448 + (CONST.tileWidth * 2));
+      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 896)) &&
+        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 576 + (CONST.tileWidth));
       if (this.shouldShow) {
         this.$root.$off('frameBump', this.frameAdvance);
         this.$root.$on('frameBump', this.frameAdvance);

@@ -16,7 +16,7 @@
                 :tile="cell"
                 v-on:potentialPathCalc="updatePotentialPath"
                 v-on:clearPotentialPath="clearPotentialPath"
-                v-bind:key="cell.density + Math.random()"
+                v-bind:key="cell.id"
               />
           </div>
         </div>
@@ -102,8 +102,8 @@ export default {
   justify-content: center;
 }
 .world-box {
-  width: 640px;
-  height: 448px;
+  width: 896px;
+  height: 576px;
   overflow: scroll;
   background-color: #33232a;
   position: relative;

@@ -9,6 +9,7 @@ export function Event(type) {
     case 'Alert':
       this.script = () => {
         window.alert('Alert Event!')
+        this.fired = true;
       }
       break;
     default:

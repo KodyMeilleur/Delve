@@ -1,7 +1,7 @@
 import { VoidTile, PlainsTile } from '../models/Tile';
 import { Woods, WoodFormations } from '../models/structures/Woods';
 import { Mountains, MountainFormations } from '../models/structures/Mountains';
-
+import { PlainsCity } from '../models/structures/PlainsCity';
 import CONST from '../CONST';
 
 
@@ -129,7 +129,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
     const seedCell = landmass[randomX][randomY];
 
     if (seedCell.density === 0 && seedCell.structure === null) {
-      const placementZoneObstructed = checkOrientation(landmass, randomX, randomY);
+      const placementZoneObstructed = checkObstructionZoneTopLeft(landmass, randomX, randomY);
 
       if (placementZoneObstructed === false) {
         placeZone(landmass, seedCell, type);
@@ -142,7 +142,8 @@ export function placeResourceStructures (landmass, type, formationCount) {
   }
 }
 
-function checkOrientation (landmass, x, y) {
+// Cell starts at top left, checks next 3 cells right for 3 rows down
+function checkObstructionZoneTopLeft (landmass, x, y) {
   let obstruction = false;
   let obstructed = false;
 
@@ -152,7 +153,28 @@ function checkOrientation (landmass, x, y) {
     if (!tileRow) {
       obstructed = true;
     } else {
-      obstruction = tileRow.find(cell => cell.structure !== null) || false;
+      obstruction = tileRow.find(cell => cell.structure !== null || cell.type === 'Void') || false;
+      if (obstruction || tileRow.length < 3) {
+        obstructed = true;
+      }
+    }
+
+  }
+
+  return obstructed;
+}
+
+// Cell starts at middle, checks center 3 cells top, center, and lower rows
+function checkObstructionZoneMiddle (landmass, x, y) {
+  let obstruction = false;
+  let obstructed = false;
+
+  for (let i = -1; i < 2; i++) {
+    const tileRow = landmass[x + i] && landmass[x + i].slice(y - 1, y + 2);
+    if (!tileRow) {
+      obstructed = true;
+    } else {
+      obstruction = tileRow.find(cell => cell.structure !== null || cell.type === 'Void') || false;
       if (obstruction || tileRow.length < 3) {
         obstructed = true;
       }
@@ -182,6 +204,42 @@ function placeZone (landmass, seedCell, type) {
       }
     }
   }
+}
+
+export function placeFeatures (landmass) {
+  const xCenter = (landmass.length / 2);
+  const xRangeLower = xCenter - 3;
+  const xRangeUpper = xCenter + 3;
+
+  const yCenter = (landmass[0].length / 2);
+  const yRangeLower = yCenter - 6;
+  const yRangeUpper = yCenter + 6;
+
+  function findAnchorZone() {
+    const anchorX = getRandomInt(xRangeLower, xRangeUpper);
+    const anchorY = getRandomInt(yRangeLower, yRangeUpper);
+
+    const potentialAnchor = landmass[anchorX][anchorY];
+
+    if (potentialAnchor.type !== 'Void' || potentialAnchor.structure === null) {
+      const placementZoneObstructed = checkObstructionZoneMiddle(landmass, anchorX, anchorY);
+      if (placementZoneObstructed === false) {
+        return potentialAnchor;
+      } else {
+        return findAnchorZone();
+      }
+    }
+
+      return findAnchorZone();
+  }
+
+  const anchorZone = findAnchorZone();
+
+  console.log(anchorZone);
+  anchorZone.structure = new PlainsCity();
+  anchorZone.mpCost = anchorZone.structure.mpCost;
+  anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+
 }
 
 export function cleanLandmass (landmass) {

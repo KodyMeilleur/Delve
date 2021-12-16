@@ -47,7 +47,6 @@ export default {
       const defaultWorldArray = createEmptyLandmass(defaultRowAndColumnCount, defaultRowAndColumnCount);
 
       console.log(`x: ${defaultWorldArray.length}, y: ${defaultWorldArray[0].length}`);
-
       this.setMap(defaultWorldArray);
 
       this.gameLoop();
