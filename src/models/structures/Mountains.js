@@ -1,8 +1,13 @@
 import { Stone } from '../items/resources/Stone.js';
+import { Structure } from '../Structure';
 
 export function Mountains () {
+  Structure.call(this);
   this.type = 'Mountains';
   this.sprite = 'assets/Tiles/Plains/Mountains/sheet';
+  this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
+  this.unexploredFrames = 6;
+  this.unexploredDelayFrameMap = [2, 4, 6];
   this.hp = 10;
   this.mpCost = 3;
 

@@ -26,7 +26,19 @@
       <div class="tile-sprite">
         <!-- Add frame here -->
         <span class="frame-counter">{{ frame }} </span>
+        <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
+          <div
+          v-bind:style="{
+            'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
+            'background-position': -(64 * structureEffectFrame) + 'px ' + (0) + 'px',
+            top: (bumpVerticalFramePosition - 15) + 'px',
+            left: (bumpHorizontalFramePosition) + 'px',
+          }"
+          v-if="tile.structure.explorable"
+          class="structure-sprite-effect"
+          >
+          </div>
           <div
           v-bind:style="{
             'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
@@ -34,6 +46,7 @@
             top: (bumpVerticalFramePosition) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
+          v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false}"
           class="structure-sprite"
           >
           </div>
@@ -80,6 +93,8 @@ export default {
       xOffset: 0,
       yOffset: 0,
       currentFrame: 0,
+      structureEffectFrame: 0,
+      structureEffectDelayList: [],
       moveHighlighted: false,
       bumpVerticalFramePosition: 0,
       bumpHorizontalFramePosition: 0,
@@ -181,9 +196,19 @@ export default {
       const bumpFrames = this.bumpAnimationMap;
 
       const delayOption = this.getRandomIntBetween(0, 1);
-
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
+
+      if (this.tile.structure && this.tile.structure.explorable) {
+        if (this.structureEffectDelayList.length <= 0) {
+          this.structureEffectDelayList = this.tile.structure.unexploredDelayFrameMap.slice();
+        }
+        if (this.structureEffectFrame === this.structureEffectDelayList[0]) {
+          this.structureEffectDelayList.shift();
+        } else {
+          this.structureEffectFrame = this.structureEffectFrame >= this.tile.structure.unexploredFrames ? 0 : this.structureEffectFrame + 1;
+        }
+      }
 
       const bFrame = bumpFrames[this.currentFrame];
       if (bFrame) {
@@ -321,5 +346,19 @@ export default {
   max-width: 64px;
   max-height: 64px;
   z-index: 1;
+}
+.structure-sprite-effect {
+  min-width: 64px;
+  min-height: 64px;
+  position: absolute;
+  max-width: 64px;
+  max-height: 64px;
+  z-index: 2;
+}
+.unexplored {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: grayscale 0.5s ease;
 }
 </style>
