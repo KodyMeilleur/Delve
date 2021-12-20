@@ -6,6 +6,7 @@ export function Woods () {
   this.type = 'Woods';
   this.sprite = 'assets/Tiles/Plains/Woods/sheet';
   this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
+  this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
   this.unexploredFrames = 6;
   this.unexploredDelayFrameMap = [2, 4, 6];
   this.hp = 3;

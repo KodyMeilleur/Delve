@@ -28,16 +28,30 @@
         <span class="frame-counter">{{ frame }} </span>
         <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
-          <div
-          v-bind:style="{
-            'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
-            'background-position': -(64 * structureEffectFrame) + 'px ' + (0) + 'px',
-            top: (bumpVerticalFramePosition - 15) + 'px',
-            left: (bumpHorizontalFramePosition) + 'px',
-          }"
-          v-if="tile.structure.explorable"
-          class="structure-sprite-effect"
-          >
+          <div>
+            <div
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
+              'background-position': -(64 * structureEffectFrame) + 'px ' + (0) + 'px',
+              top: (bumpVerticalFramePosition - 15) + 'px',
+              left: (bumpHorizontalFramePosition) + 'px',
+            }"
+            v-if="tile.structure.explorable"
+            class="structure-sprite-effect"
+            >
+            </div>
+            <div
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + tile.structure.unexploredSpriteIcon +'.png)',
+              'background-position': (0) + 'px ' + (0) + 'px',
+              zoom: '50%',
+              top: (70 + bumpVerticalFramePosition) + 'px',
+              left: (bumpHorizontalFramePosition) + 'px',
+            }"
+            v-if="tile.structure.explorable"
+            class="structure-sprite-effect"
+            >
+            </div>
           </div>
           <div
           v-bind:style="{
@@ -356,9 +370,9 @@ export default {
   z-index: 2;
 }
 .unexplored {
-  -webkit-filter: grayscale(100%);
+  /* -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
-  transition: grayscale 0.5s ease;
+  transition: grayscale 0.5s ease; */
 }
 </style>

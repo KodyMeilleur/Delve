@@ -6,6 +6,7 @@ export function Mountains () {
   this.type = 'Mountains';
   this.sprite = 'assets/Tiles/Plains/Mountains/sheet';
   this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
+  this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
   this.unexploredFrames = 6;
   this.unexploredDelayFrameMap = [2, 4, 6];
   this.hp = 10;
