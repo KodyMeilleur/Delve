@@ -124,7 +124,7 @@ export default {
   height: 0;
   float: left;
   position: absolute;
-  z-index: 2;
+  z-index: 3;
 }
 .turn-order {
   position: relative;
