@@ -40,7 +40,7 @@
             class="structure-sprite-effect"
             >
             </div>
-            <div
+            <!-- <div
             v-bind:style="{
               'background-image': 'url(' + publicPath + tile.structure.unexploredSpriteIcon +'.png)',
               'background-position': (0) + 'px ' + (0) + 'px',
@@ -51,7 +51,7 @@
             v-if="tile.structure.explorable"
             class="structure-sprite-effect"
             >
-            </div>
+            </div> -->
           </div>
           <div
           v-bind:style="{
@@ -368,6 +368,7 @@ export default {
   max-width: 64px;
   max-height: 64px;
   z-index: 2;
+  pointer-events: none;
 }
 .unexplored {
   /* -webkit-filter: grayscale(100%);

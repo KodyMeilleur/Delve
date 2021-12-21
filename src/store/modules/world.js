@@ -141,6 +141,8 @@ const mutations = {
     }
     state.players.push(newPlayer)
     state.map[pc.x][pc.y].players.push(newPlayer);
+    const tileMovingTo = state.map[pc.x][pc.y];
+    newPlayer.outworldTileOccupied = tileMovingTo;
   },
 
   addMonsterToGame (state, monster) {
@@ -158,10 +160,12 @@ const mutations = {
     const storePlayer = state.players.filter(ent => ent == player)[0];
     storePlayer.x = parseInt(coords.x);
     storePlayer.y = parseInt(coords.y);
+    const tileMovingTo = state.map[coords.x][coords.y];
+    storePlayer.outworldTileOccupied = tileMovingTo;
+    console.log(coords, tileMovingTo);
   },
 
   cycleTurn (state) {
-
     state.turnIndex = (state.turnIndex + 1);
     state.currentTurn = state.players[state.turnIndex];
     state.currentTurn.mp = state.currentTurn.maxMp;

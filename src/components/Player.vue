@@ -12,9 +12,21 @@
   <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
   <div
   v-bind:style="{
+    'background-image': 'url(' + publicPath + player.occupiedSprite + '.png)',
+    'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+    'top': (-30) + 'px',
+    'z-index': '4',
+  }"
+  v-if="inStructure && isMoving === false"
+  class="player-sprite"
+  >
+  </div>
+  <div
+  v-bind:style="{
     'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + animation.state + '/' + direction + '/sheet.png)',
     'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
   }"
+  v-bind:class="{ inStructure: inStructure && isMoving === false}"
   class="player-sprite"
   >
   </div>
@@ -148,6 +160,13 @@ export default {
           this.x = parseInt(this.x) + 1;
           this.path.shift();
           this.movingToStructure = false;
+          this.updatePlayerPosition({
+            player: this.player,
+            coords: {
+              x: this.x,
+              y: this.y,
+            }
+          })
         }
       }
       // east
@@ -159,6 +178,13 @@ export default {
           this.y = parseInt(this.y) + 1;
           this.path.shift();
           this.movingToStructure = false;
+          this.updatePlayerPosition({
+            player: this.player,
+            coords: {
+              x: this.x,
+              y: this.y,
+            }
+          })
         }
       }
       // north
@@ -170,6 +196,13 @@ export default {
           this.x = parseInt(this.x) - 1;
           this.path.shift();
           this.movingToStructure = false;
+          this.updatePlayerPosition({
+            player: this.player,
+            coords: {
+              x: this.x,
+              y: this.y,
+            }
+          })
         }
       }
       // west
@@ -181,17 +214,17 @@ export default {
           this.y = parseInt(this.y) - 1;
           this.path.shift();
           this.movingToStructure = false;
+          this.updatePlayerPosition({
+            player: this.player,
+            coords: {
+              x: this.x,
+              y: this.y,
+            }
+          })
         }
       }
 
       if (this.tilesToTravel === 0) {
-        this.updatePlayerPosition({
-          player: this.player,
-          coords: {
-            x: this.x,
-            y: this.y,
-          }
-        })
         this.animation = new Animation(4, 'Idle', true);
         this.skipFrames = this.animation.skipFrames;
         this.isMoving = false;
@@ -208,6 +241,9 @@ export default {
       'leftOffset',
       'topOffset',
     ]),
+    inStructure: function() {
+      return this.player.outworldTileOccupied.structure ? true : false;
+    },
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
       switch (this.movingDirection) {
@@ -261,5 +297,8 @@ export default {
   transform: scale(0.5) rotate(0.01deg);
   -webkit-transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
+}
+.player-sprite.inStructure {
+  display: none;
 }
 </style>

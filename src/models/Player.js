@@ -15,7 +15,10 @@ export function DefaultPlayer(name, x, y) {
   this.tilesToTravel = 0;
   this.movingDirection = 0; // 1N, 2E, 3S, 4W,  0 non moving South
   this.path = null;
+  this.outworldTileOccupied = {};
+  this.inworldTileOccupied = {};
 
+  this.occupiedSprite = 'assets/Tiles/Sections/Status/Player/marker';
   this.sprite = 'assets/Characters/Human/';
   this.animation = new Animation(4, 'Idle', true);
   this.defaultAnimation = this.animation;
