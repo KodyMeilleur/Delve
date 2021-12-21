@@ -33,14 +33,14 @@
             v-bind:style="{
               'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
               'background-position': -(64 * structureEffectFrame) + 'px ' + (0) + 'px',
-              top: (bumpVerticalFramePosition + 10) + 'px',
+              top: (bumpVerticalFramePosition - 15) + 'px',
               left: (bumpHorizontalFramePosition) + 'px',
             }"
             v-if="tile.structure.explorable"
             class="structure-sprite-effect"
             >
             </div>
-            <!-- <div
+            <div
             v-bind:style="{
               'background-image': 'url(' + publicPath + tile.structure.unexploredSpriteIcon +'.png)',
               'background-position': (0) + 'px ' + (0) + 'px',
@@ -51,7 +51,7 @@
             v-if="tile.structure.explorable"
             class="structure-sprite-effect"
             >
-            </div> -->
+            </div>
           </div>
           <div
           v-bind:style="{
@@ -299,13 +299,12 @@ export default {
   align-items: center;
   color: rgba(0, 0, 0, 0.1);
   position: relative;
-  z-index: 1;
 }
 .selected,.tile-component:hover {
   outline: 2px white solid;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 1;
   color: rgba(255, 255, 255, 0.5);
 }
 .active {
@@ -368,7 +367,7 @@ export default {
   position: absolute;
   max-width: 64px;
   max-height: 64px;
-  z-index: 0;
+  z-index: 2;
 }
 .unexplored {
   /* -webkit-filter: grayscale(100%);

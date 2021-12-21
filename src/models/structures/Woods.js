@@ -8,7 +8,7 @@ export function Woods () {
   this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
   this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
   this.unexploredFrames = 6;
-  this.unexploredDelayFrameMap = [2, 4, 6];
+  this.unexploredDelayFrameMap = [0, 1, 2, 3, 4, 5, 6];
   this.hp = 3;
   this.mpCost = 2;
   this.loot = [
