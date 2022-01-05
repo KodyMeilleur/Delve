@@ -123,6 +123,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
   let tries = CONST.continentResourceStructurePlacementAttempts;
   const rowLength = landmass[0].length - 1;
   const columnLength = landmass.length - 1;
+  let structures = [];
 
   while (tries && formationCount) {
     const randomX = getRandomInt(0, columnLength - 1);
@@ -133,7 +134,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
       const placementZoneObstructed = checkObstructionZoneTopLeft(landmass, randomX, randomY);
 
       if (placementZoneObstructed === false) {
-        placeZone(landmass, seedCell, type);
+        structures = structures.concat(placeZone(landmass, seedCell, type));
         formationCount--;
       }
     }
@@ -141,6 +142,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
     // check each of 4 orientations to place 3x3 resource formation
     tries--;
   }
+  return structures;
 }
 
 // Cell starts at top left, checks next 3 cells right for 3 rows down
@@ -187,6 +189,7 @@ function checkObstructionZoneMiddle (landmass, x, y) {
 }
 
 function placeZone (landmass, seedCell, type) {
+  const structures = [];
   const structureTypes = {
     'Woods': {structure: Woods, formations: WoodFormations},
     'Mountains': {structure: Mountains, formations: MountainFormations},
@@ -199,12 +202,16 @@ function placeZone (landmass, seedCell, type) {
     for(let k = 0; k < 3; k++) {
       const currentCell = landmass[seedCell.x + i][seedCell.y + k];
       if (formation[i][k]) {
-        currentCell.structure = new structureTypes[type].structure();
+        const struct = new structureTypes[type].structure();
+        structures.push({type: struct.type});
+        currentCell.structure = struct;
         currentCell.mpCost = currentCell.structure.mpCost;
         currentCell.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
       }
     }
   }
+
+  return structures;
 }
 
 export function placeAnchor (landmass) {
@@ -215,6 +222,7 @@ export function placeAnchor (landmass) {
   const yCenter = (landmass[0].length / 2);
   const yRangeLower = yCenter - 4;
   const yRangeUpper = yCenter + 4;
+  let TRIES = CONST.continentResourceStructurePlacementAttempts;
 
   function findAnchorZone() {
     const anchorX = getRandomInt(xRangeLower, xRangeUpper);
@@ -226,7 +234,9 @@ export function placeAnchor (landmass) {
       if (placementZoneObstructed === false) {
         return potentialAnchor;
       } else {
-        return findAnchorZone();
+        TRIES--;
+        if (TRIES)
+          return findAnchorZone();
       }
     }
 

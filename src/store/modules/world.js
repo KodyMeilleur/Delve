@@ -20,6 +20,7 @@ const state = () => ({
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
   leftOffset: 0,
   topOffset: 0,
+  heroSpawnCountdown: CONST.heroSpawnCountdown,
 })
 
 // getters
@@ -179,17 +180,28 @@ const mutations = {
   },
 
   worldTurn (state) {
-    state.currentTurn = CONST.world;
     state.turnIndex = -1;
+
+    // Set up paths for every manifested monster
     state.monsters.forEach((monster) => {
       const areaAroundMonster = returnShallowMapChunk(monster, state.map);
       const cellToTravelTo = areaAroundMonster[getRandomInt(0, areaAroundMonster.length - 1)][getRandomInt(0, areaAroundMonster.length - 1)];
       const path = findPath(areaAroundMonster, {x: monster.x, y: monster.y, mp: monster.mp}, {x: cellToTravelTo.x, y: cellToTravelTo.y});
       monster.path = path;
-    })
+    });
+
+    state.heroSpawnCountdown--;
+
+    if (state.heroSpawnCountdown <= 0) {
+      const allStructures = state.continents[0].structures;
+      const randomStructure = allStructures[getRandomInt(0, allStructures.length - 1)];
+      state.heroSpawnCountdown = CONST.heroSpawnCountdown;
+      console.log(randomStructure);
+    }
+    state.currentTurn = CONST.world;
   },
 
-  mergeFirstLandmass (state, landmass) {
+  mergeFirstLandmass (state, {landmass, name, structures}) {
     // clear sprites on first land generation
     let map = state.map;
     const landmassPotentialRowSize = CONST.normalRowSize;
@@ -210,6 +222,11 @@ const mutations = {
     // console.log(state.map)
     state.map = []; // TODO: Find a better way to set arrays in data store. Maybe an action and then a mutation?
     state.map = map;
+    state.continents.push({
+      name,
+      structures
+    });
+    console.log(state.continents);
   },
 
   setContinents (state, continents) {

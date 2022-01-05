@@ -89,6 +89,7 @@ export default {
   height: 128px;
   background-color: transparent;
   z-index: 11;
+  margin-right: 69px;
   /* pointer-events: none; */
 }
 .entity-ui.filled {
