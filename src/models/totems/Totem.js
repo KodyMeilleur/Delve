@@ -4,5 +4,5 @@ export function Totem () {
   this.sprite = 'assets/Tiles/Sections/Totems/sheet';
   this.hp = 100;
   this.mpCost = 3;
-
+  this.name = 'Totem';
 }
