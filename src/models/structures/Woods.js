@@ -11,7 +11,8 @@ export function Woods () {
   this.unexploredDelayFrameMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   this.hp = 3;
   this.mpCost = 2;
-  
+  this.name = 'Woods';
+
   this.loot = [
     new Wood(1),
   ];

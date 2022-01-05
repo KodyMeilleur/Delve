@@ -11,6 +11,7 @@ export function Mountains () {
   this.unexploredDelayFrameMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   this.hp = 10;
   this.mpCost = 3;
+  this.name = 'Mountains';
 
   this.loot = [
     new Stone(3),

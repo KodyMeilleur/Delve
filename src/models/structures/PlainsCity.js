@@ -7,6 +7,7 @@ export function PlainsCity () {
   this.sprite = 'assets/Tiles/Sections/Cities/plainsCity';
   this.hp = 10;
   this.mpCost = 1;
+  this.name = 'Plains City';
 
   this.loot = [];
 }
