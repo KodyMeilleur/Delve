@@ -5,4 +5,5 @@ export function Structure() {
   this.explored = false;
   this.explorable = true;
   this.tier = 1;
+  this.structureVerticalOffset = 0;
 }

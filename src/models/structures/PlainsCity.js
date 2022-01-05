@@ -8,6 +8,6 @@ export function PlainsCity () {
   this.hp = 10;
   this.mpCost = 1;
   this.name = 'Plains City';
-
+  this.structureVerticalOffset = -2;
   this.loot = [];
 }

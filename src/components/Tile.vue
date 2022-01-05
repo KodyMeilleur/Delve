@@ -57,7 +57,7 @@
           v-bind:style="{
             'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
             'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
-            top: (bumpVerticalFramePosition) + 'px',
+            top: (bumpVerticalFramePosition + tile.structure.structureVerticalOffset) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
           v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false}"
