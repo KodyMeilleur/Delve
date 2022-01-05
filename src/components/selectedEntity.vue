@@ -117,7 +117,7 @@ export default {
   height: 14px;
 }
 .explore-sprite {
-  background-image: url('/assets/hudSprites/exploreIcon.png');
+  background-image: url('/assets/hudSprites/exploreIconSleep.png');
   width: 32px;
   height: 32px;
   cursor: pointer;
@@ -130,9 +130,10 @@ export default {
   content: "Explore";
   -webkit-text-stroke-width: 0px;
   font-weight: 700;
-  color: black;
+  font-size: 9px;
 }
 .explore-sprite:hover {
+  background-image: url('/assets/hudSprites/exploreIcon.png');
   transform: scale(1.1,1.1)
 }
 .info-row-name {
