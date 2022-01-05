@@ -21,6 +21,7 @@
         v-bind:class="{ 'explore-sprite': inArea === true, 'explore-sprite-out': inArea === false}"
         >
         </div>
+        <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
       </div>
     </span>
   </div>
@@ -157,6 +158,11 @@ export default {
   position: absolute;
   top: 78px;
   left: 8px;
+}
+.explore-sprite-inactive {
+  background-image: url('/assets/hudSprites/exploreIconInactive.png');
+  width: 32px;
+  height: 32px;
 }
 .swap-focus-sprite {
   background-image: url('/assets/hudSprites/swapFocus.png');
