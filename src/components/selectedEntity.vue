@@ -16,7 +16,7 @@
       </div>
     </span>
     <span class="action-container">
-      <div v-if="focusedEntity.structure">
+      <div>
         <div
         v-bind:class="{ 'explore-sprite': inArea === true, 'explore-sprite-out': inArea === false}"
         >
