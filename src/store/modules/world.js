@@ -134,6 +134,10 @@ const mutations = {
     }
   },
 
+  setfocusedEntityOverride (state, focusedEntity) {
+    state.focusedEntity = focusedEntity;
+  },
+
   addNewPlayerToGame (state, pc) {
     const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {

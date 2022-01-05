@@ -17,13 +17,16 @@
     </span>
     <span class="action-container">
       <div v-if="focusedEntity.structure">
-        <div class="explore-sprite"></div>
+        <div
+        v-bind:class="{ 'explore-sprite': inArea === true, 'explore-sprite-out': inArea === false}"
+        >
+        </div>
       </div>
     </span>
   </div>
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
-    <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
+    <!-- <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
     <span class="info-row">Name: {{ focusedEntity.name }}</span>
     <span class="info-row">HP: {{ focusedEntity.hp }}</span>
@@ -31,15 +34,21 @@
     <span class="info-row">DEF: {{ focusedEntity.def }}</span>
     <span class="info-row">INT: {{ focusedEntity.int }}</span>
     <span class="info-row">WIS: {{ focusedEntity.wis }}</span>
-    <span class="info-row">MP: {{ focusedEntity.mp }}</span>
+    <span class="info-row">MP: {{ focusedEntity.mp }}</span> -->
     <!-- <span class="info-row">Path: {{ focusedEntity.path.length }}</span> -->
+
+    <span class="swap-focus-container">
+      <div
+      v-on:click="switchFocus"
+      class="swap-focus-sprite"></div>
+    </span>
   </div>
 </div>
 </template>
 
 <script>
 // import CONST from '../CONST';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'SelectedEntity',
@@ -48,14 +57,22 @@ export default {
     }
   },
   methods: {
-    saveTurn () {
-
+    ...mapMutations('world', [
+      'setfocusedEntityOverride',
+    ]),
+    switchFocus () {
+      this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
     }
   },
   computed: {
     ...mapGetters('world', [
       'focusedEntity',
-    ])
+      'currentTurn',
+
+    ]),
+    inArea: function() {
+      return this.focusedEntity && this.currentTurn && this.focusedEntity.x === this.currentTurn.x && this.focusedEntity.y === this.currentTurn.y;
+    },
   },
 }
 </script>
@@ -134,6 +151,20 @@ export default {
 }
 .explore-sprite:hover {
   background-image: url('/assets/hudSprites/exploreIcon.png');
+  transform: scale(1.1,1.1)
+}
+.swap-focus-container {
+  position: absolute;
+  top: 78px;
+  left: 8px;
+}
+.swap-focus-sprite {
+  background-image: url('/assets/hudSprites/swapFocus.png');
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.swap-focus-sprite:hover {
   transform: scale(1.1,1.1)
 }
 .info-row-name {
