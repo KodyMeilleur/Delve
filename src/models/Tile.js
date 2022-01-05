@@ -23,7 +23,9 @@ export function VoidTile(x, y) {
   this.event = null;
   this.potentialPath = false;
   this.type = 'Void';
+  this.name = 'Void';
   this.mpCost = 100;
+  this.tier = 1;
 }
 
 export function PlainsTile(x, y) {
@@ -47,7 +49,9 @@ export function PlainsTile(x, y) {
   this.sprite = `assets/Tiles/Plains/Platform/sheet${this.variant !== null ? this.variant : ''}.png`;
   this.potentialPath = false;
   this.type = 'Plains';
+  this.name = 'Plains';
   this.mpCost = 1;
+  this.tier = 1;
 }
 
 export function GenericTile(x, y, spritePath) {
@@ -66,5 +70,7 @@ export function GenericTile(x, y, spritePath) {
   this.event = null;
   this.potentialPath = false;
   this.type = 'Generic';
+  this.name = 'Generic';
   this.mpCost = 1;
+  this.tier = 1;
 }

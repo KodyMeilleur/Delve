@@ -134,6 +134,10 @@ const mutations = {
     }
   },
 
+  setfocusedEntityOverride (state, focusedEntity) {
+    state.focusedEntity = focusedEntity;
+  },
+
   addNewPlayerToGame (state, pc) {
     const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {
@@ -162,7 +166,10 @@ const mutations = {
     storePlayer.y = parseInt(coords.y);
     const tileMovingTo = state.map[coords.x][coords.y];
     storePlayer.outworldTileOccupied = tileMovingTo;
-    console.log(coords, tileMovingTo);
+    if (coords.tilesToTravel === 0) {
+      state.focusedEntity = storePlayer.outworldTileOccupied;
+    }
+    // console.log(storePlayer, coords, tileMovingTo);
   },
 
   cycleTurn (state) {
