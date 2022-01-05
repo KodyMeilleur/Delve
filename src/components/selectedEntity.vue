@@ -15,6 +15,11 @@
         <div v-for="n in focusedEntity.mpCost" :key="n" class="mp-sprite"></div>
       </div>
     </span>
+    <span class="action-container">
+      <div v-if="focusedEntity.structure">
+        <div class="explore-sprite"></div>
+      </div>
+    </span>
   </div>
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
@@ -66,10 +71,15 @@ export default {
   height: 128px;
   background-color: transparent;
   z-index: 5;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 .entity-ui.filled {
   background-image: url('/assets/hudSprites/tileInfo.png');
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  font-weight: 800;
+  font-variant: small-caps;
+  font-family: system-ui;
 }
 .entity-info {
   color: white;
@@ -91,6 +101,11 @@ export default {
   width: 90px;
   height: 50px;
 }
+.action-container {
+  position: absolute;
+  top: 78px;
+  left: 8px;
+}
 .tier-star {
   background-image: url('/assets/hudSprites/tierStar.png');
   width: 14px;
@@ -100,6 +115,25 @@ export default {
   background-image: url('/assets/hudSprites/mpIcon.png');
   width: 14px;
   height: 14px;
+}
+.explore-sprite {
+  background-image: url('/assets/hudSprites/exploreIcon.png');
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.explore-text {
+  display: none;
+}
+.explore-sprite:hover:before {
+  display: block;
+  content: "Explore";
+  -webkit-text-stroke-width: 0px;
+  font-weight: 700;
+  color: black;
+}
+.explore-sprite:hover {
+  transform: scale(1.1,1.1)
 }
 .info-row-name {
   position: absolute;
