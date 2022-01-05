@@ -165,6 +165,7 @@ export default {
             coords: {
               x: this.x,
               y: this.y,
+              tilesToTravel: this.tilesToTravel
             }
           })
         }
@@ -183,6 +184,7 @@ export default {
             coords: {
               x: this.x,
               y: this.y,
+              tilesToTravel: this.tilesToTravel
             }
           })
         }
@@ -201,6 +203,7 @@ export default {
             coords: {
               x: this.x,
               y: this.y,
+              tilesToTravel: this.tilesToTravel
             }
           })
         }
@@ -219,6 +222,7 @@ export default {
             coords: {
               x: this.x,
               y: this.y,
+              tilesToTravel: this.tilesToTravel
             }
           })
         }

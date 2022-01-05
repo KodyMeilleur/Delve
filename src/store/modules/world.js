@@ -166,7 +166,10 @@ const mutations = {
     storePlayer.y = parseInt(coords.y);
     const tileMovingTo = state.map[coords.x][coords.y];
     storePlayer.outworldTileOccupied = tileMovingTo;
-    console.log(coords, tileMovingTo);
+    if (coords.tilesToTravel === 0 && tileMovingTo.structure) {
+      state.focusedEntity = storePlayer.outworldTileOccupied;
+    }
+    // console.log(storePlayer, coords, tileMovingTo);
   },
 
   cycleTurn (state) {
