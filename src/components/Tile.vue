@@ -13,7 +13,7 @@
   v-on:click="setEntity"
   >
     <span v-if="tile.moveHighlighted || focusedEntity === this.tile"
-    v-on:click.stop="goToTile"
+    v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
       'background-image': 'url(' + publicPath + 'assets/hudSprites/select.png)',
@@ -241,6 +241,7 @@ export default {
       return `${path}`
     },
     setEntity () {
+      console.log('wtf');
       this.setfocusedEntity(this.tile);
     },
     goToTile () {
