@@ -272,11 +272,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .selected,.player-component:hover {
-  outline: 2px white solid;
-  border-radius: 5px;
   cursor: pointer;
   z-index: 10;
   color: rgba(255, 255, 255, 0.5);
+  background-image: url('/assets/hudSprites/select.png');
 }
 .player-sprite {
   position: absolute;
