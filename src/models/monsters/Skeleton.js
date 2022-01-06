@@ -9,7 +9,7 @@ export function Skeleton(x, y) {
   this.type = 'Skeleton';
   this.name = 'Skeleton';
   this.sprite = 'assets/Characters/Skeleton/Outworld/';
-  this.animation = new Animation(2, 'Idle', true);
+  this.animation = new Animation(4, 'Idle', true);
   this.defaultAnimation = this.animation;
   // STATS
   this.hp = 5;

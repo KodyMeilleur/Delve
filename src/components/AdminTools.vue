@@ -53,14 +53,13 @@ export default {
     generateContinent () {
       const randomLandmass = refineLandmass();
       // TODO: Add generation functions? Or move cleanLandmass to a parent function
-      let structures = [];
-      structures = structures.concat(placeResourceStructures(randomLandmass, 'Woods', 10));
-      structures = structures.concat(placeResourceStructures(randomLandmass, 'Mountains', 2));
+      placeResourceStructures(randomLandmass, 'Woods', 10);
+      placeResourceStructures(randomLandmass, 'Mountains', 2);
       cleanLandmass(randomLandmass);
       placeAnchor(randomLandmass);
       placeTotems(randomLandmass, 2);
       // console.log(randomLandmass);
-      this.mergeFirstLandmass({landmass: randomLandmass, name: 'Plains', structures});
+      this.mergeFirstLandmass({landmass: randomLandmass, name: 'Plains'});
       this.updateLogs('Landmass Generated!');
     },
     addPlayerToGame () {

@@ -27,22 +27,23 @@
   </div>
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
+    <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
     <!-- <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
     <span class="info-row">Name: {{ focusedEntity.name }}</span>
-    <span class="info-row">HP: {{ focusedEntity.hp }}</span>
     <span class="info-row">STR: {{ focusedEntity.str }}</span>
     <span class="info-row">DEF: {{ focusedEntity.def }}</span>
     <span class="info-row">INT: {{ focusedEntity.int }}</span>
     <span class="info-row">WIS: {{ focusedEntity.wis }}</span>
     <span class="info-row">MP: {{ focusedEntity.mp }}</span> -->
     <!-- <span class="info-row">Path: {{ focusedEntity.path.length }}</span> -->
-
-    <span class="swap-focus-container">
-      <div
-      v-on:click="switchFocus"
-      class="swap-focus-sprite"></div>
-    </span>
+    <div class="btn-action-container">
+      <span class="swap-focus-container">
+        <div
+        v-on:click="switchFocus"
+        class="swap-focus-sprite"></div>
+      </span>
+    </div>
   </div>
 </div>
 </template>
@@ -80,6 +81,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.btn-action-container {
+  display: flex;
+}
 .entity-ui {
   position: sticky;
   top: 32px;
@@ -90,7 +94,7 @@ export default {
   background-color: transparent;
   z-index: 11;
   margin-right: 69px;
-  /* pointer-events: none; */
+  pointer-events: none;
 }
 .entity-ui.filled {
   background-image: url('/assets/hudSprites/tileInfo.png');
@@ -99,6 +103,7 @@ export default {
   font-weight: 800;
   font-variant: small-caps;
   font-family: system-ui;
+  pointer-events: all;
 }
 .entity-info {
   color: white;
@@ -130,6 +135,20 @@ export default {
   width: 14px;
   height: 14px;
 }
+.info-row-health {
+  position: absolute;
+  top: 36px;
+  left: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.health-icon {
+  background-image: url('/assets/hudSprites/healthIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
+}
 .mp-sprite {
   background-image: url('/assets/hudSprites/mpIcon.png');
   width: 14px;
@@ -158,7 +177,7 @@ export default {
 .swap-focus-container {
   position: absolute;
   top: 78px;
-  left: 8px;
+  right: 8px;
 }
 .explore-sprite-inactive {
   background-image: url('/assets/hudSprites/exploreIconInactive.png');
@@ -173,6 +192,16 @@ export default {
 }
 .swap-focus-sprite:hover {
   transform: scale(1.1,1.1)
+}
+.swap-focus-sprite:hover:before {
+  display: block;
+  content: "Tile View";
+  -webkit-text-stroke-width: 0px;
+  font-weight: 700;
+  font-size: 9px;
+  white-space: nowrap;
+  left: -3px;
+  position: relative;
 }
 .info-row-name {
   position: absolute;

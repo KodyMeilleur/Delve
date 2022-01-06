@@ -1,7 +1,8 @@
 import CONST from '../../CONST';
 import { DefaultPlayer } from '../../models/Player';
 import { returnShallowMapChunk, findPath } from '../../services/pathfinding';
-import { getRandomInt } from '../../services/generateLand';
+import { getRandomInt, listOfEmptyNearTiles } from '../../services/generateLand';
+import SpawnTable from '../../tables/Spawns';
 
 // initial state
 const state = () => ({
@@ -155,7 +156,7 @@ const mutations = {
   },
 
   addMonsterToGame (state, monster) {
-    state.monsters.push(monster)
+    state.monsters.push(monster);
     state.map[monster.x][monster.y].monsters.push(monster);
   },
 
@@ -204,17 +205,27 @@ const mutations = {
       const allStructures = state.continents[0].structures;
       const randomStructure = allStructures[getRandomInt(0, allStructures.length - 1)];
       state.heroSpawnCountdown = CONST.heroSpawnCountdown;
-      console.log(randomStructure);
+      const tilesToPickFrom = listOfEmptyNearTiles(state.map, randomStructure.x, randomStructure.y);
+
+      const spawnTile = tilesToPickFrom[getRandomInt(0, tilesToPickFrom.length - 1)];
+
+      // 0 HARDCODED FOR SKELETON
+      const monster = new SpawnTable['Plains'][randomStructure.type][0](spawnTile.x, spawnTile.y);
+      state.monsters.push(monster);
+      state.map[monster.x][monster.y].monsters.push(monster);
+      state.logs.push(`A new ${monster.type} hope has been born!`);
+
     }
     state.currentTurn = CONST.world;
   },
 
-  mergeFirstLandmass (state, {landmass, name, structures}) {
+  mergeFirstLandmass (state, {landmass, name}) {
     // clear sprites on first land generation
     let map = state.map;
     const landmassPotentialRowSize = CONST.normalRowSize;
     const landmassPotentialColumnSize = CONST.normalColumnSize;
     const boardSize = CONST.defaultRowAndColumnCount;
+    const structures = [];
 
     const startingCellX = (boardSize / 2) - (landmassPotentialRowSize / 2);
     const startingCellY = (boardSize / 2) - (landmassPotentialColumnSize / 2);
@@ -224,6 +235,13 @@ const mutations = {
          landmass[i][k].x = startingCellX + i;
          landmass[i][k].y = startingCellY + k;
          map[startingCellX + i][startingCellY + k] = landmass[i][k];
+         if (landmass[i][k].structure) {
+           structures.push({
+             type: landmass[i][k].structure.type,
+             x: startingCellX + i,
+             y: startingCellY + k
+           })
+         }
        }
     }
 
