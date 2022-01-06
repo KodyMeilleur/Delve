@@ -71,6 +71,12 @@ export default {
   align-items: flex-start;
 }
 
+.control-container {
+  position: absolute;
+  right: 0;
+  display: flex;
+}
+
 .expand-control {
   background-image: url('/assets/hudSprites/expandIcon.png');
   width: 14px;
