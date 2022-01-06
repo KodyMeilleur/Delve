@@ -8,7 +8,7 @@ export function Skeleton(x, y) {
   this.maxMp = 2; // moving points
   this.type = 'Skeleton';
   this.name = 'Skeleton';
-  this.sprite = 'assets/Monsters/Skeleton/';
+  this.sprite = 'assets/Characters/Skeleton/Outworld/';
   this.animation = new Animation(2, 'Idle', true);
   this.defaultAnimation = this.animation;
   // STATS
