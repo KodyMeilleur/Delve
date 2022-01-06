@@ -123,7 +123,6 @@ export function placeResourceStructures (landmass, type, formationCount) {
   let tries = CONST.continentResourceStructurePlacementAttempts;
   const rowLength = landmass[0].length - 1;
   const columnLength = landmass.length - 1;
-  let structures = [];
 
   while (tries && formationCount) {
     const randomX = getRandomInt(0, columnLength - 1);
@@ -134,7 +133,7 @@ export function placeResourceStructures (landmass, type, formationCount) {
       const placementZoneObstructed = checkObstructionZoneTopLeft(landmass, randomX, randomY);
 
       if (placementZoneObstructed === false) {
-        structures = structures.concat(placeZone(landmass, seedCell, type));
+        placeZone(landmass, seedCell, type);
         formationCount--;
       }
     }
@@ -142,7 +141,6 @@ export function placeResourceStructures (landmass, type, formationCount) {
     // check each of 4 orientations to place 3x3 resource formation
     tries--;
   }
-  return structures;
 }
 
 // Cell starts at top left, checks next 3 cells right for 3 rows down
@@ -188,8 +186,25 @@ function checkObstructionZoneMiddle (landmass, x, y) {
   return obstructed;
 }
 
+// Cell starts at middle, checks center 3 cells top, center, and lower rows
+export function listOfEmptyNearTiles (landmass, x, y) {
+  let freeTiles = [];
+
+  for (let i = -1; i < 2; i++) {
+    const tileRow = landmass[x + i] && landmass[x + i].slice(y - 1, y + 2);
+    if (tileRow) {
+      tileRow.forEach((cell) => {
+        if (cell.structure === null && cell.type !== 'Void') {
+          freeTiles.push(cell);
+        }
+      })
+    }
+  }
+
+  return freeTiles;
+}
+
 function placeZone (landmass, seedCell, type) {
-  const structures = [];
   const structureTypes = {
     'Woods': {structure: Woods, formations: WoodFormations},
     'Mountains': {structure: Mountains, formations: MountainFormations},
@@ -203,7 +218,6 @@ function placeZone (landmass, seedCell, type) {
       const currentCell = landmass[seedCell.x + i][seedCell.y + k];
       if (formation[i][k]) {
         const struct = new structureTypes[type].structure();
-        structures.push({type: struct.type});
         currentCell.structure = struct;
         currentCell.mpCost = currentCell.structure.mpCost;
         currentCell.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
@@ -211,7 +225,6 @@ function placeZone (landmass, seedCell, type) {
     }
   }
 
-  return structures;
 }
 
 export function placeAnchor (landmass) {

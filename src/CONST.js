@@ -12,7 +12,7 @@ export default {
   moveAnimationPixelBump: 8,
   monsterAnimationPixelBump: 8,
   continentResourceStructurePlacementAttempts: 50,
-  heroSpawnCountdown: 3,
+  heroSpawnCountdown: 5,
   world: {
     name: 'World'
   }
