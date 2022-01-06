@@ -11,11 +11,14 @@
   v-on:mouseover="onMouseOver"
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.tile}"
   >
-    <span v-if="tile.moveHighlighted"
+    <span v-if="tile.moveHighlighted || focusedEntity === this.tile"
     v-on:click.stop="goToTile"
     class="highlighted"
+    v-bind:style="{
+      'background-image': 'url(' + publicPath + 'assets/hudSprites/select.png)',
+      'background-position': -(64 * currentFrame) + 'px ' + (0) + 'px',
+    }"
     >
     </span>
     <span v-if="potentialPath"
@@ -302,12 +305,11 @@ export default {
   color: rgba(0, 0, 0, 0.1);
   position: relative;
 }
-.selected,.tile-component:hover {
-  outline: 2px white solid;
-  border-radius: 5px;
+.highlighted,.tile-component:hover {
   cursor: pointer;
   z-index: 1;
   color: rgba(255, 255, 255, 0.5);
+  background-image: url('/assets/hudSprites/select.png');
 }
 .active {
   background-color: #200b24;
@@ -333,12 +335,11 @@ export default {
   position: absolute;
   left: 28px;
   top: 22px;
-  visibility: hidden
+  visibility: hidden;
 }
 .highlighted {
-  border-radius: 5px;
-  outline: 1px solid blue;
-  background-color: rgba(200, 200, 255, 0.5);
+  width: 14px;
+  height: 14px;
   width: 100%;
   height: 100%;
   z-index: 10;
