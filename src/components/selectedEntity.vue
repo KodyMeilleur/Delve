@@ -172,10 +172,14 @@ export default {
   width: 14px;
   height: 14px;
 }
+.info-row-mp > .mp-sprite {
+  margin-right: 3px;
+}
 .str-icon {
   background-image: url('/assets/hudSprites/strengthIcon.png');
   width: 14px;
   height: 14px;
+  margin-right: 3px;
 }
 .explore-sprite {
   background-image: url('/assets/hudSprites/exploreIconSleep.png');
