@@ -45,6 +45,7 @@ export default {
       'updateFrame',
       'addNewPlayerToGame',
       'toggleMovingTiles',
+      'updateLogs'
     ]),
     ...mapActions('world', [
       'cycleTurn',
@@ -60,12 +61,14 @@ export default {
       placeTotems(randomLandmass, 2);
       // console.log(randomLandmass);
       this.mergeFirstLandmass({landmass: randomLandmass, name: 'Plains', structures});
+      this.updateLogs('Landmass Generated!');
     },
     addPlayerToGame () {
       const name = window.prompt('Player Name:', '');
       const x = window.prompt("x position to spawn: ", '');
       const y = window.prompt("y position to spawn: ", '');
       this.addNewPlayerToGame({name, x, y});
+      this.updateLogs(`${name} has emerged from the ether!`);
     },
     toggleCreatureSpawner() {
       this.showCreatureSpawner = !this.showCreatureSpawner;

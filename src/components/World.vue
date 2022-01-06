@@ -7,6 +7,7 @@
       class="world-box"
       >
         <SelectedEntity />
+        <Log />
         <div class="landmass">
           <div class="entities">
             <EntityLayer />
@@ -30,6 +31,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 import Tile from './Tile.vue';
 import SelectedEntity from './selectedEntity.vue';
+import Log from './Log.vue';
 import EntityLayer from './EntityLayer.vue';
 
 export default {
@@ -42,6 +44,7 @@ export default {
   components: {
     Tile,
     SelectedEntity,
+    Log,
     EntityLayer,
   },
   updated () {

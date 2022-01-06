@@ -201,6 +201,7 @@ export default {
     ...mapMutations('world', [
       'setfocusedEntity',
       'setPath',
+      'updateLogs'
     ]),
     frameAdvance (frame) {
       if (!this.shouldShow) {
@@ -243,6 +244,7 @@ export default {
       if (this.travelPath) {
         this.setPath({entity: this.currentTurn, path: this.travelPath});
         this.$emit('clearPotentialPath');
+        this.updateLogs(`${this.currentTurn.name} is on the move.`);
       }
     },
     getRandomIntBetween(min, max) {

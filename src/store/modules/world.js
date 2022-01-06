@@ -21,12 +21,16 @@ const state = () => ({
   leftOffset: 0,
   topOffset: 0,
   heroSpawnCountdown: CONST.heroSpawnCountdown,
+  logs: [],
 })
 
 // getters
 const getters = {
   continents: (state) => {
     return state.continents;
+  },
+  logs: (state) => {
+    return state.logs;
   },
   map: (state) => {
     return state.map;
@@ -159,6 +163,10 @@ const mutations = {
     const storeMonster = state.monsters.filter(ent => ent == monster)[0];
     storeMonster.x = parseInt(coords.x);
     storeMonster.y = parseInt(coords.y);
+  },
+
+  updateLogs (state, logString) {
+    state.logs.push(logString);
   },
 
   updatePlayerPosition (state, { player, coords}) {
