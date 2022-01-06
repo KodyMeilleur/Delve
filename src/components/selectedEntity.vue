@@ -28,6 +28,8 @@
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
     <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
+    <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.mp }}</span>
+    <span class="info-row-str"><span class="info-row str-icon"></span>{{ focusedEntity.str }}</span>
     <!-- <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
     <span class="info-row">Name: {{ focusedEntity.name }}</span>
@@ -143,6 +145,22 @@ export default {
   display: flex;
   align-items: center;
 }
+.info-row-mp {
+  position: absolute;
+  top: 52px;
+  left: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.info-row-str {
+  position: absolute;
+  top: 70px;
+  left: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
 .health-icon {
   background-image: url('/assets/hudSprites/healthIcon.png');
   width: 14px;
@@ -151,6 +169,11 @@ export default {
 }
 .mp-sprite {
   background-image: url('/assets/hudSprites/mpIcon.png');
+  width: 14px;
+  height: 14px;
+}
+.str-icon {
+  background-image: url('/assets/hudSprites/strengthIcon.png');
   width: 14px;
   height: 14px;
 }
