@@ -12,12 +12,12 @@
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
   >
-    <span v-if="tile.moveHighlighted || focusedEntity === this.tile"
+    <span v-if="(tile.moveHighlighted || focusedEntity === this.tile) && !potentialPath"
     v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
       'background-image': 'url(' + publicPath + 'assets/hudSprites/select.png)',
-      'background-position': -(64 * currentFrame) + 'px ' + (0) + 'px',
+      'background-position': -(64 * frame) + 'px ' + (0) + 'px',
     }"
     >
     </span>
@@ -334,15 +334,15 @@ export default {
   position: absolute;
   left: 0;
 }
-.potentialPath {
-  border-radius: 5px;
-  outline: 1px solid blue;
-  background-color: rgba(200, 200, 30, 0.5);
+.potentialPath, .potentialPath.highlighted {
   width: 100%;
   height: 100%;
   z-index: 10;
   position: absolute;
   left: 0;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  background-image: url('/assets/hudSprites/potential.png')!important;
 }
 .structure-sprite {
   min-width: 64px;
