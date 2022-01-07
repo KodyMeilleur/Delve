@@ -24,6 +24,9 @@
     <span v-if="potentialPath"
     v-on:click.stop="goToTile"
     class="potentialPath"
+    v-bind:style="{
+      'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+    }"
     >
     </span>
       <div class="tile-sprite">
