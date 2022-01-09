@@ -262,9 +262,11 @@ export default {
       if (this.overTimeout) {
         clearTimeout(this.overTimeout);
       }
-      this.overTimeout = setTimeout(() => {
-        this.lookForPath();
-      }, 50)
+      if (this.shouldShow) {
+        this.overTimeout = setTimeout(() => {
+          this.lookForPath();
+        }, 50);
+      }
     },
     lookForPath() {
       if (this.tile.moveHighlighted) {
