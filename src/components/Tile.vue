@@ -12,7 +12,7 @@
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
   >
-    <span v-if="(tile.moveHighlighted || focusedEntity === this.tile) && !potentialPath"
+    <span v-if="(tile.moveHighlighted || focusedEntity === this.tile || this.hover) && !potentialPath"
     v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
@@ -96,6 +96,7 @@ export default {
       height: CONST.tileHeight,
       publicPath: process.env.BASE_URL,
       shouldShow: false,
+      hover: false,
       frame: 0,
       // Variables for scroll data
       xOffset: 0,
@@ -257,6 +258,7 @@ export default {
 
     },
     onMouseOver() {
+      this.hover = true;
       if (this.overTimeout) {
         clearTimeout(this.overTimeout);
       }
@@ -274,6 +276,7 @@ export default {
       }
     },
     onMouseExit() {
+      this.hover = false;
       if (this.overTimeout) {
         clearTimeout(this.overTimeout);
       }
@@ -296,12 +299,15 @@ export default {
   color: rgba(0, 0, 0, 0.1);
   position: relative;
 }
-.highlighted,.tile-component:hover {
+/* .tile-component:hover {
   cursor: pointer;
   z-index: 1;
   color: rgba(255, 255, 255, 0.5);
   background-image: url('/assets/hudSprites/select.png');
-}
+} */
+/* .highlighted.tile-component:hover {
+  background-image: none
+} */
 .active {
   background-color: #200b24;
 }
@@ -329,13 +335,14 @@ export default {
   visibility: hidden;
 }
 .highlighted {
-  width: 14px;
-  height: 14px;
+  /* width: 14px;
+  height: 14px; */
   width: 100%;
   height: 100%;
   z-index: 10;
   position: absolute;
   left: 0;
+  background-image: url('/assets/hudSprites/select.png');
 }
 .potentialPath, .potentialPath.highlighted {
   width: 100%;
