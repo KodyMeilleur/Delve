@@ -28,8 +28,13 @@
   <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
     <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
     <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
+    <span class="info-row-en"><span class="info-row en-sprite"></span>{{ focusedEntity.en }}</span>
     <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.mp }}</span>
-    <span class="info-row-str"><span class="info-row str-icon"></span>{{ focusedEntity.str }}</span>
+    <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.str }}</span>
+    <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.def }}</span>
+    <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.int }}</span>
+    <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.wis }}</span>
+
     <!-- <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
     <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
     <span class="info-row">Name: {{ focusedEntity.name }}</span>
@@ -139,8 +144,32 @@ export default {
 }
 .info-row-health {
   position: absolute;
+  top: 15px;
+  right: 10px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.info-row-en {
+  position: absolute;
   top: 36px;
   left: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.info-row-str {
+  position: absolute;
+  top: 36px;
+  left: 50px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.info-row-def {
+  position: absolute;
+  top: 52px;
+  left: 50px;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -153,7 +182,15 @@ export default {
   display: flex;
   align-items: center;
 }
-.info-row-str {
+.info-row-int {
+  position: absolute;
+  top: 70px;
+  left: 50px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.info-row-wis {
   position: absolute;
   top: 70px;
   left: 12px;
@@ -171,11 +208,36 @@ export default {
   background-image: url('/assets/hudSprites/mpIcon.png');
   width: 14px;
   height: 14px;
+  margin-right: 3px;
+}
+.en-sprite {
+  background-image: url('/assets/hudSprites/enIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
+}
+.def-sprite {
+  background-image: url('/assets/hudSprites/defIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
+}
+.int-sprite {
+  background-image: url('/assets/hudSprites/intIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
+}
+.wis-sprite {
+  background-image: url('/assets/hudSprites/wisIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
 }
 .info-row-mp > .mp-sprite {
   margin-right: 3px;
 }
-.str-icon {
+.str-sprite {
   background-image: url('/assets/hudSprites/strengthIcon.png');
   width: 14px;
   height: 14px;
