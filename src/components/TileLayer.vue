@@ -1,10 +1,12 @@
 <template>
   <div class="landmass">
     <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
-        <Tile v-for="cell in row"
-          :tile="cell"
-          v-bind:key="cell.id"
-        />
+      <Tile v-for="cell in row"
+        :tile="cell"
+        v-on:potentialPathCalc="updatePotentialPath"
+        v-on:clearPotentialPath="clearPotentialPath"
+        v-bind:key="cell.id"
+      />
     </div>
   </div>
 </template>
@@ -33,7 +35,16 @@ export default {
   updated () {
     console.log('entitylayer render...');
   },
-  methods: {},
+  methods: {
+    updatePotentialPath (path) {
+      this.potentialPath = path;
+      this.$emit('updateTilePaths', this.potentialPath);
+    },
+    clearPotentialPath () {
+      this.potentialPath = [];
+      this.$emit('updateTilePaths', this.potentialPath);
+    },
+  },
 }
 </script>
 
