@@ -3,6 +3,7 @@
     <div class="btn-container">
       <button @click="generateContinent">Generate Continent</button>
       <button @click="addPlayerToGame">Add Player</button>
+      <button @click="quickPlayerAdd">Quick Add Player</button>
       <button @click="toggleCreatureSpawner">Add Monster</button>
       <button :disabled="!currentTurn || currentTurn && currentTurn.mp <= 0" @click="movePlayer">Move Player</button>
       <button :disabled="isMonsterMoving === true" @click="endTurn">End Turn</button>
@@ -67,6 +68,11 @@ export default {
       const x = window.prompt("x position to spawn: ", '');
       const y = window.prompt("y position to spawn: ", '');
       this.addNewPlayerToGame({name, x, y});
+      this.updateLogs(`${name} has emerged from the ether!`);
+    },
+    quickPlayerAdd() {
+      const name = window.prompt('Player Name:', '');
+      this.addNewPlayerToGame({name, x:25, y:25});
       this.updateLogs(`${name} has emerged from the ether!`);
     },
     toggleCreatureSpawner() {
