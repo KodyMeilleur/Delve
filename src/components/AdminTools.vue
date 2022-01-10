@@ -37,6 +37,7 @@ export default {
       'canMove',
       'focusedEntity',
       'moveTiles',
+      'showMoveTiles',
       'isMonsterMoving',
       'currentTurn',
     ])
@@ -82,7 +83,7 @@ export default {
     movePlayer () {
       if (this.isMoving === false && this.canMove) {
         let tilesToLight;
-        if (this.moveTiles.length === 0) {
+        if (this.showMoveTiles === false) {
           const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
           tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
         }

@@ -24,6 +24,7 @@ const state = () => ({
   topOffset: 0,
   heroSpawnCountdown: CONST.heroSpawnCountdown,
   logs: [],
+  showMoveTiles: false,
 })
 
 // getters
@@ -70,6 +71,9 @@ const getters = {
   moveTiles: (state) => {
     return state.moveTiles;
   },
+  showMoveTiles: (state) => {
+    return state.showMoveTiles;
+  },
 }
 
 // actions
@@ -110,25 +114,16 @@ const mutations = {
   },
   setPath(state, { entity, path }) {
     entity.path = path;
-    state.moveTiles.forEach((tile) => {
-      state.map[tile.x][tile.y].moveHighlighted = false;
-    })
-    state.moveTiles = [];
+    state.showMoveTiles = false;
     state.focusedEntity = null;
   },
   //TODO: Will need a search function for finding all tiles within an MP limit
   toggleMovingTiles (state, tilesToLight) {
-    if (state.moveTiles.length) {
-      state.moveTiles.forEach((tile) => {
-        state.map[tile.x][tile.y].moveHighlighted = false;
-      })
-      state.moveTiles = [];
-      state.focusedEntity = null;
+    if (!tilesToLight) {
+      state.showMoveTiles = false;
     } else {
-      state.moveTiles = tilesToLight;
-      tilesToLight.forEach((tile) => {
-        state.map[tile.x][tile.y].moveHighlighted = true;
-      })
+      state.moveTiles = tilesToLight.map((tile) => {return {x: tile.x, y: tile.y}});
+      state.showMoveTiles = true;
     }
   },
 
