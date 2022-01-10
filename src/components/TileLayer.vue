@@ -33,7 +33,7 @@ export default {
     }
   },
   updated () {
-    console.log('entitylayer render...');
+    console.log('TileLayer render...');
   },
   methods: {
     updatePotentialPath (path) {

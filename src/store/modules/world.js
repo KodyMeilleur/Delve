@@ -222,9 +222,7 @@ const mutations = {
 
   mergeFirstLandmass (state, {landmass, name}) {
     // clear sprites on first land generation
-    // let map = [];
     let map = createFilledLandmass(CONST.defaultRowAndColumnCount, CONST.defaultRowAndColumnCount, VoidTile);
-    console.log(map);
     const landmassPotentialRowSize = CONST.normalRowSize;
     const landmassPotentialColumnSize = CONST.normalColumnSize;
     const boardSize = CONST.defaultRowAndColumnCount;
@@ -254,7 +252,6 @@ const mutations = {
       name,
       structures
     });
-    console.log(state.continents);
   },
 
   setContinents (state, continents) {

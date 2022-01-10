@@ -27,9 +27,6 @@ export default {
     ...mapMutations('world', [
       'setLogFilter',
     ]),
-    // switchFocus () {
-    //   this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
-    // }
   },
   computed: {
     ...mapGetters('world', [
@@ -50,9 +47,6 @@ export default {
   background-color: transparent;
   z-index: 11;
   background-image: url('/assets/hudSprites/logGraphic.png');
-  /* -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
-  font-weight: 800; */
   font-variant: small-caps;
   font-family: system-ui;
   float: right;

@@ -34,16 +34,6 @@
     <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.def }}</span>
     <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.int }}</span>
     <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.wis }}</span>
-
-    <!-- <span class="info-row">Selected Tile X: {{ focusedEntity.x }}</span>
-    <span class="info-row">Selected Tile Y: {{ focusedEntity.y }}</span>
-    <span class="info-row">Name: {{ focusedEntity.name }}</span>
-    <span class="info-row">STR: {{ focusedEntity.str }}</span>
-    <span class="info-row">DEF: {{ focusedEntity.def }}</span>
-    <span class="info-row">INT: {{ focusedEntity.int }}</span>
-    <span class="info-row">WIS: {{ focusedEntity.wis }}</span>
-    <span class="info-row">MP: {{ focusedEntity.mp }}</span> -->
-    <!-- <span class="info-row">Path: {{ focusedEntity.path.length }}</span> -->
     <div class="btn-action-container">
       <span class="swap-focus-container">
         <div
