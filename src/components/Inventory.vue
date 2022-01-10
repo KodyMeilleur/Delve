@@ -106,7 +106,7 @@ export default {
   background-image: url('/assets/hudSprites/inventory.png');
   position: absolute;
   top: -310px;
-  left: 65px;
+  left: 300px;
 }
 .item-slot {
   width: 91px;
