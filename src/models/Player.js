@@ -1,7 +1,7 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
 import { Animation } from './Animation.js';
-
+import { MagicBean } from '../models/items/nurture/MagicBean.js';
 export function DefaultPlayer(name, x, y) {
 
   this.id = uuidv4();
@@ -37,7 +37,7 @@ export function DefaultPlayer(name, x, y) {
   this.pts = CONST.startingStatPoints;
 
   this.technologies = [];
-  this.items = [];
+  this.items = [new MagicBean(3)];
 
   this.equipment = {
     leftHand: {},

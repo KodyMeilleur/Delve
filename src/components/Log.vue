@@ -56,7 +56,7 @@ export default {
   font-variant: small-caps;
   font-family: system-ui;
   float: right;
-  margin-right: 610px;
+  margin-right: 614px;
 }
 
 .log-info {
