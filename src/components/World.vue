@@ -9,18 +9,15 @@
         <SelectedEntity />
         <Log />
         <Inventory />
-        <div class="landmass">
+        <div
+        v-bind:class="{
+          shaking,
+        }"
+        >
           <div class="entities">
             <EntityLayer />
           </div>
-          <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
-              <Tile v-for="cell in row"
-                :tile="cell"
-                v-on:potentialPathCalc="updatePotentialPath"
-                v-on:clearPotentialPath="clearPotentialPath"
-                v-bind:key="cell.id"
-              />
-          </div>
+          <TileLayer :map="map"/>
         </div>
       </div>
     </div>
@@ -30,29 +27,31 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 
-import Tile from './Tile.vue';
 import SelectedEntity from './selectedEntity.vue';
 import Inventory from './Inventory.vue';
 import Log from './Log.vue';
 
 import EntityLayer from './EntityLayer.vue';
+import TileLayer from './TileLayer.vue';
 
 export default {
   name: 'World',
   props: [
     'msg',
     'currentTurn',
-    'frame'
   ],
   components: {
-    Tile,
     SelectedEntity,
     Log,
     EntityLayer,
+    TileLayer,
     Inventory,
   },
+  mounted () {
+    this.$root.$on('shakeWorld', this.shakeEffect);
+  },
   updated () {
-    console.log('world re-render')
+    console.log('world render');
     this.setScroll({scrollLeft: this.scrollLeftCache += 2, scrollTop: this.scrollTopCache += 2});
   },
   data () {
@@ -60,7 +59,9 @@ export default {
       repositories: [],
       scrollLeftCache: 0,
       scrollTopCache: 0,
-      potentialPath: [],
+      shakeVerticalOffset: 0,
+      shakeHorizontalOffset: 0,
+      shaking: false
     }
   },
   computed: {
@@ -74,14 +75,9 @@ export default {
     ...mapMutations('world', [
       'setScroll',
     ]),
-    updatePotentialPath (path) {
-      this.potentialPath = path;
-      this.$emit('updateTilePaths', this.potentialPath);
-    },
-    clearPotentialPath () {
-      this.potentialPath = [];
-      this.$emit('updateTilePaths', this.potentialPath);
 
+    shakeEffect () {
+      this.shaking = !this.shaking;
     },
     handleScroll ($event) {
       const that = this;
@@ -115,17 +111,6 @@ export default {
   background-color: #33232a;
   position: relative;
 }
-.landmass {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 0;
-  left: 0;
-}
-.row {
-  display: inline-flex;
-  height: 64px;
-}
 .entities {
   width: 0;
   height: 0;
@@ -136,5 +121,24 @@ export default {
 .turn-order {
   position: relative;
   top: -10px;
+}
+.shaking {
+  animation: shake 0.5s;
+
+/* When the animation is finished, start again */
+  animation-iteration-count: infinite;
+}
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 </style>

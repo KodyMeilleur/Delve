@@ -1,7 +1,8 @@
 import CONST from '../../CONST';
 import { DefaultPlayer } from '../../models/Player';
+import { VoidTile } from '../../models/Tile';
 import { returnShallowMapChunk, findPath } from '../../services/pathfinding';
-import { getRandomInt, listOfEmptyNearTiles } from '../../services/generateLand';
+import { getRandomInt, listOfEmptyNearTiles, createFilledLandmass } from '../../services/generateLand';
 import SpawnTable from '../../tables/Spawns';
 
 // initial state
@@ -221,7 +222,9 @@ const mutations = {
 
   mergeFirstLandmass (state, {landmass, name}) {
     // clear sprites on first land generation
-    let map = state.map;
+    // let map = [];
+    let map = createFilledLandmass(CONST.defaultRowAndColumnCount, CONST.defaultRowAndColumnCount, VoidTile);
+    console.log(map);
     const landmassPotentialRowSize = CONST.normalRowSize;
     const landmassPotentialColumnSize = CONST.normalColumnSize;
     const boardSize = CONST.defaultRowAndColumnCount;
@@ -246,7 +249,6 @@ const mutations = {
     }
 
     // console.log(state.map)
-    state.map = []; // TODO: Find a better way to set arrays in data store. Maybe an action and then a mutation?
     state.map = map;
     state.continents.push({
       name,

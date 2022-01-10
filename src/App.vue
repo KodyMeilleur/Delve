@@ -86,7 +86,7 @@ export default {
             frame++;
           }
           oldTimeStamp = now;
-          this.$root.$emit('frameBump', frame)
+          this.$root.$emit('frameBump', frame);
         }
       };
 

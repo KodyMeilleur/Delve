@@ -1,0 +1,53 @@
+<template>
+  <div class="landmass">
+    <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
+        <Tile v-for="cell in row"
+          :tile="cell"
+          v-bind:key="cell.id"
+        />
+    </div>
+  </div>
+</template>
+
+<script>
+import CONST from '../CONST';
+import Tile from './Tile.vue';
+
+export default {
+  name: 'TileLayer',
+  props: {
+    map: Array
+  },
+  components: {
+    Tile,
+  },
+  data () {
+    return {
+      CONST: CONST,
+      totalMonsterCount: 0,
+      currentFinishedMonsterTurns: 0,
+      currentFrame: 0,
+      potentialPath: [],
+    }
+  },
+  updated () {
+    console.log('entitylayer render...');
+  },
+  methods: {},
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.row {
+  display: inline-flex;
+  height: 64px;
+}
+.landmass {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+</style>

@@ -7,6 +7,7 @@
       <button @click="toggleCreatureSpawner">Add Monster</button>
       <button :disabled="!currentTurn || currentTurn && currentTurn.mp <= 0" @click="movePlayer">Move Player</button>
       <button :disabled="isMonsterMoving === true" @click="endTurn">End Turn</button>
+      <button  @click="shakeWorld">Shake World</button>
     </div>
     <CreatureSpawner :shouldShow="showCreatureSpawner" v-on:close="toggleCreatureSpawner"/>
   </div>
@@ -92,6 +93,9 @@ export default {
       this.cycleTurn();
       // this.$emit('cycleTurn');
     },
+    shakeWorld () {
+      this.$root.$emit('shakeWorld');
+    }
   },
 }
 </script>

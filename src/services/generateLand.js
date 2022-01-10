@@ -408,7 +408,7 @@ export function createFilledLandmass(row, column, Tile) {
   for (let i = 0; i < row; i++) {
     const newRow = [];
      for (let k = 0; k < column; k++) {
-       let tile = new Tile(i,k, '');
+       let tile = new Tile(i, k, '');
        newRow.push(tile);
      }
     defaultLandArray.push(newRow);
