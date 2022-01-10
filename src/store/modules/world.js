@@ -253,6 +253,12 @@ const mutations = {
     state.continents = continents;
   },
 
+  setStructureExplored (state, tile) {
+    if (tile.structure) {
+      tile.structure.explored = true;
+    }
+  },
+
   setDisasterStatus (state, status) {
     state.disasterOngoing = status;
   }

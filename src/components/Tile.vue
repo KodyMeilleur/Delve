@@ -42,7 +42,7 @@
               top: (bumpVerticalFramePosition - 15) + 'px',
               left: (bumpHorizontalFramePosition) + 'px',
             }"
-            v-if="tile.structure.explorable"
+            v-if="tile.structure.explorable && tile.structure.explored === false"
             class="structure-sprite-effect"
             >
             </div>
