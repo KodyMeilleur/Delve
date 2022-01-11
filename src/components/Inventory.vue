@@ -12,9 +12,10 @@
       </div>
     </div>
     <div class="item-description unselectable">{{ focusedItem.description }}</div>
-    <div class="items" v-for="item in inventory" v-bind:key="item.name + item.quantity">
+    <div class="items">
       <div
       class="item-slot unselectable"
+      v-for="item in inventory" v-bind:key="item.name + item.quantity"
       v-bind:class="{ 'selected': focusedItem.name === item.name}"
       v-on:click="focus(item)">
         <div class="item-text">
