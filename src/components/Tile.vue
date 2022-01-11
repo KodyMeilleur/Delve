@@ -12,7 +12,7 @@
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
   >
-    <span v-if="(tile.moveHighlighted || focusedEntity === this.tile || this.hover) && !potentialPath"
+    <span v-if="(this.moveHighlighted || focusedEntity === this.tile || this.hover) && !potentialPath"
     v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
@@ -42,7 +42,7 @@
               top: (bumpVerticalFramePosition - 15) + 'px',
               left: (bumpHorizontalFramePosition) + 'px',
             }"
-            v-if="tile.structure.explorable"
+            v-if="tile.structure.explorable && tile.structure.explored === false"
             class="structure-sprite-effect"
             >
             </div>
@@ -182,6 +182,22 @@ export default {
         this.$root.$off('frameBump', this.frameAdvance);
       }
     },
+    showMoveTiles: function(val) {
+      if (this.shouldShow) {
+        if (val) {
+          const thisTile = this.moveTiles.filter((tile) => {
+            return tile.x === this.tile.x && tile.y === this.tile.y;
+          })
+          if (thisTile.length) {
+            this.moveHighlighted = true;
+          }
+        } else {
+          if (this.moveHighlighted === true) {
+            this.moveHighlighted = false;
+          }
+        }
+      }
+    }
   },
   computed: {
       ...mapGetters('world', [
@@ -190,7 +206,9 @@ export default {
       'topOffset',
       'focusedEntity',
       'currentTurn',
-    ])
+      'moveTiles',
+      'showMoveTiles'
+    ]),
   },
   methods: {
     ...mapMutations('world', [
@@ -269,7 +287,7 @@ export default {
       }
     },
     lookForPath() {
-      if (this.tile.moveHighlighted) {
+      if (this.moveHighlighted) {
         const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
         const path = findPath(areaAroundPlayer, {x: this.currentTurn.x, y: this.currentTurn.y, mp: this.currentTurn.mp}, {x: this.tile.x, y: this.tile.y});
         this.travelPath = path;

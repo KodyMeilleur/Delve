@@ -16,12 +16,27 @@
       </div>
     </span>
     <span class="action-container">
-      <div>
+      <div class="explore-container">
         <div
-        v-bind:class="{ 'explore-sprite': inArea === true, 'explore-sprite-out': inArea === false}"
+        v-on:click="exploreStructure"
+        v-bind:class="{ 'explore-sprite': inArea === true}"
         >
         </div>
         <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
+      </div>
+      <div class="nurture-container" v-if="focusedEntity.structure">
+        <div
+        v-bind:class="{ 'nurture-sprite': inArea === true && this.focusedEntity.structure.explored}"
+        >
+        </div>
+        <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="nurture-sprite-inactive"></div>
+      </div>
+      <div class="exploit-container" v-if="focusedEntity.structure">
+        <div
+        v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored}"
+        >
+        </div>
+        <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="exploit-sprite-inactive"></div>
       </div>
     </span>
   </div>
@@ -58,9 +73,13 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntityOverride',
+      'setStructureExplored',
     ]),
     switchFocus () {
       this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
+    },
+    exploreStructure () {
+      this.setStructureExplored(this.focusedEntity);
     }
   },
   computed: {
@@ -126,6 +145,7 @@ export default {
   position: absolute;
   top: 78px;
   left: 8px;
+  display: flex;
 }
 .tier-star {
   background-image: url('/assets/hudSprites/tierStar.png');
@@ -262,6 +282,50 @@ export default {
   background-image: url('/assets/hudSprites/exploreIconInactive.png');
   width: 32px;
   height: 32px;
+}
+.nurture-sprite {
+  background-image: url('/assets/hudSprites/nurtureIconSleep.png');
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.nurture-sprite-inactive {
+  background-image: url('/assets/hudSprites/nurtureIconInactive.png');
+  width: 32px;
+  height: 32px;
+}
+.exploit-sprite {
+  background-image: url('/assets/hudSprites/demolishIconSleep.png');
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.exploit-sprite-inactive {
+  background-image: url('/assets/hudSprites/demolishIconInactive.png');
+  width: 32px;
+  height: 32px;
+}
+.exploit-sprite:hover {
+  transform: scale(1.1,1.1);
+  background-image: url('/assets/hudSprites/demolishIcon.png');
+}
+.nurture-sprite:hover {
+  transform: scale(1.1,1.1);
+  background-image: url('/assets/hudSprites/nurtureIcon.png');
+}
+.nurture-sprite:hover:before {
+  display: block;
+  content: "Nurture";
+  -webkit-text-stroke-width: 0px;
+  font-weight: 700;
+  font-size: 9px;
+}
+.exploit-sprite:hover:before {
+  display: block;
+  content: "Exploit";
+  -webkit-text-stroke-width: 0px;
+  font-weight: 700;
+  font-size: 9px;
 }
 .swap-focus-sprite {
   background-image: url('/assets/hudSprites/swapFocus.png');

@@ -11,14 +11,16 @@
       >
       </div>
     </div>
-    <div class="item-description">{{ focusedItem.description }}</div>
+    <div class="item-description unselectable">{{ focusedItem.description }}</div>
     <div class="items" v-for="item in inventory" v-bind:key="item.name + item.quantity">
       <div
-      class="item-slot"
+      class="item-slot unselectable"
       v-bind:class="{ 'selected': focusedItem.name === item.name}"
       v-on:click="focus(item)">
-        <span>{{ item.name }}</span>
-        <span>x{{ item.quantity }}</span>
+        <div class="item-text">
+          <span>{{ item.name }}</span>
+          <span>x{{ item.quantity }}</span>
+        </div>
         </div>
     </div>
   </div>
@@ -96,7 +98,7 @@ export default {
   cursor: pointer;
 }
 .inventory-sprite:hover, .close-sprite:hover {
-  transform: scale(1.1,1.1)
+  transform: scale(1.1,1.1);
 }
 .inventory-menu {
   width: 240px;
@@ -104,7 +106,7 @@ export default {
   background-image: url('/assets/hudSprites/inventory.png');
   position: absolute;
   top: -310px;
-  left: 65px;
+  left: 300px;
 }
 .item-slot {
   width: 91px;
@@ -117,9 +119,13 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: relative;
 }
 .item-slot:hover {
   background-image: url('/assets/hudSprites/hoverItemSlot.png');
+}
+.item-slot:hover > .item-text, .item-slot.selected > .item-text {
+  top: -3px;
 }
 .item-slot.selected {
   background-image: url('/assets/hudSprites/hoverItemSlot.png');
@@ -158,5 +164,21 @@ export default {
 .item-sprite {
   width: 32px;
   height: 32px;
+}
+.item-text {
+  position: relative;
+  top: -5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 </style>
