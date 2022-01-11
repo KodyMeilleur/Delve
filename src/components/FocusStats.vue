@@ -50,7 +50,7 @@
           </div>
           <div class="int stat">
             <div class="stat-inner">
-              <div>INT</div>
+              <div>INT&nbsp;</div>
               <div class="stat-box">{{currentTurn.int}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
