@@ -98,7 +98,7 @@ export default {
   cursor: pointer;
 }
 .inventory-sprite:hover, .close-sprite:hover {
-  transform: scale(1.1,1.1)
+  transform: scale(1.1,1.1);
 }
 .inventory-menu {
   width: 240px;

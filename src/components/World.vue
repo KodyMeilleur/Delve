@@ -9,6 +9,7 @@
         <SelectedEntity />
         <Log />
         <Inventory />
+        <FocusStats />
         <div
         v-bind:class="{
           shaking,
@@ -30,6 +31,7 @@ import { mapGetters, mapMutations } from 'vuex';
 import SelectedEntity from './selectedEntity.vue';
 import Inventory from './Inventory.vue';
 import Log from './Log.vue';
+import FocusStats from './FocusStats.vue';
 
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
@@ -46,6 +48,7 @@ export default {
     EntityLayer,
     TileLayer,
     Inventory,
+    FocusStats,
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
