@@ -7,53 +7,65 @@
       <div class="focus-stats focus-block">
         <div class="stat-column">
           <div class="hp stat">
-            <div>HP</div>
-            <div class="stat-box">{{currentTurn.hp}}</div>
-            <div class="arrows">
-              <div class="up-arrow sm-sprite"></div>
-              <div class="down-arrow sm-sprite"></div>
+            <div class="stat-inner">
+              <div>HP</div>
+              <div class="stat-box">{{currentTurn.hp}}</div>
+              <div class="arrows">
+                <div class="up-arrow sm-sprite"></div>
+                <div class="down-arrow sm-sprite"></div>
+              </div>
             </div>
           </div>
           <div class="en stat">
-            <div>EN</div>
-            <div class="stat-box">{{currentTurn.en}}</div>
-            <div class="arrows">
-              <div class="up-arrow sm-sprite"></div>
-              <div class="down-arrow sm-sprite"></div>
+            <div class="stat-inner">
+              <div>EN</div>
+              <div class="stat-box">{{currentTurn.en}}</div>
+              <div class="arrows">
+                <div class="up-arrow sm-sprite"></div>
+                <div class="down-arrow sm-sprite"></div>
+              </div>
             </div>
           </div>
           <div class="str stat">
-            <div>STR</div>
-            <div class="stat-box">{{currentTurn.str}}</div>
-            <div class="arrows">
-              <div class="up-arrow sm-sprite"></div>
-              <div class="down-arrow sm-sprite"></div>
+            <div class="stat-inner">
+              <div>STR</div>
+              <div class="stat-box">{{currentTurn.str}}</div>
+              <div class="arrows">
+                <div class="up-arrow sm-sprite"></div>
+                <div class="down-arrow sm-sprite"></div>
+              </div>
             </div>
           </div>
         </div>
         <div class="stat-column">
-          <div class="hp stat">
-            <div>DEF</div>
-            <div class="stat-box">{{currentTurn.def}}</div>
-            <div class="arrows">
-              <div class="up-arrow sm-sprite"></div>
-              <div class="down-arrow sm-sprite"></div>
+          <div class="def stat">
+            <div class="stat-inner">
+              <div>DEF</div>
+              <div class="stat-box">{{currentTurn.def}}</div>
+              <div class="arrows">
+                <div class="up-arrow sm-sprite"></div>
+                <div class="down-arrow sm-sprite"></div>
+              </div>
             </div>
           </div>
-          <div class="en stat">
-            <div>INT</div>
-            <div class="stat-box">{{currentTurn.int}}</div>
-            <div class="arrows">
-              <div class="up-arrow sm-sprite"></div>
-              <div class="down-arrow sm-sprite"></div>
+          <div class="int stat">
+            <div class="stat-inner">
+              <div>INT</div>
+              <div class="stat-box">{{currentTurn.int}}</div>
+              <div class="arrows">
+                <div class="up-arrow sm-sprite"></div>
+                <div class="down-arrow sm-sprite"></div>
+              </div>
             </div>
           </div>
-          <div class="str stat">
-            <div>WIS</div>
-            <div class="stat-box">{{currentTurn.wis}}</div>
-            <div class="arrows">
-              <div class="up-arrow sm-sprite"></div>
-              <div class="down-arrow sm-sprite"></div>
+          <div class="wis stat">
+            <div class="stat-inner">
+              <div>WIS</div>
+              <div class="stat-box">{{currentTurn.wis}}</div>
+              <div class="arrows">
+                <div class="up-arrow sm-sprite"></div>
+                <div class="down-arrow sm-sprite"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -165,7 +177,7 @@ export default {
 }
 .sm-sprite {
   width: 14px;
-  height: 14px;
+  height: 10px;
   cursor: pointer;
 }
 .sm-sprite:hover {
@@ -180,6 +192,15 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 80px;
+  background-image: url('/assets/hudSprites/statBackground.png');
+  height: 28px;
+}
+.stat-inner {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 4px;
+  align-items: center;
 }
 .up-arrow {
   background-image: url('/assets/hudSprites/statUpIcon.png');
