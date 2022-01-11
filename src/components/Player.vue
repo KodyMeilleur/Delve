@@ -283,6 +283,7 @@ export default {
   max-width: 64px;
   min-height: 64px;
   max-height: 64px;
+  top: -7px;
 }
 .player-info {
   position: absolute;
