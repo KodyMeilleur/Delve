@@ -177,6 +177,9 @@ export default {
 }
 .stat {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80px;
 }
 .up-arrow {
   background-image: url('/assets/hudSprites/statUpIcon.png');
