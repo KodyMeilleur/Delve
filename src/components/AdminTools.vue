@@ -73,8 +73,7 @@ export default {
       this.updateLogs(`${name} has emerged from the ether!`);
     },
     quickPlayerAdd() {
-      const name = window.prompt('Player Name:', '');
-      this.addNewPlayerToGame({name, x:25, y:25});
+      this.addNewPlayerToGame({name: 'Z', x:25, y:25});
       this.updateLogs(`${name} has emerged from the ether!`);
     },
     toggleCreatureSpawner() {

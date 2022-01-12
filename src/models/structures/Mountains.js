@@ -7,11 +7,11 @@ export function Mountains () {
   this.sprite = 'assets/Tiles/Plains/Mountains/sheet';
   this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
   this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
-  this.unexploredFrames = 10;
+  this.unexploredFrames = 11;
   this.unexploredDelayFrameMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   this.hp = 10;
   this.mpCost = 3;
-  this.name = 'Mountains';
+  this.name = 'Red Mountains';
 
   this.loot = [
     new Stone(3),
