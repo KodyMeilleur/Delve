@@ -14,7 +14,11 @@ export function Woods () {
   this.name = 'Woods';
 
   this.loot = [
-    new Wood(1),
+    {
+      item: Wood,
+      chance: 90,
+      amount: 3,
+    }
   ];
 }
 

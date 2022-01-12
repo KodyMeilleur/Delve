@@ -2,8 +2,6 @@ import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
 import { Animation } from './Animation.js';
 import { MagicBean } from '../models/items/nurture/MagicBean.js';
-import { Wood } from '../models/items/resources/Wood.js';
-import { Stone } from '../models/items/resources/Stone.js';
 
 export function DefaultPlayer(name, x, y) {
 
@@ -40,7 +38,7 @@ export function DefaultPlayer(name, x, y) {
   this.pts = CONST.startingStatPoints;
 
   this.technologies = [];
-  this.items = [new MagicBean(3), new Wood(1), new Stone(5)];
+  this.items = [new MagicBean(3)];
 
   this.equipment = {
     leftHand: {},

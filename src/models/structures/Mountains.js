@@ -14,7 +14,11 @@ export function Mountains () {
   this.name = 'Red Mountains';
 
   this.loot = [
-    new Stone(3),
+    {
+      item: Stone,
+      chance: 90,
+      amount: 3,
+    }
   ];
 }
 

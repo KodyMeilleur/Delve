@@ -6,10 +6,11 @@
       v-on:scroll.passive="handleScroll"
       class="world-box"
       >
-        <SelectedEntity />
+        <SelectedEntity v-on:lootStructure="loot"/>
         <Log />
         <Inventory />
         <FocusStats />
+        <LootMenu :lootTile="lootTile"/>
         <div
         v-bind:class="{
           shaking,
@@ -32,6 +33,7 @@ import SelectedEntity from './selectedEntity.vue';
 import Inventory from './Inventory.vue';
 import Log from './Log.vue';
 import FocusStats from './FocusStats.vue';
+import LootMenu from './LootMenu.vue';
 
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
@@ -49,6 +51,7 @@ export default {
     TileLayer,
     Inventory,
     FocusStats,
+    LootMenu,
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
@@ -64,7 +67,8 @@ export default {
       scrollTopCache: 0,
       shakeVerticalOffset: 0,
       shakeHorizontalOffset: 0,
-      shaking: false
+      shaking: false,
+      lootTile: null,
     }
   },
   computed: {
@@ -78,7 +82,10 @@ export default {
     ...mapMutations('world', [
       'setScroll',
     ]),
-
+    loot (tile) {
+      const newTile = Object.assign({}, tile);
+      this.lootTile = newTile;
+    },
     shakeEffect () {
       this.shaking = !this.shaking;
     },

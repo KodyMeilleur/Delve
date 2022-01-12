@@ -74,7 +74,7 @@ export default {
     },
     quickPlayerAdd() {
       this.addNewPlayerToGame({name: 'Z', x:25, y:25});
-      this.updateLogs(`${name} has emerged from the ether!`);
+      this.updateLogs(`Z has emerged from the ether!`);
     },
     toggleCreatureSpawner() {
       this.showCreatureSpawner = !this.showCreatureSpawner;
