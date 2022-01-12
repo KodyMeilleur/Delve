@@ -2,7 +2,7 @@
   <div class="loot-ui"
   >
   <div class="loot-menu" v-if="activeTile">
-    <span class="loot-text unselectable">Loot</span>
+    <span class="loot-text unselectable">Bounty</span>
     <div class="loot-container">
       <div class="loot-item unselectable" v-for="item in currentLoot" :key="item.name + Math.random()">
         <span>{{ item.name }}</span>
@@ -167,7 +167,7 @@ export default {
 .loot-text {
   position: absolute;
   top: -1px;
-  left: 36px;
+  left: 30px;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
   color: white;
