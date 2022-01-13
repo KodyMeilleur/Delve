@@ -11,7 +11,7 @@
   >
     <div
     v-on:click.stop="movePlayer"
-    v-if="this.focusedEntity === this.player && this.inMoveState === false"
+    v-if="this.focusedEntity === this.player && this.currentTurn === this.player && this.inMoveState === false"
     class="move-icon-container"
     >
       <div
@@ -290,11 +290,11 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
+      'currentTurn',
       'map',
       'leftOffset',
       'topOffset',
       'showMoveTiles',
-
     ]),
     inStructure: function() {
       return this.player.outworldTileOccupied.structure ? true : false;
