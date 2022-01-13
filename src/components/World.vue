@@ -5,6 +5,7 @@
       <div
       v-on:scroll.passive="handleScroll"
       class="world-box"
+      ref="world"
       >
         <SelectedEntity v-on:lootStructure="loot"/>
         <Log />
@@ -42,7 +43,6 @@ export default {
   name: 'World',
   props: [
     'msg',
-    'currentTurn',
   ],
   components: {
     SelectedEntity,
@@ -55,6 +55,7 @@ export default {
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
+    this.$root.$on('centerPlayer', this.centerPlayer);
   },
   updated () {
     console.log('world render');
@@ -75,7 +76,7 @@ export default {
     ...mapGetters('world', [
       'map',
       'players',
-      // 'currentTurn',
+      'currentTurn',
     ])
   },
   methods: {
@@ -88,6 +89,10 @@ export default {
     },
     shakeEffect () {
       this.shaking = !this.shaking;
+    },
+    centerPlayer (offset) {
+      this.$refs.world.scrollTop = offset.topOffset;
+      this.$refs.world.scrollLeft = offset.leftOffset;
     },
     handleScroll ($event) {
       const that = this;
