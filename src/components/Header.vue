@@ -10,7 +10,8 @@
       <div class="turn-text font-style">Current Turn:</div>
       <div class="player-name font-style"> {{ currentTurn && currentTurn.name }}  </div>
     </div>
-    <div>
+    <div class="header-end-turn">
+      <div class="end-turn-sprite" v-on:click="endTurn"></div>
     </div>
   </div>
 </div>
@@ -18,7 +19,7 @@
 
 <script>
 // import CONST from '../CONST';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'Header',
@@ -30,6 +31,12 @@ export default {
     ...mapMutations('world', [
       'setLogFilter',
     ]),
+    ...mapActions('world', [
+      'cycleTurn',
+    ]),
+    endTurn () {
+      this.cycleTurn();
+    },
   },
   computed: {
     ...mapGetters('world', [
@@ -85,6 +92,19 @@ export default {
   width: 100px;
   top: 3px;
   left: -2px;
+}
+.end-turn-sprite {
+  background-image: url('/assets/hudSprites/endTurnIcon.png');
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+.end-turn-sprite:hover {
+  transform: scale(1.1,1.1);
+}
+.header-end-turn {
+  position: absolute;
+  right: 5px;
 }
 .unselectable {
   -webkit-touch-callout: none;

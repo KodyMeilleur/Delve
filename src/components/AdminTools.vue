@@ -5,7 +5,6 @@
       <button @click="addPlayerToGame">Add Player</button>
       <button @click="quickPlayerAdd">Quick Add Player</button>
       <button @click="toggleCreatureSpawner">Add Monster</button>
-      <button :disabled="isMonsterMoving === true" @click="endTurn">End Turn</button>
       <button  @click="shakeWorld">Shake World</button>
     </div>
     <CreatureSpawner :shouldShow="showCreatureSpawner" v-on:close="toggleCreatureSpawner"/>
@@ -76,10 +75,6 @@ export default {
     },
     toggleCreatureSpawner() {
       this.showCreatureSpawner = !this.showCreatureSpawner;
-    },
-    endTurn () {
-      this.cycleTurn();
-      // this.$emit('cycleTurn');
     },
     shakeWorld () {
       this.$root.$emit('shakeWorld');
