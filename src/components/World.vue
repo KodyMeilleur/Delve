@@ -91,8 +91,10 @@ export default {
       this.shaking = !this.shaking;
     },
     centerPlayer (offset) {
-      this.$refs.world.scrollTop = offset.topOffset;
-      this.$refs.world.scrollLeft = offset.leftOffset;
+      if (this.$refs.world) {
+        this.$refs.world.scrollTop = offset.topOffset;
+        this.$refs.world.scrollLeft = offset.leftOffset;
+      }
     },
     handleScroll ($event) {
       const that = this;
