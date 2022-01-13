@@ -68,7 +68,7 @@ export default {
 }
 .header-current-turn {
   position: absolute;
-  left: 90px;
+  left: 80px;
   width: 100px;
   height: 64px;
   display: flex;
@@ -78,8 +78,12 @@ export default {
 .nemesis-counter {
   position: absolute;
   top: 14px;
-  left: 20px;
+  left: 12px;
   font-size: 22px;
+  width: 42px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
 }
 .font-style {
   font-weight: 800;
