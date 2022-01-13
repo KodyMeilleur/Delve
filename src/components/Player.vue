@@ -363,19 +363,19 @@ export default {
   animation: createBox .25s;
 }
 .player-move-effect.top {
-  top: -64px;
+  top: -42px;
 }
 .player-move-effect.down {
-  top: 64px;
+  top: 40px;
 }
 .player-move-effect.right {
-  left: 64px;
+  left: 40px;
 }
 .player-move-effect.left {
-  left: -64px;
+  left: -40px;
 }
 .player-move-effect:hover {
-  transform: scale(1.1,1.1);
+  transform: scale(1.2,1.2);
 }
 @keyframes createBox {
   from {
