@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Cache ref="Cache"/>
     <AdminTools />
     <div class="banner">
       <span class="turn-order">
@@ -16,7 +15,6 @@ import { mapMutations, mapState, mapGetters } from 'vuex';
 
 import World from './components/World.vue';
 import AdminTools from './components/AdminTools.vue';
-import Cache from './components/Cache.vue'
 import CONST from './CONST';
 import { createEmptyLandmass } from './services/generateLand';
 
@@ -25,7 +23,6 @@ export default {
   components: {
     World,
     AdminTools,
-    Cache
   },
   data () {
     return {

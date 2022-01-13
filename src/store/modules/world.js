@@ -74,6 +74,9 @@ const getters = {
   showMoveTiles: (state) => {
     return state.showMoveTiles;
   },
+  heroSpawnCountdown: (state) => {
+    return state.heroSpawnCountdown;
+  },
 }
 
 // actions

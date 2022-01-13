@@ -1,5 +1,5 @@
 <template>
-  <div class="log-ui"
+  <div class="log-ui unselectable"
   >
   <div class="focus-icon" v-on:click="centerPlayer"></div>
   <div class="log-info">
@@ -122,5 +122,13 @@ export default {
   transform: scale(1.1,1.1);
   background-image: url('/assets/hudSprites/centerIconFocus.png');
 
+}
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 </style>

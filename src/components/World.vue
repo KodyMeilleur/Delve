@@ -7,6 +7,7 @@
       class="world-box"
       ref="world"
       >
+        <Header />
         <SelectedEntity v-on:lootStructure="loot"/>
         <Log />
         <Inventory />
@@ -35,6 +36,7 @@ import Inventory from './Inventory.vue';
 import Log from './Log.vue';
 import FocusStats from './FocusStats.vue';
 import LootMenu from './LootMenu.vue';
+import Header from './Header.vue';
 
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
@@ -52,6 +54,7 @@ export default {
     Inventory,
     FocusStats,
     LootMenu,
+    Header,
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
