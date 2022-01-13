@@ -73,7 +73,7 @@ export default {
         window.requestAnimFrame(loop);
         // every 4th of a second?
         // every 10th of a second?
-        if (secondsPassed > .05) {
+        if (secondsPassed > .075) {
           if (frame === 4) {
             frame = 1;
           } else {

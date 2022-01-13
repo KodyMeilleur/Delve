@@ -12,11 +12,18 @@
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
   >
-    <span v-if="(this.moveHighlighted || focusedEntity === this.tile || this.hover) && !potentialPath"
+    <span
+      v-if="(this.hover && this.showMoveTiles && !this.moveHighlighted) || (this.hover && this.showMoveTiles && (this.tile.x === this.currentTurn.x && this.tile.y === this.currentTurn.y))"
+      class="out-range"
+      v-bind:style="{
+        'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+      }"
+      >
+    </span>
+    <span v-if="(this.moveHighlighted || focusedEntity === this.tile || this.hover && !this.showMoveTiles && !this.moveHighlighted) && !potentialPath"
     v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
-      'background-image': 'url(' + publicPath + 'assets/hudSprites/select.png)',
       'background-position': -(64 * frame) + 'px ' + (0) + 'px',
     }"
     >
@@ -214,7 +221,8 @@ export default {
     ...mapMutations('world', [
       'setfocusedEntity',
       'setPath',
-      'updateLogs'
+      'updateLogs',
+      'toggleMovingTiles'
     ]),
     frameAdvance (frame) {
       if (!this.shouldShow) {
@@ -251,7 +259,11 @@ export default {
       return `${path}`
     },
     setEntity () {
-      this.setfocusedEntity(this.tile);
+      if (this.showMoveTiles) {
+        this.toggleMovingTiles();
+      } else {
+        this.setfocusedEntity(this.tile);
+      }
     },
     goToTile () {
       if (this.travelPath) {
@@ -363,6 +375,15 @@ export default {
   position: absolute;
   left: 0;
   background-image: url('/assets/hudSprites/select.png');
+}
+.out-range {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/selectOutRange.png');
 }
 .potentialPath, .potentialPath.highlighted {
   width: 100%;

@@ -6,7 +6,7 @@
     left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure}"
+  v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles}"
   class="player-component"
   >
     <div
@@ -347,6 +347,9 @@ export default {
   transform: scale(1) rotate(0.01deg);
   -webkit-transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
+}
+.moveFocused {
+  pointer-events: none;
 }
 .player-component.movingToStructure {
   -webkit-transform: scale(0.5) rotate(0.01deg);
