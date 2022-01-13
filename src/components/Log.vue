@@ -120,5 +120,7 @@ export default {
 }
 .focus-icon:hover {
   transform: scale(1.1,1.1);
+  background-image: url('/assets/hudSprites/centerIconFocus.png');
+
 }
 </style>
