@@ -2,9 +2,6 @@
   <div id="app">
     <AdminTools />
     <div class="banner">
-      <span class="turn-order">
-        Current Turn: {{ currentTurn && currentTurn.name }}
-      </span>
     </div>
     <World msg="Delve"/>
   </div>

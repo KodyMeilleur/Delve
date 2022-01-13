@@ -4,9 +4,11 @@
   >
   <div class="header-container">
     <div class="nemesis-counter">
-      <span class="nemesis-countdown">{{ heroSpawnCountdown }}</span>
+      <span class="nemesis-countdown font-style">{{ heroSpawnCountdown }}</span>
     </div>
-    <div>
+    <div class="header-current-turn">
+      <div class="turn-text font-style">Current Turn:</div>
+      <div class="player-name font-style"> {{ currentTurn && currentTurn.name }}  </div>
     </div>
     <div>
     </div>
@@ -57,15 +59,32 @@ export default {
   height: 100%;
   position: relative;
 }
+.header-current-turn {
+  position: absolute;
+  left: 90px;
+  width: 100px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  top: 5px;
+}
 .nemesis-counter {
   position: absolute;
   top: 14px;
   left: 20px;
   font-size: 22px;
+}
+.font-style {
   font-weight: 800;
   color: white;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
+}
+.turn-text {
+  font-size: 12px;
+  width: 100px;
+  top: 3px;
+  left: -2px;
 }
 .unselectable {
   -webkit-touch-callout: none;
