@@ -212,9 +212,11 @@ const mutations = {
     state.turnIndex = (state.turnIndex + 1);
     state.currentTurn = state.players[state.turnIndex];
     state.currentTurn.mp = state.currentTurn.maxMp;
+    state.showMoveTiles = false;
   },
 
   worldTurn (state) {
+    state.showMoveTiles = false;
     state.turnIndex = -1;
 
     // Set up paths for every manifested monster
