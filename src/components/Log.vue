@@ -1,6 +1,7 @@
 <template>
-  <div class="log-ui"
+  <div class="log-ui unselectable"
   >
+  <div class="focus-icon" v-on:click="centerPlayer"></div>
   <div class="log-info">
     <div v-for="log in logs" :key="log.length + Math.random()">
       {{ log }}
@@ -16,6 +17,7 @@
 <script>
 // import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
+import CONST from '../CONST';
 
 export default {
   name: 'Log',
@@ -27,10 +29,19 @@ export default {
     ...mapMutations('world', [
       'setLogFilter',
     ]),
+    centerPlayer () {
+      const playerX = this.currentTurn.x;
+      const playerY = this.currentTurn.y;
+
+      const topOffset = ((playerX * CONST.tileWidth) - (CONST.viewHeight / 2)) || 0;
+      const leftOffset = ((playerY * CONST.tileWidth) - (CONST.viewWidth / 2)) + (CONST.tileWidth / 2) || 0;
+      this.$root.$emit('centerPlayer', {topOffset, leftOffset});
+    },
   },
   computed: {
     ...mapGetters('world', [
       'logs',
+      'currentTurn'
     ]),
   },
 }
@@ -96,5 +107,28 @@ export default {
 }
 .log-info::-webkit-scrollbar-button {
   background-color: red;
+}
+.focus-icon {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  z-index: 11;
+  top: 12px;
+  left: 260px;
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/centerIcon.png');
+}
+.focus-icon:hover {
+  transform: scale(1.1,1.1);
+  background-image: url('/assets/hudSprites/centerIconFocus.png');
+
+}
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 </style>

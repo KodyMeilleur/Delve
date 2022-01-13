@@ -5,7 +5,6 @@
       <button @click="addPlayerToGame">Add Player</button>
       <button @click="quickPlayerAdd">Quick Add Player</button>
       <button @click="toggleCreatureSpawner">Add Monster</button>
-      <button :disabled="!currentTurn || currentTurn && currentTurn.mp <= 0" @click="movePlayer">Move Player</button>
       <button :disabled="isMonsterMoving === true" @click="endTurn">End Turn</button>
       <button  @click="shakeWorld">Shake World</button>
     </div>
@@ -17,7 +16,6 @@
 import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { refineLandmass, cleanLandmass, placeResourceStructures, placeAnchor , placeTotems} from '../services/generateLand';
-import { returnShallowMapChunk, toggleMoveTiles } from '../services/pathfinding';
 
 export default {
   name: 'AdminTools',
@@ -73,22 +71,11 @@ export default {
       this.updateLogs(`${name} has emerged from the ether!`);
     },
     quickPlayerAdd() {
-      const name = window.prompt('Player Name:', '');
-      this.addNewPlayerToGame({name, x:25, y:25});
-      this.updateLogs(`${name} has emerged from the ether!`);
+      this.addNewPlayerToGame({name: 'Z', x:25, y:25});
+      this.updateLogs(`Z has emerged from the ether!`);
     },
     toggleCreatureSpawner() {
       this.showCreatureSpawner = !this.showCreatureSpawner;
-    },
-    movePlayer () {
-      if (this.isMoving === false && this.canMove) {
-        let tilesToLight;
-        if (this.showMoveTiles === false) {
-          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
-          tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
-        }
-        this.toggleMovingTiles(tilesToLight);
-      }
     },
     endTurn () {
       this.cycleTurn();

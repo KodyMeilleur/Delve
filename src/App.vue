@@ -1,11 +1,7 @@
 <template>
   <div id="app">
-    <Cache ref="Cache"/>
     <AdminTools />
     <div class="banner">
-      <span class="turn-order">
-        Current Turn: {{ currentTurn && currentTurn.name }}
-      </span>
     </div>
     <World msg="Delve"/>
   </div>
@@ -16,7 +12,6 @@ import { mapMutations, mapState, mapGetters } from 'vuex';
 
 import World from './components/World.vue';
 import AdminTools from './components/AdminTools.vue';
-import Cache from './components/Cache.vue'
 import CONST from './CONST';
 import { createEmptyLandmass } from './services/generateLand';
 
@@ -25,7 +20,6 @@ export default {
   components: {
     World,
     AdminTools,
-    Cache
   },
   data () {
     return {
@@ -79,7 +73,7 @@ export default {
         window.requestAnimFrame(loop);
         // every 4th of a second?
         // every 10th of a second?
-        if (secondsPassed > .075) {
+        if (secondsPassed > .05) {
           if (frame === 4) {
             frame = 1;
           } else {

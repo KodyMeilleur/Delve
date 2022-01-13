@@ -9,34 +9,71 @@
   v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure}"
   class="player-component"
   >
-  <!-- <div class="player-info">{{ player.name }} ({{ player.x }},{{ player.y }})</div> -->
-  <div
-  v-bind:style="{
-    'background-image': 'url(' + publicPath + player.occupiedSprite + '.png)',
-    'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
-    'top': (-30) + 'px',
-    'z-index': '4',
-  }"
-  v-if="inStructure && isMoving === false"
-  class="player-sprite"
-  >
-  </div>
-  <div
-  v-bind:style="{
-    'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + animation.state + '/' + direction + '/sheet.png)',
-    'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
-  }"
-  v-bind:class="{ inStructure: inStructure && isMoving === false}"
-  class="player-sprite"
-  >
-  </div>
+    <div
+    v-on:click.stop="movePlayer"
+    v-if="this.focusedEntity === this.player && this.currentTurn === this.player && this.inMoveState === false"
+    class="move-icon-container"
+    >
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Right' +'.png',
+        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+      }"
+      class="player-move-effect right"
+      >
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Left' +'.png',
+        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+      }"
+      class="player-move-effect left"
+      >
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Top' +'.png',
+        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+      }"
+      class="player-move-effect top"
+      >
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Down' +'.png',
+        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+      }"
+      class="player-move-effect down"
+      >
+      </div>
+    </div>
+    <div
+    v-bind:style="{
+      'background-image': 'url(' + publicPath + player.occupiedSprite + '.png)',
+      'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+      'top': (-30) + 'px',
+      'z-index': '4',
+    }"
+    v-if="inStructure && isMoving === false"
+    class="player-sprite"
+    >
+    </div>
+    <div
+    v-bind:style="{
+      'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + animation.state + '/' + direction + '/sheet.png)',
+      'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
+    }"
+    v-bind:class="{ inStructure: inStructure && isMoving === false}"
+    class="player-sprite"
+    >
+    </div>
   </div>
 </template>
 
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection } from '../services/pathfinding';
+import { getEntityDirection, returnShallowMapChunk, toggleMoveTiles } from '../services/pathfinding';
 import { Animation } from '../models/Animation.js';
 
 export default {
@@ -72,6 +109,7 @@ export default {
       animation: { ...this.player.animation },
       skipFrames: [ ...this.player.animation.skipFrames ],
       movingToStructure: false,
+      inMoveState: false,
     }
   },
   watch: {
@@ -103,7 +141,8 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
-      'updatePlayerPosition'
+      'updatePlayerPosition',
+      'toggleMovingTiles'
     ]),
     frameAdvance () {
       let animation = this.animation;
@@ -133,6 +172,15 @@ export default {
       if (this.isMoving) {
         this.updatePlayerMove();
       }
+    },
+    movePlayer () {
+        let tilesToLight;
+        if (this.showMoveTiles === false) {
+          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
+          tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
+        }
+        this.toggleMovingTiles(tilesToLight);
+        this.inMoveState = true;
     },
     updatePlayerMove () {
       if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
@@ -232,18 +280,22 @@ export default {
         this.animation = new Animation(4, 'Idle', true);
         this.skipFrames = this.animation.skipFrames;
         this.isMoving = false;
+        this.inMoveState = false;
       }
     },
     setEntity () {
       this.setfocusedEntity(this.player);
+      this.inMoveState = false;
     }
   },
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
+      'currentTurn',
       'map',
       'leftOffset',
       'topOffset',
+      'showMoveTiles',
     ]),
     inStructure: function() {
       return this.player.outworldTileOccupied.structure ? true : false;
@@ -304,5 +356,37 @@ export default {
 }
 .player-sprite.inStructure {
   display: none;
+}
+.player-move-effect {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  animation: createBox .25s;
+}
+.move-icon-container {
+  z-index: 9;
+}
+.player-move-effect.top {
+  top: -42px;
+}
+.player-move-effect.down {
+  top: 40px;
+}
+.player-move-effect.right {
+  left: 40px;
+}
+.player-move-effect.left {
+  left: -40px;
+}
+.player-move-effect:hover {
+  transform: scale(1.2,1.2);
+}
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 </style>

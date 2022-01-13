@@ -108,6 +108,15 @@ export default {
   position: absolute;
   top: -310px;
   left: 300px;
+  animation: createBox .25s;
+}
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 .item-slot {
   width: 91px;

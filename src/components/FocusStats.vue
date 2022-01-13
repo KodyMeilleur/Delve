@@ -148,8 +148,17 @@ export default {
   height: 320px;
   background-image: url('/assets/hudSprites/focusStats.png');
   position: absolute;
-  top: -310px;
+  top: -260px;
   left: 300px;
+  animation: createBox .25s;
+}
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 .focus-menu-container {
   display: flex;

@@ -80,6 +80,7 @@ export default {
     },
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);
+      this.$emit('lootStructure', this.focusedEntity);
     }
   },
   computed: {
@@ -120,6 +121,15 @@ export default {
   font-variant: small-caps;
   font-family: system-ui;
   pointer-events: all;
+  animation: createBox .25s;
+}
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 .entity-info {
   color: white;
@@ -334,7 +344,7 @@ export default {
   cursor: pointer;
 }
 .swap-focus-sprite:hover {
-  transform: scale(1.1,1.1)
+  transform: scale(1.1,1.1);
 }
 .swap-focus-sprite:hover:before {
   display: block;

@@ -5,11 +5,14 @@
       <div
       v-on:scroll.passive="handleScroll"
       class="world-box"
+      ref="world"
       >
-        <SelectedEntity />
+        <Header />
+        <SelectedEntity v-on:lootStructure="loot"/>
         <Log />
         <Inventory />
         <FocusStats />
+        <LootMenu :lootTile="lootTile"/>
         <div
         v-bind:class="{
           shaking,
@@ -32,6 +35,8 @@ import SelectedEntity from './selectedEntity.vue';
 import Inventory from './Inventory.vue';
 import Log from './Log.vue';
 import FocusStats from './FocusStats.vue';
+import LootMenu from './LootMenu.vue';
+import Header from './Header.vue';
 
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
@@ -40,7 +45,6 @@ export default {
   name: 'World',
   props: [
     'msg',
-    'currentTurn',
   ],
   components: {
     SelectedEntity,
@@ -49,9 +53,12 @@ export default {
     TileLayer,
     Inventory,
     FocusStats,
+    LootMenu,
+    Header,
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
+    this.$root.$on('centerPlayer', this.centerPlayer);
   },
   updated () {
     console.log('world render');
@@ -64,23 +71,35 @@ export default {
       scrollTopCache: 0,
       shakeVerticalOffset: 0,
       shakeHorizontalOffset: 0,
-      shaking: false
+      shaking: false,
+      lootTile: null,
     }
   },
   computed: {
     ...mapGetters('world', [
       'map',
       'players',
-      // 'currentTurn',
+      'currentTurn',
     ])
   },
   methods: {
     ...mapMutations('world', [
       'setScroll',
+      'focusPlayer'
     ]),
-
+    loot (tile) {
+      const newTile = Object.assign({}, tile);
+      this.lootTile = newTile;
+    },
     shakeEffect () {
       this.shaking = !this.shaking;
+    },
+    centerPlayer (offset) {
+      if (this.$refs.world) {
+        this.$refs.world.scrollTop = offset.topOffset;
+        this.$refs.world.scrollLeft = offset.leftOffset;
+      }
+      this.focusPlayer();
     },
     handleScroll ($event) {
       const that = this;

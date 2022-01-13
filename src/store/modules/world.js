@@ -74,6 +74,9 @@ const getters = {
   showMoveTiles: (state) => {
     return state.showMoveTiles;
   },
+  heroSpawnCountdown: (state) => {
+    return state.heroSpawnCountdown;
+  },
 }
 
 // actions
@@ -140,6 +143,10 @@ const mutations = {
     state.focusedEntity = focusedEntity;
   },
 
+  focusPlayer (state) {
+    state.focusedEntity = state.currentTurn;
+  },
+
   addNewPlayerToGame (state, pc) {
     const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {
@@ -176,6 +183,29 @@ const mutations = {
       state.focusedEntity = storePlayer.outworldTileOccupied;
     }
     // console.log(storePlayer, coords, tileMovingTo);
+  },
+
+  addItemsToInventory (state, items) {
+    const indexList = [];
+    const currentInventory = state.currentTurn.items;
+    currentInventory.filter((item) => {
+      const itemFilter = items.filter((lootItem, index) => {
+        const has = lootItem.name === item.name;
+        if (has) {
+          indexList.push({index, item, lootItem});
+        }
+        return has;
+      })
+
+      return itemFilter.length;
+    })
+    if (indexList.length) {
+      indexList.forEach((merger) => {
+        merger.item.quantity += merger.lootItem.quantity;
+        items.splice(merger.index, 1);
+      })
+    }
+    state.currentTurn.items = currentInventory.concat(items);
   },
 
   cycleTurn (state) {
