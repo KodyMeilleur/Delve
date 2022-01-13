@@ -39,7 +39,7 @@
             v-bind:style="{
               'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
               'background-position': -(64 * structureEffectFrame) + 'px ' + (0) + 'px',
-              top: (bumpVerticalFramePosition - 15) + 'px',
+              top: (bumpVerticalFramePosition - 20) + 'px',
               left: (bumpHorizontalFramePosition) + 'px',
             }"
             v-if="tile.structure.explorable && tile.structure.explored === false"
