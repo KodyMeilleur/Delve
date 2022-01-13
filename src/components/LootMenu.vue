@@ -1,7 +1,7 @@
 <template>
   <div class="loot-ui"
   >
-  <div class="loot-menu" v-if="activeTile">
+  <div class="loot-menu" v-if="currentLoot.length">
     <span class="loot-text unselectable">Bounty</span>
     <div class="loot-container">
       <div class="loot-item unselectable" v-for="item in currentLoot" :key="item.name + Math.random()">
@@ -33,9 +33,14 @@ export default {
     return {
       publicPath: process.env.BASE_URL,
       expanded: false,
-      activeTile: null,
       currentLoot: [],
     }
+  },
+  mounted: function() {
+    this.$root.$on('lootAdded', this.generateLoot);
+  },
+  beforeDestroy() {
+    this.$root.$off('lootAdded');
   },
   methods: {
     ...mapMutations('world', [
@@ -43,13 +48,22 @@ export default {
       'addItemsToInventory'
     ]),
     clear () {
-      this.activeTile = null;
       this.currentLoot = [];
     },
     take () {
       this.addItemsToInventory(this.currentLoot);
       this.clear();
     },
+    generateLoot (table) {
+      const lootList = table || [];
+      lootList.forEach((potential) => {
+        const chance = getRandomInt(0, 100);
+        if (chance <= potential.chance) {
+          const amount = getRandomInt(1, potential.amount);
+          this.currentLoot.push(new potential.item(amount));
+        }
+      })
+    }
   },
   computed: {
     ...mapGetters('world', [
@@ -62,21 +76,6 @@ export default {
 
       return [];
     },
-  },
-  watch: {
-    lootTile: function(val) {
-      const lootList = val.structure && val.structure.loot || [];
-      lootList.forEach((potential) => {
-        const chance = getRandomInt(0, 100);
-        if (chance <= potential.chance) {
-          const amount = getRandomInt(1, potential.amount);
-          this.currentLoot.push(new potential.item(amount));
-        }
-      })
-      if (lootList.length) {
-        this.activeTile = val;
-      }
-    }
   },
 }
 </script>

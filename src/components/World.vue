@@ -8,7 +8,7 @@
       ref="world"
       >
         <Header />
-        <SelectedEntity v-on:lootStructure="loot"/>
+        <SelectedEntity />
         <Log />
         <Inventory />
         <FocusStats />
@@ -87,10 +87,6 @@ export default {
       'setScroll',
       'focusPlayer'
     ]),
-    loot (tile) {
-      const newTile = Object.assign({}, tile);
-      this.lootTile = newTile;
-    },
     shakeEffect () {
       this.shaking = !this.shaking;
     },

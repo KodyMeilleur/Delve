@@ -80,7 +80,8 @@ export default {
     },
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);
-      this.$emit('lootStructure', this.focusedEntity);
+      // this.$emit('lootAdded', this.focusedEntity);
+      this.$root.$emit('lootAdded', this.focusedEntity.structure.loot);
     }
   },
   computed: {
