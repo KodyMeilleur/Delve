@@ -280,6 +280,7 @@ export default {
         this.animation = new Animation(4, 'Idle', true);
         this.skipFrames = this.animation.skipFrames;
         this.isMoving = false;
+        this.inMoveState = false;
       }
     },
     setEntity () {

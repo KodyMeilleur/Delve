@@ -12,7 +12,7 @@ export default {
   moveAnimationPixelBump: 8,
   monsterAnimationPixelBump: 8,
   continentResourceStructurePlacementAttempts: 50,
-  heroSpawnCountdown: 5,
+  heroSpawnCountdown: 10,
   viewHeight: 576,
   viewWidth: 896,
   world: {
