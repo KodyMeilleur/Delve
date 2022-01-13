@@ -363,6 +363,9 @@ export default {
   height: 64px;
   animation: createBox .25s;
 }
+.move-icon-container {
+  z-index: 9;
+}
 .player-move-effect.top {
   top: -42px;
 }
