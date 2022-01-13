@@ -140,6 +140,10 @@ const mutations = {
     state.focusedEntity = focusedEntity;
   },
 
+  focusPlayer (state) {
+    state.focusedEntity = state.currentTurn;
+  },
+
   addNewPlayerToGame (state, pc) {
     const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {

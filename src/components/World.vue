@@ -82,6 +82,7 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setScroll',
+      'focusPlayer'
     ]),
     loot (tile) {
       const newTile = Object.assign({}, tile);
@@ -95,6 +96,7 @@ export default {
         this.$refs.world.scrollTop = offset.topOffset;
         this.$refs.world.scrollLeft = offset.leftOffset;
       }
+      this.focusPlayer();
     },
     handleScroll ($event) {
       const that = this;

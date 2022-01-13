@@ -148,7 +148,7 @@ export default {
   height: 320px;
   background-image: url('/assets/hudSprites/focusStats.png');
   position: absolute;
-  top: -310px;
+  top: -260px;
   left: 300px;
   animation: createBox .25s;
 }

@@ -36,6 +36,7 @@ export function DefaultPlayer(name, x, y) {
   this.int = CONST.defaultStartingStat;
   this.wis = CONST.defaultStartingStat;
   this.pts = CONST.startingStatPoints;
+  this.coin = 0;
 
   this.technologies = [];
   this.items = [new MagicBean(3)];
