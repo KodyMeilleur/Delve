@@ -44,7 +44,7 @@ export function PlainsTile(x, y) {
   this.density = 0;
   this.event = null;
   // this.event = (this.structure === null && (getRandomInt(0, 3) === 2)) ? new Event('Alert') : null;
-  this.variants = 8;
+  this.variants = 7;
   this.variant = (getRandomInt(0, this.variants - 1) < 3) ? getRandomInt(0, this.variants - 1) : null;
   this.sprite = `assets/Tiles/Plains/Platform/sheet${this.variant !== null ? this.variant : ''}.png`;
   this.potentialPath = false;
