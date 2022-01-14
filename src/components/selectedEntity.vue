@@ -1,8 +1,8 @@
 <template>
   <div class="entity-ui"
   >
-  <div v-if="focusedEntity && focusedEntity.isTile">
-    <div class="entity-info" v-bind:class="{ filled: focusedEntity}">
+  <div v-if="focusedEntity">
+    <div class="entity-info" v-bind:class="{ filled: focusedEntity}" v-if="focusedEntity.isTile">
       <span class="info-row info-row-name">{{ (focusedEntity.structure && focusedEntity.structure.name) || focusedEntity.name }}</span>
       <span class="info-row info-row-tier">
         <div v-if="focusedEntity.structure" class="tier-container">
@@ -52,7 +52,7 @@
         </div>
       </span>
     </div>
-    <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
+    <div v-if="focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
       <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
       <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
       <span class="info-row-en"><span class="info-row en-sprite"></span>{{ focusedEntity.en }}</span>

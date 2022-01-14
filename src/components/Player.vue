@@ -59,6 +59,7 @@
     >
     </div>
     <div
+    v-on:click.stop="setEntity"
     v-bind:style="{
       'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + animation.state + '/' + direction + '/sheet.png)',
       'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
@@ -284,6 +285,7 @@ export default {
       }
     },
     setEntity () {
+      console.log('wtfff');
       this.setfocusedEntity(this.player);
       this.inMoveState = false;
     }

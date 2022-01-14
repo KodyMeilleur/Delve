@@ -3,6 +3,7 @@
   >
   <div class="focus-sprite" v-on:click="toggle"></div>
   <div class="focus-menu" v-if="expanded">
+    <div class="close-sprite" v-on:click="toggle"></div>
     <div class="focus-menu-container">
       <div class="focus-stats focus-block">
         <div class="stat-column">
@@ -234,6 +235,18 @@ export default {
 }
 .bnd {
   background-image: url('/assets/hudSprites/bndIconInactive.png');
+}
+.close-sprite {
+  background-image: url('/assets/hudSprites/closeIcon.png');
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: -1px;
+  right: 0px;
+  cursor: pointer;
+}
+.close-sprite:hover {
+  transform: scale(1.1,1.1);
 }
 .unselectable {
     -webkit-touch-callout: none;
