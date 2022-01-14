@@ -10,6 +10,11 @@
         class="avatar"
         >
         </div>
+        <div class="avatar-speech">
+          <div class="text-container">
+            {{ currentLine }}
+          </div>
+        </div>
       </div>
       <div class="dwelling-menus">
         <div class="dwelling-body">
@@ -60,7 +65,7 @@
 <script>
 // import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-// import { getRandomInt } from '../services/generateLand';
+import { getRandomInt } from '../services/generateLand';
 
 export default {
   name: 'Dwelling',
@@ -76,6 +81,7 @@ export default {
       dwelling: null,
       selectedPlace: null,
       currentFrame: 0,
+      currentLine: '',
     }
   },
   mounted: function() {
@@ -98,22 +104,28 @@ export default {
       this.expanded = true;
       this.dwelling = dwelling;
       this.selectedPlace = this.dwelling[0];
+      this.currentLine = this.randomLine(this.selectedPlace);
     },
     toggle () {
       this.expanded = !this.expanded;
       if (this.expanded === false) {
         this.dwelling = null;
         this.selectedPlace = null;
+        this.currentLine = '';
       }
     },
     selectPlace (place) {
       this.selectedPlace = place;
     },
     frameAdvance (frame) {
-      console.log(frame);
       if (frame % 2 === 0) {
         this.currentFrame = frame === 4 ? 1 : 0;
       }
+    },
+    randomLine (place) {
+      const lines = place.lines;
+
+      return lines && lines[getRandomInt(0, lines.length - 1)];
     }
   },
   watch: {
@@ -138,7 +150,7 @@ export default {
       'leftOffset',
       'topOffset',
 
-    ]),
+    ])
   },
 }
 </script>
@@ -156,6 +168,9 @@ export default {
   float: right;
   margin-right: 578px;
 }
+.dwelling-menus {
+  width: 250px!important;
+}
 .dwelling-menus, .dwelling-avatar {
   width: 50%;
 }
@@ -168,13 +183,24 @@ export default {
   left: 4px;
   animation: createBox .25s;
 }
+.text-container {
+  width: 175px;
+  height: 54px;
+  position: relative;
+  top: 5px;
+  left: 24px;
+  font-size: 9px;
+}
 .dwelling-content {
   height: 100%;
   display: flex;
 }
 .dwelling-body {
-  width: 100%;
-  height: 258px;
+  width: 260px;
+  height: 190px;
+  overflow-y: scroll;
+  top: 15px;
+  position: relative;
 }
 .dwelling-options {
   width: 100%;
@@ -192,6 +218,16 @@ export default {
   left: 45px;
   top: 20px;
 }
+.avatar-speech {
+  width: 210px;
+  height: 64px;
+  position: absolute;
+  bottom: 51px;
+  right: 25px;
+  border-color: transparent;
+  border-radius: 10px;
+  background-image: url('/assets/hudSprites/speechBubble.png');
+}
 .place {
   margin-top: 4px;
   background-color: #FFE493;
@@ -207,9 +243,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
-  margin-top: 12px;
-  margin-right: 10px;
+  align-items: center;
 }
 .sm-sprite {
   width: 14px;

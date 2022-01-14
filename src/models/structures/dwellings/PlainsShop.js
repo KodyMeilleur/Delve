@@ -12,6 +12,10 @@ export const PlainsShop = {
   },
   type: 'Shop',
   avatar: 'assets/portraits/merchant.png',
+  lines: [
+    "Hail stranger. More travelers coming through than usual! What can I get for you?",
+    "Only the cheapest and most reliable wares for your consideration, sir!"
+  ],
   firstTier: {
     name: "Market",
     table: [
