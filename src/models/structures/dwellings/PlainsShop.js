@@ -1,7 +1,9 @@
 import { DilutedHealthPotion, DilutedEnergyPotion } from '../../items/consumables/Potions.js';
+import { MagicBean } from '../../items/nurture/MagicBean.js';
 
 const DILUTEDHEALTHPOTION = new DilutedHealthPotion(1);
 const DILUTEDENERGYPOTION = new DilutedEnergyPotion(1);
+const MAGICBEAN = new MagicBean(1);
 
 export const PlainsShop = {
   currentTier: 1,
@@ -26,6 +28,10 @@ export const PlainsShop = {
       {
         item: DILUTEDENERGYPOTION,
         cost: DILUTEDENERGYPOTION.averageCost * 1.5,
+      },
+      {
+        item: MAGICBEAN,
+        cost: MAGICBEAN.averageCost * 1.5,
       }
     ],
     cost: null,
