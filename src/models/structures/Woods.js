@@ -12,6 +12,7 @@ export function Woods () {
   this.hp = 3;
   this.mpCost = 2;
   this.name = 'Woods';
+  this.category = 'Wild';
 
   this.loot = [
     {

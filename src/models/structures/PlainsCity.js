@@ -1,4 +1,5 @@
 import { Structure } from '../Structure';
+import { PlainsShop } from './dwellings/PlainsShop.js';
 
 export function PlainsCity () {
   Structure.call(this);
@@ -9,5 +10,10 @@ export function PlainsCity () {
   this.mpCost = 1;
   this.name = 'Plains City';
   this.structureVerticalOffset = -2;
-  this.loot = [];
+
+  this.category = 'Dwelling';
+
+  this.dwelling = [
+    PlainsShop
+  ];
 }

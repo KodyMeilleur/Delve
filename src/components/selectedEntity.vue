@@ -16,27 +16,39 @@
       </div>
     </span>
     <span class="action-container">
-      <div class="explore-container">
-        <div
-        v-on:click="exploreStructure"
-        v-bind:class="{ 'explore-sprite': inArea === true}"
-        >
+      <div style="display: flex;" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Wild' || !focusedEntity.structure">
+        <div class="explore-container">
+          <div
+          v-on:click="exploreStructure"
+          v-bind:class="{ 'explore-sprite': inArea === true}"
+          >
+          </div>
+          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
         </div>
-        <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
+        <div class="nurture-container" v-if="focusedEntity.structure">
+          <div
+          v-bind:class="{ 'nurture-sprite': inArea === true && this.focusedEntity.structure.explored}"
+          >
+          </div>
+          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="nurture-sprite-inactive"></div>
+        </div>
+        <div class="exploit-container" v-if="focusedEntity.structure">
+          <div
+          v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored}"
+          >
+          </div>
+          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="exploit-sprite-inactive"></div>
+        </div>
       </div>
-      <div class="nurture-container" v-if="focusedEntity.structure">
-        <div
-        v-bind:class="{ 'nurture-sprite': inArea === true && this.focusedEntity.structure.explored}"
-        >
+      <div style="display:flex" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Dwelling'">
+        <div class="tour-container">
+          <div
+          v-on:click="tourStructure"
+          v-bind:class="{ 'tour-sprite': inArea === true}"
+          >
+          </div>
+          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="tour-sprite-inactive"></div>
         </div>
-        <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="nurture-sprite-inactive"></div>
-      </div>
-      <div class="exploit-container" v-if="focusedEntity.structure">
-        <div
-        v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored}"
-        >
-        </div>
-        <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="exploit-sprite-inactive"></div>
       </div>
     </span>
   </div>
@@ -80,9 +92,11 @@ export default {
     },
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);
-      // this.$emit('lootAdded', this.focusedEntity);
-      this.$root.$emit('lootAdded', this.focusedEntity.structure.loot);
-    }
+      this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.loot || []);
+    },
+    tourStructure () {
+      this.$root.$emit('dwellingEntered', this.focusedEntity.structure.dwelling);
+    },
   },
   computed: {
     ...mapGetters('world', [
@@ -283,6 +297,28 @@ export default {
 .explore-sprite:hover {
   background-image: url('/assets/hudSprites/exploreIcon.png');
   transform: scale(1.1,1.1)
+}
+.tour-sprite {
+  background-image: url('/assets/hudSprites/tourIconSleep.png');
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.tour-sprite-inactive {
+  background-image: url('/assets/hudSprites/tourIconInactive.png');
+  width: 32px;
+  height: 32px;
+}
+.tour-sprite:hover {
+  background-image: url('/assets/hudSprites/tourIcon.png');
+  transform: scale(1.1,1.1)
+}
+.tour-sprite:hover:before {
+  display: block;
+  content: "Tour";
+  -webkit-text-stroke-width: 0px;
+  font-weight: 700;
+  font-size: 9px;
 }
 .swap-focus-container {
   position: absolute;

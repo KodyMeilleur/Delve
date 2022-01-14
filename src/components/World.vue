@@ -9,6 +9,7 @@
       >
         <Header />
         <SelectedEntity />
+        <Dwelling />
         <Log />
         <Inventory />
         <FocusStats />
@@ -37,6 +38,7 @@ import Log from './Log.vue';
 import FocusStats from './FocusStats.vue';
 import LootMenu from './LootMenu.vue';
 import Header from './Header.vue';
+import Dwelling from './Dwelling.vue';
 
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
@@ -55,6 +57,7 @@ export default {
     FocusStats,
     LootMenu,
     Header,
+    Dwelling,
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);

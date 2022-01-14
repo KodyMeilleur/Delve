@@ -3,8 +3,9 @@ export function Wood (quantity) {
   this.quantity = quantity;
   this.name = "Common Wood";
   this.description = 'Old, sturdy wood. The veins of a great forest.';
+  this.averageCost = 2;
 
-  this.effect = () => {
-
+  this.effect = {
+    type: 'Resource'
   }
 }

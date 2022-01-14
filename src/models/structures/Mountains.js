@@ -12,6 +12,7 @@ export function Mountains () {
   this.hp = 10;
   this.mpCost = 3;
   this.name = 'Red Mountains';
+  this.category = 'Wild';
 
   this.loot = [
     {
