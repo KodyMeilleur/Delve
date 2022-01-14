@@ -193,7 +193,6 @@ export default {
         this.movingDirection = fullDirection.direction;
         this.animation = new Animation(8, 'Jump', false);
         if (fullDirection.movingToStructure) {
-          console.log('moving');
           this.movingToStructure = true;
         }
       }
@@ -285,7 +284,6 @@ export default {
       }
     },
     setEntity () {
-      console.log('wtfff');
       this.setfocusedEntity(this.player);
       this.inMoveState = false;
     }
