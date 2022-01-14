@@ -106,8 +106,8 @@ export default {
   height: 224px;
   background-image: url('/assets/hudSprites/inventory.png');
   position: absolute;
-  top: -310px;
-  left: 300px;
+  top: -345px;
+  left: 333px;
   animation: createBox .25s;
 }
 @keyframes createBox {

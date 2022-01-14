@@ -50,21 +50,24 @@ export default {
 <style scoped>
 .header-ui {
   position: sticky;
-  left: 345px;
+  left: 629px;
   top: 32px;
   width: 256px;
   height: 64px;
   z-index: 12;
-  background-image: url('/assets/hudSprites/header.png');
   font-variant: small-caps;
   font-family: system-ui;
   float: right;
-  margin-right: 614px;
 }
 .header-container {
   width: 100%;
   height: 100%;
-  position: relative;
+  position: absolute;
+  left: -280px;
+  width: 256px;
+  height: 64px;
+  z-index: 12;
+  background-image: url('/assets/hudSprites/header.png');
 }
 .header-current-turn {
   position: absolute;

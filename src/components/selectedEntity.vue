@@ -1,72 +1,73 @@
 <template>
   <div class="entity-ui"
-    v-bind:class="{ filled: focusedEntity}"
   >
-  <div v-if="focusedEntity && focusedEntity.isTile" class="entity-info">
-    <span class="info-row info-row-name">{{ (focusedEntity.structure && focusedEntity.structure.name) || focusedEntity.name }}</span>
-    <span class="info-row info-row-tier">
-      <div v-if="focusedEntity.structure" class="tier-container">
-        <div v-for="n in focusedEntity.structure.tier" :key="n" class="tier-star"></div>
-      </div>
-      <div v-if="focusedEntity.structure && focusedEntity.structure.mpCost < 99" class="mp-container">
-        <div v-for="n in focusedEntity.structure.mpCost" :key="n" class="mp-sprite"></div>
-      </div>
-      <div v-if="!focusedEntity.structure && focusedEntity.mpCost < 99" class="mp-container">
-        <div v-for="n in focusedEntity.mpCost" :key="n" class="mp-sprite"></div>
-      </div>
-    </span>
-    <span class="action-container">
-      <div style="display: flex;" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Wild' || !focusedEntity.structure">
-        <div class="explore-container">
-          <div
-          v-on:click="exploreStructure"
-          v-bind:class="{ 'explore-sprite': inArea === true}"
-          >
-          </div>
-          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
+  <div v-if="focusedEntity && focusedEntity.isTile">
+    <div class="entity-info" v-bind:class="{ filled: focusedEntity}">
+      <span class="info-row info-row-name">{{ (focusedEntity.structure && focusedEntity.structure.name) || focusedEntity.name }}</span>
+      <span class="info-row info-row-tier">
+        <div v-if="focusedEntity.structure" class="tier-container">
+          <div v-for="n in focusedEntity.structure.tier" :key="n" class="tier-star"></div>
         </div>
-        <div class="nurture-container" v-if="focusedEntity.structure">
-          <div
-          v-bind:class="{ 'nurture-sprite': inArea === true && this.focusedEntity.structure.explored}"
-          >
-          </div>
-          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="nurture-sprite-inactive"></div>
+        <div v-if="focusedEntity.structure && focusedEntity.structure.mpCost < 99" class="mp-container">
+          <div v-for="n in focusedEntity.structure.mpCost" :key="n" class="mp-sprite"></div>
         </div>
-        <div class="exploit-container" v-if="focusedEntity.structure">
-          <div
-          v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored}"
-          >
-          </div>
-          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="exploit-sprite-inactive"></div>
+        <div v-if="!focusedEntity.structure && focusedEntity.mpCost < 99" class="mp-container">
+          <div v-for="n in focusedEntity.mpCost" :key="n" class="mp-sprite"></div>
         </div>
-      </div>
-      <div style="display:flex" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Dwelling'">
-        <div class="tour-container">
-          <div
-          v-on:click="tourStructure"
-          v-bind:class="{ 'tour-sprite': inArea === true}"
-          >
-          </div>
-          <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="tour-sprite-inactive"></div>
-        </div>
-      </div>
-    </span>
-  </div>
-  <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info">
-    <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
-    <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
-    <span class="info-row-en"><span class="info-row en-sprite"></span>{{ focusedEntity.en }}</span>
-    <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.mp }}</span>
-    <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.str }}</span>
-    <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.def }}</span>
-    <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.int }}</span>
-    <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.wis }}</span>
-    <div class="btn-action-container">
-      <span class="swap-focus-container">
-        <div
-        v-on:click="switchFocus"
-        class="swap-focus-sprite"></div>
       </span>
+      <span class="action-container">
+        <div style="display: flex;" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Wild' || !focusedEntity.structure">
+          <div class="explore-container">
+            <div
+            v-on:click="exploreStructure"
+            v-bind:class="{ 'explore-sprite': inArea === true}"
+            >
+            </div>
+            <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
+          </div>
+          <div class="nurture-container" v-if="focusedEntity.structure">
+            <div
+            v-bind:class="{ 'nurture-sprite': inArea === true && this.focusedEntity.structure.explored}"
+            >
+            </div>
+            <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="nurture-sprite-inactive"></div>
+          </div>
+          <div class="exploit-container" v-if="focusedEntity.structure">
+            <div
+            v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored}"
+            >
+            </div>
+            <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="exploit-sprite-inactive"></div>
+          </div>
+        </div>
+        <div style="display:flex" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Dwelling'">
+          <div class="tour-container">
+            <div
+            v-on:click="tourStructure"
+            v-bind:class="{ 'tour-sprite': inArea === true}"
+            >
+            </div>
+            <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="tour-sprite-inactive"></div>
+          </div>
+        </div>
+      </span>
+    </div>
+    <div v-if="focusedEntity && focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
+      <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
+      <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
+      <span class="info-row-en"><span class="info-row en-sprite"></span>{{ focusedEntity.en }}</span>
+      <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.mp }}</span>
+      <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.str }}</span>
+      <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.def }}</span>
+      <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.int }}</span>
+      <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.wis }}</span>
+      <div class="btn-action-container">
+        <span class="swap-focus-container">
+          <div
+          v-on:click="switchFocus"
+          class="swap-focus-sprite"></div>
+        </span>
+      </div>
     </div>
   </div>
 </div>
@@ -118,7 +119,7 @@ export default {
 }
 .entity-ui {
   position: sticky;
-  top: 32px;
+  top: 64px;
   left: 620px;
   float: right;
   width: 196px;
@@ -128,7 +129,7 @@ export default {
   margin-right: 69px;
   pointer-events: none;
 }
-.entity-ui.filled {
+.entity-info.filled {
   background-image: url('/assets/hudSprites/tileInfo.png');
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
@@ -149,6 +150,11 @@ export default {
 .entity-info {
   color: white;
   font-size: 8px;
+  width: 196px;
+  height: 128px;
+  position: absolute;
+  top: -32px;
+  left: 32px;
 }
 .info-row {
   display: block;

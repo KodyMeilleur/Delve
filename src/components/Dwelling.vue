@@ -64,7 +64,7 @@ export default {
 <style scoped>
 .dwelling-ui {
   position: sticky;
-  left: 105px;
+  left: 179px;
   top: 415px;
   background-color: transparent;
   z-index: 13;
@@ -80,7 +80,7 @@ export default {
   position: absolute;
   background-image: url('/assets/hudSprites/dwellingBg.png');
   top: -310px;
-  left: 145px;
+  left: 105px;
   animation: createBox .25s;
 }
 @keyframes createBox {

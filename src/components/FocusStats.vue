@@ -149,7 +149,7 @@ export default {
   background-image: url('/assets/hudSprites/focusStats.png');
   position: absolute;
   top: -260px;
-  left: 300px;
+  left: 333px;
   animation: createBox .25s;
 }
 @keyframes createBox {
