@@ -302,7 +302,7 @@ export default {
 }
 .explore-sprite:hover {
   background-image: url('/assets/hudSprites/exploreIcon.png');
-  transform: scale(1.1,1.1)
+  transform: scale(1.1, 1.1);
 }
 .tour-sprite {
   background-image: url('/assets/hudSprites/tourIconSleep.png');
@@ -317,7 +317,7 @@ export default {
 }
 .tour-sprite:hover {
   background-image: url('/assets/hudSprites/tourIcon.png');
-  transform: scale(1.1,1.1)
+  transform: scale(1.1, 1.1);
 }
 .tour-sprite:hover:before {
   display: block;

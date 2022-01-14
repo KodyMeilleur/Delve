@@ -4,8 +4,14 @@ const DILUTEDHEALTHPOTION = new DilutedHealthPotion(1);
 const DILUTEDENERGYPOTION = new DilutedEnergyPotion(1);
 
 export const PlainsShop = {
-  tier: 1,
+  currentTier: 1,
+  tierMap: {
+    1: 'firstTier',
+    2: 'secondTier',
+    3: 'thirdTier',
+  },
   type: 'Shop',
+  avatar: 'assets/portraits/merchant.png',
   firstTier: {
     name: "Market",
     table: [
