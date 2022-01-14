@@ -1,5 +1,6 @@
 import { Stone } from '../items/resources/Stone.js';
 import { Structure } from '../Structure';
+import { Coin } from '../items/Coin.js';
 
 export function Mountains () {
   Structure.call(this);
@@ -19,7 +20,12 @@ export function Mountains () {
       item: Stone,
       chance: 90,
       amount: 3,
-    }
+    },
+    {
+      item: Coin,
+      chance: 15,
+      amount: 15,
+    },
   ];
 }
 

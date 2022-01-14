@@ -145,27 +145,20 @@ export default {
     },
   },
   watch: {
-    'leftOffset': {
+    'worldSeed': {
       handler () {
         this.$root.$off('frameBump', this.frameAdvance);
         this.$root.$on('frameBump', this.frameAdvance);
       },
        deep: false
      },
-     'topOffset': {
-       handler () {
-         this.$root.$off('frameBump', this.frameAdvance);
-         this.$root.$on('frameBump', this.frameAdvance);
-       },
-        deep: false
-      },
   },
   computed: {
     ...mapGetters('world', [
       'currentTurn',
       'leftOffset',
       'topOffset',
-
+      'worldSeed'
     ])
   },
 }

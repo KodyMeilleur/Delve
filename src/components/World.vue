@@ -65,7 +65,8 @@ export default {
   },
   updated () {
     console.log('world render');
-    this.setScroll({scrollLeft: this.scrollLeftCache += 2, scrollTop: this.scrollTopCache += 2});
+    this.setWorldReset();
+    this.setScroll({scrollLeft: this.scrollLeftCache += 1, scrollTop: this.scrollTopCache += 1});
   },
   data () {
     return {
@@ -83,12 +84,14 @@ export default {
       'map',
       'players',
       'currentTurn',
+      'worldSeed',
     ])
   },
   methods: {
     ...mapMutations('world', [
       'setScroll',
-      'focusPlayer'
+      'focusPlayer',
+      'setWorldReset'
     ]),
     shakeEffect () {
       this.shaking = !this.shaking;

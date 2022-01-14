@@ -25,6 +25,7 @@ const state = () => ({
   heroSpawnCountdown: CONST.heroSpawnCountdown,
   logs: [],
   showMoveTiles: false,
+  worldSeed: 0,
 })
 
 // getters
@@ -76,6 +77,9 @@ const getters = {
   },
   heroSpawnCountdown: (state) => {
     return state.heroSpawnCountdown;
+  },
+  worldSeed: (state) => {
+    return state.worldSeed;
   },
 }
 
@@ -185,27 +189,36 @@ const mutations = {
     // console.log(storePlayer, coords, tileMovingTo);
   },
 
-  addItemsToInventory (state, items) {
+  addItemsToInventory (state, {items, player}) {
     const indexList = [];
-    const currentInventory = state.currentTurn.items;
-    currentInventory.filter((item) => {
-      const itemFilter = items.filter((lootItem, index) => {
-        const has = lootItem.name === item.name;
+    const currentInventory = player.items;
+
+    items.filter((lootItem, index) => {
+      const itemFilter = currentInventory.filter((item) => {
+        const has = lootItem.name === item.name || lootItem.name === 'Coin';
         if (has) {
           indexList.push({index, item, lootItem});
         }
         return has;
       })
+      if (currentInventory.length === 0 && lootItem.name === 'Coin') {
+        indexList.push({index, lootItem});
+      }
 
       return itemFilter.length;
     })
+
     if (indexList.length) {
-      indexList.forEach((merger) => {
-        merger.item.quantity += merger.lootItem.quantity;
-        items.splice(merger.index, 1);
+      indexList.forEach((merger, index) => {
+        if (merger.lootItem.name === 'Coin') {
+          player.coin = (player.coin + merger.lootItem.quantity);
+        } else {
+          merger.item.quantity += merger.lootItem.quantity;
+        }
+        items.splice((merger.index - index), 1);
       })
     }
-    state.currentTurn.items = currentInventory.concat(items);
+    player.items = currentInventory.concat(items);
   },
 
   cycleTurn (state) {
@@ -214,6 +227,10 @@ const mutations = {
     state.currentTurn.mp = state.currentTurn.maxMp;
     state.showMoveTiles = false;
     state.focusedEntity = null;
+  },
+
+  setWorldReset (state) {
+    state.worldSeed = Math.random();
   },
 
   worldTurn (state) {

@@ -51,7 +51,7 @@ export default {
       this.currentLoot = [];
     },
     take () {
-      this.addItemsToInventory(this.currentLoot);
+      this.addItemsToInventory({items: this.currentLoot, player: this.currentTurn});
       this.clear();
     },
     generateLoot (table) {
@@ -149,6 +149,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  margin-bottom: 2px;
 }
 .loot-slot {
   width: 91px;

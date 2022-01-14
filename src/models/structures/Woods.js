@@ -1,4 +1,5 @@
 import { Wood } from '../items/resources/Wood.js';
+import { Coin } from '../items/Coin.js';
 import { Structure } from '../Structure';
 
 export function Woods () {
@@ -19,7 +20,12 @@ export function Woods () {
       item: Wood,
       chance: 90,
       amount: 3,
-    }
+    },
+    {
+      item: Coin,
+      chance: 25,
+      amount: 5,
+    },
   ];
 }
 

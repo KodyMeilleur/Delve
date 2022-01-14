@@ -156,6 +156,7 @@ export default {
   },
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
+    this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
     this.$parent.$off('updateTilePaths');
@@ -169,12 +170,6 @@ export default {
       const yRange = ((this.tile.y * CONST.tileWidth));
       this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 896)) &&
         (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 576 + (CONST.tileWidth));
-      if (this.shouldShow) {
-        this.$root.$off('frameBump', this.frameAdvance);
-        this.$root.$on('frameBump', this.frameAdvance);
-      } else {
-        this.$root.$off('frameBump', this.frameAdvance);
-      }
     },
     topOffset: function (val) {
       this.xOffset = val;
@@ -182,12 +177,10 @@ export default {
       const yRange = ((this.tile.y * CONST.tileWidth));
       this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 896)) &&
         (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 576 + (CONST.tileWidth));
-      if (this.shouldShow) {
-        this.$root.$off('frameBump', this.frameAdvance);
-        this.$root.$on('frameBump', this.frameAdvance);
-      } else {
-        this.$root.$off('frameBump', this.frameAdvance);
-      }
+    },
+    worldSeed: function () {
+      this.$root.$off('frameBump', this.frameAdvance);
+      this.$root.$on('frameBump', this.frameAdvance);
     },
     showMoveTiles: function(val) {
       if (this.shouldShow) {
@@ -214,7 +207,8 @@ export default {
       'focusedEntity',
       'currentTurn',
       'moveTiles',
-      'showMoveTiles'
+      'showMoveTiles',
+      'worldSeed'
     ]),
   },
   methods: {

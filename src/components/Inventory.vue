@@ -4,6 +4,14 @@
   <div class="inventory-sprite" v-on:click="toggle"></div>
   <div class="inventory-menu" v-if="expanded">
     <div class="close-sprite" v-on:click="toggle"></div>
+    <div class="player-cash unselectable">
+      <div
+      v-bind:style="{
+        'background-position': ((14 * currentFrame) - 14) + 'px ' + (0) + 'px',
+      }"
+      class="sm-sprite coin-sprite"></div>
+      <div class="cost-text">{{ currentTurn.coin }}</div>
+    </div>
     <div class="item-sprite-container" v-if="focusedItem.sprite">
       <div
       class="item-sprite"
@@ -43,8 +51,15 @@ export default {
     return {
       publicPath: process.env.BASE_URL,
       expanded: false,
-      focusedItem: {}
+      focusedItem: {},
+      currentFrame: 0,
     }
+  },
+  mounted: function() {
+    this.$root.$on('frameBump', this.frameAdvance);
+  },
+  beforeDestroy() {
+    this.$root.$off('frameBump');
   },
   methods: {
     ...mapMutations('world', [
@@ -63,10 +78,18 @@ export default {
         this.focusedItem = item;
       }
     },
+    frameAdvance (frame) {
+      if (frame % 2 === 0) {
+        this.currentFrame = frame === 4 ? 1 : 0;
+      }
+    },
   },
   computed: {
     ...mapGetters('world', [
       'currentTurn',
+      'leftOffset',
+      'topOffset',
+      'worldSeed'
     ]),
     inventory: function() {
       if (this.currentTurn.items) {
@@ -75,6 +98,15 @@ export default {
 
       return [];
     },
+  },
+  watch: {
+    'worldSeed': {
+      handler () {
+        this.$root.$off('frameBump', this.frameAdvance);
+        this.$root.$on('frameBump', this.frameAdvance);
+      },
+       deep: false
+     },
   },
 }
 </script>
@@ -103,7 +135,7 @@ export default {
 }
 .inventory-menu {
   width: 240px;
-  height: 224px;
+  height: 258px;
   background-image: url('/assets/hudSprites/inventory.png');
   position: absolute;
   top: -345px;
@@ -143,7 +175,7 @@ export default {
 .items {
   position: absolute;
   right: 5px;
-  top: 20px;
+  top: 49px;
   height: 183px;
   width: 105px;
   overflow-y: scroll;
@@ -152,10 +184,10 @@ export default {
   line-break: strict;
   position: absolute;
   width: 93px;
-  top: 68px;
+  top: 95px;
   font-size: 8px;
   font-weight: 700;
-  left: 17px;
+  left: 18px;
 }
 .close-sprite {
   background-image: url('/assets/hudSprites/closeIcon.png');
@@ -168,7 +200,7 @@ export default {
 }
 .item-sprite-container {
   position: absolute;
-  top: 17px;
+  top: 45px;
   left: 17px;
 }
 .item-sprite {
@@ -182,6 +214,24 @@ export default {
   justify-content: space-around;
   align-items: center;
   width: 100%;
+}
+.player-cash {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  display: flex;
+  width: 32px;
+}
+.sm-sprite {
+  width: 14px;
+  height: 14px;
+}
+.coin-sprite {
+  position: relative;
+  top: 4px;
+  background-image: url('/assets/hudSprites/coinIcon.png');
+}
+.cost-text {
 }
 .unselectable {
     -webkit-touch-callout: none;
