@@ -1,9 +1,13 @@
 import { DilutedHealthPotion, DilutedEnergyPotion } from '../../items/consumables/Potions.js';
 import { MagicBean } from '../../items/nurture/MagicBean.js';
+import { Wood } from '../../items/resources/Wood.js';
+import { Stone } from '../../items/resources/Stone.js';
 
 const DILUTEDHEALTHPOTION = new DilutedHealthPotion(1);
 const DILUTEDENERGYPOTION = new DilutedEnergyPotion(1);
 const MAGICBEAN = new MagicBean(1);
+const WOOD = new Wood(1);
+const STONE = new Stone(1);
 
 export const PlainsShop = {
   currentTier: 1,
@@ -39,17 +43,29 @@ export const PlainsShop = {
   secondTier: {
     name: "Trading Post",
     table: [],
-    cost: {
-      wood: 20,
-      stone: 20,
-    }
+    cost: [
+      {
+        item: WOOD,
+        quantity: 20
+      },
+      {
+        item: STONE,
+        quantity: 20
+      },
+    ]
   },
   thirdTier: {
     name: "Bazaar",
     table: [],
-    cost: {
-      wood: 50,
-      stone: 50,
-    }
+    cost: [
+      {
+        item: WOOD,
+        quantity: 50
+      },
+      {
+        item: STONE,
+        quantity: 50
+      },
+    ]
   },
 }

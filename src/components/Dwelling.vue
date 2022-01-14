@@ -6,12 +6,19 @@
     <div class="dwelling-content">
       <div class="dwelling-avatar">
         <div
+        v-on:click="askInvestment"
+        v-if="selectedPlace.currentTier"
+        class="invest"
+        >
+        Invest
+        </div>
+        <div
         v-bind:style="{'background-image': 'url(' + publicPath + selectedPlace.avatar}"
         class="avatar"
         >
         </div>
         <div class="avatar-speech">
-          <div class="text-container">
+          <div class="text-container unselectable">
             {{ currentLine }}
           </div>
         </div>
@@ -41,7 +48,6 @@
                   <div class="cost-text">{{ item.cost }}</div>
                 </div>
               </div>
-
               </div>
             </div>
           </div>
@@ -126,7 +132,17 @@ export default {
       const lines = place.lines;
 
       return lines && lines[getRandomInt(0, lines.length - 1)];
-    }
+    },
+    askInvestment () {
+      const nextTier = this.selectedPlace[this.selectedPlace.tierMap[this.selectedPlace.currentTier + 1]];
+      console.log(nextTier);
+      let line = `The cost of expansion will be `;
+      nextTier.cost.forEach((stack) => {
+        line += `${stack.quantity} ${stack.item.name} `;
+      });
+      line += '.';
+      this.currentLine = line;
+    },
   },
   watch: {
     'leftOffset': {
@@ -188,7 +204,7 @@ export default {
   height: 54px;
   position: relative;
   top: 5px;
-  left: 24px;
+  left: 26px;
   font-size: 9px;
 }
 .dwelling-content {
@@ -211,12 +227,24 @@ export default {
   bottom: 5px;
   left: 0px;
 }
+.invest {
+  background-color: #FFE493;
+  position: absolute;
+  width: 68px;
+  border-color: transparent;
+  border-radius: 5px;
+  padding: 2px;
+  top: 13px;
+  left: 64px;
+  height: 24px;
+  cursor: pointer;
+}
 .avatar {
   width: 100px;
-  height: 250px;
+  height: 230px;
   position: absolute;
   left: 45px;
-  top: 20px;
+  top: 41px;
 }
 .avatar-speech {
   width: 210px;
@@ -263,7 +291,7 @@ export default {
 .item-slot {
   display: flex;
 }
-.shop-item:hover {
+.shop-item:hover, .invest:hover {
   cursor: pointer;
   transform: scale(1.1, 1.1);
 }
