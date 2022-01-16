@@ -209,7 +209,6 @@ const mutations = {
     if (coords.tilesToTravel === 0) {
       state.focusedEntity = storePlayer.outworldTileOccupied;
     }
-    // console.log(storePlayer, coords, tileMovingTo);
   },
 
   addItemsToInventory (state, {items, player}) {
@@ -236,7 +235,6 @@ const mutations = {
         if (merger.lootItem.name === 'Coin') {
           player.coin = (player.coin + merger.lootItem.quantity);
         } else {
-          console.log(merger);
           merger.item.quantity += merger.lootItem.quantity;
         }
         items.splice((merger.index - index), 1);
@@ -262,7 +260,7 @@ const mutations = {
     state.focusedEntity = null;
     state.turnIndex = -1;
 
-    // Set up paths for every manifested monster
+    // SET UP PATHS for every manifested monster
     state.monsters.forEach((monster) => {
       const areaAroundMonster = returnShallowMapChunk(monster, state.map);
       const cellToTravelTo = areaAroundMonster[getRandomInt(0, areaAroundMonster.length - 1)][getRandomInt(0, areaAroundMonster.length - 1)];
@@ -272,6 +270,7 @@ const mutations = {
 
     state.heroSpawnCountdown--;
 
+    // NEMESIS SPAWN
     if (state.heroSpawnCountdown <= 0) {
       const allStructures = state.continents[0].structures;
       const randomStructure = allStructures[getRandomInt(0, allStructures.length - 1)];
@@ -284,7 +283,7 @@ const mutations = {
       const monster = new SpawnTable['Plains'][randomStructure.type][0](spawnTile.x, spawnTile.y);
       state.monsters.push(monster);
       state.map[monster.x][monster.y].monsters.push(monster);
-      state.logs.push(`A new ${monster.type} hope has been born!`);
+      state.logs.push(`A ${monster.type} nemesis has been born!`);
 
     }
     state.currentTurn = CONST.world;
@@ -316,7 +315,6 @@ const mutations = {
        }
     }
 
-    // console.log(state.map)
     state.map = map;
     state.continents.push({
       name,

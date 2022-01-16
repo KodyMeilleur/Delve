@@ -82,6 +82,9 @@ export default {
     ]),
     toggle () {
       this.expanded = !this.expanded;
+      if (this.inventory.length) {
+        this.focusedItem = this.inventory[0];
+      }
       if (this.expanded === false) {
         this.focusedItem = {};
       }
