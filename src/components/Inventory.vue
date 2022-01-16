@@ -12,11 +12,31 @@
       class="sm-sprite coin-sprite"></div>
       <div class="cost-text">{{ currentTurn.coin }}</div>
     </div>
-    <div class="item-sprite-container" v-if="focusedItem.sprite">
+    <div class="sell-cash unselectable">
+      <div
+      v-if="focusedItem.name"
+      v-bind:style="{
+        'background-position': ((14 * currentFrame) - 14) + 'px ' + (0) + 'px',
+      }"
+      class="sm-sprite sell-sprite"></div>
+      <div class="cost-text">{{ focusedItem.averageCost }}</div>
+    </div>
+    <div class="item-sprite-container">
       <div
       class="item-sprite"
+      v-if="focusedItem.sprite"
       v-bind:style="{'background-image': 'url(' + publicPath + focusedItem.sprite}"
       >
+      </div>
+      <div
+      class="item-use-sprite"
+      v-bind:class="{ 'active': focusedItem.name }"
+      >
+      </div>
+      <div
+      class="item-sell-sprite"
+      v-bind:class="{ 'active': focusedItem.name && currentTurn.inShop }"
+      v-on:click="sellItem(focusedItem)">
       </div>
     </div>
     <div class="item-description unselectable">{{ focusedItem.description }}</div>
@@ -27,17 +47,12 @@
       v-bind:class="{ 'selected': focusedItem.name === item.name}"
       v-on:click="focus(item)">
         <div class="item-text">
-          <span>{{ item.name }}</span>
-          <span>x{{ item.quantity }}</span>
+          <span class="item-name">{{ item.name }}</span>
+          <span class="item-quantity">x{{ item.quantity }}</span>
         </div>
         </div>
     </div>
   </div>
-  <!-- <div class="log-info">
-    <div v-for="item in inventory" :key="log.length + Math.random()">
-      {{ log }}
-    </div>
-  </div> -->
 </div>
 </template>
 
@@ -63,7 +78,7 @@ export default {
   },
   methods: {
     ...mapMutations('world', [
-      'setLogFilter',
+      'sellPlayerItem',
     ]),
     toggle () {
       this.expanded = !this.expanded;
@@ -82,6 +97,11 @@ export default {
       if (frame % 2 === 0) {
         this.currentFrame = frame === 4 ? 1 : 0;
       }
+    },
+    sellItem (item) {
+      this.sellPlayerItem({player: this.currentTurn, merch: item});
+      this.focusedItem = {};
+      this.$root.$emit('sellLine');
     },
   },
   computed: {
@@ -130,7 +150,7 @@ export default {
   height: 32px;
   cursor: pointer;
 }
-.inventory-sprite:hover, .close-sprite:hover {
+.inventory-sprite:hover, .close-sprite:hover, .item-use-sprite.active:hover, .item-sell-sprite.active:hover {
   transform: scale(1.1,1.1);
 }
 .inventory-menu {
@@ -167,7 +187,7 @@ export default {
   background-image: url('/assets/hudSprites/hoverItemSlot.png');
 }
 .item-slot:hover > .item-text, .item-slot.selected > .item-text {
-  top: -3px;
+  top: 3px;
 }
 .item-slot.selected {
   background-image: url('/assets/hudSprites/hoverItemSlot.png');
@@ -189,6 +209,17 @@ export default {
   font-weight: 700;
   left: 18px;
 }
+.item-name {
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  padding: 3px;
+  width: 100%;
+}
+.item-quantity {
+  padding: 4px;
+}
 .close-sprite {
   background-image: url('/assets/hudSprites/closeIcon.png');
   width: 14px;
@@ -201,15 +232,42 @@ export default {
 .item-sprite-container {
   position: absolute;
   top: 45px;
-  left: 17px;
+  left: 50px;
+  display: flex;
 }
 .item-sprite {
   width: 32px;
   height: 32px;
+  cursor: pointer;
+  position: absolute;
+  left: -34px;
+}
+.item-use-sprite {
+  width: 33px;
+  height: 33px;
+  background-image: url('/assets/hudSprites/inactiveUseIcon.png');
+  pointer-events: none;
+}
+.item-use-sprite.active {
+  background-image: url('/assets/hudSprites/activeUseIcon.png');
+  cursor: pointer;
+  pointer-events: all;
+}
+.item-sell-sprite {
+  margin-left: 1px;
+  width: 33px;
+  height: 33px;
+  background-image: url('/assets/hudSprites/inactiveSellIcon.png');
+  pointer-events: none;
+}
+.item-sell-sprite.active{
+  background-image: url('/assets/hudSprites/activeSellIcon.png');
+  cursor: pointer;
+  pointer-events: all;
 }
 .item-text {
-  position: relative;
-  top: -5px;
+  position: absolute;
+  top: 1px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -225,11 +283,24 @@ export default {
 .sm-sprite {
   width: 14px;
   height: 14px;
+  min-width: 14px;
+  min-height: 14px;
 }
 .coin-sprite {
   position: relative;
   top: 4px;
   background-image: url('/assets/hudSprites/coinIcon.png');
+}
+.sell-sprite {
+  position: relative;
+  top: 4px;
+  background-image: url('/assets/hudSprites/sellCoinIcon.png');
+}
+.sell-cash {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  top: 11px;
 }
 .cost-text {
 }

@@ -17,7 +17,9 @@
         class="avatar"
         >
         </div>
-        <div class="avatar-speech">
+        <div
+        v-bind:class="{ 'grow': shrinkGrow, shrink: !shrinkGrow}"
+        class="avatar-speech font-style">
           <div class="text-container unselectable">
             {{ currentLine }}
           </div>
@@ -27,8 +29,18 @@
         <div class="dwelling-body">
           <div v-if="selectedPlace && selectedPlace.type === 'Shop'">
             <div class="shop-list">
+              <div class="player-coin unselectable">
+                <span class="font-style" style="margin-right:10px;">Player Coin:</span>
+                <div
+                v-bind:style="{
+                  'background-position': ((14 * currentFrame) - 14) + 'px ' + (0) + 'px',
+                }"
+                class="sm-sprite coin-sprite"></div>
+                <div class="">{{ currentTurn.coin }}</div>
+              </div>
               <div
               v-for="item in selectedPlace[selectedPlace.tierMap[selectedPlace.currentTier]].table"
+              v-on:click="buyItem(item)"
               :key="item.name"
               class="shop-item"
               >
@@ -88,26 +100,53 @@ export default {
       selectedPlace: null,
       currentFrame: 0,
       currentLine: '',
+      shrinkGrow: false
     }
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
     this.$root.$on('dwellingEntered', this.openDwelling);
+    this.$root.$on('buyLine', this.buyLine);
+    this.$root.$on('sellLine', this.sellLine);
   },
   beforeDestroy() {
     this.$root.$off('frameBump');
     this.$root.$off('dwellingEntered');
+    this.$root.$off('buyLine', this.buyLine);
+    this.$root.$off('sellLine', this.sellLine);
   },
   methods: {
     ...mapMutations('world', [
-      'addItemsToInventory'
+      'addItemsToInventory',
+      'addMoneyToPlayer',
+      'subtractMoneyFromPlayer',
+      'togglePlayerShop'
     ]),
     take () {
       this.addItemsToInventory(this.currentLoot);
       this.clear();
     },
+    buyItem (item) {
+      if (this.currentTurn.coin < item.cost) {
+        this.currentLine = 'Deepest Apologies, it seems you havent the coin for that.';
+      } else {
+        this.subtractMoneyFromPlayer({
+          player: this.currentTurn,
+          count: item.cost
+        });
+        this.addItemsToInventory({
+          items: [Object.assign({}, item.item)],
+          player: this.currentTurn
+        });
+        this.buyLine();
+      }
+    },
     openDwelling (dwelling) {
       this.expanded = true;
+      this.togglePlayerShop({
+        player: this.currentTurn,
+        status: true,
+      });
       this.dwelling = dwelling;
       this.selectedPlace = this.dwelling[0];
       this.currentLine = this.randomLine(this.selectedPlace);
@@ -118,6 +157,10 @@ export default {
         this.dwelling = null;
         this.selectedPlace = null;
         this.currentLine = '';
+        this.togglePlayerShop({
+          player: this.currentTurn,
+          status: false,
+        });
       }
     },
     selectPlace (place) {
@@ -132,6 +175,20 @@ export default {
       const lines = place.lines;
 
       return lines && lines[getRandomInt(0, lines.length - 1)];
+    },
+    buyLine () {
+      const place = this.selectedPlace;
+      const lines = place.buyLines;
+
+      const line = lines && lines[getRandomInt(0, lines.length - 1)];
+      this.currentLine = line;
+    },
+    sellLine () {
+      const place = this.selectedPlace;
+      const lines = place.sellLines;
+
+      const line = lines && lines[getRandomInt(0, lines.length - 1)];
+      this.currentLine = line;
     },
     askInvestment () {
       const nextTier = this.selectedPlace[this.selectedPlace.tierMap[this.selectedPlace.currentTier + 1]];
@@ -148,10 +205,23 @@ export default {
     'worldSeed': {
       handler () {
         this.$root.$off('frameBump', this.frameAdvance);
+        this.$root.$off('buyLine', this.buyLine);
+        this.$root.$off('sellLine', this.sellLine);
         this.$root.$on('frameBump', this.frameAdvance);
+        this.$root.$on('buyLine', this.buyLine);
+        this.$root.$on('sellLine', this.sellLine);
       },
        deep: false
      },
+     'currentLine': {
+       handler () {
+         const that = this;
+         this.shrinkGrow = true;
+         setTimeout(() => {
+           that.shrinkGrow = false;
+         }, 250);
+       }
+     }
   },
   computed: {
     ...mapGetters('world', [
@@ -198,7 +268,8 @@ export default {
   position: relative;
   top: 5px;
   left: 26px;
-  font-size: 9px;
+  font-size: 10px;
+  -webkit-text-stroke-width: 0.8px;
 }
 .dwelling-content {
   height: 100%;
@@ -232,6 +303,15 @@ export default {
   height: 24px;
   cursor: pointer;
 }
+.player-coin {
+  width: 90%;
+  height: 20px;
+  display: flex;
+  background-color: #ffe493;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
 .avatar {
   width: 100px;
   height: 230px;
@@ -248,6 +328,7 @@ export default {
   border-color: transparent;
   border-radius: 10px;
   background-image: url('/assets/hudSprites/speechBubble.png');
+  z-index: 14;
 }
 .place {
   margin-top: 4px;
@@ -270,6 +351,10 @@ export default {
   width: 14px;
   height: 14px;
   cursor: pointer;
+}
+.player-coin > .coin-sprite {
+  position: relative;
+  top: 0;
 }
 .coin-sprite {
   position: absolute;
@@ -316,6 +401,12 @@ export default {
   background-image: url('/assets/hudSprites/shopItemBg.png');
   position: relative;
 }
+.grow {
+  animation: grow .25s;
+}
+.shrink {
+  animation: shrink .25s;
+}
 @keyframes createBox {
   from {
     transform: scale(0);
@@ -323,6 +414,22 @@ export default {
   to {
     transform: scale(1);
   }
+}
+@keyframes grow {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.5);
+    }
+}
+@keyframes shrink {
+    from {
+        transform: scale(1.5);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 .close-sprite {
   background-image: url('/assets/hudSprites/closeIcon.png');
@@ -335,6 +442,12 @@ export default {
 }
 .close-sprite:hover {
   transform: scale(1.1,1.1);
+}
+.font-style {
+  font-weight: 800;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 .unselectable {
   -webkit-touch-callout: none;

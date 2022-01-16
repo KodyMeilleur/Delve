@@ -119,6 +119,29 @@ const mutations = {
   setMap (state, map) {
     state.map = map;
   },
+  togglePlayerShop (state, {player, status}) {
+    player.inShop = status;
+  },
+  sellPlayerItem (state, {player, merch}) {
+    const inventory = player.items;
+    let itemIndex;
+
+    const itemInInventory = inventory.filter((item, index) => {
+      if (item.name === merch.name) {
+        itemIndex = index;
+        return true;
+      }
+      return item.name === merch.name;
+    })[0];
+
+    itemInInventory.quantity -= 1;
+
+    if (itemInInventory.quantity <= 0) {
+      inventory.splice(itemIndex, 1);
+    }
+
+    player.coin += merch.averageCost;
+  },
   setPath(state, { entity, path }) {
     entity.path = path;
     state.showMoveTiles = false;
@@ -213,6 +236,7 @@ const mutations = {
         if (merger.lootItem.name === 'Coin') {
           player.coin = (player.coin + merger.lootItem.quantity);
         } else {
+          console.log(merger);
           merger.item.quantity += merger.lootItem.quantity;
         }
         items.splice((merger.index - index), 1);
@@ -302,6 +326,14 @@ const mutations = {
 
   setContinents (state, continents) {
     state.continents = continents;
+  },
+
+  addMoneyToPlayer (state, {player, count}) {
+    player.coin += count;
+  },
+
+  subtractMoneyFromPlayer (state, {player, count}) {
+    player.coin -= count;
   },
 
   setStructureExplored (state, tile) {

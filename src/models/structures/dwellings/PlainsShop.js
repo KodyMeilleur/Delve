@@ -22,6 +22,12 @@ export const PlainsShop = {
     "Hail stranger. More travelers coming through than usual! What can I get for you?",
     "Only the cheapest and most reliable wares for your consideration, sir!"
   ],
+  buyLines: [
+    "Excellent selection!",
+  ],
+  sellLines: [
+    "I'll take that off your hands..",
+  ],
   firstTier: {
     name: "Market",
     table: [
