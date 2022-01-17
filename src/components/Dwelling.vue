@@ -9,7 +9,7 @@
         v-on:click="askInvestment"
         v-if="selectedPlace.currentTier"
         v-bind:class="{ 'temple': selectedPlace.type === 'Temple'}"
-        class="invest"
+        class="invest unselectable"
         >
         Invest
         </div>

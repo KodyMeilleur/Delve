@@ -20,7 +20,7 @@ export function DefaultPlayer(name, x, y) {
 
   this.occupiedSprite = 'assets/Tiles/Sections/Status/Player/marker';
   this.sprite = 'assets/Characters/Human/';
-  this.animation = new Animation(4, 'Idle', true);
+  this.animation = new Animation(3, 'Idle', true);
   this.defaultAnimation = this.animation;
 
   this.name = name;
