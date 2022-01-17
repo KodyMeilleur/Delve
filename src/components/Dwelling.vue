@@ -8,6 +8,7 @@
         <div
         v-on:click="askInvestment"
         v-if="selectedPlace.currentTier"
+        v-bind:class="{ 'temple': selectedPlace.type === 'Temple'}"
         class="invest"
         >
         Invest
@@ -15,18 +16,26 @@
         <div
         v-bind:style="{'background-image': 'url(' + publicPath + selectedPlace.avatar}"
         class="avatar"
+        v-bind:class="{ 'temple': selectedPlace.type === 'Temple'}"
         >
         </div>
         <div
-        v-bind:class="{ 'grow': shrinkGrow, shrink: !shrinkGrow}"
+        v-bind:class="{ 'grow': shrinkGrow, 'shrink': !shrinkGrow, 'temple': selectedPlace.type === 'Temple'}"
         class="avatar-speech font-style">
-          <div class="text-container unselectable">
+          <div
+          v-bind:class="{ 'temple': selectedPlace.type === 'Temple'}"
+          class="text-container unselectable">
             {{ currentLine }}
           </div>
         </div>
       </div>
-      <div class="dwelling-menus">
-        <div class="dwelling-body">
+      <div
+      v-bind:class="{ 'temple': selectedPlace.type === 'Temple'}"
+      class="dwelling-menus">
+        <div
+        v-bind:class="{ 'temple': selectedPlace.type === 'Temple'}"
+        class="dwelling-body">
+          <!-- SHOP -->
           <div v-if="selectedPlace && selectedPlace.type === 'Shop'">
             <div class="shop-list">
               <div class="player-coin unselectable">
@@ -63,17 +72,53 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="dwelling-options">
-          <div
-          class="place unselectable"
-          v-on:click="selectPlace(place)"
-          v-for="place in dwelling"
-          :key="place.currentTier"
-          >
-            {{ place[place.tierMap[place.currentTier]].name }}
+          <!-- TEMPLE -->
+          <div v-if="selectedPlace && selectedPlace.type === 'Temple'">
+            <div class="temple-list">
+              <div class="player-coin temple unselectable">
+                <span class="font-style" style="margin-right:10px;">:Player Coin</span>
+                <div
+                v-bind:style="{
+                  'background-position': ((14 * currentFrame) - 14) + 'px ' + (0) + 'px',
+                }"
+                class="sm-sprite coin-sprite"></div>
+                <div class="">{{ currentTurn.coin }}</div>
+              </div>
+              <div
+              v-for="item in selectedPlace[selectedPlace.tierMap[selectedPlace.currentTier]].table"
+              :key="item.service.name"
+              class="shop-item temple"
+              >
+              <div class="item-slot">
+                <div
+                v-bind:style="{'background-image': 'url(' + publicPath + item.service.sprite}"
+                class="item-icon"
+                >
+                </div>
+                <div class="item-name">{{ item.service.name }}</div>
+                <div class="item-cost">
+                  <div
+                  v-bind:style="{
+                    'background-position': ((14 * currentFrame) - 14) + 'px ' + (0) + 'px',
+                  }"
+                  class="sm-sprite coin-sprite temple"></div>
+                  <div class="cost-text temple">{{ item.cost }}</div>
+                </div>
+              </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="dwelling-options">
+      <div
+      class="place unselectable"
+      v-on:click="selectPlace(place)"
+      v-for="place in dwelling"
+      :key="place.type"
+      >
+        {{ place[place.tierMap[place.currentTier]].name }}
       </div>
     </div>
   </div>
@@ -165,6 +210,7 @@ export default {
     },
     selectPlace (place) {
       this.selectedPlace = place;
+      this.currentLine = this.randomLine(place);
     },
     frameAdvance (frame) {
       if (frame % 2 === 0) {
@@ -250,6 +296,10 @@ export default {
 .dwelling-menus {
   width: 250px!important;
 }
+.dwelling-menus.temple {
+  left: 16px;
+  position: absolute;
+}
 .dwelling-menus, .dwelling-avatar {
   width: 50%;
 }
@@ -271,6 +321,9 @@ export default {
   font-size: 10px;
   -webkit-text-stroke-width: 0.8px;
 }
+.text-container.temple {
+  left: 6px;
+}
 .dwelling-content {
   height: 100%;
   display: flex;
@@ -282,14 +335,19 @@ export default {
   top: 15px;
   position: relative;
 }
+.dwelling-body.temple {
+  direction: rtl;
+  left: -29px;
+}
 .dwelling-options {
   width: 100%;
   height: 45px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   position: absolute;
   bottom: 5px;
   left: 0px;
+  margin-left: 5px;
 }
 .invest {
   background-color: #FFE493;
@@ -303,6 +361,9 @@ export default {
   height: 24px;
   cursor: pointer;
 }
+.invest.temple {
+  left: 280px;
+}
 .player-coin {
   width: 90%;
   height: 20px;
@@ -312,12 +373,19 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.player-coin.temple {
+  display: flex;
+  flex-direction: row-reverse;
+}
 .avatar {
   width: 100px;
   height: 230px;
   position: absolute;
   left: 45px;
   top: 41px;
+}
+.avatar.temple {
+  left: 262px;
 }
 .avatar-speech {
   width: 210px;
@@ -330,6 +398,11 @@ export default {
   background-image: url('/assets/hudSprites/speechBubble.png');
   z-index: 14;
 }
+.avatar-speech.temple {
+  right: unset;
+  left: 22px;
+  background-image: url('/assets/hudSprites/speechBubbleReversed.png');
+}
 .place {
   margin-top: 4px;
   background-color: #FFE493;
@@ -337,6 +410,7 @@ export default {
   border-radius: 5px;
   padding: 6px 12px;
   cursor: pointer;
+  margin: 4px 6px;
 }
 .place:hover {
   transform: scale(1.1, 1.1);
@@ -361,10 +435,16 @@ export default {
   top: 8px;
   background-image: url('/assets/hudSprites/coinIcon.png');
 }
+.coin-sprite.temple {
+  left: 2px;
+}
 .cost-text {
   position: absolute;
   right: 4px;
   top: 4px;
+}
+.cost-text.temple {
+  right: 5px;
 }
 .item-slot {
   display: flex;
@@ -400,6 +480,9 @@ export default {
   margin-top: 2px;
   background-image: url('/assets/hudSprites/shopItemBg.png');
   position: relative;
+}
+.shop-item.temple {
+  left: -11px;
 }
 .grow {
   animation: grow .25s;

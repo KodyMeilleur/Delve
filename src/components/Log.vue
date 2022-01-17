@@ -3,7 +3,7 @@
   >
   <div class="focus-icon" v-on:click="centerPlayer"></div>
   <div class="log-info">
-    <div v-for="log in logs" :key="log.length + Math.random()">
+    <div v-for="(log, index) in logs" :key="index">
       {{ log }}
     </div>
   </div>

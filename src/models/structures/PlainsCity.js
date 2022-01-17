@@ -1,5 +1,6 @@
 import { Structure } from '../Structure';
 import { PlainsShop } from './dwellings/PlainsShop.js';
+import { PlainsTemple } from './dwellings/PlainsTemple.js';
 
 export function PlainsCity () {
   Structure.call(this);
@@ -14,6 +15,7 @@ export function PlainsCity () {
   this.category = 'Dwelling';
 
   this.dwelling = [
-    PlainsShop
+    PlainsShop,
+    PlainsTemple
   ];
 }
