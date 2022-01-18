@@ -355,7 +355,7 @@ const mutations = {
              x: startingCellX + i,
              y: startingCellY + k
            })
-         } else {
+         } else if (landmass[i][k].type !== 'Void') {
            emptyTileList.push({
              type: name,
              x: startingCellX + i,
