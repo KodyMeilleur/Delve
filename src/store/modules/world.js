@@ -304,6 +304,7 @@ const mutations = {
         if (nextEventType === 'structural') {
           console.log('structure');
         } else {
+          state.logs.push(`Something strange is happening around (${eventTile.x}, ${eventTile.y})!`)
           state.map[eventTile.x][eventTile.y].event = nextEvent;
         }
 

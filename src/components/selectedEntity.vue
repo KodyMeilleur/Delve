@@ -3,7 +3,7 @@
   >
   <div v-if="focusedEntity">
     <div class="entity-info" v-bind:class="{ filled: focusedEntity}" v-if="focusedEntity.isTile">
-      <span class="info-row info-row-name">{{ (focusedEntity.structure && focusedEntity.structure.name) || focusedEntity.name }}</span>
+      <span class="info-row info-row-name">{{ (focusedEntity.event && '???' || (focusedEntity.structure && focusedEntity.structure.eventStructure) && '???') || (focusedEntity.structure && focusedEntity.structure.name) || focusedEntity.name }}</span>
       <span class="info-row info-row-tier">
         <div v-if="focusedEntity.structure" class="tier-container">
           <div v-for="n in focusedEntity.structure.tier" :key="n" class="tier-star"></div>
