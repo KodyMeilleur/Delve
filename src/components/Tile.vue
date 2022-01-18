@@ -55,6 +55,7 @@
             </div>
           </div>
           <div
+          v-if="!tile.structure.eventStructure"
           v-bind:style="{
             'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
             'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
@@ -65,6 +66,17 @@
           class="structure-sprite"
           >
           </div>
+        </div>
+        <!-- EVENT SPRITE -->
+        <div
+        v-if="tile.structure && tile.structure.eventStructure || tile.event"
+        v-bind:style="{
+          'background-position': (64 * eventSpriteFrames) + 'px ' + (0) + 'px',
+          top: (bumpVerticalFramePosition - 5) + 'px',
+          left: (bumpHorizontalFramePosition) + 'px',
+        }"
+        class="event-sprite"
+        >
         </div>
         <div
         v-bind:style="{
@@ -108,6 +120,7 @@ export default {
       // Variables for scroll data
       xOffset: 0,
       yOffset: 0,
+      eventSpriteFrames: 0,
       currentFrame: 0,
       structureEffectFrame: 0,
       structureEffectDelayList: [],
@@ -223,6 +236,12 @@ export default {
         return;
       }
       this.frame = frame;
+
+      if (this.eventSpriteFrames >= 5) {
+        this.eventSpriteFrames = 0;
+      } else {
+        this.eventSpriteFrames += 1;
+      }
       const bumpFrames = this.bumpAnimationMap;
 
       const delayOption = this.getRandomIntBetween(0, 1);
@@ -388,6 +407,13 @@ export default {
   cursor: pointer;
   color: rgba(255, 255, 255, 0.5);
   background-image: url('/assets/hudSprites/potential.png')!important;
+}
+.event-sprite {
+  background-image: url('/assets/Tiles/Sections/event.png');
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  z-index: 1;
 }
 .structure-sprite {
   min-width: 64px;

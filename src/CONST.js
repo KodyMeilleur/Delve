@@ -15,6 +15,8 @@ export default {
   heroSpawnCountdown: 10,
   viewHeight: 576,
   viewWidth: 896,
+  eventCountdown: 3,
+  eventPercentProbability: 30,
   world: {
     name: 'World'
   }

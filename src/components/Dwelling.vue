@@ -173,7 +173,7 @@ export default {
     },
     buyItem (item) {
       if (this.currentTurn.coin < item.cost) {
-        this.currentLine = 'Deepest Apologies, it seems you havent the coin for that.';
+        this.denyLine();
       } else {
         this.subtractMoneyFromPlayer({
           player: this.currentTurn,
@@ -232,6 +232,13 @@ export default {
     sellLine () {
       const place = this.selectedPlace;
       const lines = place.sellLines;
+
+      const line = lines && lines[getRandomInt(0, lines.length - 1)];
+      this.currentLine = line;
+    },
+    denyLine() {
+      const place = this.selectedPlace;
+      const lines = place.denyLines;
 
       const line = lines && lines[getRandomInt(0, lines.length - 1)];
       this.currentLine = line;

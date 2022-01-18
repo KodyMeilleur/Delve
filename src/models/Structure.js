@@ -6,4 +6,5 @@ export function Structure() {
   this.explorable = true;
   this.tier = 1;
   this.structureVerticalOffset = 0;
+  this.eventStructure = false;
 }

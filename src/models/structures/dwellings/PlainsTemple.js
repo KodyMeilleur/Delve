@@ -20,6 +20,9 @@ export const PlainsTemple = {
     "Archon's blessings upon yee.",
     "Ah, another child of the light..",
   ],
+  denyLines: [
+    "Even Archon is in need of coin when traveling.."
+  ],
   firstTier: {
     name: "Temple",
     table: [

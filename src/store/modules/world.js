@@ -4,6 +4,7 @@ import { VoidTile } from '../../models/Tile';
 import { returnShallowMapChunk, findPath } from '../../services/pathfinding';
 import { getRandomInt, listOfEmptyNearTiles, createFilledLandmass } from '../../services/generateLand';
 import SpawnTable from '../../tables/Spawns';
+import { Events as PlainsEvents } from '../../models/events/Plains/events';
 
 // initial state
 const state = () => ({
@@ -26,6 +27,8 @@ const state = () => ({
   logs: [],
   showMoveTiles: false,
   worldSeed: 0,
+  eventCountdown: CONST.eventCountdown,
+  emptyTileList: [],
 })
 
 // getters
@@ -80,6 +83,12 @@ const getters = {
   },
   worldSeed: (state) => {
     return state.worldSeed;
+  },
+  eventCountdown: (state) => {
+    return state.eventCountdown;
+  },
+  emptyTileList: (state) => {
+    return state.emptyTileList;
   },
 }
 
@@ -267,8 +276,40 @@ const mutations = {
       const path = findPath(areaAroundMonster, {x: monster.x, y: monster.y, mp: monster.mp}, {x: cellToTravelTo.x, y: cellToTravelTo.y});
       monster.path = path;
     });
-
     state.heroSpawnCountdown--;
+
+    state.eventCountdown--;
+
+    // EVENT SPAWN LOGIC
+    if (state.eventCountdown <= 0) {
+      const eventChance = getRandomInt(0, 100);
+      const negativeTurnChance = (Math.abs(state.eventCountdown) * 10);
+      if (eventChance <= CONST.eventPercentProbability + negativeTurnChance) {
+        const eventMap = {
+          1: 'structural',
+          2: 'effect',
+          3: 'choice'
+        };
+        const eventTableMap = {
+          'Plains': PlainsEvents
+        };
+        const eventTile = state.emptyTileList[getRandomInt(0, state.emptyTileList.length - 1)];
+        const nextEventType = eventMap[getRandomInt(1, 3)];
+        const nextEventTable = eventTableMap[eventTile.type];
+        const nextEventPool = nextEventTable[nextEventType];
+
+        const nextEvent = nextEventPool[getRandomInt(0, nextEventPool.length - 1)];
+
+        console.log('spawn event ', nextEventType, eventTile, nextEvent);
+        if (nextEventType === 'structural') {
+          console.log('structure');
+        } else {
+          state.map[eventTile.x][eventTile.y].event = nextEvent;
+        }
+
+        state.eventCountdown = CONST.eventCountdown;
+      }
+    }
 
     // NEMESIS SPAWN
     if (state.heroSpawnCountdown <= 0) {
@@ -296,6 +337,8 @@ const mutations = {
     const landmassPotentialColumnSize = CONST.normalColumnSize;
     const boardSize = CONST.defaultRowAndColumnCount;
     const structures = [];
+    // LIST OF VALID TILES FOR EVENTS
+    const emptyTileList = [];
 
     const startingCellX = (boardSize / 2) - (landmassPotentialRowSize / 2);
     const startingCellY = (boardSize / 2) - (landmassPotentialColumnSize / 2);
@@ -311,6 +354,12 @@ const mutations = {
              x: startingCellX + i,
              y: startingCellY + k
            })
+         } else {
+           emptyTileList.push({
+             type: name,
+             x: startingCellX + i,
+             y: startingCellY + k
+           })
          }
        }
     }
@@ -320,6 +369,7 @@ const mutations = {
       name,
       structures
     });
+    state.emptyTileList = emptyTileList;
   },
 
   setContinents (state, continents) {

@@ -28,6 +28,9 @@ export const PlainsShop = {
   sellLines: [
     "I'll take that off your hands..",
   ],
+  denyLines: [
+    "Deepest Apologies, it seems you havent the coin for that."
+  ],
   firstTier: {
     name: "Market",
     table: [
