@@ -7,4 +7,5 @@ export function Structure() {
   this.tier = 1;
   this.structureVerticalOffset = 0;
   this.eventStructure = false;
+  this.demolished = false;
 }

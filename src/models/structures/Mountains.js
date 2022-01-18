@@ -6,6 +6,7 @@ export function Mountains () {
   Structure.call(this);
   this.type = 'Mountains';
   this.sprite = 'assets/Tiles/Plains/Mountains/sheet';
+  this.demolishedSprite = 'assets/Tiles/Plains/Woods/demoSheet';
   this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
   this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
   this.unexploredFrames = 11;
@@ -25,6 +26,19 @@ export function Mountains () {
       item: Coin,
       chance: 15,
       amount: 15,
+    },
+  ];
+
+  this.demolishLoot = [
+    {
+      item: Stone,
+      chance: 100,
+      amount: 15,
+    },
+    {
+      item: Coin,
+      chance: 90,
+      amount: 100,
     },
   ];
 }

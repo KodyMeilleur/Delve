@@ -6,6 +6,7 @@ export function Woods () {
   Structure.call(this);
   this.type = 'Woods';
   this.sprite = 'assets/Tiles/Plains/Woods/sheet';
+  this.demolishedSprite = 'assets/Tiles/Plains/Woods/demoSheet';
   this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
   this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
   this.unexploredFrames = 11;
@@ -25,6 +26,19 @@ export function Woods () {
       item: Coin,
       chance: 25,
       amount: 5,
+    },
+  ];
+
+  this.demolishLoot = [
+    {
+      item: Wood,
+      chance: 100,
+      amount: 15,
+    },
+    {
+      item: Coin,
+      chance: 75,
+      amount: 30,
     },
   ];
 }

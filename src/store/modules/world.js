@@ -391,6 +391,10 @@ const mutations = {
     }
   },
 
+  demolishStructure (state, structure) {
+     structure.demolished = true;
+  },
+
   setDisasterStatus (state, status) {
     state.disasterOngoing = status;
   }

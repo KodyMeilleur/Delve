@@ -34,7 +34,8 @@
           </div>
           <div class="exploit-container" v-if="focusedEntity.structure">
             <div
-            v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored}"
+            v-on:click="demolish(focusedEntity.structure)"
+            v-bind:class="{ 'exploit-sprite': inArea === true && this.focusedEntity.structure.explored && this.focusedEntity.structure.demolished === false}"
             >
             </div>
             <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y || focusedEntity.structure.explored === false" class="exploit-sprite-inactive"></div>
@@ -87,6 +88,7 @@ export default {
     ...mapMutations('world', [
       'setfocusedEntityOverride',
       'setStructureExplored',
+      'demolishStructure',
     ]),
     switchFocus () {
       this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
@@ -98,12 +100,15 @@ export default {
     tourStructure () {
       this.$root.$emit('dwellingEntered', this.focusedEntity.structure.dwelling);
     },
+    demolish (structure) {
+      this.demolishStructure(structure);
+      this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.demolishLoot || []);
+    },
   },
   computed: {
     ...mapGetters('world', [
       'focusedEntity',
       'currentTurn',
-
     ]),
     inArea: function() {
       return this.focusedEntity && this.currentTurn && this.focusedEntity.x === this.currentTurn.x && this.focusedEntity.y === this.currentTurn.y;

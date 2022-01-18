@@ -42,6 +42,17 @@
         <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
           <div>
+            <!-- DEMOLISH EFFECT -->
+            <div
+            v-if="tile.structure.demolished === true && demolishFrame < 20"
+            v-bind:style="{
+              'background-position': -(65 * demolishFrame) + 'px ' + (0) + 'px',
+              top: (bumpVerticalFramePosition - 5) + 'px',
+              left: (bumpHorizontalFramePosition) + 'px',
+            }"
+            class="demolish-sprite"
+            >
+            </div>
             <div
             v-bind:style="{
               'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
@@ -57,7 +68,7 @@
           <div
           v-if="!tile.structure.eventStructure"
           v-bind:style="{
-            'background-image': 'url(' + publicPath + tile.structure.sprite + '01' +'.png)',
+            'background-image': 'url(' + publicPath + structureSprite + '01' +'.png)',
             'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
             top: (bumpVerticalFramePosition + tile.structure.structureVerticalOffset) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
@@ -123,6 +134,7 @@ export default {
       eventSpriteFrames: 0,
       currentFrame: 0,
       structureEffectFrame: 0,
+      demolishFrame: 0,
       structureEffectDelayList: [],
       moveHighlighted: false,
       bumpVerticalFramePosition: 0,
@@ -223,6 +235,9 @@ export default {
       'showMoveTiles',
       'worldSeed'
     ]),
+    structureSprite () {
+      return this.tile.structure.demolished && this.demolishFrame >= 7 ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
+    }
   },
   methods: {
     ...mapMutations('world', [
@@ -242,6 +257,10 @@ export default {
       } else {
         this.eventSpriteFrames += 1;
       }
+      if (this.tile.structure && this.tile.structure.demolished === true && this.demolishFrame < 20) {
+        this.demolishFrame += 1;
+      }
+
       const bumpFrames = this.bumpAnimationMap;
 
       const delayOption = this.getRandomIntBetween(0, 1);
@@ -384,7 +403,7 @@ export default {
   height: 14px; */
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 9;
   position: absolute;
   left: 0;
   background-image: url('/assets/hudSprites/select.png');
@@ -392,7 +411,7 @@ export default {
 .out-range {
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 9;
   position: absolute;
   left: 0;
   cursor: pointer;
@@ -401,7 +420,7 @@ export default {
 .potentialPath, .potentialPath.highlighted {
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 9;
   position: absolute;
   left: 0;
   cursor: pointer;
@@ -414,6 +433,13 @@ export default {
   height: 64px;
   position: absolute;
   z-index: 1;
+}
+.demolish-sprite {
+  width: 65px;
+  height: 70px;
+  background-image: url('/assets/Tiles/Sections/smoke.png');
+  z-index: 10;
+  position: absolute;
 }
 .structure-sprite {
   min-width: 64px;
