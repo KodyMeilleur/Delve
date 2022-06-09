@@ -20,8 +20,9 @@
         }"
         >
           <div class="entities">
-            <EntityLayer />
+            <EntityLayer :key="JSON.stringify(map[0])"/>
           </div>
+          <!-- <BattleLayer /> -->
           <TileLayer :map="map"/>
         </div>
       </div>
@@ -42,6 +43,8 @@ import Dwelling from './Dwelling.vue';
 
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
+// import BattleLayer from './BattleLayer.vue';
+
 
 export default {
   name: 'World',
@@ -65,8 +68,6 @@ export default {
   },
   updated () {
     console.log('world render');
-    this.setWorldReset();
-    this.setScroll({scrollLeft: this.scrollLeftCache += 1, scrollTop: this.scrollTopCache += 1});
   },
   data () {
     return {
@@ -84,14 +85,12 @@ export default {
       'map',
       'players',
       'currentTurn',
-      'worldSeed',
     ])
   },
   methods: {
     ...mapMutations('world', [
       'setScroll',
       'focusPlayer',
-      'setWorldReset'
     ]),
     shakeEffect () {
       this.shaking = !this.shaking;

@@ -155,8 +155,8 @@ export default {
     this.$root.$on('sellLine', this.sellLine);
   },
   beforeDestroy() {
-    this.$root.$off('frameBump');
-    this.$root.$off('dwellingEntered');
+    this.$root.$off('frameBump', this.frameAdvance);
+    this.$root.$off('dwellingEntered', this.openDwelling);
     this.$root.$off('buyLine', this.buyLine);
     this.$root.$off('sellLine', this.sellLine);
   },
@@ -255,17 +255,6 @@ export default {
     },
   },
   watch: {
-    'worldSeed': {
-      handler () {
-        this.$root.$off('frameBump', this.frameAdvance);
-        this.$root.$off('buyLine', this.buyLine);
-        this.$root.$off('sellLine', this.sellLine);
-        this.$root.$on('frameBump', this.frameAdvance);
-        this.$root.$on('buyLine', this.buyLine);
-        this.$root.$on('sellLine', this.sellLine);
-      },
-       deep: false
-     },
      'currentLine': {
        handler () {
          const that = this;
@@ -281,7 +270,6 @@ export default {
       'currentTurn',
       'leftOffset',
       'topOffset',
-      'worldSeed'
     ])
   },
 }

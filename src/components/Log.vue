@@ -110,7 +110,7 @@ export default {
 }
 .focus-icon {
   position: absolute;
-  width: 32px;
+  width: 31px;
   height: 32px;
   z-index: 11;
   top: 12px;

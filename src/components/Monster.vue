@@ -38,7 +38,7 @@ export default {
     this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
-    this.$root.$off('frameBump');
+    this.$root.$off('frameBump', this.frameAdvance);
   },
   data () {
     return {

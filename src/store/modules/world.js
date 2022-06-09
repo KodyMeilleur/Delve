@@ -19,6 +19,7 @@ const state = () => ({
   turnIndex: 0,
   focusedEntity: null,
   isMoving: false,
+  isBattling: false,
   isMonsterMoving: false,
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
   leftOffset: 0,
@@ -26,7 +27,6 @@ const state = () => ({
   heroSpawnCountdown: CONST.heroSpawnCountdown,
   logs: [],
   showMoveTiles: false,
-  worldSeed: 0,
   eventCountdown: CONST.eventCountdown,
   emptyTileList: [],
 })
@@ -38,6 +38,9 @@ const getters = {
   },
   logs: (state) => {
     return state.logs;
+  },
+  isBattling: (state) => {
+    return state.isBattling;
   },
   map: (state) => {
     return state.map;
@@ -80,9 +83,6 @@ const getters = {
   },
   heroSpawnCountdown: (state) => {
     return state.heroSpawnCountdown;
-  },
-  worldSeed: (state) => {
-    return state.worldSeed;
   },
   eventCountdown: (state) => {
     return state.eventCountdown;
@@ -258,10 +258,6 @@ const mutations = {
     state.currentTurn.mp = state.currentTurn.maxMp;
     state.showMoveTiles = false;
     state.focusedEntity = null;
-  },
-
-  setWorldReset (state) {
-    state.worldSeed = Math.random();
   },
 
   worldTurn (state) {

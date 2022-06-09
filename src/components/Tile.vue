@@ -182,30 +182,21 @@ export default {
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
     this.$root.$on('frameBump', this.frameAdvance);
+    this.checkShouldShow(this.leftOffset, this.topOffset);
   },
   beforeDestroy() {
     this.$parent.$off('updateTilePaths');
-    this.$root.$off('frameBump');
+    this.$root.$off('frameBump', this.frameAdvance);
     clearInterval(this.overTimeout);
   },
   watch: {
     leftOffset: function (val) {
       this.yOffset = val;
-      const xRange = ((this.tile.x * CONST.tileWidth));
-      const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 896)) &&
-        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 576 + (CONST.tileWidth));
+      this.checkShouldShow(val, this.topOffset);
     },
     topOffset: function (val) {
       this.xOffset = val;
-      const xRange = ((this.tile.x * CONST.tileWidth));
-      const yRange = ((this.tile.y * CONST.tileWidth));
-      this.shouldShow = (yRange >= (this.yOffset - (CONST.tileWidth * 2)) && (yRange <= this.yOffset + 896)) &&
-        (xRange >= (this.xOffset - (CONST.tileWidth * 2)) && xRange <= this.xOffset + 576 + (CONST.tileWidth));
-    },
-    worldSeed: function () {
-      this.$root.$off('frameBump', this.frameAdvance);
-      this.$root.$on('frameBump', this.frameAdvance);
+      this.checkShouldShow(this.leftOffset, val);
     },
     showMoveTiles: function(val) {
       if (this.shouldShow) {
@@ -233,7 +224,6 @@ export default {
       'currentTurn',
       'moveTiles',
       'showMoveTiles',
-      'worldSeed'
     ]),
     structureSprite () {
       return this.tile.structure.demolished && this.demolishFrame >= 7 ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
@@ -246,10 +236,25 @@ export default {
       'updateLogs',
       'toggleMovingTiles'
     ]),
+    checkShouldShow (leftOffset, topOffset) {
+      const yOffset = leftOffset;
+      const xOffset = topOffset;
+
+      const xRange = ((this.tile.x * CONST.tileWidth));
+      const yRange = ((this.tile.y * CONST.tileWidth));
+      const xShouldShow = (yRange >= (yOffset - (CONST.tileWidth * 2)) && (yRange <= yOffset + 896)) &&
+        (xRange >= (xOffset - (CONST.tileWidth * 2)) && xRange <= xOffset + 576 + (CONST.tileWidth));
+
+      const yShouldShow = (yRange >= (yOffset - (CONST.tileWidth * 2)) && (yRange <= yOffset + 896)) &&
+        (xRange >= (xOffset - (CONST.tileWidth * 2)) && xRange <= xOffset + 576 + (CONST.tileWidth));
+
+      this.shouldShow = xShouldShow && yShouldShow;
+    },
     frameAdvance (frame) {
       if (!this.shouldShow) {
         return;
       }
+
       this.frame = frame;
 
       if (this.eventSpriteFrames >= 5) {

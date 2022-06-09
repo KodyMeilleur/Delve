@@ -8,6 +8,8 @@ export function DefaultPlayer(name, x, y) {
   // LOCATION
   this.x = x;
   this.y = y;
+  this.battleX = null;
+  this.battleY = null;
 
   // TODO: Move to vue component only
   this.movingVerticalOffset = 0;

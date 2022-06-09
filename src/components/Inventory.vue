@@ -74,7 +74,7 @@ export default {
     this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
-    this.$root.$off('frameBump');
+    this.$root.$off('frameBump', this.frameAdvance);
   },
   methods: {
     ...mapMutations('world', [
@@ -112,7 +112,6 @@ export default {
       'currentTurn',
       'leftOffset',
       'topOffset',
-      'worldSeed'
     ]),
     inventory: function() {
       if (this.currentTurn.items) {
@@ -122,15 +121,7 @@ export default {
       return [];
     },
   },
-  watch: {
-    'worldSeed': {
-      handler () {
-        this.$root.$off('frameBump', this.frameAdvance);
-        this.$root.$on('frameBump', this.frameAdvance);
-      },
-       deep: false
-     },
-  },
+  watch: {},
 }
 </script>
 
@@ -149,7 +140,7 @@ export default {
 }
 .inventory-sprite {
   background-image: url('/assets/hudSprites/inventoryIcon.png');
-  width: 32px;
+  width: 31px;
   height: 32px;
   cursor: pointer;
 }

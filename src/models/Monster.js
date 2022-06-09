@@ -7,6 +7,8 @@ export function Monster(x, y) {
     // LOCATION
     this.x = x;
     this.y = y;
+    this.battleX = null;
+    this.battleY = null;
 
     this.isCreature = true;
 

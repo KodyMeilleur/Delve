@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
+    <Player v-for="player in players" v-bind:key="player.name + entitySeed" :player="player"/>
     <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
   </div>
 </template>
@@ -26,10 +26,14 @@ export default {
       totalMonsterCount: 0,
       currentFinishedMonsterTurns: 0,
       currentFrame: 0,
+      entitySeed: 0,
     }
   },
   updated () {
     console.log('entitylayer render...');
+  },
+  mounted: function() {
+    this.entitySeed = Math.random();
   },
   watch: {
     'monsters.length': {

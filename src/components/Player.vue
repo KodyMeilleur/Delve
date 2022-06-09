@@ -88,7 +88,7 @@ export default {
     this.$root.$on('frameBump', this.frameAdvance);
   },
   beforeDestroy() {
-    this.$root.$off('frameBump');
+    this.$root.$off('frameBump', this.frameAdvance);
   },
   data () {
     return {
@@ -124,20 +124,6 @@ export default {
       },
        deep: true
      },
-    'leftOffset': {
-      handler () {
-        this.$root.$off('frameBump', this.frameAdvance);
-        this.$root.$on('frameBump', this.frameAdvance);
-      },
-       deep: false
-     },
-     'topOffset': {
-       handler () {
-         this.$root.$off('frameBump', this.frameAdvance);
-         this.$root.$on('frameBump', this.frameAdvance);
-       },
-        deep: false
-      },
   },
   methods: {
     ...mapMutations('world', [
@@ -146,6 +132,7 @@ export default {
       'toggleMovingTiles'
     ]),
     frameAdvance () {
+
       let animation = this.animation;
       const bumpFrames = animation && animation.bumpFrames && animation.bumpFrames[this.currentFrame];
 
@@ -292,10 +279,10 @@ export default {
       ...mapGetters('world', [
       'focusedEntity',
       'currentTurn',
-      'map',
       'leftOffset',
       'topOffset',
       'showMoveTiles',
+      'map'
     ]),
     inStructure: function() {
       return this.player.outworldTileOccupied.structure ? true : false;
