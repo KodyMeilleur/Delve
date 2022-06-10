@@ -4,16 +4,22 @@
     <div class="world-container">
       <div
       v-on:scroll.passive="handleScroll"
+      v-bind:class="{ 'isBattling': isBattling}"
       class="world-box"
       ref="world"
       >
-        <Header />
-        <SelectedEntity />
-        <Dwelling />
-        <Log />
-        <Inventory />
-        <FocusStats />
-        <LootMenu :lootTile="lootTile"/>
+        <BattleLayer />
+        <span
+        v-bind:class="{ 'isBattling': isBattling}"
+        class="world-ui-elements">
+          <Header />
+          <SelectedEntity />
+          <Dwelling />
+          <Log />
+          <Inventory />
+          <FocusStats />
+          <LootMenu :lootTile="lootTile"/>
+        </span>
         <div
         v-bind:class="{
           shaking,
@@ -22,7 +28,6 @@
           <div class="entities">
             <EntityLayer :key="JSON.stringify(map[0])"/>
           </div>
-          <BattleLayer />
           <TileLayer :map="map"/>
         </div>
       </div>
@@ -66,6 +71,7 @@ export default {
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
     this.$root.$on('centerPlayer', this.centerPlayer);
+    this.$root.$on('resetScreenPosition', this.resetScreenPosition);
   },
   updated () {
     console.log('world render');
@@ -86,6 +92,7 @@ export default {
       'map',
       'players',
       'currentTurn',
+      'isBattling',
     ])
   },
   methods: {
@@ -102,6 +109,10 @@ export default {
         this.$refs.world.scrollLeft = offset.leftOffset;
       }
       this.focusPlayer();
+    },
+    resetScreenPosition () {
+      this.$refs.world.scrollTop = 0;
+      this.$refs.world.scrollLeft = 0;
     },
     handleScroll ($event) {
       const that = this;
@@ -134,6 +145,12 @@ export default {
   overflow: scroll;
   background-color: #33232a;
   position: relative;
+}
+.world-box.isBattling {
+  overflow: hidden;
+}
+.world-ui-elements.isBattling {
+  display: none;
 }
 .entities {
   width: 0;

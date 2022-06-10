@@ -26,6 +26,7 @@ export function VoidTile(x, y) {
   this.name = 'Void';
   this.mpCost = 100;
   this.tier = 1;
+  this.battleTile = false;
 }
 
 export function PlainsTile(x, y) {
@@ -52,6 +53,7 @@ export function PlainsTile(x, y) {
   this.name = 'Plains';
   this.mpCost = 1;
   this.tier = 1;
+  this.battleTile = false;
 }
 
 export function GenericTile(x, y, spritePath) {
@@ -73,4 +75,5 @@ export function GenericTile(x, y, spritePath) {
   this.name = 'Generic';
   this.mpCost = 1;
   this.tier = 1;
+  this.battleTile = false;
 }

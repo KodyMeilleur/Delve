@@ -38,7 +38,7 @@
     </span>
       <div class="tile-sprite">
         <!-- Add frame here -->
-        <span class="frame-counter">{{ frame }} </span>
+        <span class="frame-counter">{{ frame }} {{bumpVerticalFramePosition}}</span>
         <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
           <div>
@@ -93,7 +93,7 @@
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
           'background-position': (64 * currentFrame) + 'px ' + (64 * currentFrame) + 'px',
-          top: (tile.type === 'Void' ? 0 : bumpVerticalFramePosition) + 'px',
+          top: (tile.type === 'Void' || tile.battleTile ? 0 : bumpVerticalFramePosition) + 'px',
           left: (tile.type === 'Void' ? 0 : bumpHorizontalFramePosition) + 'px',
         }"
         class="tile-sprite tile-sprite-img"

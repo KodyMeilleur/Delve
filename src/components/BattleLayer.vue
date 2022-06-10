@@ -2,13 +2,18 @@
   <div
   v-if="isBattling"
   class="battlemass">
-    <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
-      <Tile v-for="cell in row"
-        :tile="cell"
-        v-on:potentialPathCalc="updatePotentialPath"
-        v-on:clearPotentialPath="clearPotentialPath"
-        v-bind:key="cell.id"
-      />
+    <div class="battle-container">
+      <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
+        <Tile v-for="cell in row"
+          :tile="cell"
+          v-on:potentialPathCalc="updatePotentialPath"
+          v-on:clearPotentialPath="clearPotentialPath"
+          v-bind:key="cell.id"
+        />
+      </div>
+    </div>
+    <div class="battle-controls">
+      test
     </div>
   </div>
 </template>
@@ -61,7 +66,8 @@ export default {
       if (val) {
         const generatedMap = createBattleField(this.battleTile);
         // make a battle array to tile function
-        console.log(generatedMap, this.battleTile);
+        this.currentMap = generatedMap;
+        console.log(this.currentMap);
       }
     }
   }
@@ -74,11 +80,19 @@ export default {
   display: inline-flex;
   height: 64px;
 }
+.battle-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 .battlemass {
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
 }
 </style>

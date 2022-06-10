@@ -90,6 +90,7 @@ export default {
       'setStructureExplored',
       'setIsBattling',
       'demolishStructure',
+      'setScroll',
     ]),
     switchFocus () {
       this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
@@ -97,6 +98,9 @@ export default {
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);
       this.setIsBattling({state: true, battleTile: this.focusedEntity});
+      this.$root.$emit('resetScreenPosition');
+      this.setScroll({scrollLeft: 0, scrollTop: 0});
+      this.setfocusedEntityOverride(null);
       // TODO: hook loot after combat
       // this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.loot || []);
     },
