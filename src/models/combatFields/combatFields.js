@@ -33,6 +33,7 @@ const NeutralField = [
   ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
   ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
   ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+  ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 ];
 
 const tileTypeMap = {
@@ -41,20 +42,16 @@ const tileTypeMap = {
 }
 
 export function createBattleField(tile) {
-  console.log(tileTypeMap, tile);
   const field = tileTypeMap[tile.type][0];
   const map = [];
 
   field.forEach((row, i) => {
     const mapRow = [];
     row.forEach((tile, k) => {
-      console.log(i, k);
       mapRow.push(new NeutralTile(i, k))
     });
     map.push(mapRow);
   });
-
-  console.log(map);
 
   return map;
 }
