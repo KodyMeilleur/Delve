@@ -16,7 +16,7 @@ export function NeutralTile(x, y) {
   this.animationFrames = 1;
   this.density = 0;
 
-  this.variants = 1;
+  this.variants = 4;
   this.variant = (getRandomInt(0, this.variants - 1) < 3) ? getRandomInt(0, this.variants - 1) : null;
   this.sprite = `assets/Tiles/Battle/Neutral/sheet${this.variant !== null ? this.variant : ''}.png`;
 

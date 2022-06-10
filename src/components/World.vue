@@ -9,11 +9,11 @@
       ref="world"
       >
         <BattleLayer />
+        <SelectedEntity />
         <span
         v-bind:class="{ 'isBattling': isBattling}"
         class="world-ui-elements">
           <Header />
-          <SelectedEntity />
           <Dwelling />
           <Log />
           <Inventory />
@@ -136,6 +136,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .world-container {
+  caret-color: rgba(0,0,0,0);
   display: flex;
   justify-content: center;
 }

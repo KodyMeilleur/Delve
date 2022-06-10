@@ -385,6 +385,7 @@ export default {
   position: absolute;
   bottom: 0px;
   left: 19px;
+  display: none;
 }
 .tile-sprite {
   min-width: 64px;
