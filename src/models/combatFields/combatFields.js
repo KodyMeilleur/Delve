@@ -1,0 +1,60 @@
+import { NeutralTile } from './combatTiles'
+
+const RED = 'RED';
+const BLUE = 'BLUE';
+const GREEN = 'GREEN';
+const WHITE = 'WHITE';
+const BLACK = 'BLACK';
+const PURPLE = 'PURPLE';
+const NEUTRAL = 'NEUTRAL';
+
+export const TYPES = {
+  RED,
+  BLUE,
+  GREEN,
+  WHITE,
+  BLACK,
+  PURPLE,
+  NEUTRAL
+}
+
+export const colorMap = {
+  'r': RED,
+  'l': BLUE,
+  'g': GREEN,
+  'w': WHITE,
+  'b': PURPLE,
+  'n': NEUTRAL
+};
+
+const NeutralField = [
+  ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+  ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+  ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+  ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+  ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+];
+
+const tileTypeMap = {
+  'Plains': [ NeutralField ],
+  'Void': []
+}
+
+export function createBattleField(tile) {
+  console.log(tileTypeMap, tile);
+  const field = tileTypeMap[tile.type][0];
+  const map = [];
+
+  field.forEach((row, i) => {
+    const mapRow = [];
+    row.forEach((tile, k) => {
+      console.log(i, k);
+      mapRow.push(new NeutralTile(i, k))
+    });
+    map.push(mapRow);
+  });
+
+  console.log(map);
+
+  return map;
+}

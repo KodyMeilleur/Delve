@@ -88,6 +88,7 @@ export default {
     ...mapMutations('world', [
       'setfocusedEntityOverride',
       'setStructureExplored',
+      'setIsBattling',
       'demolishStructure',
     ]),
     switchFocus () {
@@ -95,7 +96,9 @@ export default {
     },
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);
-      this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.loot || []);
+      this.setIsBattling({state: true, battleTile: this.focusedEntity});
+      // TODO: hook loot after combat
+      // this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.loot || []);
     },
     tourStructure () {
       this.$root.$emit('dwellingEntered', this.focusedEntity.structure.dwelling);

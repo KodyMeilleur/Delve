@@ -1,5 +1,7 @@
 <template>
-  <div class="landmass">
+  <div
+  v-if="!isBattling"
+  class="landmass">
     <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
       <Tile v-for="cell in row"
         :tile="cell"
@@ -14,6 +16,7 @@
 <script>
 import CONST from '../CONST';
 import Tile from './Tile.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'TileLayer',
@@ -34,6 +37,12 @@ export default {
   },
   updated () {
     console.log('TileLayer render...');
+    console.log(this.isBattling);
+  },
+  computed: {
+    ...mapGetters('world', [
+      'isBattling',
+    ])
   },
   methods: {
     updatePotentialPath (path) {

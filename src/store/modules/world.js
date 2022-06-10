@@ -20,6 +20,7 @@ const state = () => ({
   focusedEntity: null,
   isMoving: false,
   isBattling: false,
+  battleTile: null,
   isMonsterMoving: false,
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
   leftOffset: 0,
@@ -41,6 +42,9 @@ const getters = {
   },
   isBattling: (state) => {
     return state.isBattling;
+  },
+  battleTile: (state) => {
+    return state.battleTile;
   },
   map: (state) => {
     return state.map;
@@ -127,6 +131,11 @@ const mutations = {
   },
   setMap (state, map) {
     state.map = map;
+  },
+  setIsBattling (state, data) {
+    console.log(data);
+    state.battleTile = data.battleTile;
+    state.isBattling = data.state;
   },
   togglePlayerShop (state, {player, status}) {
     player.inShop = status;

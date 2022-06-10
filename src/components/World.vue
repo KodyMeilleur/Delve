@@ -22,7 +22,7 @@
           <div class="entities">
             <EntityLayer :key="JSON.stringify(map[0])"/>
           </div>
-          <!-- <BattleLayer /> -->
+          <BattleLayer />
           <TileLayer :map="map"/>
         </div>
       </div>
@@ -40,7 +40,7 @@ import FocusStats from './FocusStats.vue';
 import LootMenu from './LootMenu.vue';
 import Header from './Header.vue';
 import Dwelling from './Dwelling.vue';
-
+import BattleLayer from './BattleLayer.vue';
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
 // import BattleLayer from './BattleLayer.vue';
@@ -54,6 +54,7 @@ export default {
   components: {
     SelectedEntity,
     Log,
+    BattleLayer,
     EntityLayer,
     TileLayer,
     Inventory,

@@ -2,7 +2,7 @@
   <div
   v-if="isBattling"
   class="battlemass">
-    <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
+    <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
       <Tile v-for="cell in row"
         :tile="cell"
         v-on:potentialPathCalc="updatePotentialPath"
@@ -16,6 +16,8 @@
 <script>
 import CONST from '../CONST';
 import Tile from './Tile.vue';
+import { mapGetters } from 'vuex';
+import { createBattleField } from '../models/combatFields/combatFields';
 
 export default {
   name: 'BattleLayer',
@@ -41,6 +43,7 @@ export default {
   computed: {
     ...mapGetters('world', [
       'isBattling',
+      'battleTile',
     ])
   },
   methods: {
@@ -55,9 +58,10 @@ export default {
   },
   watch: {
     isBattling: function (val) {
-      console.log('is battling: ', val);
       if (val) {
+        const generatedMap = createBattleField(this.battleTile);
         // make a battle array to tile function
+        console.log(generatedMap, this.battleTile);
       }
     }
   }
