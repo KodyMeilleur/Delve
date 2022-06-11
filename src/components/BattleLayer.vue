@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="battle-controls">
-      Controls
+      <BattleControls />
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ import CONST from '../CONST';
 import Tile from './Tile.vue';
 import { mapGetters } from 'vuex';
 import { createBattleField } from '../models/combatFields/combatFields';
+import BattleControls from './BattleControls.vue';
 
 export default {
   name: 'BattleLayer',
@@ -66,6 +67,7 @@ export default {
   },
   components: {
     Tile,
+    BattleControls,
   },
   data () {
     return {
