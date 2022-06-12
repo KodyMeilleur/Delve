@@ -27,6 +27,8 @@ export function NeutralTile(x, y) {
 
   this.battleTile = true;
   this.manaValueSlotOne = 0;
+  this.manaTypeSlotOne = null;
   this.manaValueSlotTwo = 0;
-  this.manaOwner = null;
+  this.manaTypeSlotTwo = null;
+  this.manaOwnerId = null;
 }

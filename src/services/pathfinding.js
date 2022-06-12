@@ -25,8 +25,8 @@ export function findPath(maze, startCoords, endCoords) {
   // add startCell to openList
   startCell.visited = true;
   openList.push(startCell);
-  const gridAdjustmentX = startCoords.x - startCoords.mp;
-  const gridAdjustmentY = startCoords.y - startCoords.mp;
+  const gridAdjustmentX = startCoords.x - startCoords.movement;
+  const gridAdjustmentY = startCoords.y - startCoords.movement;
 
   function cardinalCellCheck(cell) {
       // check all directions for cells
@@ -107,9 +107,9 @@ export function findPath(maze, startCoords, endCoords) {
 }
 
 export function returnShallowMapChunk(startEntity, fullMap) {
-  const rowColumnSize = (startEntity.mp * 2);
-  const startX = (startEntity.x - startEntity.mp);
-  const startY = (startEntity.y - startEntity.mp);
+  const rowColumnSize = (startEntity.movement * 2);
+  const startX = (startEntity.x - startEntity.movement);
+  const startY = (startEntity.y - startEntity.movement);
 
   const mazeClone = [];
 
@@ -141,7 +141,7 @@ export function toggleMoveTiles(startEntity, map) {
   const tilesToCheck = [];
   const startX = parseInt(startEntity.x);
   const startY = parseInt(startEntity.y);
-  let totalMP = startEntity.mp;
+  let totalMP = startEntity.movement;
   const gridAdjustmentX = startX - totalMP;
   const gridAdjustmentY = startY - totalMP;
 

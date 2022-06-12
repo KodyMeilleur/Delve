@@ -16,6 +16,7 @@ const state = () => ({
   monsters: [],
   monsterTurns: [],
   currentTurn: null, // player object
+  currentBattleTurnID: null,
   turnIndex: 0,
   focusedEntity: null,
   isMoving: false,
@@ -66,6 +67,9 @@ const getters = {
   },
   currentTurn: (state) => {
     return state.currentTurn;
+  },
+  currentBattleTurnID: (state) => {
+    return state.currentBattleTurnID;
   },
   focusedEntity: (state) => {
     return state.focusedEntity;
@@ -192,6 +196,10 @@ const mutations = {
     state.focusedEntity = state.currentTurn;
   },
 
+  setCurrentBattleTurnID (state, id) {
+    state.currentBattleTurnID = id;
+  },
+
   addNewPlayerToGame (state, pc) {
     const newPlayer = new DefaultPlayer(pc.name, pc.x, pc.y);
     if (state.players.length === 0) {
@@ -264,7 +272,7 @@ const mutations = {
   cycleTurn (state) {
     state.turnIndex = (state.turnIndex + 1);
     state.currentTurn = state.players[state.turnIndex];
-    state.currentTurn.mp = state.currentTurn.maxMp;
+    state.currentTurn.movement = state.currentTurn.maxMovement;
     state.showMoveTiles = false;
     state.focusedEntity = null;
   },
@@ -278,7 +286,7 @@ const mutations = {
     state.monsters.forEach((monster) => {
       const areaAroundMonster = returnShallowMapChunk(monster, state.map);
       const cellToTravelTo = areaAroundMonster[getRandomInt(0, areaAroundMonster.length - 1)][getRandomInt(0, areaAroundMonster.length - 1)];
-      const path = findPath(areaAroundMonster, {x: monster.x, y: monster.y, mp: monster.mp}, {x: cellToTravelTo.x, y: cellToTravelTo.y});
+      const path = findPath(areaAroundMonster, {x: monster.x, y: monster.y, movement: monster.movement}, {x: cellToTravelTo.x, y: cellToTravelTo.y});
       monster.path = path;
     });
     state.heroSpawnCountdown--;

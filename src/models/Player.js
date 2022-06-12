@@ -1,6 +1,7 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
 import { Animation } from './Animation.js';
+// import TYPES from './combatFields/combatTiles.js';
 
 export function DefaultPlayer(name, x, y) {
 
@@ -27,15 +28,30 @@ export function DefaultPlayer(name, x, y) {
 
   this.name = name;
   this.isCreature = true;
-  this.maxMp = 3; // moving points
-  this.mp = 3; // moving points
+  this.isPlayer = true;
+  this.xp = 0;
+  this.level = 1;
+
+  this.maxMovement = 3; // moving points
+  this.movement = 3; // moving points
+
+  this.heldMana = {
+    'RED': 0,
+    'BLUE': 0,
+    'GREEN': 0,
+    'WHITE': 0,
+    'BLACK': 0,
+    'PURPLE': 0,
+    'NEUTRAL': 0
+  }
+
   // STATS
   this.hp = CONST.defaultHP;
-  this.en = CONST.defaultEN;
-  this.str = CONST.defaultStartingStat;
-  this.def = CONST.defaultStartingStat;
-  this.int = CONST.defaultStartingStat;
-  this.wis = CONST.defaultStartingStat;
+  this.might = CONST.defaultStartingStat;
+  this.toughness = CONST.defaultStartingStat;
+  this.intelligence = CONST.defaultStartingStat;
+  this.arcana = CONST.defaultStartingStat;
+
   this.pts = CONST.startingStatPoints;
   this.coin = 100;
 

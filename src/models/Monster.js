@@ -11,6 +11,7 @@ export function Monster(x, y) {
     this.battleY = null;
 
     this.isCreature = true;
+    this.isPlayer = false;
 
     // limit 3 for a monster?
     this.technologies = [];
@@ -33,6 +34,16 @@ export function Monster(x, y) {
       con: 0,
       bnd: 0
     };
+
+    this.heldMana = {
+      'RED': 0,
+      'BLUE': 0,
+      'GREEN': 0,
+      'WHITE': 0,
+      'BLACK': 0,
+      'PURPLE': 0,
+      'NEUTRAL': 0
+    }
 
     this.density = 1;
     this.width = CONST.tileWidth;

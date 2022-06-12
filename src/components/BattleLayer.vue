@@ -48,7 +48,8 @@
       </div>
     </div>
     <div class="battle-controls">
-      <BattleControls />
+      <BattleHeader :title="currentBattleTurnEntity && currentBattleTurnEntity.name"/>
+      <BattleControls :entity="currentBattleTurnEntity" />
     </div>
   </div>
 </template>
@@ -56,9 +57,10 @@
 <script>
 import CONST from '../CONST';
 import Tile from './Tile.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import { createBattleField } from '../models/combatFields/combatFields';
 import BattleControls from './BattleControls.vue';
+import BattleHeader from './BattleHeader.vue';
 
 export default {
   name: 'BattleLayer',
@@ -68,16 +70,17 @@ export default {
   components: {
     Tile,
     BattleControls,
+    BattleHeader,
   },
   data () {
     return {
       CONST: CONST,
       publicPath: process.env.BASE_URL,
-      totalMonsterCount: 0,
-      currentFinishedMonsterTurns: 0,
-      currentFrame: 0,
+      monsters: [],
       potentialPath: [],
       currentMap: [],
+      currentBattleTurnID: null,
+      currentBattleTurnEntity: null,
     }
   },
   updated () {
@@ -87,9 +90,13 @@ export default {
     ...mapGetters('world', [
       'isBattling',
       'battleTile',
+      'currentTurn',
     ])
   },
   methods: {
+    ...mapMutations('world', [
+      'setCurrentBattleTurnID',
+    ]),
     updatePotentialPath (path) {
       this.potentialPath = path;
       this.$emit('updateTilePaths', this.potentialPath);
@@ -103,6 +110,10 @@ export default {
     isBattling: function (val) {
       if (val) {
         const generatedMap = createBattleField(this.battleTile);
+        console.log(this.battleTile);
+        this.currentBattleTurnID = this.currentTurn.id;
+        this.currentBattleTurnEntity = this.currentTurn;
+        this.setCurrentBattleTurnID(this.currentTurn.id);
         // make a battle array to tile function
         this.currentMap = generatedMap;
         console.log(this.currentMap);

@@ -56,12 +56,11 @@
     <div v-if="focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
       <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
       <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
-      <span class="info-row-en"><span class="info-row en-sprite"></span>{{ focusedEntity.en }}</span>
-      <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.mp }}</span>
-      <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.str }}</span>
-      <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.def }}</span>
-      <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.int }}</span>
-      <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.wis }}</span>
+      <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.movement }}</span>
+      <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.might }}</span>
+      <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.toughness }}</span>
+      <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.intelligence }}</span>
+      <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.arcana }}</span>
       <div class="btn-action-container">
         <span class="swap-focus-container">
           <div

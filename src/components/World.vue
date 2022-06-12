@@ -48,7 +48,6 @@ import Dwelling from './Dwelling.vue';
 import BattleLayer from './BattleLayer.vue';
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
-// import BattleLayer from './BattleLayer.vue';
 
 
 export default {
