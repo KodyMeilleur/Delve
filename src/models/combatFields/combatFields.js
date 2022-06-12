@@ -1,4 +1,5 @@
-import { NeutralTile } from './combatTiles'
+import { NeutralTile } from './combatTiles';
+import { Dummy } from '../monsters/Dummy';
 
 const RED = 'RED';
 const BLUE = 'BLUE';
@@ -39,6 +40,22 @@ const NeutralField = [
 const tileTypeMap = {
   'Plains': [ NeutralField ],
   'Void': []
+}
+
+const enemyMap = {
+  'Plains': [
+    Dummy
+  ],
+  'Void': [
+
+  ]
+}
+
+export function createEnemies(tile) {
+  const enemy = new enemyMap[tile.type][0](2, 7);
+  console.log(enemy);
+
+  return [enemy];
 }
 
 export function createBattleField(tile) {

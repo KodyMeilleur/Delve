@@ -196,6 +196,13 @@ const mutations = {
     state.focusedEntity = state.currentTurn;
   },
 
+  setPlayerBattleStatus (state) {
+    state.currentTurn.isBattling = true;
+    state.currentTurn.battleX = 2;
+    state.currentTurn.battleY = 2;
+    state.currentTurn.movingDirection = 2;
+  },
+
   setCurrentBattleTurnID (state, id) {
     state.currentBattleTurnID = id;
   },

@@ -2,8 +2,8 @@
   <div v-bind:style="{
     width: width + 'px',
     height: height + 'px',
-    top: ((x * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
-    left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
+    top: (((this.player.isBattling === true ? battleX : x) * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
+    left: (((this.player.isBattling === true ? battleY : y) * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
   }"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles}"
@@ -54,17 +54,17 @@
       'top': (-30) + 'px',
       'z-index': '4',
     }"
-    v-if="inStructure && isMoving === false"
+    v-if="inStructure && isMoving === false && player.isBattling === false"
     class="player-sprite"
     >
     </div>
     <div
     v-on:click.stop="setEntity"
     v-bind:style="{
-      'background-image': 'url(' + publicPath + player.sprite + 'Outworld/' + animation.state + '/' + direction + '/sheet.png)',
+      'background-image': 'url(' + publicPath + player.sprite + (player.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + direction + '/sheet.png)',
       'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
     }"
-    v-bind:class="{ inStructure: inStructure && isMoving === false}"
+    v-bind:class="{ inStructure: inStructure && isMoving === false && player.isBattling === false}"
     class="player-sprite"
     >
     </div>
@@ -100,10 +100,12 @@ export default {
       bumpHorizontalFramePosition: 0,
       movingVerticalOffset: 0,
       movingHorizontalOffset: 0,
-      movingDirection: 0,
+      movingDirection: this.player.movingDirection,
       isMoving: false,
       x: this.player.x,
       y: this.player.y,
+      battleX: this.player.battleX,
+      battleY: this.player.battleY,
       currentFrame: 0,
       tilesToTravel: 0,
       path: [],
@@ -289,6 +291,7 @@ export default {
     },
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
+      console.log('wtf', this.movin);
       switch (this.movingDirection) {
         case 0:
           return 'South'

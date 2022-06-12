@@ -36,6 +36,10 @@
           ></div>
         </div>
         <div class="battle-container">
+          <div class="battle-entity-layer">
+            <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
+            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy"/>
+          </div>
           <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
             <Tile v-for="cell in row"
               :tile="cell"
@@ -58,9 +62,11 @@
 import CONST from '../CONST';
 import Tile from './Tile.vue';
 import { mapGetters, mapMutations } from 'vuex';
-import { createBattleField } from '../models/combatFields/combatFields';
+import { createBattleField, createEnemies } from '../models/combatFields/combatFields';
 import BattleControls from './BattleControls.vue';
 import BattleHeader from './BattleHeader.vue';
+import Player from './Player.vue';
+import Monster from './Monster.vue';
 
 export default {
   name: 'BattleLayer',
@@ -71,16 +77,19 @@ export default {
     Tile,
     BattleControls,
     BattleHeader,
+    Player,
+    Monster
   },
   data () {
     return {
       CONST: CONST,
       publicPath: process.env.BASE_URL,
-      monsters: [],
+      enemies: [],
       potentialPath: [],
       currentMap: [],
       currentBattleTurnID: null,
       currentBattleTurnEntity: null,
+      players: [],
     }
   },
   updated () {
@@ -96,6 +105,7 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setCurrentBattleTurnID',
+      'setPlayerBattleStatus'
     ]),
     updatePotentialPath (path) {
       this.potentialPath = path;
@@ -109,14 +119,18 @@ export default {
   watch: {
     isBattling: function (val) {
       if (val) {
+        this.setPlayerBattleStatus();
+        // GENERATE MAP AND ENEMIES FROM TILE
         const generatedMap = createBattleField(this.battleTile);
-        console.log(this.battleTile);
+        const enemies = createEnemies(this.battleTile);
+
+        this.players.push(this.currentTurn);
+        this.enemies = this.enemies.concat(enemies);
         this.currentBattleTurnID = this.currentTurn.id;
         this.currentBattleTurnEntity = this.currentTurn;
         this.setCurrentBattleTurnID(this.currentTurn.id);
-        // make a battle array to tile function
+
         this.currentMap = generatedMap;
-        console.log(this.currentMap);
       }
     }
   }
@@ -168,6 +182,11 @@ export default {
   top: -64px;
   right: 1px;
   flex-direction: column;
+}
+.battle-entity-layer {
+  position: absolute;
+  left: 128px;
+  z-index: 2;
 }
 .battlemass {
   display: flex;
