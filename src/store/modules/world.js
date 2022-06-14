@@ -2,8 +2,8 @@ import CONST from '../../CONST';
 import { DefaultPlayer } from '../../models/Player';
 import { VoidTile } from '../../models/Tile';
 import { returnShallowMapChunk, findPath } from '../../services/pathfinding';
-import { getRandomInt, listOfEmptyNearTiles, createFilledLandmass } from '../../services/generateLand';
-import SpawnTable from '../../tables/Spawns';
+import { getRandomInt, createFilledLandmass } from '../../services/generateLand';
+// import SpawnTable from '../../tables/Spawns';
 import { Events as PlainsEvents } from '../../models/events/Plains/events';
 
 // initial state
@@ -334,19 +334,18 @@ const mutations = {
 
     // NEMESIS SPAWN
     if (state.heroSpawnCountdown <= 0) {
-      const allStructures = state.continents[0].structures;
-      const randomStructure = allStructures[getRandomInt(0, allStructures.length - 1)];
+      // const allStructures = state.continents[0].structures;
+      // const randomStructure = allStructures[getRandomInt(0, allStructures.length - 1)];
       state.heroSpawnCountdown = CONST.heroSpawnCountdown;
-      const tilesToPickFrom = listOfEmptyNearTiles(state.map, randomStructure.x, randomStructure.y);
-
-      const spawnTile = tilesToPickFrom[getRandomInt(0, tilesToPickFrom.length - 1)];
-
-      // 0 HARDCODED FOR SKELETON
-      const monster = new SpawnTable['Plains'][randomStructure.type][0](spawnTile.x, spawnTile.y);
-      state.monsters.push(monster);
-      state.map[monster.x][monster.y].monsters.push(monster);
-      state.logs.push(`A ${monster.type} nemesis has been born!`);
-
+      // const tilesToPickFrom = listOfEmptyNearTiles(state.map, randomStructure.x, randomStructure.y);
+      //
+      // const spawnTile = tilesToPickFrom[getRandomInt(0, tilesToPickFrom.length - 1)];
+      //
+      // // 0 HARDCODED FOR SKELETON
+      // const monster = new SpawnTable['Plains'][randomStructure.type][0](spawnTile.x, spawnTile.y);
+      // state.monsters.push(monster);
+      // state.map[monster.x][monster.y].monsters.push(monster);
+      // state.logs.push(`A ${monster.type} nemesis has been born!`);
     }
     state.currentTurn = CONST.world;
   },
