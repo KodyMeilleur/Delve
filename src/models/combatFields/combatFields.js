@@ -52,7 +52,7 @@ const enemyMap = {
 }
 
 export function createEnemies(tile) {
-  const enemy = new enemyMap[tile.type][0](2, 7);
+  const enemy = new enemyMap[tile.type][0](2, 7, true);
   console.log(enemy);
 
   return [enemy];

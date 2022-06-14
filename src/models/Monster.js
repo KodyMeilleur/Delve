@@ -9,6 +9,7 @@ export function Monster(x, y) {
     this.y = y;
     this.battleX = null;
     this.battleY = null;
+    this.isBattling = false;
 
     this.isCreature = true;
     this.isPlayer = false;

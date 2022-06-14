@@ -360,7 +360,7 @@ export default {
   z-index: 9;
 }
 .player-move-effect.top {
-  top: -42px;
+  top: -40px;
 }
 .player-move-effect.down {
   top: 40px;

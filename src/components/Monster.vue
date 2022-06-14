@@ -12,7 +12,7 @@
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
   <div
   v-bind:style="{
-    'background-image': 'url(' + publicPath + monster.sprite + animation.state + '/' + (direction || 'South') + '/sheet.png)',
+    'background-image': 'url(' + publicPath + monster.sprite + (monster.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + (direction || 'South') + '/sheet.png)',
     'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
   }"
   class="monster-sprite"
@@ -228,11 +228,10 @@ export default {
   cursor: default;
 }
 .selected,.monster-component:hover {
-  outline: 2px white solid;
-  border-radius: 5px;
   cursor: pointer;
   z-index: 10;
   color: rgba(255, 255, 255, 0.5);
+  background-image: url('/assets/hudSprites/select.png');
 }
 .monster-sprite {
   position: absolute;
