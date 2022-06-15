@@ -15,7 +15,7 @@
           <div v-for="n in focusedEntity.mpCost" :key="n" class="mp-sprite"></div>
         </div>
       </span>
-      <span class="action-container">
+      <span v-if="!isBattling" class="action-container">
         <div style="display: flex;" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Wild' || !focusedEntity.structure">
           <div class="explore-container">
             <div
@@ -56,11 +56,11 @@
     <div v-if="focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
       <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
       <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
-      <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.movement }}</span>
+      <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.maxMovement }}</span>
       <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.might }}</span>
       <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.toughness }}</span>
       <span class="info-row-int"><span class="info-row int-sprite"></span>{{ focusedEntity.intelligence }}</span>
-      <span class="info-row-wis"><span class="info-row wis-sprite"></span>{{ focusedEntity.arcana }}</span>
+      <span class="info-row-arc"><span class="info-row arc-sprite"></span>{{ focusedEntity.arcana }}</span>
       <div class="btn-action-container">
         <span class="swap-focus-container">
           <div
@@ -115,6 +115,7 @@ export default {
     ...mapGetters('world', [
       'focusedEntity',
       'currentTurn',
+      'isBattling',
     ]),
     inArea: function() {
       return this.focusedEntity && this.currentTurn && this.focusedEntity.x === this.currentTurn.x && this.focusedEntity.y === this.currentTurn.y;
@@ -197,7 +198,7 @@ export default {
 .info-row-health {
   position: absolute;
   top: 15px;
-  right: 10px;
+  right: 65px;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -213,14 +214,14 @@ export default {
 .info-row-str {
   position: absolute;
   top: 36px;
-  left: 50px;
+  left: 12px;
   font-size: 12px;
   display: flex;
   align-items: center;
 }
 .info-row-def {
   position: absolute;
-  top: 52px;
+  top: 36px;
   left: 50px;
   font-size: 12px;
   display: flex;
@@ -228,24 +229,24 @@ export default {
 }
 .info-row-mp {
   position: absolute;
-  top: 52px;
-  left: 12px;
+  top: 15px;
+  right: 12px;
   font-size: 12px;
   display: flex;
   align-items: center;
 }
 .info-row-int {
   position: absolute;
-  top: 70px;
-  left: 50px;
+  top: 55px;
+  left: 12px;
   font-size: 12px;
   display: flex;
   align-items: center;
 }
-.info-row-wis {
+.info-row-arc {
   position: absolute;
-  top: 70px;
-  left: 12px;
+  top: 55px;
+  left: 50px;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -280,7 +281,7 @@ export default {
   height: 14px;
   margin-right: 3px;
 }
-.wis-sprite {
+.arc-sprite {
   background-image: url('/assets/hudSprites/wisIcon.png');
   width: 14px;
   height: 14px;

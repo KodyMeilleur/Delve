@@ -10,6 +10,8 @@ export function Monster(x, y) {
     this.battleX = null;
     this.battleY = null;
     this.isBattling = false;
+    // turn order stat?
+    this.speed = 0;
 
     this.isCreature = true;
     this.isPlayer = false;
