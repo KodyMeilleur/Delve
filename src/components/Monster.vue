@@ -62,19 +62,28 @@ export default {
     }
   },
   watch: {
-     currentTurn: {
-        handler (currentTurn) {
-          if (currentTurn.name === 'World') {
-            this.tilesToTravel = this.monster.path.length;
-            this.path = this.monster.path;
-            this.isMoving = true;
-          }
-        },
-     },
-     'map': {
+     // currentTurn: {
+     //    handler (currentTurn) {
+     //      if (currentTurn.name === 'World') {
+     //        this.tilesToTravel = this.monster.path.length;
+     //        this.path = this.monster.path;
+     //        this.isMoving = true;
+     //      }
+     //    },
+     // },
+     'isMonsterTurn': {
        handler (val) {
-         if (val.length)
-           this.$root.$on('frameBump', this.frameAdvance);
+         const that = this;
+         function endTurn() {
+           that.$emit('turnEnded');
+         }
+
+         if (val === true) {
+           console.log('monster turn from component!');
+           // do stuff and eventually emit turn ended
+
+           setTimeout(endTurn, 1000);
+         }
        },
         deep: false
       },
@@ -198,7 +207,8 @@ export default {
   computed: {
       ...mapGetters('world', [
       'focusedEntity',
-      'currentTurn'
+      'currentTurn',
+      'isMonsterTurn'
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South

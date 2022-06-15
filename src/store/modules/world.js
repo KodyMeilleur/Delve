@@ -16,11 +16,13 @@ const state = () => ({
   monsters: [],
   monsterTurns: [],
   currentTurn: null, // player object
-  currentBattleTurnID: null,
+  currentBattleTurn: null,
   turnIndex: 0,
   focusedEntity: null,
   isMoving: false,
   isBattling: false,
+  isMonsterTurn: false,
+  battlingPlayers: [],
   battleTile: null,
   isMonsterMoving: false,
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
@@ -47,6 +49,12 @@ const getters = {
   battleTile: (state) => {
     return state.battleTile;
   },
+  battlingPlayers: (state) => {
+    return state.battlingPlayers;
+  },
+  isMonsterTurn: (state) => {
+    return state.isMonsterTurn;
+  },
   map: (state) => {
     return state.map;
   },
@@ -68,8 +76,8 @@ const getters = {
   currentTurn: (state) => {
     return state.currentTurn;
   },
-  currentBattleTurnID: (state) => {
-    return state.currentBattleTurnID;
+  currentBattleTurn: (state) => {
+    return state.currentBattleTurn;
   },
   focusedEntity: (state) => {
     return state.focusedEntity;
@@ -196,15 +204,53 @@ const mutations = {
     state.focusedEntity = state.currentTurn;
   },
 
-  setPlayerBattleStatus (state) {
-    state.currentTurn.isBattling = true;
-    state.currentTurn.battleX = 2;
-    state.currentTurn.battleY = 2;
-    state.currentTurn.movingDirection = 2;
+  setPlayerBattleStatus (state, { players }) {
+    console.log(players);
+    players.forEach((player, i) => {
+      player.isBattling = true;
+      player.battleX = 2 + i;
+      player.battleY = 2;
+      player.movingDirection = 2;
+      state.battlingPlayers.push(player);
+    });
   },
 
-  setCurrentBattleTurnID (state, id) {
-    state.currentBattleTurnID = id;
+  cycleBattleTurn (state) {
+    state.currentBattleTurn.roundFinished = true;
+
+    function nextPlayer(player) {
+      return player.roundFinished === false;
+    }
+    // isMonsterTurn
+    const next = state.battlingPlayers.find(nextPlayer);
+    if (next) {
+      console.log(next);
+      state.currentBattleTurn = next;
+    } else {
+      state.isMonsterTurn = true;
+      state.battlingPlayers.forEach((player) => {
+        player.roundFinished = false;
+      });
+    }
+  },
+
+  endMonsterTurn (state) {
+    state.isMonsterTurn = false;
+
+    function nextPlayer(player) {
+      return player.roundFinished === false;
+    }
+    // isMonsterTurn
+    const next = state.battlingPlayers.find(nextPlayer);
+    state.currentBattleTurn = next;
+  },
+
+  setCurrentBattleTurn (state, player) {
+    state.currentBattleTurn = player;
+  },
+
+  clearFocusedEntity (state) {
+    state.focusedEntity = null;
   },
 
   addNewPlayerToGame (state, pc) {

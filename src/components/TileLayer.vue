@@ -37,7 +37,6 @@ export default {
   },
   updated () {
     console.log('TileLayer render...');
-    console.log(this.isBattling);
   },
   computed: {
     ...mapGetters('world', [

@@ -2,8 +2,8 @@
   <div
   class="battle-header-ui unselectable">
   <div class="title-text text-style">
-    <div class="turn-name">{{title}}</div>
-    <div>'s Turn!</div>
+    <div class="turn-name">{{ title }} </div>
+    <div> is Casting!</div>
   </div>
   </div>
 </template>
@@ -43,6 +43,9 @@ export default {
   background-color: transparent;
   z-index: 11;
   background-image: url('/assets/hudSprites/battleHeader.png');
+}
+.turn-name {
+  margin-right: 6px;
 }
 .title-text {
   display: flex;

@@ -12,6 +12,7 @@ export function DefaultPlayer(name, x, y) {
   this.battleX = 0;
   this.battleY = 0;
   this.isBattling = false;
+  this.roundFinished = false;
 
   // TODO: Move to vue component only
   this.movingVerticalOffset = 0;

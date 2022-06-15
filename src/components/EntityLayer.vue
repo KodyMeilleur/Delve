@@ -1,7 +1,7 @@
 <template>
   <div>
     <Player v-for="player in players" v-bind:key="player.name + entitySeed" :player="player"/>
-    <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster" v-on:turnEnded="incrementTurnsCompleted"/>
+    <Monster v-for="monster in monsters" v-bind:key="monster.id" :monster="monster"/>
   </div>
 </template>
 
@@ -23,8 +23,6 @@ export default {
   data () {
     return {
       CONST: CONST,
-      totalMonsterCount: 0,
-      currentFinishedMonsterTurns: 0,
       currentFrame: 0,
       entitySeed: 0,
     }
@@ -35,14 +33,6 @@ export default {
   mounted: function() {
     this.entitySeed = Math.random();
   },
-  watch: {
-    'monsters.length': {
-      handler (newVal) {
-        this.totalMonsterCount = newVal;
-      },
-       deep: true
-     },
-  },
   methods: {
     // ...mapMutations('world', [
     //   'cycleTurn',
@@ -50,14 +40,6 @@ export default {
     ...mapActions('world', [
       'cycleTurn',
     ]),
-    incrementTurnsCompleted () {
-      this.currentFinishedMonsterTurns += 1;
-      if (this.currentFinishedMonsterTurns === this.totalMonsterCount) {
-        console.log('All monster turns over!');
-        this.currentFinishedMonsterTurns = 0;
-        this.cycleTurn();
-      }
-    }
   },
   computed: {
     ...mapGetters('world', [

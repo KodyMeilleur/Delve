@@ -2,7 +2,13 @@
   <div
   class="battle-controls-ui unselectable">
   <div class="battle-controls-internal">
-    <div class="battle-end-turn-btn"></div>
+    <div
+    v-on:click="cycleTurn"
+    v-if="!isMonsterTurn"
+    class="battle-end-turn-btn">
+    </div>
+    <div v-if="isMonsterTurn" class="battle-end-turn-btn-inactive">
+    </div>
     <div class="mana-totals text-style">
       <div class="RED">{{entity.heldMana.RED}}</div>
       <div class="BLUE">{{entity.heldMana.BLUE}}</div>
@@ -30,7 +36,14 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('world', []),
+    ...mapMutations('world', [
+      'cycleBattleTurn',
+      'clearFocusedEntity'
+    ]),
+    cycleTurn () {
+      this.clearFocusedEntity();
+      this.cycleBattleTurn();
+    }
   },
   watch: {
     'entity': {
@@ -46,7 +59,8 @@ export default {
   computed: {
     ...mapGetters('world', [
       'logs',
-      'currentTurn'
+      'currentTurn',
+      'isMonsterTurn'
     ]),
   },
 }
@@ -73,6 +87,16 @@ export default {
   background-color: transparent;
   z-index: 11;
   background-image: url('/assets/hudSprites/endTurnIcon2.png');
+}
+.battle-end-turn-btn-inactive {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  width: 91px;
+  height: 91px;
+  background-color: transparent;
+  z-index: 11;
+  background-image: url('/assets/hudSprites/endTurnIcon2Inactive.png');
 }
 .battle-end-turn-btn:hover {
   transform: scale(1.1,1.1);

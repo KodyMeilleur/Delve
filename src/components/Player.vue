@@ -291,7 +291,6 @@ export default {
     },
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
-      console.log('wtf', this.movin);
       switch (this.movingDirection) {
         case 0:
           return 'South'
