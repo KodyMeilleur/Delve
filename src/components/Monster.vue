@@ -71,18 +71,13 @@ export default {
      //      }
      //    },
      // },
-     'isMonsterTurn': {
+     'monster.activeBattleTurn': {
        handler (val) {
-         const that = this;
-         function endTurn() {
-           that.$emit('turnEnded');
-         }
-
          if (val === true) {
-           console.log('monster turn from component!');
+           console.log(this.monster, 'active monster turn from component!');
            // do stuff and eventually emit turn ended
 
-           setTimeout(endTurn, 1000);
+           setTimeout(this.endTurn, 1000);
          }
        },
         deep: false
@@ -93,6 +88,9 @@ export default {
       'setfocusedEntity',
       'updateMonsterPosition'
     ]),
+    endTurn () {
+      this.$emit('turnEnded');
+    },
     frameAdvance () {
       let animation = this.animation;
       const monster = this.monster;
@@ -191,6 +189,7 @@ export default {
       }
 
       if (this.tilesToTravel === 0) {
+        // TODO: REMEMBER TO SET inworldTileOccupied ON BATTLE MOVE!
         this.updateMonsterPosition({
           monster: this.monster,
           coords: {

@@ -37,4 +37,6 @@ export function Dummy(x, y, isBattling) {
   this.toughness = 0;
   this.intelligence = 0;
   this.arcana = 0;
+
+  this.speed = 0;
 }

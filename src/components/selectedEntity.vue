@@ -92,7 +92,11 @@ export default {
       'setScroll',
     ]),
     switchFocus () {
-      this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
+      if (this.isBattling) {
+        this.setfocusedEntityOverride(this.focusedEntity.inworldTileOccupied);
+      } else {
+        this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
+      }
     },
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);

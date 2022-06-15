@@ -203,7 +203,8 @@ export default {
               x: this.x,
               y: this.y,
               tilesToTravel: this.tilesToTravel
-            }
+            },
+            isBattling: this.isBattling
           })
         }
       }
@@ -222,7 +223,8 @@ export default {
               x: this.x,
               y: this.y,
               tilesToTravel: this.tilesToTravel
-            }
+            },
+            isBattling: this.isBattling
           })
         }
       }
@@ -241,7 +243,8 @@ export default {
               x: this.x,
               y: this.y,
               tilesToTravel: this.tilesToTravel
-            }
+            },
+            isBattling: this.isBattling
           })
         }
       }
@@ -260,7 +263,8 @@ export default {
               x: this.x,
               y: this.y,
               tilesToTravel: this.tilesToTravel
-            }
+            },
+            isBattling: this.isBattling
           })
         }
       }
@@ -284,7 +288,8 @@ export default {
       'leftOffset',
       'topOffset',
       'showMoveTiles',
-      'map'
+      'map',
+      'isBattling'
     ]),
     inStructure: function() {
       return this.player.outworldTileOccupied.structure ? true : false;

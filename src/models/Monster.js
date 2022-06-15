@@ -10,11 +10,14 @@ export function Monster(x, y) {
     this.battleX = null;
     this.battleY = null;
     this.isBattling = false;
+    this.roundFinished = false;
+    this.activeBattleTurn = false;
     // turn order stat?
     this.speed = 0;
 
     this.isCreature = true;
     this.isPlayer = false;
+    this.inworldTileOccupied = null;
 
     // limit 3 for a monster?
     this.technologies = [];

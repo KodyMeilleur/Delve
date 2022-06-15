@@ -17,4 +17,6 @@ export function Skeleton(x, y) {
   this.toughness = 3;
   this.intelligence = 1;
   this.arcana = 4;
+
+  this.speed = 1;
 }

@@ -279,13 +279,22 @@ const mutations = {
     state.logs.push(logString);
   },
 
-  updatePlayerPosition (state, { player, coords}) {
+  setinWorldPlayerTile(state, { player, tile}) {
+    player.inworldTileOccupied = tile;
+  },
+
+  updatePlayerPosition (state, { player, coords, isBattling}) {
     const storePlayer = state.players.filter(ent => ent == player)[0];
     storePlayer.x = parseInt(coords.x);
     storePlayer.y = parseInt(coords.y);
     const tileMovingTo = state.map[coords.x][coords.y];
-    storePlayer.outworldTileOccupied = tileMovingTo;
-    if (coords.tilesToTravel === 0) {
+    if (isBattling) {
+      storePlayer.inworldTileOccupied = tileMovingTo;
+    } else {
+      storePlayer.outworldTileOccupied = tileMovingTo;
+    }
+
+    if (!isBattling && coords.tilesToTravel === 0) {
       state.focusedEntity = storePlayer.outworldTileOccupied;
     }
   },

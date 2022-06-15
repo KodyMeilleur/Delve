@@ -38,7 +38,7 @@
         <div class="battle-container">
           <div class="battle-entity-layer">
             <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
-            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="incrementTurnsCompleted"/>
+            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn"/>
           </div>
           <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
             <Tile v-for="cell in row"
@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="battle-controls">
-      <BattleHeader :title="isMonsterTurn ? 'Monster' : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
+      <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
       <BattleControls :entity="currentBattleTurnEntity"/>
     </div>
   </div>
@@ -89,9 +89,10 @@ export default {
       currentMap: [],
       currentBattleTurnID: null,
       currentBattleTurnEntity: null,
+      currentMonsterTurn: null,
       players: [],
       totalMonsterCount: 0,
-      currentFinishedMonsterTurns: 0,
+      monsterTurnMap: {},
     }
   },
   updated () {
@@ -108,6 +109,7 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setCurrentBattleTurn',
+      'setinWorldPlayerTile',
       'setPlayerBattleStatus',
       'endMonsterTurn'
     ]),
@@ -119,11 +121,32 @@ export default {
       this.potentialPath = [];
       this.$emit('updateTilePaths', this.potentialPath);
     },
-    incrementTurnsCompleted () {
-      this.currentFinishedMonsterTurns += 1;
-      if (this.currentFinishedMonsterTurns === this.totalMonsterCount) {
+    compareSpeed(a, b) {
+      if ( a.speed < b.speed) {
+
+        return -1;
+      }
+      if ( a.speed > b.speed) {
+
+        return 1;
+      }
+
+      return 0;
+    },
+    nextMonsterTurn() {
+      const nextEnemyToGo = this.enemies.find((enemy) => {
+        return enemy.roundFinished === false;
+      });
+      if (nextEnemyToGo) {
+        nextEnemyToGo.roundFinished = true;
+        nextEnemyToGo.activeBattleTurn = true;
+        this.currentMonsterTurn = nextEnemyToGo;
+      } else {
+        this.enemies.forEach((enemy) => {
+          enemy.roundFinished = false;
+          enemy.activeBattleTurn = false;
+        });
         console.log('All monster turns over!');
-        this.currentFinishedMonsterTurns = 0;
         this.endMonsterTurn();
       }
     }
@@ -136,10 +159,16 @@ export default {
         });
         // GENERATE MAP AND ENEMIES FROM TILE
         const generatedMap = createBattleField(this.battleTile);
-        const enemies = createEnemies(this.battleTile);
+        const enemies = createEnemies(this.battleTile, generatedMap);
 
+        const that = this;
         this.players.push(this.currentTurn);
+        this.players.forEach((player) => {
+          that.setinWorldPlayerTile({player, tile: generatedMap[player.battleX][player.battleY]});
+        });
+
         this.enemies = this.enemies.concat(enemies);
+
         this.currentBattleTurnID = this.currentTurn.id;
         this.currentBattleTurnEntity = this.currentTurn;
         this.setCurrentBattleTurn(this.currentTurn);
@@ -151,17 +180,16 @@ export default {
       handler (newVal) {
         this.totalMonsterCount = newVal;
       },
-       deep: true
-     },
-    // isMonsterTurn: function (val) {
-    //   if (val) {
-    //     console.log('monster turn');
-    //     this.monsters.forEach((monster, i) => {
-    //       this.currentBattleTurnEntity = monster;
-    //       // MONSTER AI TRIGGER
-    //     });
-    //   }
-    // }
+      deep: true
+    },
+    isMonsterTurn: function (val) {
+      if (val === true) {
+        console.log('monster turns starting!');
+        this.monsterTurnMap = {};
+        this.enemies.sort(this.compareSpeed);
+        this.nextMonsterTurn();
+      }
+    }
   }
 }
 </script>

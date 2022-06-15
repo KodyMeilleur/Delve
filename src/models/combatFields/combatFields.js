@@ -51,8 +51,9 @@ const enemyMap = {
   ]
 }
 
-export function createEnemies(tile) {
+export function createEnemies(tile, map) {
   const enemy = new enemyMap[tile.type][0](2, 7, true);
+  enemy.inworldTileOccupied = map[2][7];
   console.log(enemy);
 
   return [enemy];
