@@ -4,6 +4,7 @@
     height: height + 'px',
     top: ((x * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
     left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
+    'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
   }"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.monster }"
@@ -57,7 +58,7 @@ export default {
       tilesToTravel: 0,
       path: [],
       animation: { ...this.monster.defaultAnimation },
-      skipFrames: [],
+      skipFrames: [ ...this.monster.animation.skipFrames ],
       isMoving: false,
     }
   },
@@ -106,6 +107,7 @@ export default {
         this.currentFrame = 0;
         if (animation.shouldLoop === true) {
           animation.refreshSkipFrames();
+          this.skipFrames = this.animation.skipFrames;
         } else {
           this.animation = Object.assign({}, monster.defaultAnimation);
         }

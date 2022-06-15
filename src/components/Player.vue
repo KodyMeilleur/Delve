@@ -4,6 +4,7 @@
     height: height + 'px',
     top: (((this.player.isBattling === true ? battleX : x) * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
     left: (((this.player.isBattling === true ? battleY : y) * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
+    'background-position': -(64 * currentFrame) + 'px ' + (0) + 'px',
   }"
   v-on:click="setEntity"
   v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles}"

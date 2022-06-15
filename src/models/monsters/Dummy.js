@@ -28,7 +28,7 @@ export function Dummy(x, y, isBattling) {
   this.type = 'Dummy';
   this.name = 'Dummy';
   this.sprite = 'assets/Characters/Dummy/';
-  this.animation = new Animation(1, 'Idle', true);
+  this.animation = new Animation(2, 'Idle', true);
   this.defaultAnimation = this.animation;
   this.isBattling = isBattling;
   // STATS
