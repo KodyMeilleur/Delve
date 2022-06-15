@@ -49,10 +49,23 @@ export function DefaultPlayer(name, x, y) {
 
   // STATS
   this.hp = CONST.defaultHP;
+  this.maxHp = CONST.defaultHP;
   this.might = CONST.defaultStartingStat;
   this.toughness = CONST.defaultStartingStat;
   this.intelligence = CONST.defaultStartingStat;
   this.arcana = CONST.defaultStartingStat;
+
+  // DEVOTION POINTS ARE FOR DEFAULT HELD MANA, GRANTED EVERY X LEVEL
+  this.devotionPool = 0;
+  this.devotion = {
+    'RED': 0,
+    'BLUE': 0,
+    'GREEN': 0,
+    'WHITE': 0,
+    'BLACK': 0,
+    'PURPLE': 0,
+    'NEUTRAL': 0
+  }
 
   this.pts = CONST.startingStatPoints;
   this.coin = 100;

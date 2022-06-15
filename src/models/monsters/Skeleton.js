@@ -13,6 +13,7 @@ export function Skeleton(x, y) {
   this.defaultAnimation = this.animation;
   // STATS
   this.hp = 5;
+  this.maxHp = 5;
   this.might = 2;
   this.toughness = 3;
   this.intelligence = 1;

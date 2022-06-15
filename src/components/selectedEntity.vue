@@ -55,7 +55,7 @@
     </div>
     <div v-if="focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
       <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
-      <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }}</span>
+      <span class="info-row-health"><span class="info-row health-icon"></span>{{ focusedEntity.hp }} / {{ focusedEntity.maxHp }}</span>
       <span class="info-row-mp"><span class="info-row mp-sprite"></span>{{ focusedEntity.maxMovement }}</span>
       <span class="info-row-str"><span class="info-row str-sprite"></span>{{ focusedEntity.might }}</span>
       <span class="info-row-def"><span class="info-row def-sprite"></span>{{ focusedEntity.toughness }}</span>
@@ -202,7 +202,7 @@ export default {
 .info-row-health {
   position: absolute;
   top: 15px;
-  right: 65px;
+  right: 42px;
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -257,7 +257,7 @@ export default {
 }
 .health-icon {
   background-image: url('/assets/hudSprites/healthIcon.png');
-  width: 14px;
+  width: 19px;
   height: 14px;
   margin-right: 3px;
 }
