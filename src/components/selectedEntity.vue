@@ -52,6 +52,13 @@
           </div>
         </div>
       </span>
+      <div
+      v-if="isBattling && !focusedEntity.isCreature"
+      class="battle-tile-mana"
+      >
+      <div class="first-mana-container"><div :class="`${focusedEntity.manaTypeSlotOne}-mana-type mana-icon`"></div>x {{focusedEntity.manaValueSlotOne}}</div>
+      <div class="second-mana-container"><div :class="`${focusedEntity.manaTypeSlotTwo}-mana-type mana-icon`"></div>x {{focusedEntity.manaValueSlotTwo}}</div>
+      </div>
     </div>
     <div v-if="focusedEntity.isCreature" class="entity-info" v-bind:class="{ filled: focusedEntity}">
       <span class="info-row info-row-name">{{ focusedEntity.name }}</span>
@@ -163,6 +170,34 @@ export default {
     transform: scale(1);
   }
 }
+.battle-tile-mana {
+  position: absolute;
+  height: 64px;
+  width: 128px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+.first-mana-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.second-mana-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.empty-mana-type {
+  background-image: url('/assets/hudSprites/neutralManaIcon.png');
+}
+.mana-icon {
+  width: 32px;
+  height: 32px;
+}
 .entity-info {
   color: white;
   font-size: 8px;
@@ -171,6 +206,8 @@ export default {
   position: absolute;
   top: -32px;
   left: 32px;
+  display: flex;
+  justify-content: center;
 }
 .info-row {
   display: block;
