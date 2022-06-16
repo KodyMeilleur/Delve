@@ -1,4 +1,4 @@
-import { NeutralTile } from './combatTiles';
+import { ForestTile } from './combatTiles';
 import { Dummy } from '../monsters/Dummy';
 
 const RED = 'RED';
@@ -66,7 +66,7 @@ export function createBattleField(tile) {
   field.forEach((row, i) => {
     const mapRow = [];
     row.forEach((tile, k) => {
-      mapRow.push(new NeutralTile(i, k))
+      mapRow.push(new ForestTile(i, k))
     });
     map.push(mapRow);
   });

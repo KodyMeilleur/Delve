@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getRandomInt } from '../../services/generateLand';
 import { TYPES } from './combatFields';
 
-export function NeutralTile(x, y) {
+export function ForestTile(x, y) {
   this.id = uuidv4();
   this.x = x;
   this.y = y;
@@ -22,7 +22,7 @@ export function NeutralTile(x, y) {
 
   this.potentialPath = false;
   this.type = [TYPES.NEUTRAL];
-  this.name = 'Neutral Ground';
+  this.name = 'Forest Ground';
   this.mpCost = 1;
 
   this.battleTile = true;
