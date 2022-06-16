@@ -37,12 +37,13 @@
         </div>
         <div class="battle-container">
           <div class="battle-entity-layer">
-            <Player v-for="player in players" v-bind:key="player.name" :player="player"/>
+            <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap"/>
             <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn"/>
           </div>
           <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
             <Tile v-for="cell in row"
               :tile="cell"
+              :battleMap="currentMap"
               v-on:potentialPathCalc="updatePotentialPath"
               v-on:clearPotentialPath="clearPotentialPath"
               v-bind:key="cell.id"

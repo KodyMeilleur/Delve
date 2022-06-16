@@ -119,6 +119,9 @@ export default {
     tile: {
       default: {},
     },
+    battleMap: {
+      default: null
+    }
   },
   data () {
     return {
@@ -224,6 +227,7 @@ export default {
       'currentTurn',
       'moveTiles',
       'showMoveTiles',
+      'isBattling'
     ]),
     structureSprite () {
       return this.tile.structure.demolished && this.demolishFrame >= 7 ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
@@ -337,8 +341,11 @@ export default {
     },
     lookForPath() {
       if (this.moveHighlighted) {
-        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
-        const path = findPath(areaAroundPlayer, {x: this.currentTurn.x, y: this.currentTurn.y, movement: this.currentTurn.movement}, {x: this.tile.x, y: this.tile.y});
+        const map = this.isBattling ? this.battleMap : this.map;
+        const entityX = this.isBattling ? this.currentTurn.battleX : this.currentTurn.x;
+        const entityY = this.isBattling ? this.currentTurn.battleY : this.currentTurn.y;
+        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
+        const path = findPath(areaAroundPlayer, {x: entityX, y: entityY, movement: this.currentTurn.movement}, {x: this.tile.x, y: this.tile.y});
         this.travelPath = path;
         this.$emit('potentialPathCalc', path)
         // this.lightPotentialPath(path);

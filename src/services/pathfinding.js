@@ -25,8 +25,8 @@ export function findPath(maze, startCoords, endCoords) {
   // add startCell to openList
   startCell.visited = true;
   openList.push(startCell);
-  const gridAdjustmentX = startCoords.x - startCoords.movement;
-  const gridAdjustmentY = startCoords.y - startCoords.movement;
+  const gridAdjustmentX = startCoords.x - startCoords.movement < 0 ? 0 : startCoords.x - startCoords.movement;
+  const gridAdjustmentY = startCoords.y - startCoords.movement < 0 ? 0 : startCoords.y - startCoords.movement;
 
   function cardinalCellCheck(cell) {
       // check all directions for cells
@@ -106,44 +106,52 @@ export function findPath(maze, startCoords, endCoords) {
     return finalPath.reverse().slice(1);
 }
 
-export function returnShallowMapChunk(startEntity, fullMap) {
+export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
   const rowColumnSize = (startEntity.movement * 2);
-  const startX = (startEntity.x - startEntity.movement);
-  const startY = (startEntity.y - startEntity.movement);
+  const entityX = isBattling ? startEntity.battleX : startEntity.x;
+  const entityY = isBattling ? startEntity.battleX : startEntity.x;
+  const startX = (entityX - startEntity.movement) < 0 ? 0 : (entityX - startEntity.movement);
+  const startY = (entityY - startEntity.movement) < 0 ? 0 : (entityY - startEntity.movement);
 
   const mazeClone = [];
 
   for (let i= 0; i <= rowColumnSize; i++) {
     const row = [];
     for (let k= 0; k <= rowColumnSize; k++) {
-      const currentCellPointer = fullMap[startX + i][startY + k];
-      const shallowCell = {
-        density: currentCellPointer.density,
-        visited: false,
-        parent: null,
-        x: currentCellPointer.x,
-        y: currentCellPointer.y,
-        g: null,
-        f: null,
-        heur: null,
-        mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1,
-        structure: currentCellPointer.structure ? true : false,
+      if (fullMap[startX + i]) {
+        const currentCellPointer = fullMap[startX + i][startY + k];
+        const shallowCell = {
+          density: currentCellPointer.density,
+          visited: false,
+          parent: null,
+          x: currentCellPointer.x,
+          y: currentCellPointer.y,
+          g: null,
+          f: null,
+          heur: null,
+          mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1,
+          structure: currentCellPointer.structure ? true : false,
+        }
+        row.push(shallowCell);
       }
-      row.push(shallowCell);
     }
-    mazeClone.push(row);
+    if (row.length) {
+      mazeClone.push(row);
+    }
   }
 
   return mazeClone;
 }
 
-export function toggleMoveTiles(startEntity, map) {
+export function toggleMoveTiles(startEntity, map, isBattling) {
   const tilesToCheck = [];
-  const startX = parseInt(startEntity.x);
-  const startY = parseInt(startEntity.y);
+  const entityX = isBattling ? startEntity.battleX : startEntity.x;
+  const entityY = isBattling ? startEntity.battleX : startEntity.x;
+  const startX = parseInt(entityX);
+  const startY = parseInt(entityY);
   let totalMP = startEntity.movement;
-  const gridAdjustmentX = startX - totalMP;
-  const gridAdjustmentY = startY - totalMP;
+  const gridAdjustmentX = startX - totalMP < 0 ? 0 : startX - totalMP;
+  const gridAdjustmentY = startY - totalMP < 0 ? 0 : startY - totalMP;
 
   function cardinalCellCheck(cell, lastMPCost) {
 

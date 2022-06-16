@@ -84,6 +84,9 @@ export default {
     player: {
       default: {},
     },
+    battleMap: {
+      default: null
+    }
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
@@ -167,8 +170,9 @@ export default {
     movePlayer () {
         let tilesToLight;
         if (this.showMoveTiles === false) {
-          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, this.map);
-          tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer);
+          const map = this.isBattling ? this.battleMap : this.map;
+          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
+          tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer, this.isBattling);
         }
         this.toggleMovingTiles(tilesToLight);
         this.inMoveState = true;
