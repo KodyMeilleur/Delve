@@ -15,7 +15,7 @@ export function VoidTile(x, y) {
   this.structure = null;
   this.enemies = [];
   this.variants = 1;
-  this.sprite = 'assets/Tiles/Void/Move/sheet.png';
+  this.sprite = 'assets/Tiles/Outworld/Void/Move/sheet.png';
   this.animationFrames = 2;
   this.density = 1;
   this.width = CONST.tileWidth;
@@ -39,15 +39,13 @@ export function PlainsTile(x, y) {
   this.players = [];
   this.monsters = [];
   this.structure = null;
-  // this.structure = (getRandomInt(0, 3) === 2) ? { type: 'Woods', path: 'assets/Tiles/Plains/Woods/sheet.png'} : null;
   this.enemies = [];
   this.animationFrames = 7;
   this.density = 0;
   this.event = null;
-  // this.event = (this.structure === null && (getRandomInt(0, 3) === 2)) ? new Event('Alert') : null;
   this.variants = 9;
   this.variant = (getRandomInt(0, this.variants - 1) < 3) ? getRandomInt(0, this.variants - 1) : null;
-  this.sprite = `assets/Tiles/Plains/Platform/sheet${this.variant !== null ? this.variant : ''}.png`;
+  this.sprite = `assets/Tiles/Outworld/Plains/Platform/sheet${this.variant !== null ? this.variant : ''}.png`;
   this.potentialPath = false;
   this.type = 'Plains';
   this.name = 'Plains';

@@ -220,7 +220,7 @@ function placeZone (landmass, seedCell, type) {
         const struct = new structureTypes[type].structure();
         currentCell.structure = struct;
         currentCell.mpCost = currentCell.structure.mpCost;
-        currentCell.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+        currentCell.sprite = `assets/Tiles/Outworld/Plains/Platform/sheet.png`;
       }
     }
   }
@@ -260,7 +260,7 @@ export function placeAnchor (landmass) {
 
   anchorZone.structure = new PlainsCity();
   anchorZone.mpCost = anchorZone.structure.mpCost;
-  anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+  anchorZone.sprite = `assets/Tiles/Outworld/Plains/Platform/sheet.png`;
 }
 
 export function placeTotems (landmass, count) {
@@ -304,7 +304,7 @@ export function placeTotems (landmass, count) {
 
       anchorZone.structure = new Totem();
       anchorZone.mpCost = anchorZone.structure.mpCost;
-      anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+      anchorZone.sprite = `assets/Tiles/Outworld/Plains/Platform/sheet.png`;
     }
 
     if (chosenSide === 2 || chosenSide === 4) {
@@ -319,7 +319,7 @@ export function placeTotems (landmass, count) {
 
       anchorZone.structure = new Totem();
       anchorZone.mpCost = anchorZone.structure.mpCost;
-      anchorZone.sprite = `assets/Tiles/Plains/Platform/sheet.png`;
+      anchorZone.sprite = `assets/Tiles/Outworld/Plains/Platform/sheet.png`;
     }
 
     count--;

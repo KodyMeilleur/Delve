@@ -5,10 +5,10 @@ import { Structure } from '../Structure';
 export function Woods () {
   Structure.call(this);
   this.type = 'Woods';
-  this.sprite = 'assets/Tiles/Plains/Woods/sheet';
-  this.demolishedSprite = 'assets/Tiles/Plains/Woods/demoSheet';
-  this.unexploredSprite = 'assets/Tiles/Sections/Status/Unexplored/sheet';
-  this.unexploredSpriteIcon = 'assets/Tiles/Sections/Status/Unexplored/icon2';
+  this.sprite = 'assets/Tiles/Outworld/Plains/Woods/sheet';
+  this.demolishedSprite = 'assets/Tiles/Outworld/Plains/Woods/demoSheet';
+  this.unexploredSprite = 'assets/Tiles/Outworld/Sections/Status/Unexplored/sheet';
+  this.unexploredSpriteIcon = 'assets/Tiles/Outworld/Sections/Status/Unexplored/icon2';
   this.unexploredFrames = 11;
   this.unexploredDelayFrameMap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   this.hp = 3;

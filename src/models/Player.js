@@ -23,7 +23,7 @@ export function DefaultPlayer(name, x, y) {
   this.outworldTileOccupied = {};
   this.inworldTileOccupied = {};
 
-  this.occupiedSprite = 'assets/Tiles/Sections/Status/Player/marker';
+  this.occupiedSprite = 'assets/Tiles/Outworld/Sections/Status/Player/marker';
   this.sprite = 'assets/Characters/Human/';
   this.animation = new Animation(3, 'Idle', true);
   this.defaultAnimation = this.animation;

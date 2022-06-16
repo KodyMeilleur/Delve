@@ -434,7 +434,7 @@ export default {
   background-image: url('/assets/hudSprites/potential.png')!important;
 }
 .event-sprite {
-  background-image: url('/assets/Tiles/Sections/event.png');
+  background-image: url('/assets/Tiles/Outworld/Sections/event.png');
   width: 64px;
   height: 64px;
   position: absolute;
@@ -443,7 +443,7 @@ export default {
 .demolish-sprite {
   width: 65px;
   height: 70px;
-  background-image: url('/assets/Tiles/Sections/smoke.png');
+  background-image: url('/assets/Tiles/Outworld/Sections/smoke.png');
   z-index: 10;
   position: absolute;
 }

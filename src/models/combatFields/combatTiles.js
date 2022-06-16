@@ -12,13 +12,12 @@ export function ForestTile(x, y) {
   this.players = [];
   this.monsters = [];
   this.structure = null;
-  // this.structure = (getRandomInt(0, 3) === 2) ? { type: 'Woods', path: 'assets/Tiles/Plains/Woods/sheet.png'} : null;
   this.animationFrames = 1;
   this.density = 0;
 
   this.variants = 5;
   this.variant = (getRandomInt(0, this.variants - 1) < 3) ? getRandomInt(0, this.variants - 1) : null;
-  this.sprite = `assets/Tiles/Battle/Neutral/sheet${this.variant !== null ? this.variant : ''}.png`;
+  this.sprite = `assets/Tiles/Battle/Forest/sheet${this.variant !== null ? this.variant : ''}.png`;
 
   this.potentialPath = false;
   this.type = [TYPES.NEUTRAL];
