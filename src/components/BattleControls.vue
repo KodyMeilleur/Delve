@@ -48,7 +48,6 @@ export default {
   watch: {
     'entity': {
       handler (entity) {
-        console.log(entity);
         if (entity.isPlayer) {
           this.currentPlayerTurnHeldMana = entity.heldMana;
         }

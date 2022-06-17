@@ -2,8 +2,8 @@
   <div v-bind:style="{
     width: width + 'px',
     height: height + 'px',
-    top: (((this.player.isBattling === true ? battleX : x) * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
-    left: (((this.player.isBattling === true ? battleY : y) * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
+    top: (((this.player.isBattling === true ? this.battleX : this.x) * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
+    left: (((this.player.isBattling === true ? this.battleY : this.y) * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px',
     'background-position': -(64 * currentFrame) + 'px ' + (0) + 'px',
   }"
   v-on:click="setEntity"
@@ -178,10 +178,13 @@ export default {
         this.inMoveState = true;
     },
     updatePlayerMove () {
+      let entityX = this.isBattling ? this.battleX : this.x;
+      let entityY = this.isBattling ? this.battleY : this.y;
+
       if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
         const fullDirection = getEntityDirection({
-          x: this.x,
-          y: this.y,
+          x: entityX,
+          y: entityY,
           path: this.path
         });
         this.movingDirection = fullDirection.direction;
@@ -199,17 +202,23 @@ export default {
         if (this.movingVerticalOffset === 64) {
           this.tilesToTravel -= 1;
           this.movingVerticalOffset = 0;
-          this.x = parseInt(this.x) + 1;
+          entityX = parseInt(entityX) + 1;
+          if (this.isBattling) {
+            this.battleX = entityX;
+          } else {
+            this.x = entityX;
+          }
           this.path.shift();
           this.movingToStructure = false;
           this.updatePlayerPosition({
             player: this.player,
             coords: {
-              x: this.x,
-              y: this.y,
+              x: entityX,
+              y: entityY,
               tilesToTravel: this.tilesToTravel
             },
-            isBattling: this.isBattling
+            isBattling: this.isBattling,
+            map: this.isBattling ? this.battleMap : this.map
           })
         }
       }
@@ -219,17 +228,23 @@ export default {
         if (this.movingHorizontalOffset === 64) {
           this.tilesToTravel -= 1;
           this.movingHorizontalOffset = 0;
-          this.y = parseInt(this.y) + 1;
+          entityY = parseInt(entityY) + 1;
+          if (this.isBattling) {
+            this.battleY = entityY;
+          } else {
+            this.y = entityY;
+          }
           this.path.shift();
           this.movingToStructure = false;
           this.updatePlayerPosition({
             player: this.player,
             coords: {
-              x: this.x,
-              y: this.y,
+              x: entityX,
+              y: entityY,
               tilesToTravel: this.tilesToTravel
             },
-            isBattling: this.isBattling
+            isBattling: this.isBattling,
+            map: this.isBattling ? this.battleMap : this.map
           })
         }
       }
@@ -239,17 +254,23 @@ export default {
         if (this.movingVerticalOffset === -64) {
           this.tilesToTravel -= 1;
           this.movingVerticalOffset = 0;
-          this.x = parseInt(this.x) - 1;
+          entityX = parseInt(entityX) - 1;
+          if (this.isBattling) {
+            this.battleX = entityX;
+          } else {
+            this.x = entityX;
+          }
           this.path.shift();
           this.movingToStructure = false;
           this.updatePlayerPosition({
             player: this.player,
             coords: {
-              x: this.x,
-              y: this.y,
+              x: entityX,
+              y: entityY,
               tilesToTravel: this.tilesToTravel
             },
-            isBattling: this.isBattling
+            isBattling: this.isBattling,
+            map: this.isBattling ? this.battleMap : this.map
           })
         }
       }
@@ -259,17 +280,23 @@ export default {
         if (this.movingHorizontalOffset === -64) {
           this.tilesToTravel -= 1;
           this.movingHorizontalOffset = 0;
-          this.y = parseInt(this.y) - 1;
+          entityY = parseInt(entityY) - 1;
+          if (this.isBattling) {
+            this.battleY = entityY;
+          } else {
+            this.y = entityY;
+          }
           this.path.shift();
           this.movingToStructure = false;
           this.updatePlayerPosition({
             player: this.player,
             coords: {
-              x: this.x,
-              y: this.y,
+              x: entityX,
+              y: entityY,
               tilesToTravel: this.tilesToTravel
             },
-            isBattling: this.isBattling
+            isBattling: this.isBattling,
+            map: this.isBattling ? this.battleMap : this.map
           })
         }
       }

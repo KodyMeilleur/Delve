@@ -109,7 +109,7 @@ export function findPath(maze, startCoords, endCoords) {
 export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
   const rowColumnSize = (startEntity.movement * 2);
   const entityX = isBattling ? startEntity.battleX : startEntity.x;
-  const entityY = isBattling ? startEntity.battleX : startEntity.x;
+  const entityY = isBattling ? startEntity.battleY : startEntity.y;
   const startX = (entityX - startEntity.movement) < 0 ? 0 : (entityX - startEntity.movement);
   const startY = (entityY - startEntity.movement) < 0 ? 0 : (entityY - startEntity.movement);
 
@@ -146,7 +146,7 @@ export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
 export function toggleMoveTiles(startEntity, map, isBattling) {
   const tilesToCheck = [];
   const entityX = isBattling ? startEntity.battleX : startEntity.x;
-  const entityY = isBattling ? startEntity.battleX : startEntity.x;
+  const entityY = isBattling ? startEntity.battleY : startEntity.y;
   const startX = parseInt(entityX);
   const startY = parseInt(entityY);
   let totalMP = startEntity.movement;

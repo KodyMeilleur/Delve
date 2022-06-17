@@ -225,6 +225,7 @@ export default {
       'topOffset',
       'focusedEntity',
       'currentTurn',
+      'currentBattleTurn',
       'moveTiles',
       'showMoveTiles',
       'isBattling'
@@ -308,7 +309,7 @@ export default {
     },
     goToTile () {
       if (this.travelPath) {
-        this.setPath({entity: this.currentTurn, path: this.travelPath});
+        this.setPath({entity: this.isBattling ? this.currentBattleTurn : this.currentTurn, path: this.travelPath});
         this.$emit('clearPotentialPath');
         this.updateLogs(`${this.currentTurn.name} is on the move.`);
       }

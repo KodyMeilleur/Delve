@@ -145,7 +145,6 @@ const mutations = {
     state.map = map;
   },
   setIsBattling (state, data) {
-    console.log(data);
     state.battleTile = data.battleTile;
     state.isBattling = data.state;
   },
@@ -205,7 +204,6 @@ const mutations = {
   },
 
   setPlayerBattleStatus (state, { players }) {
-    console.log(players);
     players.forEach((player, i) => {
       player.isBattling = true;
       player.battleX = 2 + i;
@@ -224,7 +222,6 @@ const mutations = {
     // isMonsterTurn
     const next = state.battlingPlayers.find(nextPlayer);
     if (next) {
-      console.log(next);
       state.currentBattleTurn = next;
     } else {
       state.isMonsterTurn = true;
@@ -283,11 +280,17 @@ const mutations = {
     player.inworldTileOccupied = tile;
   },
 
-  updatePlayerPosition (state, { player, coords, isBattling}) {
+  updatePlayerPosition (state, { player, coords, isBattling, map}) {
     const storePlayer = state.players.filter(ent => ent == player)[0];
-    storePlayer.x = parseInt(coords.x);
-    storePlayer.y = parseInt(coords.y);
-    const tileMovingTo = state.map[coords.x][coords.y];
+
+    if (isBattling) {
+      storePlayer.battleX =  parseInt(coords.x);
+      storePlayer.battleY = parseInt(coords.y);
+    } else {
+      storePlayer.x =  parseInt(coords.x);
+      storePlayer.y = parseInt(coords.y);
+    }
+    const tileMovingTo = map[coords.x][coords.y];
     if (isBattling) {
       storePlayer.inworldTileOccupied = tileMovingTo;
     } else {
