@@ -90,9 +90,11 @@ export default {
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
+    this.$root.$on('clearPlayerMoveState', this.clearPlayerMoveState);
   },
   beforeDestroy() {
     this.$root.$off('frameBump', this.frameAdvance);
+    this.$root.$off('clearPlayerMoveState', this.clearPlayerMoveState);
   },
   data () {
     return {
@@ -311,6 +313,12 @@ export default {
     setEntity () {
       this.setfocusedEntity(this.player);
       this.inMoveState = false;
+    },
+    clearPlayerMoveState () {
+      this.inMoveState = false;
+      this.isMoving = false;
+      this.$emit('clearPotentialPath');
+      this.toggleMovingTiles();
     }
   },
   computed: {

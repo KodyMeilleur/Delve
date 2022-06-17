@@ -122,7 +122,7 @@ export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
         if (startY + k < fullMap[startX + i].length) {
           const currentCellPointer = fullMap[startX + i][startY + k];
           const shallowCell = {
-            density: currentCellPointer.density,
+            density: currentCellPointer.density || currentCellPointer.monsters.length,
             visited: false,
             parent: null,
             x: currentCellPointer.x,

@@ -125,6 +125,7 @@ export default {
       }
     },
     setEntity () {
+      this.$root.$emit('clearPlayerMoveState');
       this.setfocusedEntity(this.monster);
     },
     updateMonsterMove () {
