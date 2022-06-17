@@ -119,20 +119,22 @@ export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
     const row = [];
     for (let k= 0; k <= rowColumnSize; k++) {
       if (fullMap[startX + i]) {
-        const currentCellPointer = fullMap[startX + i][startY + k];
-        const shallowCell = {
-          density: currentCellPointer.density,
-          visited: false,
-          parent: null,
-          x: currentCellPointer.x,
-          y: currentCellPointer.y,
-          g: null,
-          f: null,
-          heur: null,
-          mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1,
-          structure: currentCellPointer.structure ? true : false,
+        if (startY + k < fullMap[startX + i].length) {
+          const currentCellPointer = fullMap[startX + i][startY + k];
+          const shallowCell = {
+            density: currentCellPointer.density,
+            visited: false,
+            parent: null,
+            x: currentCellPointer.x,
+            y: currentCellPointer.y,
+            g: null,
+            f: null,
+            heur: null,
+            mpCost: (currentCellPointer.structure && currentCellPointer.structure.mpCost) || 1,
+            structure: currentCellPointer.structure ? true : false,
+          }
+          row.push(shallowCell);
         }
-        row.push(shallowCell);
       }
     }
     if (row.length) {
