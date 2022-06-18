@@ -9,6 +9,15 @@
     </div>
     <div v-if="isMonsterTurn" class="battle-end-turn-btn-inactive">
     </div>
+    <div
+    class="battle-turn-stats"
+    >
+      <div class="stat-container text-style">
+        <div class="health-points"><span class="health-icon"></span> {{ entity.hp }} </div>
+        <div class="action-points"><span class="mp-sprite"></span> {{ entity.movement }} </div>
+        <div class="movement-points"><span class="ap-sprite"></span>{{ entity.ap }}</div>
+      </div>
+    </div>
     <div class="battle-skills">
       <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i"/>
     </div>
@@ -116,6 +125,17 @@ export default {
   transform: scale(1.1,1.1);
   cursor: pointer;
 }
+.battle-turn-stats {
+  width: 64px;
+  height: 96px;
+  background-image: url('/assets/hudSprites/turnStats.png');
+  position: absolute;
+  left: 124px;
+  top: 15px;
+}
+.stat-container {
+
+}
 .battle-skills {
   display: flex;
   justify-content: space-evenly;
@@ -199,5 +219,34 @@ export default {
   left: -41px;
   top: -4px;
   background-image: url('/assets/hudSprites/purpleManaIcon.png');
+}
+.health-icon {
+  background-image: url('/assets/hudSprites/healthIcon.png');
+  width: 19px;
+  height: 14px;
+  margin-right: 3px;
+}
+.mp-sprite {
+  background-image: url('/assets/hudSprites/mpIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
+}
+.ap-sprite {
+  background-image: url('/assets/hudSprites/apIcon.png');
+  width: 14px;
+  height: 14px;
+  margin-right: 3px;
+}
+.health-points, .action-points, .movement-points {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.stat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
 }
 </style>
