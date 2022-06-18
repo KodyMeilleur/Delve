@@ -9,6 +9,9 @@
     </div>
     <div v-if="isMonsterTurn" class="battle-end-turn-btn-inactive">
     </div>
+    <div class="battle-skills">
+      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]"/>
+    </div>
     <div class="mana-totals text-style">
       <div class="RED"><div class="sprite"></div>{{entity.heldMana.RED}}</div>
       <div class="BLUE"><div class="sprite"></div>{{entity.heldMana.BLUE}}</div>
@@ -24,15 +27,26 @@
 <script>
 // import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
+import Skill from './Skill.vue';
 
 export default {
   name: 'BattleControls',
   props: {
     entity: Object
   },
+  components: {
+    Skill,
+  },
   data () {
     return {
-      currentPlayerTurnHeldMana: null,
+      lastPlayerTurnHeldMana: null,
+      lastPlayerHeldSkills: [],
+    }
+  },
+  mounted () {
+    if (this.entity.isPlayer) {
+      this.lastPlayerTurnHeldMana = this.entity.heldMana;
+      this.lastPlayerHeldSkills = this.entity.equippedSkills;
     }
   },
   methods: {
@@ -49,7 +63,8 @@ export default {
     'entity': {
       handler (entity) {
         if (entity.isPlayer) {
-          this.currentPlayerTurnHeldMana = entity.heldMana;
+          this.lastPlayerTurnHeldMana = entity.heldMana;
+          this.lastPlayerHeldSkills = entity.equippedSkills;
         }
       },
        deep: false
@@ -100,6 +115,14 @@ export default {
 .battle-end-turn-btn:hover {
   transform: scale(1.1,1.1);
   cursor: pointer;
+}
+.battle-skills {
+  display: flex;
+  justify-content: space-evenly;
+  width: 400px;
+  position: absolute;
+  left: 195px;
+  top: 22px;
 }
 .mana-totals {
   display: flex;

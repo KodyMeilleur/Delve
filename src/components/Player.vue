@@ -304,7 +304,7 @@ export default {
       }
 
       if (this.tilesToTravel === 0) {
-        this.animation = new Animation(3, 'Idle', true);
+        this.animation = new Animation(4, 'Idle', true);
         this.skipFrames = this.animation.skipFrames;
         this.isMoving = false;
         this.inMoveState = false;

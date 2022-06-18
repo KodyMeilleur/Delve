@@ -54,7 +54,7 @@
     </div>
     <div class="battle-controls">
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
-      <BattleControls :entity="currentBattleTurnEntity"/>
+      <BattleControls :entity="currentBattleTurnEntity"/> 
     </div>
   </div>
 </template>

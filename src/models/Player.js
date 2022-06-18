@@ -1,6 +1,7 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
 import { Animation } from './Animation.js';
+import { MeleeAttack } from './Skills.js';
 // import TYPES from './combatFields/combatTiles.js';
 
 export function DefaultPlayer(name, x, y) {
@@ -25,7 +26,7 @@ export function DefaultPlayer(name, x, y) {
 
   this.occupiedSprite = 'assets/Tiles/Outworld/Sections/Status/Player/marker';
   this.sprite = 'assets/Characters/Human/';
-  this.animation = new Animation(3, 'Idle', true);
+  this.animation = new Animation(4, 'Idle', true);
   this.defaultAnimation = this.animation;
 
   this.name = name;
@@ -92,11 +93,21 @@ export function DefaultPlayer(name, x, y) {
     bnd: 0
   };
 
+  // SKILLS SECTION
+  this.ap = 1;
+  this.maxAp = 1;
+
+  this.skills = {
+    'NEUTRAL': [
+      MeleeAttack,
+    ]
+  };
+
+  this.equippedSkills = [
+    MeleeAttack,
+  ];
+
   this.density = 1;
   this.width = CONST.tileWidth;
   this.height = CONST.tileHeight;
-}
-
-export function Player() {
-
 }
