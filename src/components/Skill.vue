@@ -1,6 +1,7 @@
 <template>
   <div class="skill"
   >
+  <span class="skill-number text-style">{{number + 1}}</span>
   <div
   v-if="skill"
   v-bind:style="{
@@ -22,6 +23,9 @@ export default {
     skill: {
       type: Object,
       default: null
+    },
+    number: {
+      type: Number
     }
   },
   data () {
@@ -63,6 +67,12 @@ export default {
 .default-icon:hover {
   transform: scale(1.1,1.1);
 }
+.skill-number {
+  position: absolute;
+  top: -9px;
+  left: -4px;
+  z-index: 4;
+}
 .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -70,5 +80,11 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.text-style {
+  font-weight: 800;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 </style>

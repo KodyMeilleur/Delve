@@ -10,7 +10,7 @@
     <div v-if="isMonsterTurn" class="battle-end-turn-btn-inactive">
     </div>
     <div class="battle-skills">
-      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]"/>
+      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i"/>
     </div>
     <div class="mana-totals text-style">
       <div class="RED"><div class="sprite"></div>{{entity.heldMana.RED}}</div>
