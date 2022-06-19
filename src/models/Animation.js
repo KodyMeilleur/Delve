@@ -28,6 +28,7 @@ const bumpAnimationMap = {
 
 export function Animation(maxNumberOfFrames, state, loop) {
   this.maxNumberOfFrames = maxNumberOfFrames;
+  this.currentFrame = 0;
   this.state = state;
   this.shouldLoop = loop;
   this.skipFrames = [];

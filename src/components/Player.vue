@@ -63,9 +63,9 @@
     v-on:click.stop="setEntity"
     v-bind:style="{
       'background-image': 'url(' + publicPath + player.sprite + (player.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + direction + '/sheet.png)',
-      'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px'
+      'background-position': -((64) * animation.currentFrame) + 'px ' + (0) + 'px'
     }"
-    v-bind:class="{ inStructure: inStructure && isMoving === false && player.isBattling === false}"
+    v-bind:class="{ inStructure: inStructure && isMoving === false && player.isBattling === false, isBattling: player.isBattling === true}"
     class="player-sprite"
     >
     </div>
@@ -149,11 +149,13 @@ export default {
         this.skipFrames.shift(); // problem
       } else {
         this.currentFrame += 1;
+        animation.currentFrame += 1;
       }
-      if (this.currentFrame >= animation.maxNumberOfFrames) {
+      if (this.animation.currentFrame >= animation.maxNumberOfFrames) {
         this.currentFrame = 0;
         if (animation.shouldLoop === true) {
           animation.refreshSkipFrames();
+          animation.currentFrame = 0;
           this.skipFrames = this.animation.skipFrames;
         }
       }
@@ -190,17 +192,19 @@ export default {
           path: this.path
         });
         this.movingDirection = fullDirection.direction;
-        this.animation = new Animation(8, 'Jump', false);
+        this.animation = this.isBattling ? new Animation(8, 'Move', false) : new Animation(8, 'Jump', false);
+        this.skipFrames = this.animation.skipFrames;
         if (fullDirection.movingToStructure) {
           this.movingToStructure = true;
         }
       }
       const moveDirection = this.movingDirection;
+      const moveAnimationPixelBump = (64 / this.animation.maxNumberOfFrames);
 
       // 1N, 2E, 3S, 4W
       // south
       if (moveDirection === 3) {
-        this.movingVerticalOffset += CONST.moveAnimationPixelBump;
+        this.movingVerticalOffset += moveAnimationPixelBump;
         if (this.movingVerticalOffset === 64) {
           this.tilesToTravel -= 1;
           this.movingVerticalOffset = 0;
@@ -226,7 +230,7 @@ export default {
       }
       // east
       if (moveDirection === 2) {
-        this.movingHorizontalOffset += CONST.moveAnimationPixelBump;
+        this.movingHorizontalOffset += moveAnimationPixelBump;
         if (this.movingHorizontalOffset === 64) {
           this.tilesToTravel -= 1;
           this.movingHorizontalOffset = 0;
@@ -252,7 +256,7 @@ export default {
       }
       // north
       if (moveDirection === 1) {
-        this.movingVerticalOffset -= CONST.moveAnimationPixelBump;
+        this.movingVerticalOffset -= moveAnimationPixelBump;
         if (this.movingVerticalOffset === -64) {
           this.tilesToTravel -= 1;
           this.movingVerticalOffset = 0;
@@ -278,7 +282,7 @@ export default {
       }
       // west
       if (moveDirection === 4) {
-        this.movingHorizontalOffset -= CONST.moveAnimationPixelBump;
+        this.movingHorizontalOffset -= moveAnimationPixelBump;
         if (this.movingHorizontalOffset === -64) {
           this.tilesToTravel -= 1;
           this.movingHorizontalOffset = 0;
@@ -370,6 +374,9 @@ export default {
   min-height: 64px;
   max-height: 64px;
   top: -7px;
+}
+.player-sprite.isBattling {
+  top: 0;
 }
 .player-info {
   position: absolute;
