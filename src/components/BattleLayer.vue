@@ -23,7 +23,26 @@
           v-bind:style="{
             'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/sheet1' +'.png)',
           }"
-          ></div>
+          >
+            <div
+            :key="index + 'west-barrier'"
+            class="west-wall-barrier"
+            v-bind:class="{ 'left-align': (index % 2) === 0, 'right-align': (index % 2) !== 0}"
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/leftMainWallSheet1' +'.png)',
+            }"
+            >
+            </div>
+            <div
+            :key="index + 'west-barrier-small'"
+            class="west-small-wall-barrier"
+            v-bind:class="{ 'left-align': ((index % 2) !== 0), 'right-align': ((index % 2) === 0)}"
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/leftSmallWallSheet1' +'.png)',
+            }"
+            >
+            </div>
+          </div>
         </div>
         <div class="east-border">
           <div
@@ -33,7 +52,26 @@
           v-bind:style="{
             'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/sheet2' +'.png)',
           }"
-          ></div>
+          >
+            <div
+            :key="index + 'east-barrier'"
+            class="east-wall-barrier"
+            v-bind:class="{ 'left-align': (index % 2) === 0, 'right-align': (index % 2) !== 0}"
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/rightMainWallSheet1' +'.png)',
+            }"
+            >
+            </div>
+            <div
+            :key="index + 'east-barrier-small'"
+            class="east-small-wall-barrier"
+            v-bind:class="{ 'left-align': ((index % 2) !== 0), 'right-align': ((index % 2) === 0)}"
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/rightSmallWallSheet1' +'.png)',
+            }"
+            >
+            </div>
+          </div>
         </div>
         <div class="battle-container">
           <div class="battle-entity-layer">
@@ -54,7 +92,7 @@
     </div>
     <div class="battle-controls">
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
-      <BattleControls :entity="currentBattleTurnEntity"/> 
+      <BattleControls :entity="currentBattleTurnEntity"/>
     </div>
   </div>
 </template>
@@ -219,6 +257,12 @@ export default {
   width: 64px;
   height: 64px;
 }
+.left-align {
+  left: -15px;
+}
+.right-align {
+  right: -15px;
+}
 .west-border {
   width: 128px;
   height: 512px;
@@ -228,9 +272,23 @@ export default {
   left: 1px;
   flex-direction: column;
 }
+.west-wall-barrier, .east-wall-barrier {
+  width: 128px;
+  height: 128px;
+  z-index: 6;
+  position: absolute;
+}
+.east-small-wall-barrier, .west-small-wall-barrier {
+  width: 64px;
+  height: 128px;
+  position: absolute;
+  z-index: 5;
+  top: -50px;
+}
 .west-wall-item, .east-wall-item {
   width: 128px;
   height: 128px;
+  position: relative;
 }
 .east-border {
   width: 128px;
