@@ -117,7 +117,7 @@
         <div
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
-          'background-position': (64 * currentFrame) + 'px ' + (64 * currentFrame) + 'px',
+          'background-position': (64 * (isBattling ? quarterFrame : currentFrame)) + 'px ' + (64 * (isBattling ? quarterFrame : currentFrame)) + 'px',
           top: (tile.type === 'Void' || tile.battleTile ? 0 : bumpVerticalFramePosition) + 'px',
           left: (tile.type === 'Void' ? 0 : bumpHorizontalFramePosition) + 'px',
         }"
@@ -310,19 +310,6 @@ export default {
 
       this.frame = frame;
 
-      const isFourthFrame = (frame % 4 === 0);
-      if (isFourthFrame) {
-        this.quarterFrame += 1;
-      }
-
-      const isFourQuartersLater = (this.quarterFrame === 2);
-
-      if (isFourQuartersLater) {
-        this.quarterFrame = 0;
-        this.sixteenthFrame = this.sixteenthFrame ? 0 : 1;
-      }
-
-
       if (this.eventSpriteFrames >= 5) {
         this.eventSpriteFrames = 0;
       } else {
@@ -337,6 +324,18 @@ export default {
       const delayOption = this.getRandomIntBetween(0, 1);
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
+
+      const isFourthFrame = (frame % 4 === 0);
+      if (isFourthFrame && !delayOption) {
+        this.quarterFrame += 1;
+      }
+
+      const isFourQuartersLater = (this.quarterFrame === 2);
+
+      if (isFourQuartersLater) {
+        this.quarterFrame = 0;
+        this.sixteenthFrame = this.sixteenthFrame ? 0 : 1;
+      }
 
       if (this.tile.structure && this.tile.structure.explorable) {
         if (this.structureEffectDelayList.length <= 0) {
