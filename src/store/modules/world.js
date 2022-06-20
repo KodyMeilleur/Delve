@@ -26,11 +26,13 @@ const state = () => ({
   battleTile: null,
   isMonsterMoving: false,
   moveTiles: [], // list of highlighted movement tiles for ease of toggling
+  attackTiles: [], // list of highlighted attack tiles for ease of toggling
   leftOffset: 0,
   topOffset: 0,
   heroSpawnCountdown: CONST.heroSpawnCountdown,
   logs: [],
   showMoveTiles: false,
+  showBattleTiles: false,
   eventCountdown: CONST.eventCountdown,
   emptyTileList: [],
 })
@@ -94,8 +96,14 @@ const getters = {
   moveTiles: (state) => {
     return state.moveTiles;
   },
+  attackTiles: (state) => {
+    return state.attackTiles;
+  },
   showMoveTiles: (state) => {
     return state.showMoveTiles;
+  },
+  showBattleTiles: (state) => {
+    return state.showBattleTiles;
   },
   heroSpawnCountdown: (state) => {
     return state.heroSpawnCountdown;
@@ -183,6 +191,16 @@ const mutations = {
     } else {
       state.moveTiles = tilesToLight.map((tile) => {return {x: tile.x, y: tile.y}});
       state.showMoveTiles = true;
+    }
+  },
+
+  toggleAttackRangeTiles (state, tilesToLight) {
+    if (!tilesToLight) {
+      state.attackTiles = [];
+      state.showBattleTiles = false;
+    } else {
+      state.attackTiles = tilesToLight.map((tile) => {return {x: tile.x, y: tile.y}});
+      state.showBattleTiles = true;
     }
   },
 

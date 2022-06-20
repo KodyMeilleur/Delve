@@ -9,6 +9,7 @@ export function ForestTile(x, y) {
   this.visited = false;
   this.isTile = true;
   this.moveHighlighted = false;
+  this.attackHighlighted = false;
   this.players = [];
   this.monsters = [];
   this.structure = null;

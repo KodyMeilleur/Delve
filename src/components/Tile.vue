@@ -20,9 +20,34 @@
       }"
       >
     </span>
-    <span v-if="(this.moveHighlighted || focusedEntity === this.tile || this.hover && !this.showMoveTiles && !this.moveHighlighted) && !potentialPath"
+    <span
+      v-if="(this.hover && this.showBattleTiles && !this.attackHighlighted)"
+      v-on:click="exitBattleState"
+      class="battle-out-range"
+      v-bind:style="{
+        'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+      }"
+      >
+    </span>
+    <span v-if="(this.moveHighlighted || focusedEntity === this.tile || this.hover && !this.showMoveTiles && !this.moveHighlighted) && !potentialPath && !this.attackHighlighted && !this.showBattleTiles"
     v-on:click="goToTile"
     class="highlighted"
+    v-bind:style="{
+      'background-position': -(64 * frame ) + 'px ' + (0) + 'px',
+    }"
+    >
+    </span>
+    <span v-if="(this.attackHighlighted && !this.hover)"
+    v-on:click="skillOnTile"
+    class="attack-highlighted"
+    v-bind:style="{
+      'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+    }"
+    >
+    </span>
+    <span v-if="(this.attackHighlighted && this.hover)"
+    v-on:click="skillOnTile"
+    class="attack-highlighted-hover"
     v-bind:style="{
       'background-position': -(64 * frame) + 'px ' + (0) + 'px',
     }"
@@ -131,8 +156,11 @@ export default {
       shouldShow: false,
       hover: false,
       frame: 0,
+      quarterFrame: 0,
+      sixteenthFrame: 0,
       // Variables for scroll data
       xOffset: 0,
+      attackHighlighted: false,
       yOffset: 0,
       eventSpriteFrames: 0,
       currentFrame: 0,
@@ -216,6 +244,22 @@ export default {
           }
         }
       }
+    },
+    attackTiles: function(val) {
+      if (this.shouldShow) {
+        if (val.length) {
+          const thisTile = val.filter((tile) => {
+            return tile.x === this.tile.x && tile.y === this.tile.y;
+          })
+          if (thisTile.length) {
+            this.attackHighlighted = true;
+          }
+        } else {
+          if (this.attackHighlighted === true) {
+            this.attackHighlighted = false;
+          }
+        }
+      }
     }
   },
   computed: {
@@ -227,8 +271,10 @@ export default {
       'currentTurn',
       'currentBattleTurn',
       'moveTiles',
+      'attackTiles',
       'showMoveTiles',
-      'isBattling'
+      'isBattling',
+      'showBattleTiles'
     ]),
     structureSprite () {
       return this.tile.structure.demolished && this.demolishFrame >= 7 ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
@@ -237,9 +283,11 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
+      'setfocusedEntityOverride',
       'setPath',
       'updateLogs',
-      'toggleMovingTiles'
+      'toggleMovingTiles',
+      'toggleAttackRangeTiles'
     ]),
     checkShouldShow (leftOffset, topOffset) {
       const yOffset = leftOffset;
@@ -261,6 +309,19 @@ export default {
       }
 
       this.frame = frame;
+
+      const isFourthFrame = (frame % 4 === 0);
+      if (isFourthFrame) {
+        this.quarterFrame += 1;
+      }
+
+      const isFourQuartersLater = (this.quarterFrame === 2);
+
+      if (isFourQuartersLater) {
+        this.quarterFrame = 0;
+        this.sixteenthFrame = this.sixteenthFrame ? 0 : 1;
+      }
+
 
       if (this.eventSpriteFrames >= 5) {
         this.eventSpriteFrames = 0;
@@ -304,6 +365,7 @@ export default {
       if (this.showMoveTiles) {
         this.toggleMovingTiles();
       } else {
+        this.$root.$emit('clearAttackState');
         this.setfocusedEntity(this.tile);
       }
     },
@@ -313,6 +375,14 @@ export default {
         this.$emit('clearPotentialPath');
         this.updateLogs(`${this.currentTurn.name} is on the move.`);
       }
+    },
+    skillOnTile () {
+
+    },
+    exitBattleState() {
+      this.attackHighlighted = false;
+      this.setfocusedEntityOverride(null);
+      this.toggleAttackRangeTiles();
     },
     getRandomIntBetween(min, max) {
       return getRandomInt(min, max);
@@ -422,7 +492,24 @@ export default {
   left: 0;
   background-image: url('/assets/hudSprites/select.png');
 }
-.out-range {
+.attack-highlighted {
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  position: absolute;
+  left: 0;
+  background-image: url('/assets/hudSprites/battleHighlightSheet.png');
+}
+.attack-highlighted-hover {
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/battleHighlightSheetHover.png');
+}
+.out-range, .battle-out-range {
   width: 100%;
   height: 100%;
   z-index: 9;

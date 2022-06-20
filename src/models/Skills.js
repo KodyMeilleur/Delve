@@ -10,6 +10,8 @@ export function Skill() {
   this.costColorSlotOne = null;
   this.costColorSlotTwo = null;
   this.icon = '';
+  this.range = 0;
+  this.anchored = false;
 }
 
 export const SKILL_TYPES = {
@@ -29,5 +31,8 @@ export const MeleeAttack = {
   costType: 'AP',
   costSlotOne: 1,
   costSlotTwo: 0,
+  range: 1,
+  anchored: true, // anchored to user
+  placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
   icon: 'assets/Icons/Skills/Neutral/meleeAttack.png',
 }

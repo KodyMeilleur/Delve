@@ -106,12 +106,13 @@ export function findPath(maze, startCoords, endCoords) {
     return finalPath.reverse().slice(1);
 }
 
-export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
-  const rowColumnSize = (startEntity.movement * 2);
+export function returnShallowMapChunk(startEntity, fullMap, isBattling, range, allowEntities) {
+  const totalRange = range || startEntity.movement;
+  const rowColumnSize = (totalRange * 2);
   const entityX = isBattling ? startEntity.battleX : startEntity.x;
   const entityY = isBattling ? startEntity.battleY : startEntity.y;
-  const startX = (entityX - startEntity.movement) < 0 ? 0 : (entityX - startEntity.movement);
-  const startY = (entityY - startEntity.movement) < 0 ? 0 : (entityY - startEntity.movement);
+  const startX = (entityX - totalRange) < 0 ? 0 : (entityX - totalRange);
+  const startY = (entityY - totalRange) < 0 ? 0 : (entityY - totalRange);
 
   const mazeClone = [];
 
@@ -122,7 +123,7 @@ export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
         if (startY + k < fullMap[startX + i].length) {
           const currentCellPointer = fullMap[startX + i][startY + k];
           const shallowCell = {
-            density: currentCellPointer.density || currentCellPointer.monsters.length,
+            density: currentCellPointer.density || (allowEntities ? 0 : currentCellPointer.monsters.length),
             visited: false,
             parent: null,
             x: currentCellPointer.x,
@@ -145,13 +146,14 @@ export function returnShallowMapChunk(startEntity, fullMap, isBattling) {
   return mazeClone;
 }
 
-export function toggleMoveTiles(startEntity, map, isBattling) {
+export function toggleMoveTiles(startEntity, map, isBattling, range) {
+  const totalRange = range || startEntity.movement;
   const tilesToCheck = [];
   const entityX = isBattling ? startEntity.battleX : startEntity.x;
   const entityY = isBattling ? startEntity.battleY : startEntity.y;
   const startX = parseInt(entityX);
   const startY = parseInt(entityY);
-  let totalMP = startEntity.movement;
+  let totalMP = totalRange;
   const gridAdjustmentX = startX - totalMP < 0 ? 0 : startX - totalMP;
   const gridAdjustmentY = startY - totalMP < 0 ? 0 : startY - totalMP;
 

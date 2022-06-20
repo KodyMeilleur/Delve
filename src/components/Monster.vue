@@ -7,7 +7,7 @@
     'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
   }"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.monster }"
+  v-bind:class="{ selected: focusedEntity === this.monster, hoverAvailable: !this.showBattleTiles }"
   class="monster-component"
   >
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
@@ -87,7 +87,9 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setfocusedEntity',
-      'updateMonsterPosition'
+      'updateMonsterPosition',
+      'toggleAttackRangeTiles',
+      'setfocusedEntityOverride'
     ]),
     endTurn () {
       this.$emit('turnEnded');
@@ -126,7 +128,13 @@ export default {
     },
     setEntity () {
       this.$root.$emit('clearPlayerMoveState');
-      this.setfocusedEntity(this.monster);
+      this.$root.$emit('clearAttackState');
+      if (this.showBattleTiles) {
+        this.setfocusedEntityOverride(null);
+        this.toggleAttackRangeTiles();
+      } else {
+        this.setfocusedEntity(this.monster);
+      }
     },
     updateMonsterMove () {
       if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
@@ -210,7 +218,8 @@ export default {
       ...mapGetters('world', [
       'focusedEntity',
       'currentTurn',
-      'isMonsterTurn'
+      'isMonsterTurn',
+      'showBattleTiles'
     ]),
     direction: function () {
       // 1N, 2E, 3S, 4W,  0 non moving South
@@ -239,7 +248,11 @@ export default {
   position: absolute;
   cursor: default;
 }
-.selected,.monster-component:hover {
+.monster-component:hover {
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/selectOutRange.png');
+}
+.selected,.hoverAvailable.monster-component:hover {
   cursor: pointer;
   z-index: 10;
   color: rgba(255, 255, 255, 0.5);

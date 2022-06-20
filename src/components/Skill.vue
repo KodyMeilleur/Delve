@@ -3,6 +3,7 @@
   >
   <span class="skill-number text-style">{{number + 1}}</span>
   <div
+  v-on:click="useSkill"
   v-if="skill"
   v-bind:style="{
     'background-image': 'url(' + publicPath + skill.icon,
@@ -36,6 +37,11 @@ export default {
   methods: {
     ...mapMutations('world', [
     ]),
+    useSkill() {
+      this.$emit('clearPotentialPath');
+      this.$root.$emit('clearPlayerMoveState');
+      this.$root.$emit('useSkill', this.skill);
+    }
   },
   computed: {
     ...mapGetters('world', [

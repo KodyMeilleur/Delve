@@ -34,7 +34,6 @@ export default {
       'canMove',
       'focusedEntity',
       'moveTiles',
-      'showMoveTiles',
       'isMonsterMoving',
       'currentTurn',
     ])

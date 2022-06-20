@@ -7,12 +7,12 @@
     'background-position': -(64 * currentFrame) + 'px ' + (0) + 'px',
   }"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles}"
+  v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles, hoverAvailable: !this.showBattleTiles}"
   class="player-component"
   >
     <div
     v-on:click.stop="movePlayer"
-    v-if="this.focusedEntity === this.player && this.currentTurn === this.player && this.inMoveState === false"
+    v-if="this.focusedEntity === this.player && this.currentTurn === this.player && this.inMoveState === false && this.showBattleTiles === false"
     class="move-icon-container"
     >
       <div
@@ -90,11 +90,15 @@ export default {
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
+    this.$root.$on('clearAttackState', this.clearAttackState);
     this.$root.$on('clearPlayerMoveState', this.clearPlayerMoveState);
+    this.$root.$on('useSkill', this.useSkill);
   },
   beforeDestroy() {
     this.$root.$off('frameBump', this.frameAdvance);
+    this.$root.$off('clearAttackState', this.clearAttackState);
     this.$root.$off('clearPlayerMoveState', this.clearPlayerMoveState);
+    this.$root.$off('useSkill', this.useSkill);
   },
   data () {
     return {
@@ -119,6 +123,7 @@ export default {
       skipFrames: [ ...this.player.animation.skipFrames ],
       movingToStructure: false,
       inMoveState: false,
+      inAttackState: false,
     }
   },
   watch: {
@@ -137,7 +142,9 @@ export default {
     ...mapMutations('world', [
       'setfocusedEntity',
       'updatePlayerPosition',
-      'toggleMovingTiles'
+      'toggleMovingTiles',
+      'toggleAttackRangeTiles',
+      'setfocusedEntityOverride',
     ]),
     frameAdvance () {
 
@@ -314,9 +321,36 @@ export default {
         this.inMoveState = false;
       }
     },
+    useSkill (skill) {
+      this.setfocusedEntityOverride(null);
+
+      // get chunk of land around player if anchored
+      if (skill.anchored === true && this.inAttackState === false) {
+        let battleTilesToLight;
+        if (this.showMoveTiles === false) {
+          const map = this.isBattling ? this.battleMap : this.map;
+          const areaAroundPlayer = returnShallowMapChunk(this.player, map, this.isBattling, skill.range, true);
+          battleTilesToLight = toggleMoveTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
+        }
+        this.toggleAttackRangeTiles(battleTilesToLight);
+        this.inAttackState = true;
+      } else {
+        this.clearAttackState();
+        this.clearPlayerMoveState();
+      }
+    },
     setEntity () {
-      this.setfocusedEntity(this.player);
       this.inMoveState = false;
+      if (this.showBattleTiles) {
+        this.setfocusedEntityOverride(null);
+        this.clearAttackState();
+      } else {
+        this.setfocusedEntity(this.player);
+      }
+    },
+    clearAttackState() {
+      this.toggleAttackRangeTiles();
+      this.inAttackState = false;
     },
     clearPlayerMoveState () {
       this.inMoveState = false;
@@ -333,7 +367,8 @@ export default {
       'topOffset',
       'showMoveTiles',
       'map',
-      'isBattling'
+      'isBattling',
+      'showBattleTiles'
     ]),
     inStructure: function() {
       return this.player.outworldTileOccupied.structure ? true : false;
@@ -361,7 +396,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.selected,.player-component:hover {
+.player-component:hover {
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/selectOutRange.png');
+}
+.selected, .hoverAvailable.player-component:hover {
   cursor: pointer;
   z-index: 10;
   color: rgba(255, 255, 255, 0.5);
