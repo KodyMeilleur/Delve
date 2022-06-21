@@ -485,7 +485,7 @@ export default {
   height: 14px; */
   width: 100%;
   height: 100%;
-  z-index: 9;
+  z-index: 4;
   position: absolute;
   left: 0;
   background-image: url('/assets/hudSprites/select.png');
