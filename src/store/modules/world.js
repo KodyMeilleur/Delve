@@ -234,6 +234,8 @@ const mutations = {
   cycleBattleTurn (state) {
     state.currentBattleTurn.roundFinished = true;
 
+    state.currentBattleTurn.ap = state.currentBattleTurn.maxAp;
+
     function nextPlayer(player) {
       return player.roundFinished === false;
     }
@@ -296,6 +298,15 @@ const mutations = {
 
   setinWorldPlayerTile(state, { player, tile}) {
     player.inworldTileOccupied = tile;
+  },
+
+  applySkillEffectsOnPlayer(state, { player, skill}) {
+    const storePlayer = state.players.filter(ent => ent == player)[0];
+    if (skill.costType === 'ap') {
+      storePlayer[skill.costType] -= skill.costSlotOne;
+    } else if (skill.costType === 'mp') {
+      console.log('spell');
+    }
   },
 
   updatePlayerPosition (state, { player, coords, isBattling, map}) {

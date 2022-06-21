@@ -75,7 +75,7 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection, returnShallowMapChunk, toggleMoveTiles } from '../services/pathfinding';
+import { getEntityDirection, returnShallowMapChunk, toggleMoveTiles, getDirectionToTile } from '../services/pathfinding';
 import { Animation } from '../models/Animation.js';
 
 export default {
@@ -93,12 +93,14 @@ export default {
     this.$root.$on('clearAttackState', this.clearAttackState);
     this.$root.$on('clearPlayerMoveState', this.clearPlayerMoveState);
     this.$root.$on('useSkill', this.useSkill);
+    this.$root.$on('applySkillEffect', this.applySkillEffect);
   },
   beforeDestroy() {
     this.$root.$off('frameBump', this.frameAdvance);
     this.$root.$off('clearAttackState', this.clearAttackState);
     this.$root.$off('clearPlayerMoveState', this.clearPlayerMoveState);
     this.$root.$off('useSkill', this.useSkill);
+    this.$root.$off('applySkillEffect', this.applySkillEffect);
   },
   data () {
     return {
@@ -124,6 +126,7 @@ export default {
       movingToStructure: false,
       inMoveState: false,
       inAttackState: false,
+      toggledSkill: null,
     }
   },
   watch: {
@@ -145,6 +148,7 @@ export default {
       'toggleMovingTiles',
       'toggleAttackRangeTiles',
       'setfocusedEntityOverride',
+      'applySkillEffectsOnPlayer',
     ]),
     frameAdvance () {
 
@@ -164,6 +168,8 @@ export default {
           animation.refreshSkipFrames();
           animation.currentFrame = 0;
           this.skipFrames = this.animation.skipFrames;
+        } else {
+          this.animation = Object.assign({}, this.player.defaultAnimation);
         }
       }
       if (bumpFrames) {
@@ -334,10 +340,30 @@ export default {
         }
         this.toggleAttackRangeTiles(battleTilesToLight);
         this.inAttackState = true;
+        this.toggledSkill = skill;
       } else {
         this.clearAttackState();
         this.clearPlayerMoveState();
       }
+    },
+    applySkillEffect(targetedTile) {
+      if (this.toggledSkill.nature === 'aggressive') {
+        if (targetedTile.monsters.length || targetedTile.players.length) {
+          const targetedEntity = targetedTile.monsters[0] || targetedTile.players[0];
+          // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
+          targetedEntity.hp -= (this.player[this.toggledSkill.baseDmg]);
+          const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
+          this.movingDirection = attackDirection.direction;
+          this.animation = new Animation(4, '1hAttack', false);
+          if (targetedTile.monsters.length) {
+            this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill});
+          }
+          this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
+        }
+      } else if (this.toggledSkill.nature === 'defensive') {
+        console.log('defense');
+      }
+      this.clearAttackState();
     },
     setEntity () {
       this.inMoveState = false;
@@ -351,6 +377,7 @@ export default {
     clearAttackState() {
       this.toggleAttackRangeTiles();
       this.inAttackState = false;
+      this.toggledSkill = null;
     },
     clearPlayerMoveState () {
       this.inMoveState = false;

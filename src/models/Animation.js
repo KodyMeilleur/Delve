@@ -1,6 +1,7 @@
 const skipFrameMap = {
   // delay frames, minimum must match max number of frames
   Jump: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4],
+  hurt: [0, 0],
   Idle: [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9]
 }
 

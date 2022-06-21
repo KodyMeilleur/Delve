@@ -16,13 +16,13 @@
         </div>
       </span>
       <span v-if="!isBattling" class="action-container">
-        <div style="display: flex;" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Wild' || !focusedEntity.structure">
+        <div style="display: flex;" v-if="focusedEntity.structure">
           <div class="explore-container">
             <div
             v-on:click="exploreStructure"
             v-bind:class="{ 'explore-sprite': inArea === true}"
             >
-            </div>
+          </div>
             <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
           </div>
           <div class="nurture-container" v-if="focusedEntity.structure">

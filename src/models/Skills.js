@@ -12,6 +12,7 @@ export function Skill() {
   this.icon = '';
   this.range = 0;
   this.anchored = false;
+  this.nature = 'defensive';
 }
 
 export const SKILL_TYPES = {
@@ -28,11 +29,12 @@ export const MeleeAttack = {
   type: NEUTRAL,
   baseDmg: 'might',
   addedDmg: 'weapon',
-  costType: 'AP',
+  costType: 'ap',
   costSlotOne: 1,
   costSlotTwo: 0,
   range: 1,
   anchored: true, // anchored to user
   placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
   icon: 'assets/Icons/Skills/Neutral/meleeAttack.png',
+  nature: 'aggressive',
 }

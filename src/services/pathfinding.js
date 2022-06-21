@@ -235,3 +235,26 @@ export function getEntityDirection(entity) {
 
     return {direction: 3, movingToStructure: tileToMoveTo};
 }
+
+export function getDirectionToTile(entity, tileToMoveTo, isBattling) {
+    // determine direction to move in
+    // 1,2,3,4 for directions, 0 non moving
+    // 1N, 2E, 3S, 4W
+    // determine number of tiles to move
+    // 16px per tick, 1 sec moves a full tile and shows 4 frames?
+    if (tileToMoveTo) {
+      const moveToX = tileToMoveTo.x;
+      const moveToY = tileToMoveTo.y;
+
+      const moveUp = moveToX < (isBattling ? entity.battleX : entity.x) ? 1 : null;
+      const moveDown = moveToX > (isBattling ? entity.battleX : entity.x) ? 3 : null;
+      const moveRight = moveToY > (isBattling ? entity.battleY : entity.y) ? 2 : null;
+      const moveLeft = moveToY < (isBattling ? entity.battleY : entity.y) ? 4 : null;
+
+      const moveDirection = moveUp || moveDown || moveRight || moveLeft;
+
+      return {direction: moveDirection, movingToStructure: tileToMoveTo && tileToMoveTo.structure };
+    }
+
+    return {direction: 3, movingToStructure: tileToMoveTo};
+}

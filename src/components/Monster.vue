@@ -14,7 +14,7 @@
   <div
   v-bind:style="{
     'background-image': 'url(' + publicPath + monster.sprite + (monster.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + (direction || 'South') + '/sheet.png)',
-    'background-position': (64 * currentFrame) + 'px ' + (0) + 'px'
+    'background-position': (64 * animation.currentFrame) + 'px ' + (0) + 'px'
   }"
   class="monster-sprite"
   >
@@ -37,9 +37,11 @@ export default {
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
+    this.$root.$on('applyMonsterSkillEffect', this.handleSkillEffect);
   },
   beforeDestroy() {
     this.$root.$off('frameBump', this.frameAdvance);
+    this.$root.$off('applyMonsterSkillEffect', this.handleSkillEffect);
   },
   data () {
     return {
@@ -104,11 +106,13 @@ export default {
         this.skipFrames.shift(); // problem
       } else {
         this.currentFrame += 1;
+        animation.currentFrame += 1;
       }
-      if (this.currentFrame >= animation.maxNumberOfFrames) {
+      if (this.animation.currentFrame >= animation.maxNumberOfFrames) {
         this.currentFrame = 0;
         if (animation.shouldLoop === true) {
           animation.refreshSkipFrames();
+          animation.currentFrame = 0;
           this.skipFrames = this.animation.skipFrames;
         } else {
           this.animation = Object.assign({}, monster.defaultAnimation);
@@ -213,6 +217,12 @@ export default {
         this.$emit('turnEnded'); // trigger event on the current instance
       }
     },
+    handleSkillEffect({monsterID, skill}) {
+      if (monsterID === this.monster.id) {
+        this.animation = new Animation(3, 'hurt', false);
+        console.log(skill);
+      }
+    }
   },
   computed: {
       ...mapGetters('world', [

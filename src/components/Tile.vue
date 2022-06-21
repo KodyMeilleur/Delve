@@ -38,7 +38,6 @@
     >
     </span>
     <span v-if="(this.attackHighlighted && !this.hover)"
-    v-on:click="skillOnTile"
     class="attack-highlighted"
     v-bind:style="{
       'background-position': -(64 * frame) + 'px ' + (0) + 'px',
@@ -46,7 +45,7 @@
     >
     </span>
     <span v-if="(this.attackHighlighted && this.hover)"
-    v-on:click="skillOnTile"
+    v-on:click.stop="skillOnTile"
     class="attack-highlighted-hover"
     v-bind:style="{
       'background-position': -(64 * frame) + 'px ' + (0) + 'px',
@@ -376,7 +375,7 @@ export default {
       }
     },
     skillOnTile () {
-
+      this.$root.$emit('applySkillEffect', this.tile);
     },
     exitBattleState() {
       this.attackHighlighted = false;
