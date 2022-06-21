@@ -16,7 +16,7 @@
         </div>
       </span>
       <span v-if="!isBattling" class="action-container">
-        <div style="display: flex;" v-if="focusedEntity.structure">
+        <div style="display: flex;" v-if="focusedEntity.structure && focusedEntity.structure.category === 'Wild'">
           <div class="explore-container">
             <div
             v-on:click="exploreStructure"
