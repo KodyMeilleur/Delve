@@ -1,13 +1,13 @@
 import { ForestTile } from './combatTiles';
 import { Dummy } from '../monsters/Dummy';
 
-const RED = 'RED';
-const BLUE = 'BLUE';
-const GREEN = 'GREEN';
-const WHITE = 'WHITE';
-const BLACK = 'BLACK';
-const PURPLE = 'PURPLE';
-const NEUTRAL = 'NEUTRAL';
+export const RED = 'RED';
+export const BLUE = 'BLUE';
+export const GREEN = 'GREEN';
+export const WHITE = 'WHITE';
+export const BLACK = 'BLACK';
+export const PURPLE = 'PURPLE';
+export const NEUTRAL = 'NEUTRAL';
 
 export const TYPES = {
   RED,
