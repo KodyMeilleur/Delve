@@ -75,7 +75,7 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection, returnShallowMapChunk, toggleMoveTiles, getDirectionToTile } from '../services/pathfinding';
+import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getCardinalDiagonalTiles, getDirectionToTile } from '../services/pathfinding';
 import { Animation } from '../models/Animation.js';
 
 export default {
@@ -189,7 +189,7 @@ export default {
         if (this.showMoveTiles === false) {
           const map = this.isBattling ? this.battleMap : this.map;
           const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
-          tilesToLight = toggleMoveTiles(this.focusedEntity, areaAroundPlayer, this.isBattling);
+          tilesToLight = getCardinalTiles(this.focusedEntity, areaAroundPlayer, this.isBattling);
         }
         this.toggleMovingTiles(tilesToLight);
         this.inMoveState = true;
@@ -336,7 +336,9 @@ export default {
         if (this.showMoveTiles === false) {
           const map = this.isBattling ? this.battleMap : this.map;
           const areaAroundPlayer = returnShallowMapChunk(this.player, map, this.isBattling, skill.range, true);
-          battleTilesToLight = toggleMoveTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
+          battleTilesToLight = skill.stepType === 'foot' ?
+            getCardinalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range) : 
+            getCardinalDiagonalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
         }
         this.toggleAttackRangeTiles(battleTilesToLight);
         this.inAttackState = true;
@@ -362,6 +364,8 @@ export default {
         }
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');
+      } else if (this.toggledSkill.nature === 'placement') {
+        console.log('placement');
       }
       this.clearAttackState();
     },

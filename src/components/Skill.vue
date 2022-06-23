@@ -2,6 +2,7 @@
   <div class="skill"
   >
   <span class="skill-number text-style">{{number + 1}}</span>
+  <div class="skill-disabled"></div>
   <div
   v-on:click="useSkill"
   v-if="skill"
@@ -92,5 +93,11 @@ export default {
   color: white;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
+}
+.skill-disabled {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  display: none;
 }
 </style>

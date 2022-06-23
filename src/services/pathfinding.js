@@ -146,7 +146,8 @@ export function returnShallowMapChunk(startEntity, fullMap, isBattling, range, a
   return mazeClone;
 }
 
-export function toggleMoveTiles(startEntity, map, isBattling, range) {
+// CARDINAL MOVEMENT SLICES
+export function getCardinalTiles(startEntity, map, isBattling, range) {
   const totalRange = range || startEntity.movement;
   const tilesToCheck = [];
   const entityX = isBattling ? startEntity.battleX : startEntity.x;
@@ -180,7 +181,8 @@ export function toggleMoveTiles(startEntity, map, isBattling, range) {
             cardinalCellCheck(eastCell, lastMPCost + eastCell.mpCost);
           }
         }
-      } // south
+      }
+      // south
       if ((cell.x - gridAdjustmentX) + 1 < map.length) {
         const southCell = map[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
         const mpRange = (lastMPCost + southCell.mpCost) <= totalMP;
@@ -190,7 +192,8 @@ export function toggleMoveTiles(startEntity, map, isBattling, range) {
             cardinalCellCheck(southCell, lastMPCost + southCell.mpCost);
           }
         }
-      } // west
+      }
+      // west
       if ((cell.y - gridAdjustmentY) - 1 >= 0) {
         const westCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) - 1];
         const mpRange = (lastMPCost + westCell.mpCost) <= totalMP;
@@ -208,6 +211,119 @@ export function toggleMoveTiles(startEntity, map, isBattling, range) {
     const startCell = map[startX - gridAdjustmentX][startY - gridAdjustmentY];
 
     cardinalCellCheck(startCell, 0);
+
+    return tilesToCheck;
+}
+
+// CARDINAL MOVEMENT SLICES
+export function getCardinalDiagonalTiles(startEntity, map, isBattling, range) {
+  const totalRange = range || startEntity.movement;
+  const tilesToCheck = [];
+  const entityX = isBattling ? startEntity.battleX : startEntity.x;
+  const entityY = isBattling ? startEntity.battleY : startEntity.y;
+  const startX = parseInt(entityX);
+  const startY = parseInt(entityY);
+  let totalMP = totalRange;
+  const gridAdjustmentX = startX - totalMP < 0 ? 0 : startX - totalMP;
+  const gridAdjustmentY = startY - totalMP < 0 ? 0 : startY - totalMP;
+
+  function cardinalDiagonalCellCheck(cell, lastMPCost) {
+
+      // north
+      if ((cell.x - gridAdjustmentX) - 1 >= 0) {
+        const northCell = map[(cell.x - gridAdjustmentX) - 1][(cell.y - gridAdjustmentY)];
+        const mpRange = (lastMPCost + northCell.mpCost) <= totalMP;
+        if (northCell && northCell.density === 0 && mpRange) {
+          if ((northCell.x === startCell.x && northCell.y === startCell.y) === false) {
+            tilesToCheck.push(northCell);
+            cardinalDiagonalCellCheck(northCell, lastMPCost + northCell.mpCost);
+          }
+        }
+      }
+      // north-east
+      if (((cell.x - gridAdjustmentX) - 1 >= 0) && ((cell.y - gridAdjustmentY) + 1 < map[0].length)) {
+        const northEastCell = map[(cell.x - gridAdjustmentX) - 1][(cell.y - gridAdjustmentY) + 1];
+        const mpRange = (lastMPCost + northEastCell.mpCost) <= totalMP;
+        if (northEastCell && northEastCell.density === 0 && mpRange) {
+          if ((northEastCell.x === startCell.x && northEastCell.y === startCell.y) === false) {
+            tilesToCheck.push(northEastCell);
+            cardinalDiagonalCellCheck(northEastCell, lastMPCost + northEastCell.mpCost);
+          }
+        }
+      }
+      // north-west
+      if (((cell.x - gridAdjustmentX) - 1 >= 0) && ((cell.y - gridAdjustmentY) - 1 >= 0)) {
+        const northWestCell = map[(cell.x - gridAdjustmentX) - 1][(cell.y - gridAdjustmentY) - 1];
+        const mpRange = (lastMPCost + northWestCell.mpCost) <= totalMP;
+        if (northWestCell && northWestCell.density === 0 && mpRange) {
+          if ((northWestCell.x === startCell.x && northWestCell.y === startCell.y) === false) {
+            tilesToCheck.push(northWestCell);
+            cardinalDiagonalCellCheck(northWestCell, lastMPCost + northWestCell.mpCost);
+          }
+        }
+      }
+      // east
+      if ((cell.y - gridAdjustmentY) + 1 < map[0].length) {
+        const eastCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) + 1];
+        const mpRange = (lastMPCost + eastCell.mpCost) <= totalMP;
+        if (eastCell && eastCell.density === 0 && mpRange) {
+          if ((eastCell.x === startCell.x && eastCell.y === startCell.y) === false) {
+            tilesToCheck.push(eastCell);
+            cardinalDiagonalCellCheck(eastCell, lastMPCost + eastCell.mpCost);
+          }
+        }
+      }
+      // south
+      if ((cell.x - gridAdjustmentX) + 1 < map.length) {
+        const southCell = map[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
+        const mpRange = (lastMPCost + southCell.mpCost) <= totalMP;
+        if (southCell && southCell.density === 0 && mpRange) {
+          if ((southCell.x === startCell.x && southCell.y === startCell.y) === false) {
+            tilesToCheck.push(southCell);
+            cardinalDiagonalCellCheck(southCell, lastMPCost + southCell.mpCost);
+          }
+        }
+      }
+      // south-west
+      if (((cell.x - gridAdjustmentX) + 1 < map.length) && ((cell.y - gridAdjustmentY) - 1 >= 0)) {
+        const southWestCell = map[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY) - 1];
+        const mpRange = (lastMPCost + southWestCell.mpCost) <= totalMP;
+        if (southWestCell && southWestCell.density === 0 && mpRange) {
+          if ((southWestCell.x === startCell.x && southWestCell.y === startCell.y) === false) {
+            tilesToCheck.push(southWestCell);
+            cardinalDiagonalCellCheck(southWestCell, lastMPCost + southWestCell.mpCost);
+          }
+        }
+      }
+      // south-east
+      if (((cell.x - gridAdjustmentX) + 1 < map.length) && ((cell.y - gridAdjustmentY) + 1 < map[0].length)) {
+        const southEastCell = map[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY) + 1];
+        const mpRange = (lastMPCost + southEastCell.mpCost) <= totalMP;
+        if (southEastCell && southEastCell.density === 0 && mpRange) {
+          if ((southEastCell.x === startCell.x && southEastCell.y === startCell.y) === false) {
+            tilesToCheck.push(southEastCell);
+            cardinalDiagonalCellCheck(southEastCell, lastMPCost + southEastCell.mpCost);
+          }
+        }
+      }
+      // west
+      if ((cell.y - gridAdjustmentY) - 1 >= 0) {
+        const westCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) - 1];
+        const mpRange = (lastMPCost + westCell.mpCost) <= totalMP;
+        if (westCell && westCell.density === 0 && mpRange) {
+          if ((westCell.x === startCell.x && westCell.y === startCell.y) === false) {
+            tilesToCheck.push(westCell);
+            cardinalDiagonalCellCheck(westCell, lastMPCost + westCell.mpCost);
+          }
+        }
+      }
+
+      return false;
+    }
+
+    const startCell = map[startX - gridAdjustmentX][startY - gridAdjustmentY];
+
+    cardinalDiagonalCellCheck(startCell, 0);
 
     return tilesToCheck;
 }

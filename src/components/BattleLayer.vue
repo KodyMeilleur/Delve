@@ -283,7 +283,7 @@ export default {
   height: 128px;
   position: absolute;
   z-index: 5;
-  top: -45px;
+  top: -50px;
 }
 .west-wall-item, .east-wall-item {
   width: 128px;
