@@ -12,6 +12,9 @@
   >
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
   <div
+  v-bind:class="{ 'grow': shrinkGrow}"
+  class="damage-number"> {{ lastDamageSuffered }} </div>
+  <div
   v-bind:style="{
     'background-image': 'url(' + publicPath + monster.sprite + (monster.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + (direction || 'South') + '/sheet.png)',
     'background-position': (64 * animation.currentFrame) + 'px ' + (0) + 'px'
@@ -62,6 +65,8 @@ export default {
       animation: { ...this.monster.defaultAnimation },
       skipFrames: [ ...this.monster.animation.skipFrames ],
       isMoving: false,
+      lastDamageSuffered: 0,
+      shrinkGrow: false,
     }
   },
   watch: {
@@ -83,8 +88,18 @@ export default {
            setTimeout(this.endTurn, 1000);
          }
        },
-        deep: false
+       deep: false
       },
+      'shrinkGrow': {
+        handler (val) {
+          const that = this;
+          if (val) {
+            setTimeout(() => {
+              that.shrinkGrow = false;
+            }, 250);
+          }
+        }
+      }
   },
   methods: {
     ...mapMutations('world', [
@@ -115,6 +130,9 @@ export default {
           animation.currentFrame = 0;
           this.skipFrames = this.animation.skipFrames;
         } else {
+          if (animation.state === 'hurt') {
+            this.shrinkGrow = true;
+          }
           this.animation = Object.assign({}, monster.defaultAnimation);
         }
       }
@@ -217,10 +235,10 @@ export default {
         this.$emit('turnEnded'); // trigger event on the current instance
       }
     },
-    handleSkillEffect({monsterID, skill}) {
+    handleSkillEffect({monsterID, damage}) {
       if (monsterID === this.monster.id) {
         this.animation = new Animation(3, 'hurt', false);
-        console.log(skill);
+        this.lastDamageSuffered = damage;
       }
     }
   },
@@ -281,5 +299,33 @@ export default {
 }
 .monster-info {
   position: absolute;
+}
+.damage-number {
+  position: absolute;
+  top: -16px;
+  left: 28px;
+  opacity: 0;
+}
+.grow {
+  animation: grow .5s;
+  animation-direction: alternate;
+  /* animation-delay: 1s; */
+}
+@keyframes grow{
+  0%{
+    opacity: 1;
+    transform: scale(1);
+    top: -16px;
+  }
+  50%{
+    opacity: 0.5;
+    transform: scale(5);
+  }
+  100%{
+    display: none;
+    opacity: 0;
+    top: -46px;
+    transform: scale(0);
+  }
 }
 </style>

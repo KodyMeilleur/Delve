@@ -62,7 +62,7 @@
     </span>
       <div class="tile-sprite">
         <!-- Add frame here -->
-        <span class="frame-counter">{{ frame }} {{bumpVerticalFramePosition}}</span>
+        <!-- <span class="frame-counter">{{ frame }} {{bumpVerticalFramePosition}}</span> -->
         <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
           <div>
@@ -219,6 +219,9 @@ export default {
     this.$root.$off('frameBump', this.frameAdvance);
     clearInterval(this.overTimeout);
   },
+  // updated () {
+  //   console.log('tile render...', this.shouldShow);
+  // },
   watch: {
     leftOffset: function (val) {
       this.yOffset = val;

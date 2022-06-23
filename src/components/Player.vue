@@ -351,12 +351,12 @@ export default {
         if (targetedTile.monsters.length || targetedTile.players.length) {
           const targetedEntity = targetedTile.monsters[0] || targetedTile.players[0];
           // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
-          targetedEntity.hp -= (this.player[this.toggledSkill.baseDmg]);
+          const damage = (this.player[this.toggledSkill.baseDmg]);
           const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
           this.movingDirection = attackDirection.direction;
           this.animation = new Animation(4, '1hAttack', false);
           if (targetedTile.monsters.length) {
-            this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill});
+            this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
           }
           this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
         }
