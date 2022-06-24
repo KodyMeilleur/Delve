@@ -58,8 +58,8 @@ export const Reforestation = {
   icon: 'assets/Icons/Skills/Green/reforestation.png',
   nature: 'placement',
   takeDominion: true,
-  dominionValue: 1,
-  dominionType: GREEN,
+  dominionValues: [1],
+  dominionType: [GREEN],
   skillEntity: {
     immediateEffect: false,
     lingeringEffect: true,

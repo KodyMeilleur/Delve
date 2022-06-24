@@ -194,6 +194,24 @@ export default {
 .empty-mana-type {
   background-image: url('/assets/hudSprites/neutralManaIcon.png');
 }
+.GREEN-mana-type {
+  background-image: url('/assets/hudSprites/greenManaIcon.png');
+}
+.BLUE-mana-type {
+  background-image: url('/assets/hudSprites/blueManaIcon.png');
+}
+.WHITE-mana-type {
+  background-image: url('/assets/hudSprites/whiteManaIcon.png');
+}
+.BLACK-mana-type {
+  background-image: url('/assets/hudSprites/blackManaIcon.png');
+}
+.RED-mana-type {
+  background-image: url('/assets/hudSprites/redManaIcon.png');
+}
+.PURPLE-mana-type {
+  background-image: url('/assets/hudSprites/purpleManaIcon.png');
+}
 .mana-icon {
   width: 32px;
   height: 32px;

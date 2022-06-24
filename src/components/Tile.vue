@@ -61,8 +61,8 @@
     >
     </span>
       <div class="tile-sprite">
-        <!-- Add frame here -->
-        <!-- <span class="frame-counter">{{ frame }} {{bumpVerticalFramePosition}}</span> -->
+        <!-- Dominion Effect -->
+        <div v-if="tile.battleTile && showCurrentEffect" class="dominion-change"></div>
         <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
           <div>
@@ -172,6 +172,7 @@ export default {
       overTimeout: null,
       travelPath: null,
       potentialPath: false,
+      showCurrentEffect: false,
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
@@ -230,6 +231,24 @@ export default {
     topOffset: function (val) {
       this.xOffset = val;
       this.checkShouldShow(this.leftOffset, val);
+    },
+    'tile.manaValueSlotOne': {
+      handler () {
+        const that = this;
+        this.showCurrentEffect = true;
+        setTimeout(() => {
+          that.showCurrentEffect = false;
+        }, 1000);
+      }
+    },
+    'tile.manaValueSlotTwo': {
+      handler () {
+        const that = this;
+        this.showCurrentEffect = true;
+        setTimeout(() => {
+          that.showCurrentEffect = false;
+        }, 1000);
+      },
     },
     showMoveTiles: function(val) {
       if (this.shouldShow) {
@@ -559,6 +578,13 @@ export default {
   max-height: 64px;
   z-index: 2;
   pointer-events: none;
+}
+.dominion-change {
+  width: 64px;
+  height: 64px;
+  background-image: url('/assets/Tiles/Effects/dominionChange.gif');
+  position: absolute;
+  z-index: 1;
 }
 .unexplored {
   /* -webkit-filter: grayscale(100%);

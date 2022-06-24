@@ -76,6 +76,7 @@
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
 import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getCardinalDiagonalTiles, getDirectionToTile } from '../services/pathfinding';
+import { processPlacement } from '../services/skillProcesses';
 import { Animation } from '../models/Animation.js';
 
 export default {
@@ -337,7 +338,7 @@ export default {
           const map = this.isBattling ? this.battleMap : this.map;
           const areaAroundPlayer = returnShallowMapChunk(this.player, map, this.isBattling, skill.range, true);
           battleTilesToLight = skill.stepType === 'foot' ?
-            getCardinalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range) : 
+            getCardinalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range) :
             getCardinalDiagonalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
         }
         this.toggleAttackRangeTiles(battleTilesToLight);
@@ -365,7 +366,7 @@ export default {
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
-        console.log('placement');
+        processPlacement(this.toggledSkill, targetedTile, this.player.id);
       }
       this.clearAttackState();
     },
