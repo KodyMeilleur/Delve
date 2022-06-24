@@ -61,8 +61,12 @@
     >
     </span>
       <div class="tile-sprite">
-        <!-- Dominion Effect -->
-        <div v-if="tile.battleTile && showCurrentEffect" class="dominion-change"></div>
+        <img
+        v-if="tile.battleTile"
+        ref="dominionChangeSprite"
+        class="dominion-change"
+        src=""
+        />
         <!-- Structure Markup -->
         <div class="tile-structure" v-if="tile && tile.structure">
           <div>
@@ -102,8 +106,34 @@
           >
           </div>
         </div>
+        <!-- DOMINIONS -->
+        <div class="tile-dominions" v-if="tile.battleTile">
+          <div>
+            <div
+            v-if="tile.manaValueSlotOne"
+            v-bind:style="{
+              'background-position': (64 * quarterFrame) + 'px ' + (0) + 'px',
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotOne) + '/sheet0.png' + ')',
+
+            }"
+            class="dominion-sprite"
+            >
+            </div>
+            <div
+            v-if="tile.manaValueSlotTwo"
+            v-bind:style="{
+              'background-position': (64 * quarterFrame) + 'px ' + (0) + 'px',
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotTwo) + '/sheet0.png' + ')',
+
+            }"
+            class="dominion-sprite"
+            >
+            </div>
+          </div>
+        </div>
         <!-- EVENT SPRITE -->
-        <div
+        <!-- TODO: Make Event GIF -->
+        <!-- <div
         v-if="tile.structure && tile.structure.eventStructure || tile.event"
         v-bind:style="{
           'background-position': (64 * eventSpriteFrames) + 'px ' + (0) + 'px',
@@ -112,7 +142,7 @@
         }"
         class="event-sprite"
         >
-        </div>
+        </div> -->
         <div
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
@@ -124,9 +154,6 @@
         >
         </div>
       </div>
-      <span class="location">
-        ({{ tile.x }},{{ tile.y }})
-      </span>
     </div>
   </div>
 </template>
@@ -156,12 +183,10 @@ export default {
       hover: false,
       frame: 0,
       quarterFrame: 0,
-      sixteenthFrame: 0,
       // Variables for scroll data
       xOffset: 0,
       attackHighlighted: false,
       yOffset: 0,
-      eventSpriteFrames: 0,
       currentFrame: 0,
       structureEffectFrame: 0,
       demolishFrame: 0,
@@ -232,21 +257,20 @@ export default {
       this.xOffset = val;
       this.checkShouldShow(this.leftOffset, val);
     },
+    // changing an image src is the only sure way to restart a gif from frame 0 without a library
     'tile.manaValueSlotOne': {
       handler () {
-        const that = this;
-        this.showCurrentEffect = true;
+        this.$refs.dominionChangeSprite.src = '/assets/Tiles/Effects/dominionChange.gif';
         setTimeout(() => {
-          that.showCurrentEffect = false;
+          this.$refs.dominionChangeSprite.src = '';
         }, 1000);
-      }
+      },
     },
     'tile.manaValueSlotTwo': {
       handler () {
-        const that = this;
-        this.showCurrentEffect = true;
+        this.$refs.dominionChangeSprite.src = '/assets/Tiles/Effects/dominionChange.gif';
         setTimeout(() => {
-          that.showCurrentEffect = false;
+          this.$refs.dominionChangeSprite.src = '';
         }, 1000);
       },
     },
@@ -331,11 +355,6 @@ export default {
 
       this.frame = frame;
 
-      if (this.eventSpriteFrames >= 5) {
-        this.eventSpriteFrames = 0;
-      } else {
-        this.eventSpriteFrames += 1;
-      }
       if (this.tile.structure && this.tile.structure.demolished === true && this.demolishFrame < 20) {
         this.demolishFrame += 1;
       }
@@ -351,11 +370,10 @@ export default {
         this.quarterFrame += 1;
       }
 
-      const isFourQuartersLater = (this.quarterFrame === 2);
+      const isFourQuartersLater = (this.quarterFrame === 4);
 
       if (isFourQuartersLater) {
         this.quarterFrame = 0;
-        this.sixteenthFrame = this.sixteenthFrame ? 0 : 1;
       }
 
       if (this.tile.structure && this.tile.structure.explorable) {
@@ -388,6 +406,9 @@ export default {
         this.$root.$emit('clearAttackState');
         this.setfocusedEntity(this.tile);
       }
+    },
+    capitalizeString(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     },
     goToTile () {
       if (this.travelPath) {
@@ -579,17 +600,28 @@ export default {
   z-index: 2;
   pointer-events: none;
 }
-.dominion-change {
+.dominion-change, .dominion-sprite {
   width: 64px;
   height: 64px;
-  background-image: url('/assets/Tiles/Effects/dominionChange.gif');
+  /* background-image: url('/assets/Tiles/Effects/dominionChange.gif'); */
   position: absolute;
   z-index: 1;
+  left: 0;
+}
+.dominion-sprite {
+  animation: fadeIn 3s;
+}
+.dominion-change[src=""] {
+  display:none;
 }
 .unexplored {
   /* -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
   filter: grayscale(100%);
   transition: grayscale 0.5s ease; */
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 </style>
