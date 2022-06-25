@@ -367,6 +367,7 @@ export default {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
         processPlacement(this.toggledSkill, targetedTile, this.player.id);
+        this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
       }
       this.clearAttackState();
     },

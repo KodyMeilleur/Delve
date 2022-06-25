@@ -28,6 +28,7 @@ export const SKILL_TYPES = {
 
 export const MeleeAttack = {
   type: NEUTRAL,
+  typeTwo: null,
   baseDmg: 'might',
   addedDmg: 'weapon',
   costType: 'ap',
@@ -46,6 +47,7 @@ export const MeleeAttack = {
 
 export const Reforestation = {
   type: GREEN,
+  typeTwo: null,
   baseDmg: '',
   addedDmg: '',
   costType: 'mp',

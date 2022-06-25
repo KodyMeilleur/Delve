@@ -78,34 +78,27 @@
             <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap"/>
             <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn"/>
           </div>
-          <div class="row" v-for="row in currentMap" v-bind:key="row.length + Math.random()">
-            <Tile v-for="cell in row"
-              :tile="cell"
-              :battleMap="currentMap"
-              v-on:potentialPathCalc="updatePotentialPath"
-              v-on:clearPotentialPath="clearPotentialPath"
-              v-bind:key="cell.id"
-            />
-          </div>
+          <TileLayer :currentMap="currentMap" :map="currentMap" :shouldShow="isBattling"/>
         </div>
       </div>
     </div>
     <div class="battle-controls">
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
-      <BattleControls :entity="currentBattleTurnEntity"/>
+      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn"/>
     </div>
   </div>
 </template>
 
 <script>
 import CONST from '../CONST';
-import Tile from './Tile.vue';
+// import Tile from './Tile.vue';
 import { mapGetters, mapMutations } from 'vuex';
 import { createBattleField, createEnemies } from '../models/combatFields/combatFields';
 import BattleControls from './BattleControls.vue';
 import BattleHeader from './BattleHeader.vue';
 import Player from './Player.vue';
 import Monster from './Monster.vue';
+import TileLayer from './TileLayer.vue';
 
 export default {
   name: 'BattleLayer',
@@ -113,11 +106,12 @@ export default {
     // map: Array
   },
   components: {
-    Tile,
+    // Tile,
     BattleControls,
     BattleHeader,
     Player,
-    Monster
+    Monster,
+    TileLayer
   },
   data () {
     return {
@@ -150,6 +144,7 @@ export default {
       'setCurrentBattleTurn',
       'setinWorldPlayerTile',
       'setPlayerBattleStatus',
+      'cycleBattleTurn',
       'endMonsterTurn'
     ]),
     updatePotentialPath (path) {
@@ -172,6 +167,19 @@ export default {
 
       return 0;
     },
+    cyclePlayerTurn() {
+      const ownedTiles = [];
+
+      this.currentMap.forEach((row) => {
+        row.forEach((cell) => {
+          if (cell.manaOwnerId) {
+            ownedTiles.push(cell);
+          }
+        });
+      });
+
+      this.cycleBattleTurn(ownedTiles);
+    },
     nextMonsterTurn() {
       const nextEnemyToGo = this.enemies.find((enemy) => {
         return enemy.roundFinished === false;
@@ -186,7 +194,17 @@ export default {
           enemy.activeBattleTurn = false;
         });
         console.log('All monster turns over!');
-        this.endMonsterTurn();
+        const ownedTiles = [];
+
+        this.currentMap.forEach((row) => {
+          row.forEach((cell) => {
+            if (cell.manaOwnerId) {
+              ownedTiles.push(cell);
+              cell.showManaCollect = true;
+            }
+          });
+        });
+        this.endMonsterTurn(ownedTiles);
       }
     }
   },

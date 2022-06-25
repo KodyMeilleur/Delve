@@ -2,10 +2,10 @@
   <div class="skill"
   >
   <span class="skill-number text-style">{{number + 1}}</span>
-  <div class="skill-disabled"></div>
   <div
   v-on:click="useSkill"
   v-if="skill"
+  v-bind:class="{ 'skill-disabled': !canUseSkill}"
   v-bind:style="{
     'background-image': 'url(' + publicPath + skill.icon,
     /* 'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px', */
@@ -28,6 +28,13 @@ export default {
     },
     number: {
       type: Number
+    },
+    heldMana: {
+      type: Object,
+      default: null
+    },
+    ap: {
+      type: Number
     }
   },
   data () {
@@ -47,6 +54,21 @@ export default {
   computed: {
     ...mapGetters('world', [
     ]),
+    canUseSkill() {
+      if (this.skill && this.skill.costType === 'ap') {
+        return this.ap >= this.skill.costSlotOne;
+      } else if (this.skill && this.skill.costType === 'mp') {
+        let canAfford = true;
+        canAfford = this.skill.costSlotOne ? (this.heldMana[this.skill.type] >= this.skill.costSlotOne) : true;
+        if (canAfford) {
+          canAfford = this.skill.costSlotTwo ? (this.heldMana[this.skill.typeTwo] >= this.skill.costSlotTwo) : true;
+        }
+
+        return canAfford;
+      }
+
+      return false;
+    }
   },
 }
 </script>
@@ -95,9 +117,8 @@ export default {
   -webkit-text-stroke-color: black;
 }
 .skill-disabled {
-  width: 32px;
-  height: 32px;
-  position: absolute;
-  display: none;
+  pointer-events: none;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%) brightness(60%);
 }
 </style>

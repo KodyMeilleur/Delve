@@ -28,7 +28,7 @@
           <div class="entities" v-if="isBattling === false">
             <EntityLayer :key="JSON.stringify(map[0])"/>
           </div>
-          <TileLayer :map="map"/>
+          <TileLayer :map="map" :shouldShow="!isBattling"/>
         </div>
       </div>
     </div>

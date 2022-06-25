@@ -1,9 +1,10 @@
 <template>
   <div
-  v-if="!isBattling"
+  v-if="shouldShow"
   class="landmass">
     <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
       <Tile v-for="cell in row"
+        :battleMap="currentMap"
         :tile="cell"
         v-on:potentialPathCalc="updatePotentialPath"
         v-on:clearPotentialPath="clearPotentialPath"
@@ -21,7 +22,12 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'TileLayer',
   props: {
-    map: Array
+    map: Array,
+    currentMap: {
+      type: Array,
+      default: () => [],
+    },
+    shouldShow: Boolean
   },
   components: {
     Tile,

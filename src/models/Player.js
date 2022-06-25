@@ -66,7 +66,9 @@ export function DefaultPlayer(name, x, y) {
     'BLACK': 0,
     'PURPLE': 0,
     'NEUTRAL': 0
-  }
+  };
+
+  this.discipline = 'GREEN';
 
   this.pts = CONST.startingStatPoints;
   this.coin = 100;

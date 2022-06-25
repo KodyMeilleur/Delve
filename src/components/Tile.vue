@@ -61,10 +61,17 @@
     >
     </span>
       <div class="tile-sprite">
+        <!-- RESUSE EFFECTS -->
         <img
         v-if="tile.battleTile"
         ref="dominionChangeSprite"
         class="dominion-change"
+        src=""
+        />
+        <img
+        v-if="tile.battleTile"
+        ref="manaCollectSprite"
+        class="mana-charge"
         src=""
         />
         <!-- Structure Markup -->
@@ -110,7 +117,7 @@
         <div class="tile-dominions" v-if="tile.battleTile">
           <div>
             <div
-            v-if="tile.manaValueSlotOne"
+            ref="manaValueSlotOne"
             v-bind:style="{
               'background-position': (64 * quarterFrame) + 'px ' + (0) + 'px',
               'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotOne) + '/sheet0.png' + ')',
@@ -120,7 +127,7 @@
             >
             </div>
             <div
-            v-if="tile.manaValueSlotTwo"
+            ref="manaValueSlotTwo"
             v-bind:style="{
               'background-position': (64 * quarterFrame) + 'px ' + (0) + 'px',
               'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotTwo) + '/sheet0.png' + ')',
@@ -245,9 +252,6 @@ export default {
     this.$root.$off('frameBump', this.frameAdvance);
     clearInterval(this.overTimeout);
   },
-  // updated () {
-  //   console.log('tile render...', this.shouldShow);
-  // },
   watch: {
     leftOffset: function (val) {
       this.yOffset = val;
@@ -261,17 +265,32 @@ export default {
     'tile.manaValueSlotOne': {
       handler () {
         this.$refs.dominionChangeSprite.src = '/assets/Tiles/Effects/dominionChange.gif';
+        this.$refs.manaValueSlotOne.classList.add("fadeEffect");
         setTimeout(() => {
           this.$refs.dominionChangeSprite.src = '';
-        }, 1000);
+          this.$refs.manaValueSlotOne.classList.remove("fadeEffect");
+        }, 900);
       },
     },
     'tile.manaValueSlotTwo': {
       handler () {
         this.$refs.dominionChangeSprite.src = '/assets/Tiles/Effects/dominionChange.gif';
+        this.$refs.manaValueSlotTwo.classList.add("fadeEffect");
         setTimeout(() => {
           this.$refs.dominionChangeSprite.src = '';
-        }, 1000);
+          this.$refs.manaValueSlotTwo.classList.remove("fadeEffect");
+        }, 900);
+      },
+    },
+    'tile.showManaCollect': {
+      handler (val) {
+        if (val) {
+          this.$refs.manaCollectSprite.src = '/assets/Tiles/Effects/manaCharge.gif';
+          setTimeout(() => {
+            this.$refs.manaCollectSprite.src = '';
+            this.tile.showManaCollect = false;
+          }, 2000);
+        }
       },
     },
     showMoveTiles: function(val) {
@@ -600,7 +619,7 @@ export default {
   z-index: 2;
   pointer-events: none;
 }
-.dominion-change, .dominion-sprite {
+.dominion-change, .dominion-sprite, .mana-charge {
   width: 64px;
   height: 64px;
   /* background-image: url('/assets/Tiles/Effects/dominionChange.gif'); */
@@ -608,11 +627,17 @@ export default {
   z-index: 1;
   left: 0;
 }
-.dominion-sprite {
+.fadeEffect {
   animation: fadeIn 3s;
 }
 .dominion-change[src=""] {
   display:none;
+}
+.mana-charge[src=""] {
+  display:none;
+}
+.mana-charge {
+  z-index: 3;
 }
 .unexplored {
   /* -webkit-filter: grayscale(100%);

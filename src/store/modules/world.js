@@ -231,10 +231,11 @@ const mutations = {
     });
   },
 
-  cycleBattleTurn (state) {
+  cycleBattleTurn (state, ownedTiles) {
     state.currentBattleTurn.roundFinished = true;
 
     state.currentBattleTurn.ap = state.currentBattleTurn.maxAp;
+    state.currentBattleTurn.heldMana[state.currentBattleTurn.discipline] += 1;
 
     function nextPlayer(player) {
       return player.roundFinished === false;
@@ -243,6 +244,15 @@ const mutations = {
     const next = state.battlingPlayers.find(nextPlayer);
     if (next) {
       state.currentBattleTurn = next;
+      ownedTiles.forEach((tile) => {
+        tile.showManaCollect = true;
+        if (tile.manaValueSlotOne) {
+          next.heldMana[tile.manaTypeSlotOne] += tile.manaValueSlotOne;
+        }
+        if (tile.manaValueSlotTwo) {
+          next.heldMana[tile.manaTypeSlotTwo] += tile.manaValueSlotTwo;
+        }
+      });
     } else {
       state.isMonsterTurn = true;
       state.battlingPlayers.forEach((player) => {
@@ -251,7 +261,7 @@ const mutations = {
     }
   },
 
-  endMonsterTurn (state) {
+  endMonsterTurn (state, ownedTiles) {
     state.isMonsterTurn = false;
 
     function nextPlayer(player) {
@@ -259,6 +269,16 @@ const mutations = {
     }
     // isMonsterTurn
     const next = state.battlingPlayers.find(nextPlayer);
+
+    ownedTiles.forEach((tile) => {
+      if (tile.manaValueSlotOne) {
+        next.heldMana[tile.manaTypeSlotOne] += tile.manaValueSlotOne;
+      }
+      if (tile.manaValueSlotTwo) {
+        next.heldMana[tile.manaTypeSlotTwo] += tile.manaValueSlotTwo;
+      }
+    });
+
     state.currentBattleTurn = next;
   },
 
@@ -305,7 +325,12 @@ const mutations = {
     if (skill.costType === 'ap') {
       storePlayer[skill.costType] -= skill.costSlotOne;
     } else if (skill.costType === 'mp') {
-      console.log('spell');
+      if (skill.costSlotOne) {
+        player.heldMana[skill.type] -= skill.costSlotOne;
+      }
+      if (skill.costSlotTwo) {
+        player.heldMana[skill.typeTwo] -= skill.costSlotTwo;
+      }
     }
   },
 

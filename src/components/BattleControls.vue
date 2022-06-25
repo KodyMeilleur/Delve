@@ -19,15 +19,57 @@
       </div>
     </div>
     <div class="battle-skills">
-      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i"/>
+      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i" :heldMana="entity.heldMana" :ap="entity.ap"/>
     </div>
     <div class="mana-totals text-style">
-      <div class="RED"><div class="sprite"></div>{{entity.heldMana.RED}}</div>
-      <div class="BLUE"><div class="sprite"></div>{{entity.heldMana.BLUE}}</div>
-      <div class="GREEN"><div class="sprite"></div>{{entity.heldMana.GREEN}}</div>
-      <div class="WHITE"><div class="sprite"></div>{{entity.heldMana.WHITE}}</div>
-      <div class="BLACK"><div class="sprite"></div>{{entity.heldMana.BLACK}}</div>
-      <div class="PURPLE"><div class="sprite"></div>{{entity.heldMana.PURPLE}}</div>
+      <div class="RED">
+        <div class="discipline" v-if="entity.discipline === 'RED'"
+        v-bind:style="{
+          'background-position': (64 * currentFrame) + 'px'
+        }"></div>
+        <div class="sprite"></div>
+        {{entity.heldMana.RED}}
+      </div>
+      <div class="BLUE">
+        <div class="discipline" v-if="entity.discipline === 'BLUE'"
+        v-bind:style="{
+          'background-position': (64 * currentFrame) + 'px'
+        }"></div>
+        <div class="sprite"></div>
+        {{entity.heldMana.BLUE}}
+      </div>
+      <div class="GREEN">
+        <div class="discipline" v-if="entity.discipline === 'GREEN'"
+        v-bind:style="{
+          'background-position': (64 * currentFrame) + 'px'
+        }"></div>
+        <div class="sprite"></div>
+        {{entity.heldMana.GREEN}}
+      </div>
+      <div class="WHITE">
+        <div class="discipline" v-if="entity.discipline === 'WHITE'"
+        v-bind:style="{
+          'background-position': (64 * currentFrame) + 'px'
+        }"></div>
+        <div class="sprite"></div>
+        {{entity.heldMana.WHITE}}
+      </div>
+      <div class="BLACK">
+        <div class="discipline" v-if="entity.discipline === 'BLACK'"
+        v-bind:style="{
+          'background-position': (64 * currentFrame) + 'px'
+        }"></div>
+        <div class="sprite"></div>
+        {{entity.heldMana.BLACK}}
+      </div>
+      <div class="PURPLE">
+        <div class="discipline" v-if="entity.discipline === 'PURPLE'"
+        v-bind:style="{
+          'background-position': (64 * currentFrame) + 'px'
+        }"></div>
+        <div class="sprite"></div>
+        {{entity.heldMana.PURPLE}}
+      </div>
     </div>
   </div>
   </div>
@@ -41,7 +83,12 @@ import Skill from './Skill.vue';
 export default {
   name: 'BattleControls',
   props: {
-    entity: Object
+    entity: {
+      type: Object,
+      default () {
+        return {};
+      }
+    }
   },
   components: {
     Skill,
@@ -50,28 +97,41 @@ export default {
     return {
       lastPlayerTurnHeldMana: null,
       lastPlayerHeldSkills: [],
+      currentFrame: 0,
     }
   },
   mounted () {
-    if (this.entity.isPlayer) {
+    this.$root.$on('frameBump', this.frameAdvance);
+    if (this.entity && this.entity.isPlayer) {
       this.lastPlayerTurnHeldMana = this.entity.heldMana;
       this.lastPlayerHeldSkills = this.entity.equippedSkills;
     }
   },
+  beforeDestroy() {
+    this.$root.$off('frameBump', this.frameAdvance);
+  },
   methods: {
     ...mapMutations('world', [
-      'cycleBattleTurn',
       'clearFocusedEntity'
     ]),
     cycleTurn () {
       this.clearFocusedEntity();
-      this.cycleBattleTurn();
-    }
+      this.$emit('cycleBattleTurn');
+    },
+    frameAdvance (frame) {
+      if (frame % 4 === 0) {
+        if (this.currentFrame === 4) {
+          this.currentFrame = 0;
+        } else {
+          this.currentFrame++;
+        }
+      }
+    },
   },
   watch: {
     'entity': {
       handler (entity) {
-        if (entity.isPlayer) {
+        if (entity && entity.isPlayer) {
           this.lastPlayerTurnHeldMana = entity.heldMana;
           this.lastPlayerHeldSkills = entity.equippedSkills;
         }
@@ -248,5 +308,14 @@ export default {
   flex-direction: column;
   height: 100%;
   justify-content: space-evenly;
+}
+.discipline {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/disciplineSelected.png');
+  top: -53px;
+  left: -55px;
+  pointer-events: none;
 }
 </style>
