@@ -28,6 +28,10 @@
           'background-position': (64 * currentFrame) + 'px'
         }"></div>
         <div class="sprite"></div>
+        <div
+        v-bind:class="{ 'grow': showREDChange}"
+        class="damage-number text-style"> {{symbol(lastManaGainedRED)}} {{ lastManaGainedRED }}
+        </div>
         {{entity.heldMana.RED}}
       </div>
       <div class="BLUE">
@@ -36,6 +40,10 @@
           'background-position': (64 * currentFrame) + 'px'
         }"></div>
         <div class="sprite"></div>
+        <div
+        v-bind:class="{ 'grow': showBLUEChange}"
+        class="damage-number text-style"> {{symbol(lastManaGainedBLUE)}} {{ lastManaGainedBLUE }}
+        </div>
         {{entity.heldMana.BLUE}}
       </div>
       <div class="GREEN">
@@ -44,6 +52,10 @@
           'background-position': (64 * currentFrame) + 'px'
         }"></div>
         <div class="sprite"></div>
+        <div
+        v-bind:class="{ 'grow': showGREENChange}"
+        class="damage-number text-style"> {{symbol(lastManaGainedGREEN)}} {{ lastManaGainedGREEN }}
+        </div>
         {{entity.heldMana.GREEN}}
       </div>
       <div class="WHITE">
@@ -52,6 +64,10 @@
           'background-position': (64 * currentFrame) + 'px'
         }"></div>
         <div class="sprite"></div>
+        <div
+        v-bind:class="{ 'grow': showWHITEChange}"
+        class="damage-number text-style"> {{symbol(lastManaGainedWHITE)}} {{ lastManaGainedWHITE }}
+        </div>
         {{entity.heldMana.WHITE}}
       </div>
       <div class="BLACK">
@@ -60,6 +76,10 @@
           'background-position': (64 * currentFrame) + 'px'
         }"></div>
         <div class="sprite"></div>
+        <div
+        v-bind:class="{ 'grow': showBLACKChange}"
+        class="damage-number text-style"> {{symbol(lastManaGainedBLACK)}} {{ lastManaGainedBLACK }}
+        </div>
         {{entity.heldMana.BLACK}}
       </div>
       <div class="PURPLE">
@@ -68,6 +88,10 @@
           'background-position': (64 * currentFrame) + 'px'
         }"></div>
         <div class="sprite"></div>
+        <div
+        v-bind:class="{ 'grow': showPURPLEChange}"
+        class="damage-number text-style"> {{symbol(lastManaGainedPURPLE)}} {{ lastManaGainedPURPLE }}
+        </div>
         {{entity.heldMana.PURPLE}}
       </div>
     </div>
@@ -98,10 +122,23 @@ export default {
       lastPlayerTurnHeldMana: null,
       lastPlayerHeldSkills: [],
       currentFrame: 0,
+      lastManaGainedRED: 0,
+      lastManaGainedBLACK: 0,
+      lastManaGainedWHITE: 0,
+      lastManaGainedBLUE: 0,
+      lastManaGainedGREEN: 0,
+      lastManaGainedPURPLE: 0,
+      showREDChange: false,
+      showBLACKChange: false,
+      showWHITEChange: false,
+      showBLUEChange: false,
+      showGREENChange: false,
+      showPURPLEChange: false,
     }
   },
   mounted () {
     this.$root.$on('frameBump', this.frameAdvance);
+    this.$root.$on('manaGain', this.manaGain);
     if (this.entity && this.entity.isPlayer) {
       this.lastPlayerTurnHeldMana = this.entity.heldMana;
       this.lastPlayerHeldSkills = this.entity.equippedSkills;
@@ -109,6 +146,7 @@ export default {
   },
   beforeDestroy() {
     this.$root.$off('frameBump', this.frameAdvance);
+    this.$root.$off('manaGain', this.manaGain);
   },
   methods: {
     ...mapMutations('world', [
@@ -117,6 +155,14 @@ export default {
     cycleTurn () {
       this.clearFocusedEntity();
       this.$emit('cycleBattleTurn');
+    },
+    manaGain (gains) {
+      this.lastManaGainedRED = gains['RED'];
+      this.lastManaGainedBLACK = gains['BLACK'];
+      this.lastManaGainedWHITE = gains['WHITE'];
+      this.lastManaGainedBLUE = gains['BLUE'];
+      this.lastManaGainedGREEN = gains['GREEN'];
+      this.lastManaGainedPURPLE = gains['PURPLE'];
     },
     frameAdvance (frame) {
       if (frame % 4 === 0) {
@@ -127,6 +173,9 @@ export default {
         }
       }
     },
+    symbol (num) {
+      return num >=0 ? '+' : '-';
+    }
   },
   watch: {
     'entity': {
@@ -137,6 +186,78 @@ export default {
         }
       },
        deep: false
+     },
+     'lastManaGainedRED': {
+       handler (val) {
+         if (val) {
+           const that = this;
+           that.showREDChange = true;
+           setTimeout(() => {
+             that.showREDChange = false;
+             that.lastManaGainedRED = 0;
+           }, 250);
+         }
+       }
+     },
+     'lastManaGainedBLACK': {
+       handler (val) {
+         if (val) {
+           const that = this;
+           that.showBLACKChange = true;
+           setTimeout(() => {
+             that.showBLACKChange = false;
+             that.lastManaGainedBLACK = 0;
+           }, 250);
+         }
+       }
+     },
+     'lastManaGainedWHITE': {
+       handler (val) {
+         if (val) {
+           const that = this;
+           that.showWHITEChange = true;
+           setTimeout(() => {
+             that.showWHITEChange = false;
+             that.lastManaGainedWHITE = 0;
+           }, 250);
+         }
+       }
+     },
+     'lastManaGainedBLUE': {
+       handler (val) {
+         if (val) {
+           const that = this;
+           that.showREDChange = true;
+           setTimeout(() => {
+             that.showBLUEChange = false;
+             that.lastManaGainedBLUE = 0;
+           }, 250);
+         }
+       }
+     },
+     'lastManaGainedGREEN': {
+       handler (val) {
+         if (val) {
+           const that = this;
+           that.showGREENChange = true;
+           setTimeout(() => {
+             that.showGREENChange = false;
+             that.lastManaGainedGREEN = 0;
+           }, 250);
+         }
+       }
+     },
+     'lastManaGainedPURPLE': {
+       handler (val) {
+         if (val) {
+           const that = this;
+           that.showPURPLEChange = true;
+           setTimeout(() => {
+             that.showPURPLEChange = false;
+             that.lastManaGainedPURPLE = 0;
+           }, 250);
+         }
+       }
      },
   },
   computed: {
@@ -317,5 +438,39 @@ export default {
   top: -53px;
   left: -55px;
   pointer-events: none;
+}
+.text-style {
+  font-weight: 800;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+.damage-number {
+  position: absolute;
+  top: -20px;
+  left: -28px;
+  opacity: 0;
+}
+.grow {
+  animation: grow .5s;
+  animation-direction: alternate;
+  /* animation-delay: 1s; */
+}
+@keyframes grow{
+  0%{
+    opacity: 1;
+    transform: scale(1);
+    top: -16px;
+  }
+  50%{
+    opacity: 0.5;
+    transform: scale(5);
+  }
+  100%{
+    /* display: none; */
+    opacity: 0;
+    top: -46px;
+    transform: scale(0);
+  }
 }
 </style>

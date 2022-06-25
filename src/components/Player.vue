@@ -362,14 +362,37 @@ export default {
             this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
           }
           this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
+          this.applyManaGains();
         }
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
         processPlacement(this.toggledSkill, targetedTile, this.player.id);
         this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
+        this.applyManaGains();
       }
       this.clearAttackState();
+    },
+    applyManaGains () {
+      if (this.toggledSkill.costType === 'mp') {
+        let manaGains = {
+          RED: 0,
+          BLUE: 0,
+          GREEN: 0,
+          BLACK: 0,
+          WHITE: 0,
+          PURPLE: 0,
+        };
+
+        if (this.toggledSkill.costSlotOne) {
+          manaGains[this.toggledSkill.type] -= this.toggledSkill.costSlotOne;
+        }
+        if (this.toggledSkill.costSlotTwo) {
+          manaGains[this.toggledSkill.typeTwo] -= this.toggledSkill.costSlotTwo;
+        }
+
+        this.$root.$emit('manaGain', manaGains);
+      }
     },
     setEntity () {
       this.inMoveState = false;

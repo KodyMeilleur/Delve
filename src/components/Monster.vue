@@ -13,7 +13,8 @@
   <!-- <div class="monster-info">{{ monster.type }} ({{ monster.x }},{{ monster.y }})</div> -->
   <div
   v-bind:class="{ 'grow': shrinkGrow}"
-  class="damage-number text-style"> {{ lastDamageSuffered }} </div>
+  class="damage-number text-style"> {{ lastDamageSuffered }}
+  </div>
   <div
   v-bind:style="{
     'background-image': 'url(' + publicPath + monster.sprite + (monster.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + (direction || 'South') + '/sheet.png)',

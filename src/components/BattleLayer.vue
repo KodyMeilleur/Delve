@@ -137,6 +137,7 @@ export default {
       'battleTile',
       'currentTurn',
       'isMonsterTurn',
+      'currentBattleTurn'
     ])
   },
   methods: {
@@ -172,13 +173,45 @@ export default {
 
       this.currentMap.forEach((row) => {
         row.forEach((cell) => {
-          if (cell.manaOwnerId) {
+          if (cell.manaOwnerId === this.currentBattleTurn.id) {
             ownedTiles.push(cell);
           }
         });
       });
 
       this.cycleBattleTurn(ownedTiles);
+
+      if (this.isMonsterTurn) {
+        console.log('end of all player turns');
+      } else {
+        console.log('do player gains?');
+
+        let manaGains = {
+          RED: 0,
+          BLUE: 0,
+          GREEN: 0,
+          BLACK: 0,
+          WHITE: 0,
+          PURPLE: 0,
+        };
+
+        manaGains[this.currentBattleTurn.discipline] +=1;
+
+        ownedTiles.forEach((cell) => {
+          if (cell.manaOwnerId === this.currentBattleTurn.id) {
+            cell.showManaCollect = true;
+            if (cell.manaValueSlotOne) {
+              manaGains[cell.manaTypeSlotOne] += cell.manaValueSlotOne;
+            }
+            if (cell.manaValueSlotTwo) {
+              manaGains[cell.manaTypeSlotTwo] += cell.manaValueSlotTwo;
+            }
+          }
+        });
+
+        this.endMonsterTurn(ownedTiles);
+        this.$root.$emit('manaGain', manaGains);
+      }
     },
     nextMonsterTurn() {
       const nextEnemyToGo = this.enemies.find((enemy) => {
@@ -196,15 +229,33 @@ export default {
         console.log('All monster turns over!');
         const ownedTiles = [];
 
+        let manaGains = {
+          RED: 0,
+          BLUE: 0,
+          GREEN: 0,
+          BLACK: 0,
+          WHITE: 0,
+          PURPLE: 0,
+        };
+
+        manaGains[this.currentBattleTurnEntity.discipline] +=1;
+
         this.currentMap.forEach((row) => {
           row.forEach((cell) => {
             if (cell.manaOwnerId) {
               ownedTiles.push(cell);
               cell.showManaCollect = true;
+              if (cell.manaValueSlotOne) {
+                manaGains[cell.manaTypeSlotOne] += cell.manaValueSlotOne;
+              }
+              if (cell.manaValueSlotTwo) {
+                manaGains[cell.manaTypeSlotTwo] += cell.manaValueSlotTwo;
+              }
             }
           });
         });
         this.endMonsterTurn(ownedTiles);
+        this.$root.$emit('manaGain', manaGains);
       }
     }
   },
