@@ -244,7 +244,6 @@ export default {
           row.forEach((cell) => {
             if (cell.manaOwnerId) {
               ownedTiles.push(cell);
-              cell.showManaCollect = true;
               if (cell.manaValueSlotOne) {
                 manaGains[cell.manaTypeSlotOne] += cell.manaValueSlotOne;
               }

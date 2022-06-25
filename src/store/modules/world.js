@@ -271,6 +271,7 @@ const mutations = {
     const next = state.battlingPlayers.find(nextPlayer);
 
     ownedTiles.forEach((tile) => {
+      tile.showManaCollect = true;
       if (tile.manaValueSlotOne) {
         next.heldMana[tile.manaTypeSlotOne] += tile.manaValueSlotOne;
       }
