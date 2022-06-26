@@ -10,6 +10,7 @@
       >
         <BattleLayer />
         <SelectedEntity />
+        <LootMenu :lootTile="lootTile"/>
         <span
         v-bind:class="{ 'isBattling': isBattling}"
         class="world-ui-elements">
@@ -18,7 +19,6 @@
           <Log />
           <Inventory />
           <FocusStats />
-          <LootMenu :lootTile="lootTile"/>
         </span>
         <div
         v-bind:class="{

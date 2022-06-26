@@ -2,6 +2,11 @@
   <div
   v-if="isBattling"
   class="battlemass">
+    <span
+    v-if="toggleEndMenu"
+    class="end-battle-menu">
+      <button v-on:click="endBattle">Leave</button>
+    </span>
     <div class="in-world">
       <div class="battle-border">
         <!-- Wall Borders -->
@@ -84,7 +89,7 @@
     </div>
     <div class="battle-controls">
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
-      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn"/>
+      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn" :toggleEndMenu="toggleEndMenu"/>
     </div>
   </div>
 </template>
@@ -127,6 +132,7 @@ export default {
       totalMonsterCount: 0,
       monsterTurnMap: {},
       lifeMap: {},
+      toggleEndMenu: false,
     }
   },
   updated () {
@@ -271,10 +277,7 @@ export default {
 
       if (somethingAlive === false) {
         console.log('all enemies dead');
-        this.refreshPlayer(this.currentTurn);
-        this.setIsBattling({state: false});
-        this.$root.$emit('lootAdded', this.battleTile.structure && this.battleTile.structure.loot || []);
-        this.clearComponent();
+        this.toggleEndMenu = true;
       }
     },
     clearComponent() {
@@ -287,6 +290,14 @@ export default {
       this.totalMonsterCount = 0;
       this.monsterTurnMap = {};
     },
+    endBattle() {
+
+      this.refreshPlayer(this.currentTurn);
+      this.clearComponent();
+      this.toggleEndMenu = false;
+      this.setIsBattling({state: false});
+      this.$root.$emit('lootAdded', this.battleTile.structure && this.battleTile.structure.loot || []);
+    }
   },
   watch: {
     isBattling: function (val) {
@@ -407,6 +418,20 @@ export default {
   position: absolute;
   left: 128px;
   z-index: 2;
+}
+.end-battle-menu {
+  width: 344px;
+  height: 124px;
+  background-image: url('/assets/hudSprites/victoryIcon.png');
+  position: absolute;
+  z-index: 99;
+  top: 40px;
+  left: 275px;
+}
+.end-battle-menu button {
+  position: absolute;
+  bottom: 25px;
+  left: 150px;
 }
 .battlemass {
   display: flex;

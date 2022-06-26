@@ -114,6 +114,7 @@ export default {
   top: -310px;
   left: 145px;
   animation: createBox .25s;
+  z-index: 100;
 }
 @keyframes createBox {
   from {

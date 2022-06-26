@@ -4,10 +4,10 @@
   <div class="battle-controls-internal">
     <div
     v-on:click="cycleTurn"
-    v-if="!isMonsterTurn"
+    v-if="!isMonsterTurn && !toggleEndMenu"
     class="battle-end-turn-btn">
     </div>
-    <div v-if="isMonsterTurn" class="battle-end-turn-btn-inactive">
+    <div v-if="isMonsterTurn || toggleEndMenu" class="battle-end-turn-btn-inactive">
     </div>
     <div
     class="battle-turn-stats"
@@ -112,6 +112,9 @@ export default {
       default () {
         return {};
       }
+    },
+    toggleEndMenu: {
+      type: Boolean
     }
   },
   components: {
