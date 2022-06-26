@@ -29,7 +29,7 @@
             class="west-wall-barrier"
             v-bind:class="{ 'left-align': (index % 2) === 0, 'right-align': (index % 2) !== 0}"
             v-bind:style="{
-              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/leftMainWallSheet1' +'.png)',
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/leftMainWallSheet' + ((index % 2) + 1) +'.gif)',
             }"
             >
             </div>
@@ -58,7 +58,7 @@
             class="east-wall-barrier"
             v-bind:class="{ 'left-align': (index % 2) === 0, 'right-align': (index % 2) !== 0}"
             v-bind:style="{
-              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/rightMainWallSheet1' +'.png)',
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/rightMainWallSheet' + ((index % 2) + 1) +'.gif)',
             }"
             >
             </div>
