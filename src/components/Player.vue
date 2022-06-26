@@ -351,18 +351,18 @@ export default {
     },
     applySkillEffect(targetedTile) {
       if (this.toggledSkill.nature === 'aggressive') {
-        if (targetedTile.monsters.length || targetedTile.players.length) {
-          const targetedEntity = targetedTile.monsters[0] || targetedTile.players[0];
+        const targetedEntity = targetedTile.monsters[0] || targetedTile.players[0];
+        if (targetedEntity && targetedEntity.isDead === false) {
           // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
           const damage = (this.player[this.toggledSkill.baseDmg]);
           const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
           this.movingDirection = attackDirection.direction;
           this.animation = new Animation(4, '1hAttack', false);
+          this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
+          this.applyManaGains();
           if (targetedTile.monsters.length) {
             this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
           }
-          this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
-          this.applyManaGains();
         }
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');

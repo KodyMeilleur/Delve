@@ -18,7 +18,7 @@
 </template>
 
 <script>
-// import CONST from '../CONST';
+import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
 import { getRandomInt } from '../services/generateLand';
 
@@ -63,7 +63,19 @@ export default {
           this.currentLoot.push(new potential.item(amount));
         }
       })
-    }
+      const that = this;
+      setTimeout(() => {
+        that.centerPlayer();
+      }, 200)
+    },
+    centerPlayer () {
+      const playerX = this.currentTurn.x;
+      const playerY = this.currentTurn.y;
+
+      const topOffset = ((playerX * CONST.tileWidth) - (CONST.viewHeight / 2)) || 0;
+      const leftOffset = ((playerY * CONST.tileWidth) - (CONST.viewWidth / 2)) + (CONST.tileWidth / 2) || 0;
+      this.$root.$emit('centerPlayer', {topOffset, leftOffset});
+    },
   },
   computed: {
     ...mapGetters('world', [

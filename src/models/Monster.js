@@ -18,6 +18,7 @@ export function Monster(x, y) {
     this.isCreature = true;
     this.isPlayer = false;
     this.inworldTileOccupied = null;
+    this.isDead = false;
 
     // limit 3 for a monster?
     this.technologies = [];

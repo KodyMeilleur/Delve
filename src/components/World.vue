@@ -92,6 +92,8 @@ export default {
       'players',
       'currentTurn',
       'isBattling',
+      'leftOffset',
+      'topOffset',
     ])
   },
   methods: {
@@ -106,12 +108,15 @@ export default {
       if (this.$refs.world) {
         this.$refs.world.scrollTop = offset.topOffset;
         this.$refs.world.scrollLeft = offset.leftOffset;
+        this.setScroll({scrollLeft: offset.leftOffset, scrollTop: offset.topOffset});
+        this.focusPlayer();
       }
-      this.focusPlayer();
     },
     resetScreenPosition () {
-      this.$refs.world.scrollTop = 0;
-      this.$refs.world.scrollLeft = 0;
+      if (this.$refs.world) {
+        this.$refs.world.scrollTop = 0;
+        this.$refs.world.scrollLeft = 0;
+      }
     },
     handleScroll ($event) {
       const that = this;

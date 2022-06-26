@@ -76,7 +76,7 @@
         <div class="battle-container">
           <div class="battle-entity-layer">
             <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap"/>
-            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn"/>
+            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn" v-on:monsterDied="countDead"/>
           </div>
           <TileLayer :currentMap="currentMap" :map="currentMap" :shouldShow="isBattling"/>
         </div>
@@ -126,6 +126,7 @@ export default {
       players: [],
       totalMonsterCount: 0,
       monsterTurnMap: {},
+      lifeMap: {},
     }
   },
   updated () {
@@ -143,10 +144,12 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setCurrentBattleTurn',
+      'setIsBattling',
       'setinWorldPlayerTile',
       'setPlayerBattleStatus',
       'cycleBattleTurn',
-      'endMonsterTurn'
+      'endMonsterTurn',
+      'refreshPlayer'
     ]),
     updatePotentialPath (path) {
       this.potentialPath = path;
@@ -184,8 +187,6 @@ export default {
       if (this.isMonsterTurn) {
         console.log('end of all player turns');
       } else {
-        console.log('do player gains?');
-
         let manaGains = {
           RED: 0,
           BLUE: 0,
@@ -256,7 +257,36 @@ export default {
         this.endMonsterTurn(ownedTiles);
         this.$root.$emit('manaGain', manaGains);
       }
-    }
+    },
+    countDead (monsterId) {
+      this.lifeMap[monsterId] = false;
+      let somethingAlive = false;
+
+      for(var key in this.lifeMap) {
+        var value = this.lifeMap[key];
+        if (value) {
+          somethingAlive = value;
+        }
+      }
+
+      if (somethingAlive === false) {
+        console.log('all enemies dead');
+        this.refreshPlayer(this.currentTurn);
+        this.setIsBattling({state: false});
+        this.$root.$emit('lootAdded', this.battleTile.structure && this.battleTile.structure.loot || []);
+        this.clearComponent();
+      }
+    },
+    clearComponent() {
+      this.players = [];
+      this.enemies = [];
+      this.currentMap = [];
+      this.currentBattleTurnID = null;
+      this.currentBattleTurnEntity = null;
+      this.currentMonsterTurn = null;
+      this.totalMonsterCount = 0;
+      this.monsterTurnMap = {};
+    },
   },
   watch: {
     isBattling: function (val) {
@@ -267,6 +297,12 @@ export default {
         // GENERATE MAP AND ENEMIES FROM TILE
         const generatedMap = createBattleField(this.battleTile);
         const enemies = createEnemies(this.battleTile, generatedMap);
+        let enemyLifeMap = {};
+        enemies.forEach((monster) => {
+          enemyLifeMap[monster.id] = true;
+        });
+
+        this.lifeMap = enemyLifeMap;
 
         const that = this;
         this.players.push(this.currentTurn);

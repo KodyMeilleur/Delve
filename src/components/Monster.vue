@@ -17,8 +17,8 @@
   </div>
   <div
   v-bind:style="{
-    'background-image': 'url(' + publicPath + monster.sprite + (monster.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + (direction || 'South') + '/sheet.png)',
-    'background-position': (64 * animation.currentFrame) + 'px ' + (0) + 'px'
+    'background-image': 'url(' + publicPath + monster.sprite + (monster.isBattling ? 'Inworld/' : 'Outworld/') + animation.state + '/' + (direction || 'West') + '/sheet.png)',
+    'background-position': -(64 * animation.currentFrame) + 'px ' + (0) + 'px'
   }"
   class="monster-sprite"
   >
@@ -57,7 +57,7 @@ export default {
       bumpHorizontalFramePosition: 0,
       movingVerticalOffset: 0,
       movingHorizontalOffset: 0,
-      movingDirection: 0,
+      movingDirection: 4,
       x: this.monster.x,
       y: this.monster.y,
       currentFrame: 0,
@@ -131,8 +131,8 @@ export default {
           animation.currentFrame = 0;
           this.skipFrames = this.animation.skipFrames;
         } else {
-          if (animation.state === 'hurt') {
-            this.shrinkGrow = true;
+          if (animation.state === 'death') {
+            this.monster.sprite = this.monster.deathSprite;
           }
           this.animation = Object.assign({}, monster.defaultAnimation);
         }
@@ -231,15 +231,25 @@ export default {
             y: this.y,
           }
         })
-        this.animation = new Animation(9, 'Idle', true);
+        this.animation = new Animation(2, 'Idle', true);
         this.isMoving = false;
         this.$emit('turnEnded'); // trigger event on the current instance
       }
     },
     handleSkillEffect({monsterID, damage}) {
-      if (monsterID === this.monster.id) {
+      if (monsterID === this.monster.id && this.monster.isDead === false) {
         this.animation = new Animation(3, 'hurt', false);
         this.lastDamageSuffered = damage;
+        this.monster.hp = (this.monster.hp - damage < 0) ? 0 : this.monster.hp - damage;
+        this.shrinkGrow = true;
+        this.deathCheck();
+      }
+    },
+    deathCheck () {
+      if (this.monster.hp <= 0) {
+        this.animation = new Animation(4, 'death', false);
+        this.monster.isDead = true;
+        this.$emit('monsterDied', this.monster.id);
       }
     }
   },

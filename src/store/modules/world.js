@@ -153,8 +153,13 @@ const mutations = {
     state.map = map;
   },
   setIsBattling (state, data) {
-    state.battleTile = data.battleTile;
-    state.isBattling = data.state;
+    if (data.state === true) {
+      state.battleTile = data.battleTile;
+      state.isBattling = data.state;
+    } else {
+      state.isBattling = false;
+      state.currentTurn.isBattling = false;
+    }
   },
   togglePlayerShop (state, {player, status}) {
     player.inShop = status;
@@ -229,6 +234,20 @@ const mutations = {
       player.movingDirection = 2;
       state.battlingPlayers.push(player);
     });
+  },
+
+  refreshPlayer (state, player) {
+    player.movement = player.maxMovement;
+    player.ap = player.maxAp;
+    player.heldMana = {
+      'RED': 0,
+      'BLUE': 0,
+      'GREEN': 0,
+      'WHITE': 0,
+      'BLACK': 0,
+      'PURPLE': 0,
+      'NEUTRAL': 0
+    };
   },
 
   cycleBattleTurn (state, ownedTiles) {

@@ -111,8 +111,6 @@ export default {
       this.$root.$emit('resetScreenPosition');
       this.setScroll({scrollLeft: 0, scrollTop: 0});
       this.setfocusedEntityOverride(null);
-      // TODO: hook loot after combat
-      // this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.loot || []);
     },
     tourStructure () {
       this.$root.$emit('dwellingEntered', this.focusedEntity.structure.dwelling);

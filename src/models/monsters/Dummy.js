@@ -28,11 +28,12 @@ export function Dummy(x, y, isBattling) {
   this.type = 'Dummy';
   this.name = 'Dummy';
   this.sprite = 'assets/Characters/Dummy/';
+  this.deathSprite = 'assets/Characters/Dummy/Death/';
   this.animation = new Animation(2, 'Idle', true);
   this.defaultAnimation = this.animation;
   this.isBattling = isBattling;
   // STATS
-  this.hp = 20;
+  this.hp = 5;
   this.maxHp = 20;
   this.might = 0;
   this.toughness = 0;
