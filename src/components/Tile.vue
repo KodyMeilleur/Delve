@@ -285,11 +285,14 @@ export default {
     'tile.showManaCollect': {
       handler (val) {
         if (val) {
-          this.$refs.manaCollectSprite.src = '/assets/Tiles/Effects/manaCharge.gif';
+          const seedDelay = this.getRandomIntBetween(0, 3);
           setTimeout(() => {
-            this.$refs.manaCollectSprite.src = '';
-            this.tile.showManaCollect = false;
-          }, 2000);
+            this.$refs.manaCollectSprite.src = '/assets/Tiles/Effects/manaCharge.gif';
+            setTimeout(() => {
+              this.$refs.manaCollectSprite.src = '';
+              this.tile.showManaCollect = false;
+            }, 1400);
+          }, (seedDelay * 100))
         }
       },
     },
@@ -619,7 +622,7 @@ export default {
   z-index: 2;
   pointer-events: none;
 }
-.dominion-change, .dominion-sprite, .mana-charge {
+.dominion-change, .dominion-sprite {
   width: 64px;
   height: 64px;
   /* background-image: url('/assets/Tiles/Effects/dominionChange.gif'); */
@@ -633,11 +636,22 @@ export default {
 .dominion-change[src=""] {
   display:none;
 }
+.dominion-change {
+  width: 128px;
+  height: 128px;
+  left: -48px;
+  top: -32px;
+}
 .mana-charge[src=""] {
   display:none;
 }
 .mana-charge {
+  width: 128px;
+  height: 128px;
   z-index: 3;
+  position: absolute;
+  left: -32px;
+  top: -54px;
 }
 .unexplored {
   /* -webkit-filter: grayscale(100%);

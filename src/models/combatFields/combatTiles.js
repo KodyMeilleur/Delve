@@ -16,7 +16,7 @@ export function ForestTile(x, y) {
   this.animationFrames = 1;
   this.density = 0;
 
-  this.variants = 6;
+  this.variants = 7;
   this.variant = (getRandomInt(0, this.variants - 1) < 3) ? getRandomInt(0, this.variants - 1) : null;
   this.sprite = `assets/Tiles/Battle/Forest/sheet${this.variant !== null ? this.variant : ''}.png`;
 
