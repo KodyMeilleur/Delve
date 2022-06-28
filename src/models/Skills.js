@@ -60,17 +60,23 @@ export const Reforestation = {
   icon: 'assets/Icons/Skills/Green/reforestation.png',
   nature: 'placement',
   takeDominion: true,
+  turnEffectActive: true, // creates recurring or delayed turn effect
+  turnEffect: {
+    triggerId: null,
+    turnCountdown: 1,
+    maxTurnCountdown: 1, // for recurring effects
+    recurring: false,
+    effectType: 'expansion',
+    expansion: { // unique config for expansion types
+      traversal: 'cardinal',
+      direction: 'random',
+      range: 1,
+      amountToEffect: 1,
+      type: 'dominion',
+      color: GREEN,
+      value: 1,
+    }
+  },
   dominionValues: [1],
   dominionType: [GREEN],
-  skillEntity: {
-    immediateEffect: false,
-    lingeringEffect: true,
-    turnsToActivate: 1,
-    effectType: 'tileCharge', // Summon, Dominion, etc
-    dominionValue: 1,
-    dominionType: GREEN,
-    stepType: 'crow',
-    range: 1,
-    tilesToEffect: 'all' // all, random, or number array representing effected tiles
-  }
 }

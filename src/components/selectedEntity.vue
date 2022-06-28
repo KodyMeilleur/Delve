@@ -56,6 +56,7 @@
       v-if="isBattling && !focusedEntity.isCreature"
       class="battle-tile-mana"
       >
+      <div class="dominion-owner"> {{focusedEntity.manaOwnerName}}</div>
       <div class="first-mana-container"><div :class="`${focusedEntity.manaTypeSlotOne}-mana-type mana-icon`"></div>x {{focusedEntity.manaValueSlotOne}}</div>
       <div class="second-mana-container"><div :class="`${focusedEntity.manaTypeSlotTwo}-mana-type mana-icon`"></div>x {{focusedEntity.manaValueSlotTwo}}</div>
       </div>
@@ -473,5 +474,10 @@ export default {
   top: 9px;
   left: 12px;
   font-size: 18px;
+}
+.dominion-owner {
+  position: absolute;
+  top: -32px;
+  left: -25px;
 }
 </style>

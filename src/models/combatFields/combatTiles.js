@@ -31,6 +31,10 @@ export function ForestTile(x, y) {
   this.manaValueSlotTwo = 0;
   this.manaTypeSlotTwo = 'empty';
   this.manaOwnerId = null;
+  this.manaOwnerName = "None",
   this.skillEntity = null; // object with config? function?
   this.showManaCollect = false;
+
+  this.turnEffectActive = false;
+  this.turnEffect = null; // Object with config
 }

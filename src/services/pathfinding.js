@@ -374,3 +374,69 @@ export function getDirectionToTile(entity, tileToMoveTo, isBattling) {
 
     return {direction: 3, movingToStructure: tileToMoveTo};
 }
+
+
+// CARDINAL MOVEMENT SLICES
+export function getCardinalTilesWithoutEntity(tile, map, range) {
+  const totalRange = range;
+  const tilesToCheck = [];
+  const startX = parseInt(tile.x);
+  const startY = parseInt(tile.y);
+  let totalMP = totalRange;
+
+  function cardinalCellCheck(cell, lastMPCost) {
+
+      // north
+      if ((cell.x) - 1 >= 0) {
+        const northCell = map[(cell.x) - 1][(cell.y)];
+        const mpRange = (lastMPCost + northCell.mpCost) <= totalMP;
+        if (northCell && mpRange) {
+          if ((northCell.x === startCell.x && northCell.y === startCell.y) === false) {
+            tilesToCheck.push(northCell);
+            cardinalCellCheck(northCell, lastMPCost + northCell.mpCost);
+          }
+        }
+      }
+      // east
+      if ((cell.y) + 1 < map[0].length) {
+        const eastCell = map[(cell.x)][(cell.y) + 1];
+        const mpRange = (lastMPCost + eastCell.mpCost) <= totalMP;
+        if (eastCell && mpRange) {
+          if ((eastCell.x === startCell.x && eastCell.y === startCell.y) === false) {
+            tilesToCheck.push(eastCell);
+            cardinalCellCheck(eastCell, lastMPCost + eastCell.mpCost);
+          }
+        }
+      }
+      // south
+      if ((cell.x) + 1 < map.length) {
+        const southCell = map[(cell.x) + 1][(cell.y)];
+        const mpRange = (lastMPCost + southCell.mpCost) <= totalMP;
+        if (southCell && mpRange) {
+          if ((southCell.x === startCell.x && southCell.y === startCell.y) === false) {
+            tilesToCheck.push(southCell);
+            cardinalCellCheck(southCell, lastMPCost + southCell.mpCost);
+          }
+        }
+      }
+      // west
+      if ((cell.y) - 1 >= 0) {
+        const westCell = map[(cell.x)][(cell.y) - 1];
+        const mpRange = (lastMPCost + westCell.mpCost) <= totalMP;
+        if (westCell && mpRange) {
+          if ((westCell.x === startCell.x && westCell.y === startCell.y) === false) {
+            tilesToCheck.push(westCell);
+            cardinalCellCheck(westCell, lastMPCost + westCell.mpCost);
+          }
+        }
+      }
+
+      return false;
+    }
+
+    const startCell = map[startX][startY];
+
+    cardinalCellCheck(startCell, 0);
+
+    return tilesToCheck;
+}

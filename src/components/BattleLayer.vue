@@ -104,6 +104,7 @@ import BattleHeader from './BattleHeader.vue';
 import Player from './Player.vue';
 import Monster from './Monster.vue';
 import TileLayer from './TileLayer.vue';
+import { executeTileEffect } from '../services/skillProcesses';
 
 export default {
   name: 'BattleLayer',
@@ -125,7 +126,6 @@ export default {
       enemies: [],
       potentialPath: [],
       currentMap: [],
-      currentBattleTurnID: null,
       currentBattleTurnEntity: null,
       currentMonsterTurn: null,
       players: [],
@@ -189,10 +189,11 @@ export default {
       });
 
       this.cycleBattleTurn(ownedTiles);
-
+      // currentBattleTurn is now the next player, or stays the same while monster goes
       if (this.isMonsterTurn) {
         console.log('end of all player turns');
       } else {
+        // end of monster turns, next player turn
         let manaGains = {
           RED: 0,
           BLUE: 0,
@@ -234,7 +235,9 @@ export default {
           enemy.activeBattleTurn = false;
         });
         console.log('All monster turns over!');
+        // Beginning of first Player turn, or only player in single mode
         const ownedTiles = [];
+        const turnEffectTiles = [];
 
         let manaGains = {
           RED: 0,
@@ -245,10 +248,13 @@ export default {
           PURPLE: 0,
         };
 
-        manaGains[this.currentBattleTurnEntity.discipline] +=1;
+        manaGains[this.currentBattleTurn.discipline] +=1;
+
+        console.log(this.currentBattleTurn);
 
         this.currentMap.forEach((row) => {
           row.forEach((cell) => {
+            // dominion check
             if (cell.manaOwnerId) {
               ownedTiles.push(cell);
               if (cell.manaValueSlotOne) {
@@ -258,8 +264,16 @@ export default {
                 manaGains[cell.manaTypeSlotTwo] += cell.manaValueSlotTwo;
               }
             }
+            // turn effect check
+            if (cell.turnEffectActive) {
+              if (cell.turnEffect.triggerId === this.currentBattleTurn.id) {
+                turnEffectTiles.push(cell);
+              }
+            }
           });
         });
+
+        this.processTurnEffectTiles(turnEffectTiles);
         this.endMonsterTurn(ownedTiles);
         this.$root.$emit('manaGain', manaGains);
       }
@@ -280,18 +294,26 @@ export default {
         this.toggleEndMenu = true;
       }
     },
+    processTurnEffectTiles(tiles) {
+      tiles.forEach((tile) => {
+        const effect = tile.turnEffect;
+        effect.turnCountdown -= 1;
+        if (effect.turnCountdown <= 0) {
+          executeTileEffect(tile, this.currentMap);
+        }
+      });
+
+    },
     clearComponent() {
       this.players = [];
       this.enemies = [];
       this.currentMap = [];
-      this.currentBattleTurnID = null;
       this.currentBattleTurnEntity = null;
       this.currentMonsterTurn = null;
       this.totalMonsterCount = 0;
       this.monsterTurnMap = {};
     },
     endBattle() {
-
       this.refreshPlayer(this.currentTurn);
       this.clearComponent();
       this.toggleEndMenu = false;
@@ -300,8 +322,10 @@ export default {
     }
   },
   watch: {
+    // START BATTLE PHASE
     isBattling: function (val) {
       if (val) {
+        // TODO: Add multiplayer here
         this.setPlayerBattleStatus({
           players: [this.currentTurn]
         });
@@ -323,7 +347,6 @@ export default {
 
         this.enemies = this.enemies.concat(enemies);
 
-        this.currentBattleTurnID = this.currentTurn.id;
         this.currentBattleTurnEntity = this.currentTurn;
         this.setCurrentBattleTurn(this.currentTurn);
 
