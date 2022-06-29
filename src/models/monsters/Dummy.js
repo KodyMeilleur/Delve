@@ -33,7 +33,7 @@ export function Dummy(x, y, isBattling) {
   this.defaultAnimation = this.animation;
   this.isBattling = isBattling;
   // STATS
-  this.hp = 5;
+  this.hp = 20;
   this.maxHp = 20;
   this.might = 0;
   this.toughness = 0;

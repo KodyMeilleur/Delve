@@ -367,6 +367,7 @@ export default {
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
+        this.animation = new Animation(5, 'Cast', false);
         processPlacement(this.toggledSkill, targetedTile, this.player.id, this.player.name);
         this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
         this.applyManaGains();
