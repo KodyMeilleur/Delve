@@ -27,6 +27,7 @@ export const SKILL_TYPES = {
 }
 
 export const MeleeAttack = {
+  name: 'Melee Attack',
   type: NEUTRAL,
   typeTwo: null,
   baseDmg: 'might',
@@ -46,6 +47,7 @@ export const MeleeAttack = {
 }
 
 export const Reforestation = {
+  name: 'Reforestation',
   type: GREEN,
   typeTwo: null,
   baseDmg: '',

@@ -95,6 +95,9 @@
         {{entity.heldMana.PURPLE}}
       </div>
     </div>
+    <div class="all-spells">
+      <Spellbook />
+    </div>
   </div>
   </div>
 </template>
@@ -103,6 +106,7 @@
 // import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
 import Skill from './Skill.vue';
+import Spellbook from './FullSpellList.vue';
 
 export default {
   name: 'BattleControls',
@@ -119,6 +123,7 @@ export default {
   },
   components: {
     Skill,
+    Spellbook
   },
   data () {
     return {
