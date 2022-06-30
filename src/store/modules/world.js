@@ -340,6 +340,10 @@ const mutations = {
     player.inworldTileOccupied = tile;
   },
 
+  setPlayerDevotion (state, color) {
+    state.currentTurn.discipline = color;
+  },
+
   applySkillEffectsOnPlayer(state, { player, skill}) {
     const storePlayer = state.players.filter(ent => ent == player)[0];
     if (skill.costType === 'ap') {

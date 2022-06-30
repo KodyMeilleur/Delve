@@ -342,7 +342,7 @@ export default {
         const that = this;
         this.players.push(this.currentTurn);
         this.players.forEach((player) => {
-          that.setinWorldPlayerTile({player, tile: generatedMap[player.battleX][player.battleY]});
+          that.setinWorldPlayerTile({player, tile: Object.assign({}, generatedMap[player.battleX][player.battleY])});
         });
 
         this.enemies = this.enemies.concat(enemies);

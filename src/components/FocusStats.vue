@@ -5,32 +5,32 @@
   <div class="focus-menu" v-if="expanded">
     <div class="close-sprite" v-on:click="toggle"></div>
     <div class="focus-menu-container">
+      <div class="hp stat">
+        <div class="stat-inner">
+          <div>HP</div>
+          <div class="stat-box">{{currentTurn.hp}}</div>
+          <div class="arrows">
+            <div class="up-arrow sm-sprite"></div>
+            <div class="down-arrow sm-sprite"></div>
+          </div>
+        </div>
+      </div>
       <div class="focus-stats focus-block">
         <div class="stat-column">
-          <div class="hp stat">
+          <div class="might stat">
             <div class="stat-inner">
-              <div>HP</div>
-              <div class="stat-box">{{currentTurn.hp}}</div>
+              <div>MT</div>
+              <div class="stat-box">{{currentTurn.might}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
               </div>
             </div>
           </div>
-          <div class="en stat">
+          <div class="tough stat">
             <div class="stat-inner">
-              <div>EN</div>
-              <div class="stat-box">{{currentTurn.en}}</div>
-              <div class="arrows">
-                <div class="up-arrow sm-sprite"></div>
-                <div class="down-arrow sm-sprite"></div>
-              </div>
-            </div>
-          </div>
-          <div class="str stat">
-            <div class="stat-inner">
-              <div>STR</div>
-              <div class="stat-box">{{currentTurn.str}}</div>
+              <div>TGH</div>
+              <div class="stat-box">{{currentTurn.toughness}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
@@ -39,36 +39,82 @@
           </div>
         </div>
         <div class="stat-column">
-          <div class="def stat">
-            <div class="stat-inner">
-              <div>DEF</div>
-              <div class="stat-box">{{currentTurn.def}}</div>
-              <div class="arrows">
-                <div class="up-arrow sm-sprite"></div>
-                <div class="down-arrow sm-sprite"></div>
-              </div>
-            </div>
-          </div>
           <div class="int stat">
             <div class="stat-inner">
-              <div>INT&nbsp;</div>
-              <div class="stat-box">{{currentTurn.int}}</div>
+              <div>INT</div>
+              <div class="stat-box">{{currentTurn.intelligence}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
               </div>
             </div>
           </div>
-          <div class="wis stat">
+          <div class="arc stat">
             <div class="stat-inner">
-              <div>WIS</div>
-              <div class="stat-box">{{currentTurn.wis}}</div>
+              <div>ARC&nbsp;</div>
+              <div class="stat-box">{{currentTurn.arcana}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="focus-devotion focus-block">
+        <div class="RED">
+          <div class="discipline"
+          v-if="currentTurn.discipline === 'RED'"
+          v-bind:style="{
+            'background-position': -(64 * currentFrame) + 'px'
+          }"></div>
+          <div class="sprite" v-on:click="setDevotion('RED')"></div>
+          <span class="devotion-number">{{currentTurn.devotion.RED}}</span>
+        </div>
+        <div class="BLUE">
+          <div class="discipline"
+          v-if="currentTurn.discipline === 'BLUE'"
+          v-bind:style="{
+            'background-position': -(64 * currentFrame) + 'px'
+          }"></div>
+          <div class="sprite" v-on:click="setDevotion('BLUE')"></div>
+          <span class="devotion-number">{{currentTurn.devotion.BLUE}}</span>
+        </div>
+        <div class="GREEN">
+          <div class="discipline"
+          v-if="currentTurn.discipline === 'GREEN'"
+          v-bind:style="{
+            'background-position': -(64 * currentFrame) + 'px'
+          }"></div>
+          <div class="sprite" v-on:click="setDevotion('GREEN')"></div>
+          <span class="devotion-number">{{currentTurn.devotion.GREEN}}</span>
+        </div>
+        <div class="WHITE">
+          <div class="discipline"
+          v-if="currentTurn.discipline === 'WHITE'"
+          v-bind:style="{
+            'background-position': -(64 * currentFrame) + 'px'
+          }"></div>
+          <div class="sprite" v-on:click="setDevotion('WHITE')"></div>
+          <span class="devotion-number">{{currentTurn.devotion.WHITE}}</span>
+        </div>
+        <div class="BLACK">
+          <div class="discipline"
+          v-if="currentTurn.discipline === 'BLACK'"
+          v-bind:style="{
+            'background-position': -(64 * currentFrame) + 'px'
+          }"></div>
+          <div class="sprite" v-on:click="setDevotion('BLACK')"></div>
+          <span class="devotion-number">{{currentTurn.devotion.BLACK}}</span>
+        </div>
+        <div class="PURPLE">
+          <div class="discipline"
+          v-if="currentTurn.discipline === 'PURPLE'"
+          v-bind:style="{
+            'background-position': -(64 * currentFrame) + 'px'
+          }"></div>
+          <div class="sprite" v-on:click="setDevotion('PURPLE')"></div>
+          <span class="devotion-number">{{currentTurn.devotion.PURPLE}}</span>
         </div>
       </div>
       <div class="focus-effects focus-block">
@@ -98,15 +144,31 @@ export default {
     return {
       publicPath: process.env.BASE_URL,
       expanded: false,
+      currentFrame: 0,
     }
+  },
+  mounted: function() {
+    this.$root.$on('frameBump', this.frameAdvance);
+  },
+  beforeDestroy() {
+    this.$root.$off('frameBump', this.frameAdvance);
   },
   methods: {
     ...mapMutations('world', [
       'setLogFilter',
+      'setPlayerDevotion',
     ]),
     toggle () {
       this.expanded = !this.expanded;
     },
+    frameAdvance (frame) {
+      if (frame % 2 === 0) {
+        this.currentFrame = frame === 4 ? 1 : 0;
+      }
+    },
+    setDevotion (color) {
+      this.setPlayerDevotion(color);
+    }
   },
   computed: {
     ...mapGetters('world', [
@@ -141,7 +203,7 @@ export default {
   transform: scale(1.1,1.1);
 }
 .focus-block {
-  height: 100px;
+  height: 64px;
   width: 100%;
 }
 .focus-menu {
@@ -166,9 +228,17 @@ export default {
   flex-direction: column;
   margin-top: 10px;
 }
+.focus-devotion {
+  height: 82px;
+  width: 100%;
+  display: flex;
+  left: 5px;
+  position: relative;
+}
 .focus-stats {
   display: flex;
   width: 100%;
+  height: 74px;
 }
 .stat-column {
   width: 50%;
@@ -178,7 +248,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 100%;
+  height: 32px;
 }
 .sprite {
   width: 32px;
@@ -204,6 +274,10 @@ export default {
   width: 80px;
   background-image: url('/assets/hudSprites/statBackground.png');
   height: 28px;
+}
+.hp {
+  position: relative;
+  left: 87px;
 }
 .stat-inner {
   display: flex;
@@ -255,5 +329,66 @@ export default {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+.RED, .BLUE, .GREEN, .WHITE, .BLACK, .PURPLE {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  top: 10px;
+}
+.RED .sprite:hover, .BLUE .sprite:hover, .GREEN .sprite:hover, .WHITE .sprite:hover, .BLACK .sprite:hover, .PURPLE .sprite:hover {
+  transform: scale(1.1,1.1);
+  background-color: #fff;
+  border-radius: 12px;
+}
+.RED .sprite {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/redManaIcon.png');
+}
+.BLUE .sprite {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/blueManaIcon.png');
+}
+.GREEN .sprite {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/greenManaIcon.png');
+}
+.WHITE .sprite {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/whiteManaIcon.png');
+}
+.BLACK .sprite {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/blackManaIcon.png');
+}
+.PURPLE .sprite {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/purpleManaIcon.png');
+}
+.discipline {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  background-image: url('/assets/hudSprites/disciplineSelected.png');
+  pointer-events: none;
+  top: -48px;
+  left: -16px;
+}
+.devotion-number {
+  position: absolute;
+  top: 32px;
+  left: 12px;
 }
 </style>
