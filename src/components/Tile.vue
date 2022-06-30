@@ -13,7 +13,7 @@
   v-on:click="setEntity"
   >
     <span
-      v-if="(this.hover && this.showMoveTiles && !this.moveHighlighted) || (this.hover && this.showMoveTiles && (this.tile.x === this.currentTurn.x && this.tile.y === this.currentTurn.y))"
+      v-if="(this.showMoveTiles && !this.moveHighlighted && this.hover) || (this.hover && this.showMoveTiles && (this.tile.x === this.currentTurn.x && this.tile.y === this.currentTurn.y))"
       class="out-range"
       v-bind:style="{
         'background-position': -(64 * frame) + 'px ' + (0) + 'px',
@@ -21,7 +21,7 @@
       >
     </span>
     <span
-      v-if="(this.hover && this.showBattleTiles && !this.attackHighlighted)"
+      v-if="(this.showBattleTiles && !this.attackHighlighted && this.hover)"
       v-on:click="exitBattleState"
       class="battle-out-range"
       v-bind:style="{
@@ -90,13 +90,11 @@
             </div>
             <div
             v-bind:style="{
-              'background-image': 'url(' + publicPath + tile.structure.unexploredSprite +'.png)',
-              'background-position': -(64 * structureEffectFrame) + 'px ' + (0) + 'px',
               top: (bumpVerticalFramePosition - 20) + 'px',
               left: (bumpHorizontalFramePosition) + 'px',
             }"
             v-if="tile.structure.explorable && tile.structure.explored === false"
-            class="structure-sprite-effect"
+            class="structure-sprite-effect unexplored"
             >
             </div>
           </div>
@@ -399,9 +397,9 @@ export default {
       }
 
       if (this.tile.structure && this.tile.structure.explorable) {
-        if (this.structureEffectDelayList.length <= 0) {
-          this.structureEffectDelayList = this.tile.structure.unexploredDelayFrameMap.slice();
-        }
+        // if (this.structureEffectDelayList.length <= 0) {
+        //   this.structureEffectDelayList = this.tile.structure.unexploredDelayFrameMap.slice();
+        // }
         if (this.structureEffectFrame === this.structureEffectDelayList[0]) {
           this.structureEffectDelayList.shift();
         } else {
@@ -463,14 +461,21 @@ export default {
 
     },
     onMouseOver() {
-      this.hover = true;
-      if (this.overTimeout) {
-        clearTimeout(this.overTimeout);
-      }
-      if (this.shouldShow) {
-        this.overTimeout = setTimeout(() => {
-          this.lookForPath();
-        }, 50);
+      if (this.hover === false && this.shouldShow) {
+        if (this.overTimeout) {
+          clearTimeout(this.overTimeout);
+        }
+        if (this.showMoveTiles || this.showBattleTiles) {
+          console.log('wtf');
+          this.overTimeout = setTimeout(() => {
+            this.hover = true;
+            this.lookForPath();
+          }, 100);
+        } else {
+          this.overTimeout = setTimeout(() => {
+            this.hover = true;
+          }, 50);
+        }
       }
     },
     lookForPath() {
@@ -619,7 +624,7 @@ export default {
   position: absolute;
   max-width: 64px;
   max-height: 64px;
-  z-index: 2;
+  z-index: 5;
   pointer-events: none;
 }
 .dominion-change, .dominion-sprite {
@@ -654,10 +659,7 @@ export default {
   top: -54px;
 }
 .unexplored {
-  /* -webkit-filter: grayscale(100%);
-  -moz-filter: grayscale(100%);
-  filter: grayscale(100%);
-  transition: grayscale 0.5s ease; */
+  background-image: url('/assets/Tiles/Outworld/Sections/Status/Unexplored/sheet.gif');
 }
 @keyframes fadeIn {
   0% { opacity: 0; }
