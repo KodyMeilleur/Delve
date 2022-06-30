@@ -7,8 +7,8 @@
     <div class="focus-menu-container">
       <div class="hp stat">
         <div class="stat-inner">
-          <div>HP</div>
-          <div class="stat-box">{{currentTurn.hp}}</div>
+          <div class="stat-text">HP</div>
+          <div class="stat-box stat-number">{{currentTurn.hp}}</div>
           <div class="arrows">
             <div class="up-arrow sm-sprite"></div>
             <div class="down-arrow sm-sprite"></div>
@@ -19,8 +19,8 @@
         <div class="stat-column">
           <div class="might stat">
             <div class="stat-inner">
-              <div>MT</div>
-              <div class="stat-box">{{currentTurn.might}}</div>
+              <div class="stat-text">MGT</div>
+              <div class="stat-box stat-number">{{currentTurn.might}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
@@ -29,8 +29,8 @@
           </div>
           <div class="tough stat">
             <div class="stat-inner">
-              <div>TGH</div>
-              <div class="stat-box">{{currentTurn.toughness}}</div>
+              <div class="stat-text">TGH</div>
+              <div class="stat-box stat-number">{{currentTurn.toughness}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
@@ -41,8 +41,8 @@
         <div class="stat-column">
           <div class="int stat">
             <div class="stat-inner">
-              <div>INT</div>
-              <div class="stat-box">{{currentTurn.intelligence}}</div>
+              <div class="stat-text">INT</div>
+              <div class="stat-box stat-number">{{currentTurn.intelligence}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
@@ -51,13 +51,19 @@
           </div>
           <div class="arc stat">
             <div class="stat-inner">
-              <div>ARC&nbsp;</div>
-              <div class="stat-box">{{currentTurn.arcana}}</div>
+              <div class="stat-text">ARC&nbsp;</div>
+              <div class="stat-box stat-number">{{currentTurn.arcana}}</div>
               <div class="arrows">
                 <div class="up-arrow sm-sprite"></div>
                 <div class="down-arrow sm-sprite"></div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="pts pt-stat">
+          <div class="stat-inner">
+            <div class="stat-text">PTS</div>
+            <div class="stat-box stat-number">{{currentTurn.pts}}</div>
           </div>
         </div>
       </div>
@@ -69,7 +75,7 @@
             'background-position': -(64 * currentFrame) + 'px'
           }"></div>
           <div class="sprite" v-on:click="setDevotion('RED')"></div>
-          <span class="devotion-number">{{currentTurn.devotion.RED}}</span>
+          <span class="devotion-number">{{currentTurn.devotion.RED}} <span class="devotion-bonus">+({{calcDevotionBonus(currentTurn.devotion.RED)}})</span></span>
         </div>
         <div class="BLUE">
           <div class="discipline"
@@ -78,7 +84,7 @@
             'background-position': -(64 * currentFrame) + 'px'
           }"></div>
           <div class="sprite" v-on:click="setDevotion('BLUE')"></div>
-          <span class="devotion-number">{{currentTurn.devotion.BLUE}}</span>
+          <span class="devotion-number">{{currentTurn.devotion.BLUE}} <span class="devotion-bonus">+({{calcDevotionBonus(currentTurn.devotion.BLUE)}})</span></span>
         </div>
         <div class="GREEN">
           <div class="discipline"
@@ -87,7 +93,7 @@
             'background-position': -(64 * currentFrame) + 'px'
           }"></div>
           <div class="sprite" v-on:click="setDevotion('GREEN')"></div>
-          <span class="devotion-number">{{currentTurn.devotion.GREEN}}</span>
+          <span class="devotion-number">{{currentTurn.devotion.GREEN}} <span class="devotion-bonus">+({{calcDevotionBonus(currentTurn.devotion.GREEN)}})</span></span>
         </div>
         <div class="WHITE">
           <div class="discipline"
@@ -96,7 +102,7 @@
             'background-position': -(64 * currentFrame) + 'px'
           }"></div>
           <div class="sprite" v-on:click="setDevotion('WHITE')"></div>
-          <span class="devotion-number">{{currentTurn.devotion.WHITE}}</span>
+          <span class="devotion-number">{{currentTurn.devotion.WHITE}} <span class="devotion-bonus">+({{calcDevotionBonus(currentTurn.devotion.WHITE)}})</span></span>
         </div>
         <div class="BLACK">
           <div class="discipline"
@@ -105,7 +111,7 @@
             'background-position': -(64 * currentFrame) + 'px'
           }"></div>
           <div class="sprite" v-on:click="setDevotion('BLACK')"></div>
-          <span class="devotion-number">{{currentTurn.devotion.BLACK}}</span>
+          <span class="devotion-number">{{currentTurn.devotion.BLACK}} <span class="devotion-bonus">+({{calcDevotionBonus(currentTurn.devotion.BLACK)}})</span></span>
         </div>
         <div class="PURPLE">
           <div class="discipline"
@@ -114,7 +120,7 @@
             'background-position': -(64 * currentFrame) + 'px'
           }"></div>
           <div class="sprite" v-on:click="setDevotion('PURPLE')"></div>
-          <span class="devotion-number">{{currentTurn.devotion.PURPLE}}</span>
+          <span class="devotion-number">{{currentTurn.devotion.PURPLE}} <span class="devotion-bonus">+({{calcDevotionBonus(currentTurn.devotion.PURPLE)}})</span></span>
         </div>
       </div>
       <div class="focus-effects focus-block">
@@ -168,6 +174,9 @@ export default {
     },
     setDevotion (color) {
       this.setPlayerDevotion(color);
+    },
+    calcDevotionBonus (devotion) {
+      return Math.floor(devotion / 5);
     }
   },
   computed: {
@@ -207,12 +216,12 @@ export default {
   width: 100%;
 }
 .focus-menu {
-  width: 256px;
-  height: 320px;
+  width: 286px;
+  height: 384px;
   background-image: url('/assets/hudSprites/focusStats.png');
   position: absolute;
-  top: -260px;
-  left: 333px;
+  top: -318px;
+  left: 302px;
   animation: createBox .25s;
 }
 @keyframes createBox {
@@ -226,19 +235,20 @@ export default {
 .focus-menu-container {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 40px;
 }
 .focus-devotion {
   height: 82px;
-  width: 100%;
+  width: 96%;
   display: flex;
-  left: 5px;
+  left: 9px;
   position: relative;
 }
 .focus-stats {
   display: flex;
   width: 100%;
-  height: 74px;
+  height: 108px;
+  position: relative;
 }
 .stat-column {
   width: 50%;
@@ -271,17 +281,29 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80px;
+  width: 120px;
   background-image: url('/assets/hudSprites/statBackground.png');
   height: 28px;
 }
+.pt-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80px;
+  background-image: url('/assets/hudSprites/expBackground.png');
+  height: 28px;
+  position: absolute;
+  bottom: 24px;
+  left: 100px;
+}
 .hp {
   position: relative;
-  left: 87px;
+  left: 84px;
+  top: 0px;
 }
 .stat-inner {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
   margin: 4px;
   align-items: center;
@@ -389,6 +411,26 @@ export default {
 .devotion-number {
   position: absolute;
   top: 32px;
-  left: 12px;
+  left: 6px;
+  white-space: nowrap;
+  font-weight: 800;
+  -webkit-text-stroke-color: black;
+  font-size: 12px;
+}
+.devotion-bonus {
+  font-size: 10px;
+  top: -2px;
+  position: relative;
+  color: #98D12E;
+}
+.stat-text {
+  font-weight: 800;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+.stat-number {
+  font-weight: 800;
+  -webkit-text-stroke-color: black;
 }
 </style>

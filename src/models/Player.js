@@ -62,9 +62,9 @@ export function DefaultPlayer(name, x, y) {
   this.devotion = {
     'RED': 0,
     'BLUE': 0,
-    'GREEN': 0,
+    'GREEN': 5,
     'WHITE': 0,
-    'BLACK': 0,
+    'BLACK': 10,
     'PURPLE': 0,
     'NEUTRAL': 0
   };
