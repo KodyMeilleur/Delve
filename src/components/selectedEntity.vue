@@ -295,16 +295,16 @@ export default {
 }
 .info-row-int {
   position: absolute;
-  top: 55px;
-  left: 12px;
+  top: 36px;
+  left: 88px;
   font-size: 12px;
   display: flex;
   align-items: center;
 }
 .info-row-arc {
   position: absolute;
-  top: 55px;
-  left: 50px;
+  top: 36px;
+  left: 126px;
   font-size: 12px;
   display: flex;
   align-items: center;
