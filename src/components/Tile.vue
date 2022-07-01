@@ -676,7 +676,7 @@ export default {
 .skill-sprite {
   position: absolute;
   left: -32px;
-  top: -32px;
+  top: -48px;
   width: 128px;
   height: 128px;
   z-index: 3;
