@@ -361,10 +361,10 @@ export default {
           this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
           this.applyManaGains();
           if (targetedTile.monsters.length) {
-            this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
             if (this.toggledSkill.effectSprite) {
               this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile});
             }
+            this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
           }
         }
       } else if (this.toggledSkill.nature === 'defensive') {
