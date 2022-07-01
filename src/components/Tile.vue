@@ -69,6 +69,12 @@
         src=""
         />
         <img
+        v-if="showSkillEffect"
+        ref="currentSkillEffectSprite"
+        class="skill-sprite"
+        :src="currentSkillEffectSpritePath"
+        />
+        <img
         v-if="tile.battleTile"
         ref="manaCollectSprite"
         class="mana-charge"
@@ -191,6 +197,8 @@ export default {
       // Variables for scroll data
       xOffset: 0,
       attackHighlighted: false,
+      showSkillEffect: false,
+      currentSkillEffectSpritePath: '',
       yOffset: 0,
       currentFrame: 0,
       structureEffectFrame: 0,
@@ -243,11 +251,13 @@ export default {
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
     this.$root.$on('frameBump', this.frameAdvance);
+    this.$root.$on('applyTileSkillEffect', this.showSkillEffectOnTile);
     this.checkShouldShow(this.leftOffset, this.topOffset);
   },
   beforeDestroy() {
     this.$parent.$off('updateTilePaths');
     this.$root.$off('frameBump', this.frameAdvance);
+    this.$root.$off('applyTileSkillEffect', this.showSkillEffectOnTile);
     clearInterval(this.overTimeout);
   },
   watch: {
@@ -367,6 +377,13 @@ export default {
         (xRange >= (xOffset - (CONST.tileWidth * 2)) && xRange <= xOffset + 576 + (CONST.tileWidth));
 
       this.shouldShow = xShouldShow && yShouldShow;
+
+      // if (this.shouldShow) {
+      //   this.$root.$off('frameBump', this.frameAdvance);
+      //   this.$root.$on('frameBump', this.frameAdvance);
+      // } else {
+      //   this.$root.$off('frameBump', this.frameAdvance);
+      // }
     },
     frameAdvance (frame) {
       if (!this.shouldShow) {
@@ -445,6 +462,16 @@ export default {
       this.setfocusedEntityOverride(null);
       this.toggleAttackRangeTiles();
     },
+    showSkillEffectOnTile({skill, tile}) {
+      if (this.shouldShow && (this.tile.x === tile.x && this.tile.y === tile.y)) {
+        this.showSkillEffect = true;
+        this.currentSkillEffectSpritePath = skill.effectSprite;
+        setTimeout(() => {
+          this.currentSkillEffectSpritePath = '';
+          this.showSkillEffect = false;
+        }, skill.effectDelay);
+      }
+    },
     getRandomIntBetween(min, max) {
       return getRandomInt(min, max);
     },
@@ -466,7 +493,6 @@ export default {
           clearTimeout(this.overTimeout);
         }
         if (this.showMoveTiles || this.showBattleTiles) {
-          console.log('wtf');
           this.overTimeout = setTimeout(() => {
             this.hover = true;
             this.lookForPath();
@@ -646,6 +672,14 @@ export default {
   height: 128px;
   left: -48px;
   top: -32px;
+}
+.skill-sprite {
+  position: absolute;
+  left: -32px;
+  top: -32px;
+  width: 128px;
+  height: 128px;
+  z-index: 3;
 }
 .mana-charge[src=""] {
   display:none;

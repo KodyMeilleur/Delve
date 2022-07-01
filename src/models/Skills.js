@@ -28,6 +28,8 @@ export const SKILL_TYPES = {
 
 export const MeleeAttack = {
   name: 'Melee Attack',
+  animation: '1hAttack',
+  animationFrames: 4,
   type: NEUTRAL,
   typeTwo: null,
   baseDmg: 'might',
@@ -46,8 +48,34 @@ export const MeleeAttack = {
   dominionType: NEUTRAL
 }
 
+export const SculptEarth = {
+  name: 'Sculpt Earth',
+  animation: 'Cast',
+  animationFrames: 5,
+  type: GREEN,
+  typeTwo: null,
+  baseDmg: 'intelligence',
+  addedDmg: 'weapon',
+  costType: 'mp',
+  costSlotOne: 1,
+  costSlotTwo: 0,
+  range: 3,
+  stepType: 'foot',
+  anchored: true, // anchored to user
+  placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
+  icon: 'assets/Icons/Skills/Green/sculptEarth.png',
+  effectSprite: 'assets/Spells/Green/sculptEarth/sheet.gif',
+  effectDelay: 1500,
+  nature: 'aggressive',
+  takeDominion: false,
+  dominionValue: 0,
+  dominionType: NEUTRAL
+}
+
 export const Reforestation = {
   name: 'Reforestation',
+  animation: 'Cast',
+  animationFrames: 5,
   type: GREEN,
   typeTwo: null,
   baseDmg: '',

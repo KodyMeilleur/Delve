@@ -357,17 +357,20 @@ export default {
           const damage = (this.player[this.toggledSkill.baseDmg]);
           const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
           this.movingDirection = attackDirection.direction;
-          this.animation = new Animation(4, '1hAttack', false);
+          this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
           this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
           this.applyManaGains();
           if (targetedTile.monsters.length) {
             this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
+            if (this.toggledSkill.effectSprite) {
+              this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile});
+            }
           }
         }
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
-        this.animation = new Animation(5, 'Cast', false);
+        this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
         processPlacement(this.toggledSkill, targetedTile, this.player.id, this.player.name);
         this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
         this.applyManaGains();
