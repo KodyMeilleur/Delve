@@ -505,6 +505,7 @@ export default {
   width: 64px;
   height: 64px;
   animation: createBox .25s;
+  z-index: 2;
 }
 .move-icon-container {
   z-index: 9;
