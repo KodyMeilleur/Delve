@@ -65,7 +65,7 @@ export const SculptEarth = {
   placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
   icon: 'assets/Icons/Skills/Green/sculptEarth.png',
   effectSprite: 'assets/Spells/Green/sculptEarth/sheet.gif',
-  effectDelay: 500,
+  effectDelay: 1000,
   nature: 'aggressive',
   takeDominion: false,
   dominionValue: 0,
