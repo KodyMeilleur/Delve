@@ -485,7 +485,18 @@ export default {
       } else {
         this.potentialPath = false;
       }
-
+    },
+    lookForPath() {
+      if (this.moveHighlighted) {
+        const map = this.isBattling ? this.battleMap : this.map;
+        const entityX = this.isBattling ? this.currentTurn.battleX : this.currentTurn.x;
+        const entityY = this.isBattling ? this.currentTurn.battleY : this.currentTurn.y;
+        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
+        const path = findPath(areaAroundPlayer, {x: entityX, y: entityY, movement: this.currentTurn.movement}, {x: this.tile.x, y: this.tile.y});
+        this.travelPath = path;
+        this.$emit('potentialPathCalc', path)
+        // this.lightPotentialPath(path);
+      }
     },
     onMouseOver() {
       if (this.hover === false && this.shouldShow) {
@@ -502,18 +513,6 @@ export default {
             this.hover = true;
           }, 50);
         }
-      }
-    },
-    lookForPath() {
-      if (this.moveHighlighted) {
-        const map = this.isBattling ? this.battleMap : this.map;
-        const entityX = this.isBattling ? this.currentTurn.battleX : this.currentTurn.x;
-        const entityY = this.isBattling ? this.currentTurn.battleY : this.currentTurn.y;
-        const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
-        const path = findPath(areaAroundPlayer, {x: entityX, y: entityY, movement: this.currentTurn.movement}, {x: this.tile.x, y: this.tile.y});
-        this.travelPath = path;
-        this.$emit('potentialPathCalc', path)
-        // this.lightPotentialPath(path);
       }
     },
     onMouseExit() {
@@ -650,7 +649,7 @@ export default {
   position: absolute;
   max-width: 64px;
   max-height: 64px;
-  z-index: 5;
+  z-index: 2;
   pointer-events: none;
 }
 .dominion-change, .dominion-sprite {

@@ -1,17 +1,26 @@
 <template>
-  <div class="skill"
-  >
-  <span class="skill-number text-style">{{number + 1}}</span>
   <div
-  v-on:click="useSkill"
-  v-if="skill"
-  v-bind:class="{ 'skill-disabled': !canUseSkill}"
-  v-bind:style="{
-    'background-image': 'url(' + publicPath + skill.icon,
-    /* 'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px', */
-  }"
-  class="default-icon">
-  </div>
+  v-on:mouseover="onMouseOver"
+  v-on:mouseleave="onMouseExit"
+  class="skill"
+  >
+    <span class="skill-number text-style">{{number + 1}}</span>
+    <div
+    v-on:click="useSkill"
+    v-if="skill"
+    v-bind:class="{ 'skill-disabled': !canUseSkill}"
+    v-bind:style="{
+      'background-image': 'url(' + publicPath + skill.icon,
+      /* 'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px', */
+    }"
+    class="default-icon">
+    </div>
+    <div
+    v-if="hover && skill"
+    class="tooltip-container"
+    >
+    {{ skill.name }}
+    </div>
   </div>
 </template>
 
@@ -31,7 +40,8 @@ export default {
     },
     heldMana: {
       type: Object,
-      default: null
+      default: null,
+      overTimeout: null,
     },
     ap: {
       type: Number
@@ -40,6 +50,7 @@ export default {
   data () {
     return {
       publicPath: process.env.BASE_URL,
+      hover: false,
     }
   },
   methods: {
@@ -49,7 +60,23 @@ export default {
       this.$emit('clearPotentialPath');
       this.$root.$emit('clearPlayerMoveState');
       this.$root.$emit('useSkill', this.skill);
-    }
+    },
+    onMouseOver() {
+      if (this.hover === false) {
+        if (this.overTimeout) {
+          clearTimeout(this.overTimeout);
+        }
+        this.overTimeout = setTimeout(() => {
+          this.hover = true;
+        }, 250);
+      }
+    },
+    onMouseExit() {
+      this.hover = false;
+      if (this.overTimeout) {
+        clearTimeout(this.overTimeout);
+      }
+    },
   },
   computed: {
     ...mapGetters('world', [
@@ -120,5 +147,12 @@ export default {
   pointer-events: none;
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%) brightness(60%);
+}
+.tooltip-container {
+  position: absolute;
+  width: 196px;
+  height: 64px;
+  background-image: url('/assets/hudSprites/skillTooltip.png');
+  top: -66px;
 }
 </style>
