@@ -19,7 +19,39 @@
     v-if="hover && skill"
     class="tooltip-container"
     >
-    {{ skill.name }}
+      <div>{{ skill.name }}</div>
+      <div class="skill-desc-body">
+        <div class="skill-nature-container">
+          <div
+          v-bind:style="{
+            'background-image': 'url(' + publicPath + 'assets/hudSprites/' + naturePath(skill.nature),
+          }"
+          class="skill-nature"
+          >
+          </div>
+          <div
+          v-if="skill.nature === 'aggressive'"
+          class="skill-damage">
+          {{ skill.addedDmg }}
+          </div>
+        </div>
+        <div class="skill-color">
+          <div
+          v-bind:style="{
+            'background-image': 'url(' + publicPath + 'assets/hudSprites/smMana' + (skill.type) + '.png',
+          }"
+          class="skill-color-one"
+          >
+          </div>
+          <div
+          v-bind:style="{
+            'background-image': 'url(' + publicPath + 'assets/hudSprites/smMana' + (skill.type) + '.png',
+          }"
+          class="skill-color-two"
+          >
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -77,6 +109,18 @@ export default {
         clearTimeout(this.overTimeout);
       }
     },
+    naturePath(natureString) {
+      switch (natureString) {
+        case 'aggressive':
+          return 'categoryAggressive.png'
+        case 'defensive':
+          return 'categoryDefensive.png'
+        case 'placement':
+          return 'categoryPlacement.png'
+        default:
+          return ''
+      }
+    }
   },
   computed: {
     ...mapGetters('world', [
@@ -95,7 +139,7 @@ export default {
       }
 
       return false;
-    }
+    },
   },
 }
 </script>
@@ -154,5 +198,18 @@ export default {
   height: 64px;
   background-image: url('/assets/hudSprites/skillTooltip.png');
   top: -66px;
+}
+.skill-desc-body {
+  display: flex;
+  justify-content: space-evenly;
+
+}
+.skill-nature, .skill-color-one, .skill-color-two {
+  width: 32px;
+  height: 32px;
+}
+.skill-nature-container, .skill-color {
+  display: flex;
+  align-items: center;
 }
 </style>
