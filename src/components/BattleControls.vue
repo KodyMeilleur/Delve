@@ -240,7 +240,7 @@ export default {
        handler (val) {
          if (val) {
            const that = this;
-           that.showREDChange = true;
+           that.showBLUEChange = true;
            setTimeout(() => {
              that.showBLUEChange = false;
              that.lastManaGainedBLUE = 0;

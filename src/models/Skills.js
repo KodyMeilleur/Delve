@@ -96,7 +96,7 @@ export const Thunder = {
   effectSprite: 'assets/Spells/Blue/thunder/sheet.gif',
   spriteWidth: 128,
   spriteHeight: 192,
-  top: -128,
+  top: -144,
   left: -32,
   effectDelay: 2300,
   nature: 'aggressive',
