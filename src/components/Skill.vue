@@ -8,7 +8,7 @@
     <div
     v-on:click="useSkill"
     v-if="skill"
-    v-bind:class="{ 'skill-disabled': !canUseSkill}"
+    v-bind:class="{ 'skill-disabled': !canUseSkill || isMoving}"
     v-bind:style="{
       'background-image': 'url(' + publicPath + skill.icon,
       /* 'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px', */
@@ -77,6 +77,9 @@ export default {
     },
     ap: {
       type: Number
+    },
+    isMoving: {
+      type: Boolean
     }
   },
   data () {

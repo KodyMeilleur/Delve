@@ -80,7 +80,7 @@
         </div>
         <div class="battle-container">
           <div class="battle-entity-layer">
-            <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap"/>
+            <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap" v-on:toggleMoveState="toggleMoveState"/>
             <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn" v-on:monsterDied="countDead"/>
           </div>
           <TileLayer :currentMap="currentMap" :map="currentMap" :shouldShow="isBattling"/>
@@ -89,7 +89,7 @@
     </div>
     <div class="battle-controls">
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
-      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn" :toggleEndMenu="toggleEndMenu"/>
+      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn" :toggleEndMenu="toggleEndMenu" :isMoving="isMoving"/>
     </div>
   </div>
 </template>
@@ -133,6 +133,7 @@ export default {
       monsterTurnMap: {},
       lifeMap: {},
       toggleEndMenu: false,
+      isMoving: false,
     }
   },
   updated () {
@@ -157,6 +158,10 @@ export default {
       'endMonsterTurn',
       'refreshPlayer'
     ]),
+    toggleMoveState() {
+      console.log('togglemove state');
+      this.isMoving = !this.isMoving;
+    },
     updatePotentialPath (path) {
       this.potentialPath = path;
       this.$emit('updateTilePaths', this.potentialPath);

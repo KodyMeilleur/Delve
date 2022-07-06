@@ -469,12 +469,13 @@ export default {
       this.setfocusedEntityOverride(null);
       this.toggleAttackRangeTiles();
     },
-    showSkillEffectOnTile({skill, tile}) {
+    showSkillEffectOnTile({skill, tile, targetedEntity, damage}) {
       if (this.shouldShow && (this.tile.x === tile.x && this.tile.y === tile.y)) {
         this.showSkillEffect = true;
         this.currentSkillData = skill;
         this.currentSkillEffectSpritePath = skill.effectSprite;
         setTimeout(() => {
+          this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill, damage});
           this.currentSkillEffectSpritePath = '';
           this.showSkillEffect = false;
         }, skill.effectDelay);

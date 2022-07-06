@@ -4,10 +4,12 @@
   <div class="battle-controls-internal">
     <div
     v-on:click="cycleTurn"
-    v-if="!isMonsterTurn && !toggleEndMenu"
+    v-if="!isMonsterTurn && !toggleEndMenu && !isMoving"
     class="battle-end-turn-btn">
     </div>
-    <div v-if="isMonsterTurn || toggleEndMenu" class="battle-end-turn-btn-inactive">
+    <div
+    v-if="isMonsterTurn || toggleEndMenu || isMoving"
+    class="battle-end-turn-btn-inactive">
     </div>
     <div
     class="battle-turn-stats"
@@ -19,7 +21,7 @@
       </div>
     </div>
     <div class="battle-skills">
-      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i" :heldMana="entity.heldMana" :ap="entity.ap"/>
+      <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i" :heldMana="entity.heldMana" :ap="entity.ap" :isMoving="isMoving"/>
     </div>
     <div class="mana-totals text-style">
       <div class="RED">
@@ -118,6 +120,9 @@ export default {
       }
     },
     toggleEndMenu: {
+      type: Boolean
+    },
+    isMoving: {
       type: Boolean
     }
   },

@@ -136,6 +136,7 @@ export default {
         this.path = Object.assign([], newVal);
         this.tilesToTravel = this.path.length;
         if (this.path.length) {
+          this.$emit('toggleMoveState');
           this.isMoving = true;
         }
       },
@@ -326,6 +327,7 @@ export default {
         this.skipFrames = this.animation.skipFrames;
         this.isMoving = false;
         this.inMoveState = false;
+        this.$emit('toggleMoveState');
       }
     },
     useSkill (skill) {
@@ -362,9 +364,8 @@ export default {
           this.applyManaGains();
           if (targetedTile.monsters.length) {
             if (this.toggledSkill.effectSprite) {
-              this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile});
+              this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile, damage, targetedEntity});
             }
-            this.$root.$emit('applyMonsterSkillEffect', {monsterID: targetedEntity.id, skill: this.toggledSkill, damage});
           }
         }
       } else if (this.toggledSkill.nature === 'defensive') {
