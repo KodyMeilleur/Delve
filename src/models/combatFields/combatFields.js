@@ -1,5 +1,6 @@
 import { ForestTile } from './combatTiles';
-import { Dummy } from '../monsters/Dummy';
+// import { Dummy } from '../monsters/Dummy';
+import { Eyeling } from '../monsters/Eyeling';
 
 export const RED = 'RED';
 export const BLUE = 'BLUE';
@@ -44,7 +45,7 @@ const tileTypeMap = {
 
 const enemyMap = {
   'Plains': [
-    Dummy
+    Eyeling
   ],
   'Void': [
 

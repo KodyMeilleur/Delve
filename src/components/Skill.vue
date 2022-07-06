@@ -36,19 +36,32 @@
           </div>
         </div>
         <div class="skill-color">
-          <div
-          v-bind:style="{
-            'background-image': 'url(' + publicPath + 'assets/hudSprites/smMana' + (skill.type) + '.png',
-          }"
-          class="skill-color-one"
-          >
+          <div class="color-body">
+            <div
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/hudSprites/smMana' + (skill.type) + '.png',
+            }"
+            class="skill-color-one"
+            >
+            </div>
+            <div
+            class="skill-cost-one">
+            {{ skill.costSlotOne }}
+            </div>
           </div>
-          <div
-          v-bind:style="{
-            'background-image': 'url(' + publicPath + 'assets/hudSprites/smMana' + (skill.type) + '.png',
-          }"
-          class="skill-color-two"
-          >
+          <div v-if="skill.typeTwo" class="color-body">
+            <div
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/hudSprites/smMana' + (skill.typeTwo) + '.png',
+            }"
+            class="skill-color-two"
+            >
+              {{ skill.costSlotTwo }}
+            </div>
+            <div
+            class="skill-cost-one">
+            {{ skill.costSlotOne }}
+            </div>
           </div>
         </div>
       </div>
@@ -202,9 +215,10 @@ export default {
   background-image: url('/assets/hudSprites/skillTooltip.png');
   top: -66px;
 }
-.skill-desc-body {
+.skill-desc-body, .color-body {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 
 }
 .skill-nature, .skill-color-one, .skill-color-two {
