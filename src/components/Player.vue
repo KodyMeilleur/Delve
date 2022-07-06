@@ -163,7 +163,7 @@ export default {
         this.currentFrame += 1;
         animation.currentFrame += 1;
       }
-      if (this.animation.currentFrame >= animation.maxNumberOfFrames) {
+      if (animation.currentFrame >= animation.maxNumberOfFrames) {
         this.currentFrame = 0;
         if (animation.shouldLoop === true) {
           animation.refreshSkipFrames();

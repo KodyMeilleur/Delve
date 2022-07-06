@@ -1,7 +1,7 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
 import { Animation } from './Animation.js';
-import { MeleeAttack, Reforestation, SculptEarth } from './Skills.js';
+import { MeleeAttack, Reforestation, SculptEarth, Thunder } from './Skills.js';
 // import TYPES from './combatFields/combatTiles.js';
 
 export function DefaultPlayer(name, x, y) {
@@ -107,13 +107,17 @@ export function DefaultPlayer(name, x, y) {
     'GREEN': [
       Reforestation,
       SculptEarth
+    ],
+    'BLUE': [
+      Thunder
     ]
   };
 
   this.equippedSkills = [
     MeleeAttack,
     Reforestation,
-    SculptEarth
+    SculptEarth,
+    Thunder
   ];
 
   this.density = 1;

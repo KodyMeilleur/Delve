@@ -73,6 +73,12 @@
         ref="currentSkillEffectSprite"
         class="skill-sprite"
         :src="currentSkillEffectSpritePath"
+        v-bind:style="{
+          width: (currentSkillData.spriteWidth) + 'px',
+          height: (currentSkillData.spriteHeight) + 'px',
+          top: (currentSkillData.top) + 'px',
+          left: (currentSkillData.left) + 'px',
+        }"
         />
         <img
         v-if="tile.battleTile"
@@ -199,6 +205,7 @@ export default {
       attackHighlighted: false,
       showSkillEffect: false,
       currentSkillEffectSpritePath: '',
+      currentSkillData: null,
       yOffset: 0,
       currentFrame: 0,
       structureEffectFrame: 0,
@@ -465,6 +472,7 @@ export default {
     showSkillEffectOnTile({skill, tile}) {
       if (this.shouldShow && (this.tile.x === tile.x && this.tile.y === tile.y)) {
         this.showSkillEffect = true;
+        this.currentSkillData = skill;
         this.currentSkillEffectSpritePath = skill.effectSprite;
         setTimeout(() => {
           this.currentSkillEffectSpritePath = '';
@@ -674,8 +682,6 @@ export default {
 }
 .skill-sprite {
   position: absolute;
-  left: -30px;
-  top: -12px;
   width: 128px;
   height: 128px;
   z-index: 3;

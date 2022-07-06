@@ -51,11 +51,12 @@ export const MeleeAttack = {
 export const SculptEarth = {
   name: 'Sculpt Earth',
   animation: 'Cast',
-  animationFrames: 5,
   type: GREEN,
   typeTwo: null,
   baseDmg: 'intelligence',
   addedDmg: 3,
+  // needed frames for cast animation
+  animationFrames: 5,
   costType: 'mp',
   costSlotOne: 1,
   costSlotTwo: 0,
@@ -65,7 +66,39 @@ export const SculptEarth = {
   placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
   icon: 'assets/Icons/Skills/Green/sculptEarth.png',
   effectSprite: 'assets/Spells/Green/sculptEarth/sheet.gif',
+  spriteWidth: 128,
+  spriteHeight: 128,
+  top: 0,
+  left: -32,
   effectDelay: 1000,
+  nature: 'aggressive',
+  takeDominion: false,
+  dominionValue: 0,
+  dominionType: NEUTRAL
+}
+
+export const Thunder = {
+  name: 'thunder',
+  animation: 'Cast',
+  type: BLUE,
+  typeTwo: null,
+  baseDmg: 'intelligence',
+  addedDmg: 3,
+  animationFrames: 5,
+  costType: 'mp',
+  costSlotOne: 1,
+  costSlotTwo: 0,
+  range: 3,
+  stepType: 'foot',
+  anchored: true, // anchored to user
+  placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
+  icon: 'assets/Icons/Skills/Blue/thunder.png',
+  effectSprite: 'assets/Spells/Blue/thunder/sheet.gif',
+  spriteWidth: 128,
+  spriteHeight: 192,
+  top: -128,
+  left: -32,
+  effectDelay: 2300,
   nature: 'aggressive',
   takeDominion: false,
   dominionValue: 0,
