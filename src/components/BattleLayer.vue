@@ -47,6 +47,15 @@
             }"
             >
             </div>
+            <div
+            :key="index + 'side-effect-small'"
+            class="side-effect"
+            v-bind:class="{ 'right-align-small': ((index % 2) !== 0), 'left-align-small': ((index % 2) === 0)}"
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/sideEffect1' +'.png)',
+            }"
+            >
+            </div>
           </div>
         </div>
         <div class="east-border">
@@ -73,6 +82,15 @@
             v-bind:class="{ 'left-align': ((index % 2) !== 0), 'right-align': ((index % 2) === 0)}"
             v-bind:style="{
               'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/rightSmallWallSheet1' +'.png)',
+            }"
+            >
+            </div>
+            <div
+            :key="index + 'side-effect-small'"
+            class="side-effect"
+            v-bind:class="{ 'right-align-small': ((index % 2) !== 0), 'left-align-small': ((index % 2) === 0)}"
+            v-bind:style="{
+              'background-image': 'url(' + publicPath + 'assets/Tiles/Battle/Walls/'+ battleTile.type + '/sideEffect1' +'.png)',
             }"
             >
             </div>
@@ -403,8 +421,14 @@ export default {
 .left-align {
   left: -15px;
 }
+.left-align-small {
+  left: -5px;
+}
 .right-align {
   right: -15px;
+}
+.right-align-small {
+  right: 20px;
 }
 .west-border {
   width: 128px;
@@ -426,6 +450,13 @@ export default {
   height: 128px;
   position: absolute;
   z-index: 5;
+  top: -50px;
+}
+.side-effect {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  z-index: 4;
   top: -50px;
 }
 .west-wall-item, .east-wall-item {

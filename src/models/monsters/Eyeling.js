@@ -23,8 +23,8 @@ import { Animation } from '../Animation.js';
 export function Eyeling(x, y, isBattling) {
   Monster.call(this, x, y);
 
-  this.movement = 0; // moving points
-  this.maxMovement = 0; // moving points
+  this.movement = 2; // moving points
+  this.maxMovement = 2; // moving points
   this.type = 'GREEN';
   this.name = 'Eyeling';
   this.sprite = 'assets/Characters/Eyeling/';
@@ -40,5 +40,5 @@ export function Eyeling(x, y, isBattling) {
   this.intelligence = 5;
   this.arcana = 7;
 
-  this.speed = 2;
+  this.speed = 1;
 }
