@@ -5,6 +5,11 @@
   class="skill"
   >
     <span class="skill-number text-style">{{number + 1}}</span>
+    <span
+    v-if="skill"
+    v-bind:class="{ 'disabled': !skill.overchargeUnlocked }"
+    class="overcharge-icon">
+    </span>
     <div
     v-on:click="useSkill"
     v-if="skill"
@@ -188,6 +193,24 @@ export default {
   top: -9px;
   left: -4px;
   z-index: 4;
+}
+.overcharge-icon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-image: url('/assets/hudSprites/overcharge.png');
+  z-index: 3;
+  bottom: -8px;
+  right: -8px;
+}
+.overcharge-icon:hover {
+  transform: scale(1.1,1.1);
+  cursor: pointer;
+}
+.overcharge-icon.disabled {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%) brightness(60%);
+  pointer-events: none;
 }
 .unselectable {
   -webkit-touch-callout: none;

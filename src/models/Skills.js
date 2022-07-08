@@ -45,7 +45,8 @@ export const MeleeAttack = {
   nature: 'aggressive',
   takeDominion: false,
   dominionValue: 0,
-  dominionType: NEUTRAL
+  dominionType: NEUTRAL,
+  overchargeUnlocked: false,
 }
 
 export const SculptEarth = {
@@ -74,7 +75,8 @@ export const SculptEarth = {
   nature: 'aggressive',
   takeDominion: false,
   dominionValue: 0,
-  dominionType: NEUTRAL
+  dominionType: NEUTRAL,
+  overchargeUnlocked: false,
 }
 
 export const Thunder = {
@@ -102,7 +104,8 @@ export const Thunder = {
   nature: 'aggressive',
   takeDominion: false,
   dominionValue: 0,
-  dominionType: NEUTRAL
+  dominionType: NEUTRAL,
+  overchargeUnlocked: true,
 }
 
 export const Reforestation = {
@@ -142,4 +145,5 @@ export const Reforestation = {
   },
   dominionValues: [1],
   dominionType: [GREEN],
+  overchargeUnlocked: false,
 }
