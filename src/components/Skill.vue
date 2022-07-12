@@ -212,6 +212,10 @@ export default {
   filter: grayscale(100%) brightness(60%);
   pointer-events: none;
 }
+.overcharged-skill {
+  outline: 2px solid white;
+  border-radius: 2px;
+}
 .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

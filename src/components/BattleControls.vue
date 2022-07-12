@@ -22,6 +22,7 @@
     </div>
     <div class="battle-skills">
       <Skill v-for="(n, i) in 9" :key="n + i" :skill="lastPlayerHeldSkills[i]" :number="i" :heldMana="entity.heldMana" :ap="entity.ap" :isMoving="isMoving"/>
+      <div class="inventory-icon"></div>
     </div>
     <div class="mana-totals text-style">
       <div class="RED">
@@ -333,7 +334,7 @@ export default {
 .battle-skills {
   display: flex;
   justify-content: space-evenly;
-  width: 400px;
+  width: 450px;
   position: absolute;
   left: 195px;
   top: 22px;
@@ -468,6 +469,15 @@ export default {
   animation: grow .5s;
   animation-direction: alternate;
   /* animation-delay: 1s; */
+}
+.inventory-icon {
+  width: 32px;
+  height: 32px;
+  background-image: url('/assets/hudSprites/inventoryIcon.png');
+  cursor: pointer;
+}
+.inventory-icon:hover {
+  transform: scale(1.1,1.1);
 }
 @keyframes grow{
   0%{

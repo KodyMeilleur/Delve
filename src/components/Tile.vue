@@ -3,7 +3,6 @@
     minWidth: width + 'px',
     minHeight: height + 'px'
   }"
-
   class="active tile-component"
   >
   <div
@@ -163,7 +162,7 @@
         <div
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
-          'background-position': (64 * (isBattling ? quarterFrame : currentFrame)) + 'px ' + (64 * (isBattling ? quarterFrame : currentFrame)) + 'px',
+          'background-position': (64 * (isBattling ? quarterFrame : currentFrame)) + 'px ' + (0) + 'px',
           top: (tile.type === 'Void' || tile.battleTile ? 0 : bumpVerticalFramePosition) + 'px',
           left: (tile.type === 'Void' ? 0 : bumpHorizontalFramePosition) + 'px',
         }"

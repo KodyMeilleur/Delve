@@ -80,7 +80,7 @@ export const SculptEarth = {
 }
 
 export const Thunder = {
-  name: 'thunder',
+  name: 'Thunder',
   animation: 'Cast',
   type: BLUE,
   typeTwo: null,
@@ -106,6 +106,36 @@ export const Thunder = {
   dominionValue: 0,
   dominionType: NEUTRAL,
   overchargeUnlocked: true,
+}
+
+export const Fireball = {
+  name: 'Fireball',
+  animation: 'Cast',
+  type: RED,
+  typeTwo: null,
+  baseDmg: 'intelligence',
+  addedDmg: 5,
+  animationFrames: 5,
+  costType: 'mp',
+  costSlotOne: 1,
+  costSlotTwo: 0,
+  range: 3,
+  stepType: 'projectile',
+  anchored: true, // anchored to user
+  placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
+  icon: 'assets/Icons/Skills/Red/fireball.png',
+  effectSprite: 'assets/Spells/Red/fireBall/sheet.gif',
+  projectileClass: 'small',
+  spriteWidth: 0,
+  spriteHeight: 0,
+  top: 0,
+  left: 0,
+  effectDelay: 0,
+  nature: 'aggressive',
+  takeDominion: false,
+  dominionValue: 0,
+  dominionType: NEUTRAL,
+  overchargeUnlocked: false,
 }
 
 export const Reforestation = {

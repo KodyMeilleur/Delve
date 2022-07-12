@@ -100,6 +100,7 @@
           <div class="battle-entity-layer">
             <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap" v-on:toggleMoveState="toggleMoveState"/>
             <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn" v-on:monsterDied="countDead"/>
+            <Projectile v-for="projectile in activeProjectileSkills" v-bind:key="projectile.name" :skill="projectile"/>
           </div>
           <TileLayer :currentMap="currentMap" :map="currentMap" :shouldShow="isBattling"/>
         </div>
@@ -123,6 +124,7 @@ import Player from './Player.vue';
 import Monster from './Monster.vue';
 import TileLayer from './TileLayer.vue';
 import { executeTileEffect } from '../services/skillProcesses';
+import Projectile from './Projectile.vue';
 
 export default {
   name: 'BattleLayer',
@@ -135,7 +137,8 @@ export default {
     BattleHeader,
     Player,
     Monster,
-    TileLayer
+    TileLayer,
+    Projectile
   },
   data () {
     return {
@@ -152,6 +155,7 @@ export default {
       lifeMap: {},
       toggleEndMenu: false,
       isMoving: false,
+      activeProjectileSkills: [],
     }
   },
   updated () {
