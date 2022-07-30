@@ -61,6 +61,9 @@ export function PlainsTile(x, y) {
   this.SOUTHPATH = true;
   this.EASTPATH = true;
   this.pathType = 'Paths1';
+  if (this.variant === 4 || this.variant === 5) {
+    this.pathType = 'Paths2';
+  }
 }
 
 export function GenericTile(x, y, spritePath) {
