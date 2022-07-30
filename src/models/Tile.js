@@ -27,6 +27,10 @@ export function VoidTile(x, y) {
   this.mpCost = 100;
   this.tier = 1;
   this.battleTile = false;
+  this.NORTHPATH = false;
+  this.WESTPATH = false;
+  this.SOUTHPATH = false;
+  this.EASTPATH = false;
 }
 
 export function PlainsTile(x, y) {
@@ -52,6 +56,11 @@ export function PlainsTile(x, y) {
   this.mpCost = 1;
   this.tier = 1;
   this.battleTile = false;
+  this.NORTHPATH = true;
+  this.WESTPATH = true;
+  this.SOUTHPATH = true;
+  this.EASTPATH = true;
+  this.pathType = 'Paths1';
 }
 
 export function GenericTile(x, y, spritePath) {
@@ -74,4 +83,8 @@ export function GenericTile(x, y, spritePath) {
   this.mpCost = 1;
   this.tier = 1;
   this.battleTile = false;
+  this.NORTHPATH = false;
+  this.WESTPATH = false;
+  this.SOUTHPATH = false;
+  this.EASTPATH = false;
 }

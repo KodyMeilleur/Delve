@@ -221,10 +221,24 @@ function placeZone (landmass, seedCell, type) {
         currentCell.structure = struct;
         currentCell.mpCost = currentCell.structure.mpCost;
         currentCell.sprite = `assets/Tiles/Outworld/Plains/Platform/sheet.png`;
+        markEmptyCellPaths(landmass, currentCell);
       }
     }
   }
 
+}
+
+function markEmptyCellPaths(landmass, cell) {
+  
+  const NORTHCELL = landmass[cell.x - 1][cell.y];
+  const WESTCELL = landmass[cell.x][cell.y - 1];
+  const SOUTHCELL = landmass[cell.x + 1][cell.y];
+  const EASTCELL = landmass[cell.x][cell.y + 1];
+
+  NORTHCELL.SOUTHPATH = false;
+  WESTCELL.EASTPATH = false;
+  SOUTHCELL.NORTHPATH = false;
+  EASTCELL.WESTPATH = false;
 }
 
 export function placeAnchor (landmass) {

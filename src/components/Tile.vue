@@ -122,6 +122,8 @@
           >
           </div>
         </div>
+        <!-- PATHS -->
+        <Paths v-if="!tile.structure" :tile="tile" :bumpVerticalFramePosition="bumpVerticalFramePosition"/>
         <!-- DOMINIONS -->
         <div class="tile-dominions" v-if="tile.battleTile">
           <div>
@@ -179,6 +181,7 @@ import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
 import { getRandomInt } from '../services/generateLand';
 import { findPath, returnShallowMapChunk } from '../services/pathfinding';
+import Paths from './Paths.vue';
 
 export default {
   name: 'Tile',
@@ -189,6 +192,9 @@ export default {
     battleMap: {
       default: null
     }
+  },
+  components: {
+    Paths,
   },
   data () {
     return {
