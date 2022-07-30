@@ -389,13 +389,6 @@ export default {
         (xRange >= (xOffset - (CONST.tileWidth * 2)) && xRange <= xOffset + 576 + (CONST.tileWidth));
 
       this.shouldShow = xShouldShow && yShouldShow;
-
-      // if (this.shouldShow) {
-      //   this.$root.$off('frameBump', this.frameAdvance);
-      //   this.$root.$on('frameBump', this.frameAdvance);
-      // } else {
-      //   this.$root.$off('frameBump', this.frameAdvance);
-      // }
     },
     frameAdvance (frame) {
       if (!this.shouldShow) {
@@ -444,6 +437,7 @@ export default {
         this.bumpVerticalFramePosition = 0;
         this.bumpHorizontalFramePosition = 0;
       }
+      
     },
     getImgUrl(path) {
       return `${path}`

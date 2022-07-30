@@ -31,6 +31,8 @@ export function VoidTile(x, y) {
   this.WESTPATH = false;
   this.SOUTHPATH = false;
   this.EASTPATH = false;
+  this.itemCharged = false;
+  this.moneycharged = false;
 }
 
 export function PlainsTile(x, y) {
@@ -60,6 +62,8 @@ export function PlainsTile(x, y) {
   this.WESTPATH = true;
   this.SOUTHPATH = true;
   this.EASTPATH = true;
+  this.itemCharged = false;
+  this.moneycharged = false;
   this.pathType = 'Paths1';
   if (this.variant === 4 || this.variant === 5) {
     this.pathType = 'Paths2';
@@ -90,4 +94,6 @@ export function GenericTile(x, y, spritePath) {
   this.WESTPATH = false;
   this.SOUTHPATH = false;
   this.EASTPATH = false;
+  this.itemCharged = false;
+  this.moneycharged = false;
 }
