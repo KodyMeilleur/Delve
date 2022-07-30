@@ -1,7 +1,7 @@
 <template>
   <div class="paths unselectable">
     <div
-    v-if="tile.type !== 'Void'"
+    v-if="tile.type !== 'Void' && tile.battleTile === false"
     v-bind:style="{
       'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'emptyPathSlot.png)',
       top: (bumpVerticalFramePosition + 28) + 'px',
