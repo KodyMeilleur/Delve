@@ -54,7 +54,7 @@ export function DefaultPlayer(name, x, y) {
   this.maxHp = CONST.defaultHP;
   this.might = CONST.defaultStartingStat;
   this.toughness = CONST.defaultStartingStat;
-  this.intelligence = CONST.defaultStartingStat;
+  this.intelligence = 99;
   this.arcana = CONST.defaultStartingStat;
 
   // DEVOTION POINTS ARE FOR DEFAULT HELD MANA, GRANTED EVERY X LEVEL

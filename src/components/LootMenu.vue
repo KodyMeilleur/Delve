@@ -1,18 +1,18 @@
 <template>
   <div class="loot-ui"
   >
-  <div class="loot-menu" v-if="currentLoot.length">
-    <span class="loot-text unselectable">Bounty</span>
+  <div class="loot-menu" v-if="shownItem.length">
+    <!-- <span class="loot-text unselectable">Bounty</span> -->
     <div class="loot-container">
-      <div class="loot-item unselectable" v-for="item in currentLoot" :key="item.name + Math.random()">
+      <div class="loot-item unselectable" v-for="item in shownItem" :key="item.name + Math.random()">
         <span>{{ item.name }}</span>
         <span>x{{ item.quantity }}</span>
       </div>
     </div>
-    <div class="control-container">
+    <!-- <div class="control-container">
       <div class="take-all c-btn" v-on:click="take"></div>
       <div class="dump-all c-btn" v-on:click="clear"></div>
-    </div>
+    </div> -->
   </div>
 </div>
 </template>
@@ -34,6 +34,7 @@ export default {
       publicPath: process.env.BASE_URL,
       expanded: false,
       currentLoot: [],
+      shownItem: [],
     }
   },
   mounted: function() {
@@ -63,10 +64,31 @@ export default {
           this.currentLoot.push(new potential.item(amount));
         }
       })
+      const firstItem = this.currentLoot.pop();
+      this.addItemsToInventory({items: [firstItem], player: this.currentTurn});
+      this.shownItem.push(firstItem);
+
       const that = this;
       setTimeout(() => {
         that.centerPlayer();
-      }, 200)
+        setTimeout(() => {
+          that.toggleActiveShownItem();
+        }, 2000);
+      }, 100);
+    },
+    toggleActiveShownItem() {
+      if (this.currentLoot.length) {
+        this.shownItem = [];
+        const nextItem = this.currentLoot.pop();
+        this.addItemsToInventory({items: [nextItem], player: this.currentTurn});
+        this.shownItem.push(nextItem);
+
+        setTimeout(() => {
+          this.toggleActiveShownItem();
+        }, 2000);
+      } else {
+        this.shownItem = [];
+      }
     },
     centerPlayer () {
       const playerX = this.currentTurn.x;
@@ -107,12 +129,12 @@ export default {
 }
 
 .loot-menu {
-  width: 96px;
-  height: 160px;
+  width: 256px;
+  height: 64px;
   position: absolute;
   background-image: url('/assets/hudSprites/lootBg.png');
-  top: -310px;
-  left: 145px;
+  top: -410px;
+  left: 72px;
   animation: createBox .25s;
   z-index: 100;
 }
@@ -148,9 +170,8 @@ export default {
 .loot-container {
   display: flex;
   flex-direction: column;
-  width: 106px;
-  height: 123px;
-  overflow-y: scroll;
+  width: 256px;
+  height: 64px;
   margin-top: 16px;
   align-items: center;
 }

@@ -392,6 +392,7 @@ const mutations = {
         }
         return has;
       })
+      console.log(items, lootItem);
       if (currentInventory.length === 0 && lootItem.name === 'Coin') {
         indexList.push({index, lootItem});
       }
