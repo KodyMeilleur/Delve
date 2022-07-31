@@ -15,7 +15,7 @@
       v-if="(this.showMoveTiles && !this.moveHighlighted && this.hover) || (this.hover && this.showMoveTiles && (this.tile.x === this.currentTurn.x && this.tile.y === this.currentTurn.y))"
       class="out-range"
       v-bind:style="{
-        'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+        'background-position': this.frameStyle,
       }"
       >
     </span>
@@ -24,7 +24,7 @@
       v-on:click="exitBattleState"
       class="battle-out-range"
       v-bind:style="{
-        'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+        'background-position': this.frameStyle,
       }"
       >
     </span>
@@ -32,14 +32,14 @@
     v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
-      'background-position': -(64 * frame ) + 'px ' + (0) + 'px',
+      'background-position': this.frameStyle,
     }"
     >
     </span>
     <span v-if="(this.attackHighlighted && !this.hover)"
     class="attack-highlighted"
     v-bind:style="{
-      'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+      'background-position': this.frameStyle,
     }"
     >
     </span>
@@ -47,7 +47,7 @@
     v-on:click.stop="skillOnTile"
     class="attack-highlighted-hover"
     v-bind:style="{
-      'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+      'background-position': this.frameStyle,
     }"
     >
     </span>
@@ -55,7 +55,7 @@
     v-on:click.stop="goToTile"
     class="potentialPath"
     v-bind:style="{
-      'background-position': -(64 * frame) + 'px ' + (0) + 'px',
+      'background-position': this.frameStyle,
     }"
     >
     </span>
@@ -365,6 +365,9 @@ export default {
     ]),
     structureSprite () {
       return this.tile.structure.demolished && this.demolishFrame >= 7 ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
+    },
+    frameStyle () {
+      return (-(64 * this.frame) + 'px ' + (0) + 'px')
     }
   },
   methods: {
