@@ -1,12 +1,28 @@
 <template>
   <div class="paths unselectable">
     <div
-    v-if="tile.type !== 'Void' && tile.battleTile === false"
+    v-if="tile.itemCharged === true"
     v-bind:style="{
-      'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'emptyPathSlot.png)',
-      top: (bumpVerticalFramePosition + 28) + 'px',
+      'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/chest.gif)',
+      top: (bumpVerticalFramePosition + 5) + 'px',
     }"
-    class="pathSlot"></div>
+    class="chest"></div>
+    <span>
+      <div
+      v-if="tile.type !== 'Void' && tile.battleTile === false && !tile.itemCharged && !tile.moneycharged"
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'emptyPathSlot.png)',
+        top: (bumpVerticalFramePosition + 28) + 'px',
+      }"
+      class="pathSlot"></div>
+      <div
+      v-if="tile.itemCharged || tile.moneycharged"
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'activePathSlot.png)',
+        top: (bumpVerticalFramePosition + 28) + 'px',
+      }"
+      class="pathSlotAlternate"></div>
+    </span>
     <div
     v-if="tile.NORTHPATH"
     v-bind:style="{
@@ -80,12 +96,19 @@ export default {
   position: absolute;
   z-index: 1;
 }
-.pathSlot {
+.pathSlot, .pathSlotAlternate {
   width: 6px;
   height: 6px;
   left: 29px;
   position: absolute;
   z-index: 2;
+}
+.chest {
+  z-index: 2;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: 16px;
 }
 .horizontal {
   width: 25px;

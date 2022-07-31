@@ -14,7 +14,7 @@
 <script>
 import CreatureSpawner from './CreatureSpawner.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { refineLandmass, cleanLandmass, placeResourceStructures, placeAnchor , placeTotems} from '../services/generateLand';
+import { refineLandmass, cleanLandmass, placeResourceStructures, placeAnchor , placeTotems, placeActiveItemTiles} from '../services/generateLand';
 
 export default {
   name: 'AdminTools',
@@ -54,6 +54,7 @@ export default {
       // TODO: Add generation functions? Or move cleanLandmass to a parent function
       placeResourceStructures(randomLandmass, 'Woods', 10);
       placeResourceStructures(randomLandmass, 'Mountains', 2);
+      placeActiveItemTiles(randomLandmass, 5);
       cleanLandmass(randomLandmass);
       placeAnchor(randomLandmass);
       placeTotems(randomLandmass, 2);

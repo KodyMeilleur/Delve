@@ -143,6 +143,26 @@ export function placeResourceStructures (landmass, type, formationCount) {
   }
 }
 
+export function placeActiveItemTiles (landmass, formationCount) {
+  let tries = CONST.continentResourceStructurePlacementAttempts;
+  const rowLength = landmass[0].length - 1;
+  const columnLength = landmass.length - 1;
+
+  while (tries && formationCount) {
+    const randomX = getRandomInt(0, columnLength - 1);
+    const randomY = getRandomInt(0, rowLength - 1);
+    const seedCell = landmass[randomX][randomY];
+
+    if (seedCell.density === 0 && seedCell.structure === null) {
+        seedCell.itemCharged = true;
+        formationCount--;
+    }
+    // pick a random cell
+    // check each of 4 orientations to place 3x3 resource formation
+    tries--;
+  }
+}
+
 // Cell starts at top left, checks next 3 cells right for 3 rows down
 function checkObstructionZoneTopLeft (landmass, x, y) {
   let obstruction = false;
@@ -229,7 +249,7 @@ function placeZone (landmass, seedCell, type) {
 }
 
 function markEmptyCellPaths(landmass, cell) {
-  
+
   const NORTHCELL = landmass[cell.x - 1][cell.y];
   const WESTCELL = landmass[cell.x][cell.y - 1];
   const SOUTHCELL = landmass[cell.x + 1][cell.y];
