@@ -130,7 +130,7 @@
             <div
             ref="manaValueSlotOne"
             v-bind:style="{
-              'background-position': (64 * quarterFrame) + 'px ' + (0) + 'px',
+              'background-position': this.quarterFrameStyle,
               'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotOne) + '/sheet0.png' + ')',
 
             }"
@@ -140,7 +140,7 @@
             <div
             ref="manaValueSlotTwo"
             v-bind:style="{
-              'background-position': (64 * quarterFrame) + 'px ' + (0) + 'px',
+              'background-position': this.quarterFrameStyle,
               'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotTwo) + '/sheet0.png' + ')',
 
             }"
@@ -213,7 +213,6 @@ export default {
       currentSkillData: null,
       yOffset: 0,
       currentFrame: 0,
-      structureEffectFrame: 0,
       demolishFrame: 0,
       structureEffectDelayList: [],
       moveHighlighted: false,
@@ -368,7 +367,10 @@ export default {
     },
     frameStyle () {
       return (-(64 * this.frame) + 'px ' + (0) + 'px')
-    }
+    },
+    quarterFrameStyle () {
+      return (64 * this.quarterFrame) + 'px ' + (0) + 'px';
+    },
   },
   methods: {
     ...mapMutations('world', [
@@ -419,17 +421,6 @@ export default {
 
       if (isFourQuartersLater) {
         this.quarterFrame = 0;
-      }
-
-      if (this.tile.structure && this.tile.structure.explorable) {
-        // if (this.structureEffectDelayList.length <= 0) {
-        //   this.structureEffectDelayList = this.tile.structure.unexploredDelayFrameMap.slice();
-        // }
-        if (this.structureEffectFrame === this.structureEffectDelayList[0]) {
-          this.structureEffectDelayList.shift();
-        } else {
-          this.structureEffectFrame = this.structureEffectFrame >= this.tile.structure.unexploredFrames ? 0 : this.structureEffectFrame + 1;
-        }
       }
 
       const bFrame = bumpFrames[this.currentFrame];
