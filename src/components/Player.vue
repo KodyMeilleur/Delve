@@ -18,7 +18,7 @@
       <div
       v-bind:style="{
         'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Right' +'.png',
-        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+        'background-position': this.playerFrameData,
       }"
       class="player-move-effect right"
       >
@@ -26,7 +26,7 @@
       <div
       v-bind:style="{
         'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Left' +'.png',
-        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+        'background-position': this.playerFrameData,
       }"
       class="player-move-effect left"
       >
@@ -34,7 +34,7 @@
       <div
       v-bind:style="{
         'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Top' +'.png',
-        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+        'background-position': this.playerFrameData,
       }"
       class="player-move-effect top"
       >
@@ -42,7 +42,7 @@
       <div
       v-bind:style="{
         'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Down' +'.png',
-        'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+        'background-position': this.playerFrameData,
       }"
       class="player-move-effect down"
       >
@@ -51,7 +51,7 @@
     <div
     v-bind:style="{
       'background-image': 'url(' + publicPath + player.occupiedSprite + '.png)',
-      'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px',
+      'background-position': this.playerFrameData,
       'top': (-30) + 'px',
       'z-index': '4',
     }"
@@ -215,6 +215,27 @@ export default {
       }
       const moveDirection = this.movingDirection;
       const moveAnimationPixelBump = (64 / this.animation.maxNumberOfFrames);
+      const that = this;
+
+      function handleTileBump(x, y) {
+        that.path.shift();
+        that.movingToStructure = false;
+        that.updatePlayerPosition({
+          player: that.player,
+          coords: {
+            x,
+            y,
+            tilesToTravel: that.tilesToTravel
+          },
+          isBattling: that.isBattling,
+          map: that.isBattling ? that.battleMap : that.map
+        });
+        const tileMovedTo = that.player.outworldTileOccupied;
+
+        if (tileMovedTo.itemCharged) {
+          that.$root.$emit('itemSpinner');
+        }
+      }
 
       // 1N, 2E, 3S, 4W
       // south
@@ -229,18 +250,7 @@ export default {
           } else {
             this.x = entityX;
           }
-          this.path.shift();
-          this.movingToStructure = false;
-          this.updatePlayerPosition({
-            player: this.player,
-            coords: {
-              x: entityX,
-              y: entityY,
-              tilesToTravel: this.tilesToTravel
-            },
-            isBattling: this.isBattling,
-            map: this.isBattling ? this.battleMap : this.map
-          })
+          handleTileBump(entityX, entityY);
         }
       }
       // east
@@ -255,18 +265,7 @@ export default {
           } else {
             this.y = entityY;
           }
-          this.path.shift();
-          this.movingToStructure = false;
-          this.updatePlayerPosition({
-            player: this.player,
-            coords: {
-              x: entityX,
-              y: entityY,
-              tilesToTravel: this.tilesToTravel
-            },
-            isBattling: this.isBattling,
-            map: this.isBattling ? this.battleMap : this.map
-          })
+          handleTileBump(entityX, entityY);
         }
       }
       // north
@@ -281,18 +280,7 @@ export default {
           } else {
             this.x = entityX;
           }
-          this.path.shift();
-          this.movingToStructure = false;
-          this.updatePlayerPosition({
-            player: this.player,
-            coords: {
-              x: entityX,
-              y: entityY,
-              tilesToTravel: this.tilesToTravel
-            },
-            isBattling: this.isBattling,
-            map: this.isBattling ? this.battleMap : this.map
-          })
+          handleTileBump(entityX, entityY);
         }
       }
       // west
@@ -307,18 +295,7 @@ export default {
           } else {
             this.y = entityY;
           }
-          this.path.shift();
-          this.movingToStructure = false;
-          this.updatePlayerPosition({
-            player: this.player,
-            coords: {
-              x: entityX,
-              y: entityY,
-              tilesToTravel: this.tilesToTravel
-            },
-            isBattling: this.isBattling,
-            map: this.isBattling ? this.battleMap : this.map
-          })
+          handleTileBump(entityX, entityY);
         }
       }
 
@@ -431,6 +408,9 @@ export default {
       'isBattling',
       'showBattleTiles'
     ]),
+    playerFrameData : function () {
+        return ((64) * this.currentFrame) + 'px ' + (0) + 'px'
+    },
     inStructure: function() {
       return this.player.outworldTileOccupied.structure ? true : false;
     },

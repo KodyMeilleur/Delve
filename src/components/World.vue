@@ -19,6 +19,7 @@
           <Log />
           <Inventory />
           <FocusStats />
+          <ItemSpinner />
         </span>
         <div
         v-bind:class="{
@@ -48,7 +49,7 @@ import Dwelling from './Dwelling.vue';
 import BattleLayer from './BattleLayer.vue';
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
-
+import ItemSpinner from './ItemSpinner.vue';
 
 export default {
   name: 'World',
@@ -66,6 +67,7 @@ export default {
     LootMenu,
     Header,
     Dwelling,
+    ItemSpinner,
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
