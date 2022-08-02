@@ -118,7 +118,7 @@ export default {
     },
     demolish (structure) {
       this.demolishStructure(structure);
-      this.$root.$emit('lootAdded', this.focusedEntity.structure && this.focusedEntity.structure.demolishLoot || []);
+      this.$root.$emit('lootAdded', {table: this.focusedEntity.structure && this.focusedEntity.structure.demolishLoot || []});
     },
   },
   computed: {

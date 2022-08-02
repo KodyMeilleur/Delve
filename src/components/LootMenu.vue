@@ -55,18 +55,25 @@ export default {
       this.addItemsToInventory({items: this.currentLoot, player: this.currentTurn});
       this.clear();
     },
-    generateLoot (table) {
-      const lootList = table || [];
-      lootList.forEach((potential) => {
-        const chance = getRandomInt(0, 100);
-        if (chance <= potential.chance) {
-          const amount = getRandomInt(1, potential.amount);
-          this.currentLoot.push(new potential.item(amount));
-        }
-      })
-      const firstItem = this.currentLoot.pop();
-      this.addItemsToInventory({items: [firstItem], player: this.currentTurn});
-      this.shownItem.push(firstItem);
+    generateLoot ({table, items}) {
+      if (!items) {
+        const lootList = table || [];
+        lootList.forEach((potential) => {
+          const chance = getRandomInt(0, 100);
+          if (chance <= potential.chance) {
+            const amount = getRandomInt(1, potential.amount);
+            this.currentLoot.push(new potential.item(amount));
+          }
+        })
+        const firstItem = this.currentLoot.pop();
+        this.addItemsToInventory({items: [firstItem], player: this.currentTurn});
+        this.shownItem.push(firstItem);
+      } else {
+        this.currentLoot = items;
+        const firstItem = this.currentLoot.pop();
+        this.addItemsToInventory({items: [firstItem], player: this.currentTurn});
+        this.shownItem.push(firstItem);
+      }
 
       const that = this;
       setTimeout(() => {

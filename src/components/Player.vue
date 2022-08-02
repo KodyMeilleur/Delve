@@ -95,6 +95,7 @@ export default {
     this.$root.$on('clearPlayerMoveState', this.clearPlayerMoveState);
     this.$root.$on('useSkill', this.useSkill);
     this.$root.$on('applySkillEffect', this.applySkillEffect);
+    this.$root.$on('playerDelay', this.setPlayerDelay);
   },
   beforeDestroy() {
     this.$root.$off('frameBump', this.frameAdvance);
@@ -102,6 +103,7 @@ export default {
     this.$root.$off('clearPlayerMoveState', this.clearPlayerMoveState);
     this.$root.$off('useSkill', this.useSkill);
     this.$root.$off('applySkillEffect', this.applySkillEffect);
+    this.$root.$off('playerDelay', this.setPlayerDelay);
   },
   data () {
     return {
@@ -128,6 +130,7 @@ export default {
       inMoveState: false,
       inAttackState: false,
       toggledSkill: null,
+      delayed: false
     }
   },
   watch: {
@@ -151,6 +154,7 @@ export default {
       'toggleAttackRangeTiles',
       'setfocusedEntityOverride',
       'applySkillEffectsOnPlayer',
+      'unchargeTile',
     ]),
     frameAdvance () {
 
@@ -183,7 +187,11 @@ export default {
       }
 
       if (this.isMoving) {
-        this.updatePlayerMove();
+        if (this.delayed === true) {
+          return;
+        } else {
+          this.updatePlayerMove();
+        }
       }
     },
     movePlayer () {
@@ -234,6 +242,8 @@ export default {
 
         if (tileMovedTo.itemCharged) {
           that.$root.$emit('itemSpinner');
+          that.delayed = true;
+          that.unchargeTile(tileMovedTo);
         }
       }
 
@@ -395,6 +405,9 @@ export default {
       this.isMoving = false;
       this.$emit('clearPotentialPath');
       this.toggleMovingTiles();
+    },
+    setPlayerDelay (bool) {
+      this.delayed = bool;
     }
   },
   computed: {

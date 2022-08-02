@@ -345,7 +345,7 @@ export default {
       this.clearComponent();
       this.toggleEndMenu = false;
       this.setIsBattling({state: false});
-      this.$root.$emit('lootAdded', this.battleTile.structure && this.battleTile.structure.loot || []);
+      this.$root.$emit('lootAdded', {table: this.battleTile.structure && this.battleTile.structure.loot || []});
     }
   },
   watch: {

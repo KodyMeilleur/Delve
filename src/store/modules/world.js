@@ -383,7 +383,6 @@ const mutations = {
   addItemsToInventory (state, {items, player}) {
     const indexList = [];
     const currentInventory = player.items;
-
     items.filter((lootItem, index) => {
       const itemFilter = currentInventory.filter((item) => {
         const has = lootItem.name === item.name || lootItem.name === 'Coin';
@@ -392,7 +391,6 @@ const mutations = {
         }
         return has;
       })
-      console.log(items, lootItem);
       if (currentInventory.length === 0 && lootItem.name === 'Coin') {
         indexList.push({index, lootItem});
       }
@@ -531,6 +529,11 @@ const mutations = {
 
   setContinents (state, continents) {
     state.continents = continents;
+  },
+
+  unchargeTile (state, tile) {
+    tile.itemCharged = false;
+    tile.moneycharged = false;
   },
 
   addMoneyToPlayer (state, {player, count}) {
