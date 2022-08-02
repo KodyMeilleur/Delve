@@ -11,44 +11,6 @@
   class="player-component"
   >
     <div
-    v-on:click.stop="movePlayer"
-    v-if="this.focusedEntity === this.player && this.currentTurn === this.player && this.inMoveState === false && this.showBattleTiles === false"
-    class="move-icon-container"
-    >
-      <div
-      v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Right' +'.png',
-        'background-position': this.playerFrameData,
-      }"
-      class="player-move-effect right"
-      >
-      </div>
-      <div
-      v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Left' +'.png',
-        'background-position': this.playerFrameData,
-      }"
-      class="player-move-effect left"
-      >
-      </div>
-      <div
-      v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Top' +'.png',
-        'background-position': this.playerFrameData,
-      }"
-      class="player-move-effect top"
-      >
-      </div>
-      <div
-      v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/hudSprites/moveIconSheet' + 'Down' +'.png',
-        'background-position': this.playerFrameData,
-      }"
-      class="player-move-effect down"
-      >
-      </div>
-    </div>
-    <div
     v-bind:style="{
       'background-image': 'url(' + publicPath + player.occupiedSprite + '.png)',
       'background-position': this.playerFrameData,
@@ -193,16 +155,6 @@ export default {
           this.updatePlayerMove();
         }
       }
-    },
-    movePlayer () {
-        let tilesToLight;
-        if (this.showMoveTiles === false) {
-          const map = this.isBattling ? this.battleMap : this.map;
-          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
-          tilesToLight = getCardinalTiles(this.focusedEntity, areaAroundPlayer, this.isBattling);
-        }
-        this.toggleMovingTiles(tilesToLight);
-        this.inMoveState = true;
     },
     updatePlayerMove () {
       let entityX = this.isBattling ? this.battleX : this.x;
@@ -388,12 +340,25 @@ export default {
     },
     setEntity () {
       this.inMoveState = false;
+      this.setfocusedEntityOverride(null);
       if (this.showBattleTiles) {
-        this.setfocusedEntityOverride(null);
         this.clearAttackState();
       } else {
         this.setfocusedEntity(this.player);
+        if (this.currentTurn === this.player && this.inMoveState === false && this.showBattleTiles === false && this.delayed === false) {
+          this.movePlayer();
+        }
       }
+    },
+    movePlayer () {
+        let tilesToLight;
+        if (this.showMoveTiles === false) {
+          const map = this.isBattling ? this.battleMap : this.map;
+          const areaAroundPlayer = returnShallowMapChunk(this.focusedEntity, map, this.isBattling);
+          tilesToLight = getCardinalTiles(this.focusedEntity, areaAroundPlayer, this.isBattling);
+        }
+        this.toggleMovingTiles(tilesToLight);
+        this.inMoveState = true;
     },
     clearAttackState() {
       this.toggleAttackRangeTiles();
