@@ -4,7 +4,7 @@
   >
   <div class="header-container">
     <div class="nemesis-counter">
-      <span class="nemesis-countdown font-style">{{ heroSpawnCountdown }}</span>
+      <span class="nemesis-countdown font-style">{{ dayCounter }}</span>
     </div>
     <div class="header-current-turn">
       <div class="turn-text font-style">Current Turn:</div>
@@ -41,7 +41,7 @@ export default {
   computed: {
     ...mapGetters('world', [
       'currentTurn',
-      'heroSpawnCountdown'
+      'dayCounter'
     ]),
   },
 }

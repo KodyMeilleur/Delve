@@ -9,6 +9,7 @@ import { Events as PlainsEvents } from '../../models/events/Plains/events';
 // initial state
 const state = () => ({
   map: [],
+  dayCounter: 1,
   continents: [],
   disasterOngoing: false,
   sprites: [],
@@ -29,7 +30,6 @@ const state = () => ({
   attackTiles: [], // list of highlighted attack tiles for ease of toggling
   leftOffset: 0,
   topOffset: 0,
-  heroSpawnCountdown: CONST.heroSpawnCountdown,
   logs: [],
   showMoveTiles: false,
   showBattleTiles: false,
@@ -105,15 +105,15 @@ const getters = {
   showBattleTiles: (state) => {
     return state.showBattleTiles;
   },
-  heroSpawnCountdown: (state) => {
-    return state.heroSpawnCountdown;
-  },
   eventCountdown: (state) => {
     return state.eventCountdown;
   },
   emptyTileList: (state) => {
     return state.emptyTileList;
   },
+  dayCounter: (state) => {
+    return state.dayCounter;
+  }
 }
 
 // actions
@@ -431,7 +431,6 @@ const mutations = {
       const path = findPath(areaAroundMonster, {x: monster.x, y: monster.y, movement: monster.movement}, {x: cellToTravelTo.x, y: cellToTravelTo.y});
       monster.path = path;
     });
-    state.heroSpawnCountdown--;
 
     state.eventCountdown--;
 
@@ -466,22 +465,7 @@ const mutations = {
         state.eventCountdown = CONST.eventCountdown;
       }
     }
-
-    // NEMESIS SPAWN
-    if (state.heroSpawnCountdown <= 0) {
-      // const allStructures = state.continents[0].structures;
-      // const randomStructure = allStructures[getRandomInt(0, allStructures.length - 1)];
-      state.heroSpawnCountdown = CONST.heroSpawnCountdown;
-      // const tilesToPickFrom = listOfEmptyNearTiles(state.map, randomStructure.x, randomStructure.y);
-      //
-      // const spawnTile = tilesToPickFrom[getRandomInt(0, tilesToPickFrom.length - 1)];
-      //
-      // // 0 HARDCODED FOR SKELETON
-      // const monster = new SpawnTable['Plains'][randomStructure.type][0](spawnTile.x, spawnTile.y);
-      // state.monsters.push(monster);
-      // state.map[monster.x][monster.y].monsters.push(monster);
-      // state.logs.push(`A ${monster.type} nemesis has been born!`);
-    }
+    state.dayCounter++;
     state.currentTurn = CONST.world;
   },
 
