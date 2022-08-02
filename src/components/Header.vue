@@ -81,7 +81,7 @@ export default {
 .nemesis-counter {
   position: absolute;
   top: 14px;
-  left: 12px;
+  left: 28px;
   font-size: 22px;
   width: 42px;
   height: 32px;
