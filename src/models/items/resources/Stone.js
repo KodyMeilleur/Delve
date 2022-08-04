@@ -20,7 +20,7 @@ export function RedStone (quantity) {
   this.sprite = 'assets/Icons/Items/Resources/redStone.png';
   this.quantity = quantity;
   this.name = "Red Stone";
-  this.description = 'Stone cut deep below the Red Mountains. Brittle, but unusally sharp.';
+  this.description = 'Stone cut deep below the Red Mountains. Brittle, but unusually sharp.';
   this.averageCost = 8;
   this.rarity = 1;
 }

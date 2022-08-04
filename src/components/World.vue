@@ -17,13 +17,23 @@
         />
         <!-- <Log /> -->
         <ItemSpinner />
-        <Header />
+        <Header
+          v-if="!isBattling"
+        />
         <Inventory
           v-on:inventoryToggled="toggleInventory"
+          v-if="!isBattling"
           :dwellingExpanded="dwellingExpanded"
         />
-        <FocusStats />
-        <div class="focus-icon" v-on:click="centerPlayer"></div>
+        <FocusStats
+          v-if="!isBattling"
+        />
+        <div
+          class="focus-icon"
+          v-if="!isBattling"
+          v-on:click="centerPlayer"
+        >
+        </div>
         <div
         v-bind:class="{
           shaking,

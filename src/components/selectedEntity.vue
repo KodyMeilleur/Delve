@@ -20,7 +20,7 @@
           <div class="explore-container">
             <div
             v-on:click="exploreStructure"
-            v-bind:class="{ 'explore-sprite': inArea === true}"
+            v-bind:class="{ 'explore-sprite': inArea === true && this.focusedEntity.structure.demolished === false}"
             >
           </div>
             <div v-if="focusedEntity.x !== currentTurn.x || focusedEntity.y !== currentTurn.y" class="explore-sprite-inactive"></div>
@@ -105,6 +105,7 @@ export default {
       } else {
         this.setfocusedEntityOverride(this.currentTurn.outworldTileOccupied);
       }
+      this.$root.$emit('clearPlayerMoveState');
     },
     exploreStructure () {
       this.setStructureExplored(this.focusedEntity);
