@@ -4,4 +4,5 @@ export function MagicBean (quantity) {
   this.name = "Magic Bean";
   this.description = 'A small spark waiting to catch fire. Known to attract giants.';
   this.averageCost = 20;
+  this.rarity = 1;
 }

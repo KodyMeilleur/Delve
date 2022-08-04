@@ -21,6 +21,12 @@
       class="sm-sprite sell-sprite"></div>
       <div class="cost-text">{{ focusedItem.averageCost }}</div>
     </div>
+    <div class="rarity">
+      <div
+      v-for="num in focusedItem.rarity"
+      :key="num"
+      class="rarity-star"></div>
+    </div>
     <div class="item-sprite-container">
       <div
       class="item-sprite"
@@ -28,15 +34,27 @@
       v-bind:style="{'background-image': 'url(' + publicPath + focusedItem.sprite}"
       >
       </div>
-      <div
-      class="item-use-sprite"
-      v-bind:class="{ 'active': focusedItem.name }"
-      >
+    </div>
+    <div class="item-stats">
+      <div class="item-stat-container">
+        <div
+        v-bind:style="{
+          'background-image': 'url(' + publicPath + 'assets/hudSprites/categoryAggressive.png',
+        }"
+        class="skill-nature"
+        >
+        </div>
+        <span class="item-val atk-value">{{focusedItem.baseDmg || '--'}}</span>
       </div>
-      <div
-      class="item-sell-sprite"
-      v-bind:class="{ 'active': focusedItem.name && currentTurn.inShop }"
-      v-on:click="sellItem(focusedItem)">
+      <div class="item-stat-container">
+        <div
+        v-bind:style="{
+          'background-image': 'url(' + publicPath + 'assets/hudSprites/categoryDefensive.png',
+        }"
+        class="skill-nature"
+        >
+        </div>
+        <span class="item-val def-value">{{focusedItem.baseDef || '--'}}</span>
       </div>
     </div>
     <div class="item-description unselectable">{{ focusedItem.description }}</div>
@@ -48,7 +66,16 @@
       v-on:click="focus(item)">
         <div class="item-text">
           <span class="item-name">{{ item.name }}</span>
-          <span class="item-quantity">x{{ item.quantity }}</span>
+          <span class="item-quantity">
+            <div
+              class="item-sell-sprite"
+              v-bind:class="{ 'active': focusedItem.name && currentTurn.inShop }"
+              v-on:click="sellItem(focusedItem)"
+            >
+            </div>
+            <span class="quantityX">x</span>
+            {{ item.quantity }}
+          </span>
         </div>
         </div>
     </div>
@@ -137,6 +164,7 @@ export default {
   font-family: system-ui;
   float: right;
   margin-right: 578px;
+
 }
 .inventory-sprite {
   background-image: url('/assets/hudSprites/inventoryIcon.png');
@@ -148,12 +176,12 @@ export default {
   transform: scale(1.1,1.1);
 }
 .inventory-menu {
-  width: 240px;
+  width: 384px;
   height: 258px;
   background-image: url('/assets/hudSprites/inventory.png');
   position: absolute;
   top: -345px;
-  left: 333px;
+  left: 189px;
   animation: createBox .25s;
 }
 @keyframes createBox {
@@ -165,7 +193,7 @@ export default {
   }
 }
 .item-slot {
-  width: 91px;
+  width: 140px;
   height: 31px;
   background-image: url('/assets/hudSprites/itemSlot.png');
   cursor: pointer;
@@ -189,19 +217,29 @@ export default {
 .items {
   position: absolute;
   right: 5px;
-  top: 49px;
-  height: 183px;
-  width: 105px;
+  top: 36px;
+  height: 200px;
+  width: 153px;
   overflow-y: scroll;
 }
 .item-description {
   line-break: strict;
   position: absolute;
-  width: 93px;
-  top: 95px;
+  width: 141px;
+  height: 100px;
+  top: 130px;
   font-size: 8px;
   font-weight: 700;
-  left: 18px;
+  left: 17px;
+}
+.item-stats {
+  position: absolute;
+  width: 141px;
+  height: 47px;
+  top: 73px;
+  left: 17px;
+  display: flex;
+  justify-content: center;
 }
 .item-name {
   overflow: hidden;
@@ -210,9 +248,14 @@ export default {
   text-overflow: ellipsis;
   padding: 3px;
   width: 100%;
+  display: flex;
+  color: #b18605;
 }
 .item-quantity {
   padding: 4px;
+  font-size: 7px;
+  display: flex;
+  align-items: center;
 }
 .close-sprite {
   background-image: url('/assets/hudSprites/closeIcon.png');
@@ -234,7 +277,8 @@ export default {
   height: 32px;
   cursor: pointer;
   position: absolute;
-  left: -34px;
+  left: -35px;
+  top: -11px;
 }
 .item-use-sprite {
   width: 33px;
@@ -248,9 +292,9 @@ export default {
   pointer-events: all;
 }
 .item-sell-sprite {
-  margin-left: 1px;
-  width: 33px;
-  height: 33px;
+  margin: 0px 3px;
+  width: 14px;
+  height: 14px;
   background-image: url('/assets/hudSprites/inactiveSellIcon.png');
   pointer-events: none;
 }
@@ -270,15 +314,30 @@ export default {
 .player-cash {
   position: absolute;
   top: 10px;
-  left: 15px;
+  left: 80px;
   display: flex;
   width: 32px;
+}
+.quantityX {
+  font-size: 5px;
 }
 .sm-sprite {
   width: 14px;
   height: 14px;
   min-width: 14px;
   min-height: 14px;
+}
+.rarity {
+  position: absolute;
+  left: 84px;
+  top: 53px;
+  height: 32px;
+  width: 96px;
+}
+.rarity-star {
+  background-image: url('/assets/hudSprites/tierStar.png');
+  width: 14px;
+  height: 14px
 }
 .coin-sprite {
   position: relative;
@@ -287,16 +346,28 @@ export default {
 }
 .sell-sprite {
   position: relative;
-  top: 4px;
   background-image: url('/assets/hudSprites/sellCoinIcon.png');
 }
 .sell-cash {
   position: absolute;
-  right: 20px;
+  left: 80px;
   display: flex;
-  top: 11px;
+  top: 30px;
+  align-items: end;
 }
 .cost-text {
+  font-size: 12px;
+}
+.skill-nature {
+  width: 32px;
+  height: 32px;
+}
+.item-val {
+  position: relative;
+}
+.item-stat-container {
+  display: flex;
+  height: 24px;
 }
 .unselectable {
     -webkit-touch-callout: none;

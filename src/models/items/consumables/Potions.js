@@ -4,6 +4,7 @@ export function DilutedHealthPotion (quantity) {
   this.name = "Diluted Health Potion";
   this.description = 'A reflection of the difficult times. Watered down to reach more mouths.';
   this.averageCost = 10;
+  this.rarity = 1;
 
   this.effect = {
     type: 'Consumable',
@@ -18,6 +19,7 @@ export function DilutedEnergyPotion (quantity) {
   this.name = "Diluted Energy Potion";
   this.description = 'A reflection of the difficult times. Watered down to reach more mouths.';
   this.averageCost = 10;
+  this.rarity = 1;
 
   this.effect = {
     type: 'Consumable',
