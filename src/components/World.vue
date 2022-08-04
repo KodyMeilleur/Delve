@@ -11,16 +11,19 @@
         <BattleLayer />
         <SelectedEntity />
         <LootMenu :lootTile="lootTile"/>
-        <span
-        v-bind:class="{ 'isBattling': isBattling}"
-        class="world-ui-elements">
-          <Header />
-          <Dwelling />
-          <Log />
-          <Inventory />
-          <FocusStats />
-          <ItemSpinner />
-        </span>
+        <Dwelling
+          v-on:dwellingToggled="toggleDwelling"
+          :inventoryExpanded="inventoryExpanded"
+        />
+        <!-- <Log /> -->
+        <ItemSpinner />
+        <Header />
+        <Inventory
+          v-on:inventoryToggled="toggleInventory"
+          :dwellingExpanded="dwellingExpanded"
+        />
+        <FocusStats />
+        <div class="focus-icon" v-on:click="centerPlayer"></div>
         <div
         v-bind:class="{
           shaking,
@@ -41,7 +44,7 @@ import { mapGetters, mapMutations } from 'vuex';
 
 import SelectedEntity from './selectedEntity.vue';
 import Inventory from './Inventory.vue';
-import Log from './Log.vue';
+// import Log from './Log.vue';
 import FocusStats from './FocusStats.vue';
 import LootMenu from './LootMenu.vue';
 import Header from './Header.vue';
@@ -50,6 +53,7 @@ import BattleLayer from './BattleLayer.vue';
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
 import ItemSpinner from './ItemSpinner.vue';
+import CONST from '../CONST';
 
 export default {
   name: 'World',
@@ -58,7 +62,7 @@ export default {
   ],
   components: {
     SelectedEntity,
-    Log,
+    // Log,
     BattleLayer,
     EntityLayer,
     TileLayer,
@@ -86,6 +90,8 @@ export default {
       shakeHorizontalOffset: 0,
       shaking: false,
       lootTile: null,
+      dwellingExpanded: false,
+      inventoryExpanded: false,
     }
   },
   computed: {
@@ -107,10 +113,16 @@ export default {
       this.shaking = !this.shaking;
     },
     centerPlayer (offset) {
+      const playerX = this.currentTurn.x;
+      const playerY = this.currentTurn.y;
+
+      const topOffset = offset.topOffset || ((playerX * CONST.tileWidth) - (CONST.viewHeight / 2)) || 0;
+      const leftOffset = offset.leftOffset || ((playerY * CONST.tileWidth) - (CONST.viewWidth / 2)) + (CONST.tileWidth / 2) || 0;
+
       if (this.$refs.world) {
-        this.$refs.world.scrollTop = offset.topOffset;
-        this.$refs.world.scrollLeft = offset.leftOffset;
-        this.setScroll({scrollLeft: offset.leftOffset, scrollTop: offset.topOffset});
+        this.$refs.world.scrollTop = topOffset;
+        this.$refs.world.scrollLeft = leftOffset;
+        this.setScroll({scrollLeft: leftOffset, scrollTop: topOffset});
         this.focusPlayer();
       }
     },
@@ -134,7 +146,17 @@ export default {
         that.scrollTopCache = scrollTop;
         that.setScroll({scrollLeft, scrollTop});
       }, 1); // delay
-    }
+    },
+    toggleDwelling (bool) {
+      if (this.dwellingExpanded !== bool) {
+        this.dwellingExpanded = bool;
+      }
+    },
+    toggleInventory (bool) {
+      if (this.inventoryExpanded !== bool) {
+        this.inventoryExpanded = bool;
+      }
+    },
   }
 }
 </script>
@@ -159,6 +181,13 @@ export default {
 .world-ui-elements.isBattling {
   display: none;
 }
+.world-ui-elements {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+}
 .entities {
   width: 0;
   height: 0;
@@ -169,6 +198,25 @@ export default {
 .turn-order {
   position: relative;
   top: -10px;
+}
+.focus-icon {
+  position: sticky;
+  top: 510px;
+  background-color: transparent;
+  float: right;
+  margin-right: 578px;
+  width: 31px;
+  height: 32px;
+  z-index: 11;
+  bottom: 12px;
+  left: 83px;
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/centerIcon.png');
+}
+.focus-icon:hover {
+  transform: scale(1.1,1.1);
+  background-image: url('/assets/hudSprites/centerIconFocus.png');
+
 }
 .shaking {
   animation: shake 0.5s;

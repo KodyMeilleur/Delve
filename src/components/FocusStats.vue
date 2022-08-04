@@ -192,21 +192,17 @@ export default {
 .focus-ui {
   position: sticky;
   left: 15px;
-  top: 425px;
-  width: 256px;
-  height: 100px;
+  top: 513px;
   z-index: 11;
   float: right;
   margin-right: 614px;
 }
 .focus-sprite {
   background-image: url('/assets/hudSprites/focusStatIcon.png');
-  width: 32px;
+  width: 33px;
   height: 32px;
   cursor: pointer;
-  top: 50px;
-  left: 260px;
-  position: relative;
+  position: absolute;
 }
 .focus-sprite:hover{
   transform: scale(1.1,1.1);
@@ -220,7 +216,7 @@ export default {
   height: 384px;
   background-image: url('/assets/hudSprites/focusStats.png');
   position: absolute;
-  top: -318px;
+  top: -410px;
   left: 302px;
   animation: createBox .25s;
 }

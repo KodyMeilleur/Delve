@@ -1,8 +1,13 @@
 <template>
-  <div class="inventory-ui"
+  <div
+  class="inventory-ui"
   >
   <div class="inventory-sprite" v-on:click="toggle"></div>
-  <div class="inventory-menu" v-if="expanded">
+  <div
+    v-bind:class="{ 'dwelling-open': dwellingExpanded}"
+    class="inventory-menu"
+    v-if="expanded"
+  >
     <div class="close-sprite" v-on:click="toggle"></div>
     <div class="player-cash unselectable">
       <div
@@ -97,6 +102,11 @@ export default {
       currentFrame: 0,
     }
   },
+  props: {
+    dwellingExpanded: {
+      default: false,
+    }
+  },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
   },
@@ -109,6 +119,7 @@ export default {
     ]),
     toggle () {
       this.expanded = !this.expanded;
+      this.$emit('inventoryToggled', this.expanded);
       if (this.inventory.length) {
         this.focusedItem = this.inventory[0];
       }
@@ -156,7 +167,7 @@ export default {
 <style scoped>
 .inventory-ui {
   position: sticky;
-  left: 275px;
+  left: 48px;
   top: 510px;
   background-color: transparent;
   z-index: 11;
@@ -165,6 +176,9 @@ export default {
   float: right;
   margin-right: 578px;
 
+}
+.inventory-menu.dwelling-open {
+  left: 416px;
 }
 .inventory-sprite {
   background-image: url('/assets/hudSprites/inventoryIcon.png');

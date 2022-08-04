@@ -1,7 +1,12 @@
 <template>
-  <div class="dwelling-ui"
+  <div
+  class="dwelling-ui"
   >
-  <div class="dwelling-menu" v-if="expanded">
+  <div
+    v-bind:class="{ 'inventory-open': inventoryExpanded === true}"
+    class="dwelling-menu"
+    v-if="expanded"
+  >
     <div class="close-sprite" v-on:click="toggle"></div>
     <div class="dwelling-content">
       <div class="dwelling-avatar">
@@ -136,6 +141,9 @@ export default {
     lootTile: {
       default: null,
     },
+    inventoryExpanded: {
+      default: false,
+    }
   },
   data () {
     return {
@@ -188,6 +196,7 @@ export default {
     },
     openDwelling (dwelling) {
       this.expanded = true;
+      this.$emit('dwellingToggled', this.expanded);
       this.togglePlayerShop({
         player: this.currentTurn,
         status: true,
@@ -198,6 +207,7 @@ export default {
     },
     toggle () {
       this.expanded = !this.expanded;
+      this.$emit('dwellingToggled', this.expanded);
       if (this.expanded === false) {
         this.dwelling = null;
         this.selectedPlace = null;
@@ -306,6 +316,9 @@ export default {
   top: -310px;
   left: 4px;
   animation: createBox .25s;
+}
+.dwelling-menu.inventory-open {
+  left: -145px;
 }
 .text-container {
   width: 175px;
