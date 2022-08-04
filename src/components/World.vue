@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
     <div class="world-container">
       <div
       v-on:scroll.passive="handleScroll"
