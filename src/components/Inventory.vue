@@ -347,6 +347,7 @@ export default {
   top: 53px;
   height: 32px;
   width: 96px;
+  display: flex;
 }
 .rarity-star {
   background-image: url('/assets/hudSprites/tierStar.png');
