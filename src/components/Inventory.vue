@@ -40,13 +40,14 @@
       >
       </div>
     </div>
-    <div class="item-stats">
+    <!-- STAT MODIFIERS -->
+    <div class="item-stats unselectable">
       <div class="item-stat-container">
         <div
         v-bind:style="{
-          'background-image': 'url(' + publicPath + 'assets/hudSprites/categoryAggressive.png',
+          'background-image': 'url(' + publicPath + 'assets/hudSprites/strengthIcon.png',
         }"
-        class="skill-nature"
+        class="skill-nature-sm"
         >
         </div>
         <span class="item-val atk-value">{{focusedItem.baseDmg || '--'}}</span>
@@ -54,13 +55,37 @@
       <div class="item-stat-container">
         <div
         v-bind:style="{
-          'background-image': 'url(' + publicPath + 'assets/hudSprites/categoryDefensive.png',
+          'background-image': 'url(' + publicPath + 'assets/hudSprites/defIcon.png',
         }"
-        class="skill-nature"
+        class="skill-nature-sm"
         >
         </div>
         <span class="item-val def-value">{{focusedItem.baseDef || '--'}}</span>
       </div>
+      <div class="item-stat-container">
+        <div
+        v-bind:style="{
+          'background-image': 'url(' + publicPath + 'assets/hudSprites/intIcon.png',
+        }"
+        class="skill-nature-sm"
+        >
+        </div>
+        <span class="item-val def-value">{{focusedItem.baseDef || '--'}}</span>
+      </div>
+      <div class="item-stat-container">
+        <div
+        v-bind:style="{
+          'background-image': 'url(' + publicPath + 'assets/hudSprites/wisIcon.png',
+        }"
+        class="skill-nature-sm"
+        >
+        </div>
+        <span class="item-val def-value">{{focusedItem.baseDef || '--'}}</span>
+      </div>
+    </div>
+    <!-- EFFECTS -->
+    <div class="item-effects unselectable">
+      {{ focusedItem.effect && focusedItem.effect.description || 'No additional effect.' }}
     </div>
     <div class="item-description unselectable">{{ focusedItem.description }}</div>
     <div class="items">
@@ -83,6 +108,11 @@
           </span>
         </div>
         </div>
+    </div>
+    <div
+      class="item-use-sprite"
+      v-bind:class="{ 'active': focusedItem.name && focusedItem.usable }"
+    >
     </div>
   </div>
 </div>
@@ -191,7 +221,7 @@ export default {
 }
 .inventory-menu {
   width: 384px;
-  height: 258px;
+  height: 286px;
   background-image: url('/assets/hudSprites/inventory.png');
   position: absolute;
   top: -345px;
@@ -248,12 +278,13 @@ export default {
 }
 .item-stats {
   position: absolute;
-  width: 141px;
-  height: 47px;
+  width: 144px;
+  height: 22px;
   top: 73px;
-  left: 17px;
+  left: 16px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  font-size: 9px;
 }
 .item-name {
   overflow: hidden;
@@ -295,10 +326,13 @@ export default {
   top: -11px;
 }
 .item-use-sprite {
-  width: 33px;
-  height: 33px;
+  width: 39px;
+  height: 20px;
   background-image: url('/assets/hudSprites/inactiveUseIcon.png');
   pointer-events: none;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
 }
 .item-use-sprite.active {
   background-image: url('/assets/hudSprites/activeUseIcon.png');
@@ -374,22 +408,39 @@ export default {
   font-size: 12px;
 }
 .skill-nature {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
+}
+.skill-nature-sm {
+  width: 14px;
+  height: 14px;
 }
 .item-val {
   position: relative;
+  display: flex;
+  align-items: center;
+  width: 8px;
+  padding: 0 2px;
 }
 .item-stat-container {
   display: flex;
   height: 24px;
+  align-items: center;
+}
+.item-effects {
+  position: absolute;
+  font-size: 6px;
+  top: 100px;
+  left: 16px;
+  width: 144px;
+  height: 20px;
 }
 .unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 </style>

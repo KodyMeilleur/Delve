@@ -4,6 +4,7 @@
   <div class="focus-sprite" v-on:click="toggle"></div>
   <div class="focus-menu" v-if="expanded">
     <div class="close-sprite" v-on:click="toggle"></div>
+    <div class="character-level stat-text">LEVEL: {{currentTurn.level}}</div>
     <div class="focus-menu-container">
       <div class="hp stat">
         <div class="stat-inner">
@@ -133,8 +134,6 @@
           <div class="sprite bnd"></div>
         </div>
       </div>
-      <div class="focus-equipment focus-block">
-      </div>
     </div>
   </div>
 </div>
@@ -211,6 +210,11 @@ export default {
   height: 64px;
   width: 100%;
 }
+.character-level {
+  position: absolute;
+  top: 33px;
+  width: 100%;
+}
 .focus-menu {
   width: 286px;
   height: 384px;
@@ -228,10 +232,13 @@ export default {
     transform: scale(1);
   }
 }
+.focus-effects {
+  margin-top: 40px;
+}
 .focus-menu-container {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 55px;
 }
 .focus-devotion {
   height: 82px;
