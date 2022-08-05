@@ -260,11 +260,19 @@ export default {
 }
 .items {
   position: absolute;
-  right: 5px;
+  right: 8px;
   top: 36px;
   height: 200px;
-  width: 153px;
+  width: 150px;
   overflow-y: scroll;
+}
+.items::-webkit-scrollbar {
+  width: 8px;
+  background-image: url('/assets/hudSprites/scrollThumb.png');
+}
+.items:hover::-webkit-scrollbar {
+  background-image: url('/assets/hudSprites/scrollThumbHover.png');
+  cursor: pointer;
 }
 .item-description {
   line-break: strict;

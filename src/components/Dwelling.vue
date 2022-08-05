@@ -337,15 +337,24 @@ export default {
   display: flex;
 }
 .dwelling-body {
-  width: 260px;
-  height: 190px;
+  width: 250px;
+  height: 200px;
   overflow-y: scroll;
   top: 15px;
+  left: -12px;
   position: relative;
+}
+.dwelling-body::-webkit-scrollbar {
+  width: 8px;
+  background-image: url('/assets/hudSprites/scrollThumb.png');
+}
+.dwelling-body:hover::-webkit-scrollbar {
+  background-image: url('/assets/hudSprites/scrollThumbHover.png');
+  cursor: pointer;
 }
 .dwelling-body.temple {
   direction: rtl;
-  left: -29px;
+  left: -4px;
 }
 .dwelling-options {
   width: 100%;
