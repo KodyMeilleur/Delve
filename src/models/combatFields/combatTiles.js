@@ -12,6 +12,8 @@ export function ForestTile(x, y) {
   this.attackHighlighted = false;
   this.players = [];
   this.monsters = [];
+  this.projectiles = [];
+  
   this.structure = null;
   this.animationFrames = 1;
   this.density = 0;

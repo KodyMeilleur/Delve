@@ -291,11 +291,14 @@ export default {
         this.clearPlayerMoveState();
       }
     },
-    applySkillEffect(targetedTile, direction) {
+    applySkillEffect(targetedTile) {
       if (this.toggledSkill.nature === 'aggressive') {
-        if (this.toggledSkill.stepType === 'projectile') {
 
-          this.movingDirection = direction;
+        const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
+        this.movingDirection = attackDirection.direction;
+
+        if (this.toggledSkill.stepType === 'projectile') {
+          // TODO: Add projectile moving logic
         }
         if (this.toggledSkill.stepType === 'foot') {
 
@@ -305,8 +308,7 @@ export default {
             // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
             const playerStatDamage = Math.floor(this.player[this.toggledSkill.baseDmg] * (1/4));
             const damage = (playerStatDamage + this.toggledSkill.addedDmg);
-            const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
-            this.movingDirection = attackDirection.direction;
+            this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
 
             if (this.toggledSkill.effectSprite) {
               this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile, damage, targetedEntity});
@@ -318,8 +320,6 @@ export default {
       } else if (this.toggledSkill.nature === 'placement') {
         processPlacement(this.toggledSkill, targetedTile, this.player.id, this.player.name);
       }
-      this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
-
       this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
       this.applyManaGains();
       this.clearAttackState();
