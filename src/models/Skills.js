@@ -119,7 +119,7 @@ export const Fireball = {
   costType: 'mp',
   costSlotOne: 1,
   costSlotTwo: 0,
-  range: 3,
+  range: 1,
   stepType: 'projectile',
   anchored: true, // anchored to user
   placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
@@ -150,7 +150,7 @@ export const Reforestation = {
   costSlotOne: 2,
   costSlotTwo: 0,
   range: 2,
-  stepType: 'crow',
+  stepType: 'foot',
   anchored: true,
   placementShape: null,
   icon: 'assets/Icons/Skills/Green/reforestation.png',

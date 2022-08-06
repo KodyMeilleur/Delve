@@ -20,7 +20,7 @@
       >
     </span>
     <span
-      v-if="(this.showBattleTiles && !this.attackHighlighted && this.hover)"
+      v-if="(this.showBattleTiles && !this.attackHighlighted && !this.rangedHighlighted && this.hover)"
       v-on:click="exitBattleState"
       class="battle-out-range"
       v-bind:style="{
@@ -43,9 +43,24 @@
     }"
     >
     </span>
+    <span v-if="(this.rangedHighlighted && !this.hover)"
+    class="range-highlighted"
+    v-bind:style="{
+      'background-position': this.frameStyle,
+    }"
+    >
+    </span>
     <span v-if="(this.attackHighlighted && this.hover)"
     v-on:click.stop="skillOnTile"
     class="attack-highlighted-hover"
+    v-bind:style="{
+      'background-position': this.frameStyle,
+    }"
+    >
+    </span>
+    <span v-if="(this.rangedHighlighted && this.hover)"
+    v-on:click.stop="skillOnTile"
+    class="range-highlighted-hover"
     v-bind:style="{
       'background-position': this.frameStyle,
     }"
@@ -208,6 +223,7 @@ export default {
       // Variables for scroll data
       xOffset: 0,
       attackHighlighted: false,
+      rangedHighlighted: false,
       showSkillEffect: false,
       currentSkillEffectSpritePath: '',
       currentSkillData: null,
@@ -346,6 +362,22 @@ export default {
           }
         }
       }
+    },
+    rangeTiles: function(val) {
+      if (this.shouldShow) {
+        if (val.length) {
+          const thisTile = val.filter((tile) => {
+            return tile.x === this.tile.x && tile.y === this.tile.y;
+          })
+          if (thisTile.length) {
+            this.rangedHighlighted = true;
+          }
+        } else {
+          if (this.rangedHighlighted === true) {
+            this.rangedHighlighted = false;
+          }
+        }
+      }
     }
   },
   computed: {
@@ -358,6 +390,7 @@ export default {
       'currentBattleTurn',
       'moveTiles',
       'attackTiles',
+      'rangeTiles',
       'showMoveTiles',
       'isBattling',
       'showBattleTiles'
@@ -379,7 +412,8 @@ export default {
       'setPath',
       'updateLogs',
       'toggleMovingTiles',
-      'toggleAttackRangeTiles'
+      'toggleAttackRangeTiles',
+      'toggleProjectileTiles'
     ]),
     checkShouldShow (leftOffset, topOffset) {
       const yOffset = leftOffset;
@@ -431,7 +465,7 @@ export default {
         this.bumpVerticalFramePosition = 0;
         this.bumpHorizontalFramePosition = 0;
       }
-      
+
     },
     getImgUrl(path) {
       return `${path}`
@@ -459,8 +493,10 @@ export default {
     },
     exitBattleState() {
       this.attackHighlighted = false;
+      this.rangedHighlighted = false;
       this.setfocusedEntityOverride(null);
       this.toggleAttackRangeTiles();
+      this.toggleProjectileTiles();
     },
     showSkillEffectOnTile({skill, tile, targetedEntity, damage}) {
       if (this.shouldShow && (this.tile.x === tile.x && this.tile.y === tile.y)) {
@@ -603,6 +639,23 @@ export default {
   left: 0;
   cursor: pointer;
   background-image: url('/assets/hudSprites/battleHighlightSheetHover.png');
+}
+.range-highlighted {
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  position: absolute;
+  left: 0;
+  background-image: url('/assets/hudSprites/rangedHighlightSheet.png');
+}
+.range-highlighted-hover {
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+  background-image: url('/assets/hudSprites/rangedHighlightSheetHover.png');
 }
 .out-range, .battle-out-range {
   width: 100%;

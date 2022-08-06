@@ -37,7 +37,7 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getCardinalDiagonalTiles, getDirectionToTile } from '../services/pathfinding';
+import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getDirectionToTile } from '../services/pathfinding';
 import { processPlacement } from '../services/skillProcesses';
 import { Animation } from '../models/Animation.js';
 
@@ -92,7 +92,7 @@ export default {
       inMoveState: false,
       inAttackState: false,
       toggledSkill: null,
-      delayed: false
+      delayed: false,
     }
   },
   watch: {
@@ -117,6 +117,7 @@ export default {
       'setfocusedEntityOverride',
       'applySkillEffectsOnPlayer',
       'unchargeTile',
+      'toggleProjectileTiles'
     ]),
     frameAdvance () {
 
@@ -273,35 +274,40 @@ export default {
       this.setfocusedEntityOverride(null);
 
       // get chunk of land around player if anchored
-      if (skill.anchored === true && this.inAttackState === false) {
-        let battleTilesToLight;
-        if (this.showMoveTiles === false) {
-          const map = this.isBattling ? this.battleMap : this.map;
-          const areaAroundPlayer = returnShallowMapChunk(this.player, map, this.isBattling, skill.range, true);
-          battleTilesToLight = skill.stepType === 'foot' ?
-            getCardinalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range) :
-            getCardinalDiagonalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
-        }
-        this.toggleAttackRangeTiles(battleTilesToLight);
+      if (skill.anchored === true && this.inAttackState === false && this.showMoveTiles === false) {
         this.inAttackState = true;
+        const map = this.isBattling ? this.battleMap : this.map;
+        const areaAroundPlayer = returnShallowMapChunk(this.player, map, this.isBattling, skill.range, true);
+        const battleTilesToLight = getCardinalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
+
+        if (skill.stepType === 'foot') {
+          this.toggleAttackRangeTiles(battleTilesToLight);
+        } else if (skill.stepType === 'projectile') {
+          this.toggleProjectileTiles(battleTilesToLight);
+        }
         this.toggledSkill = skill;
       } else {
         this.clearAttackState();
         this.clearPlayerMoveState();
       }
     },
-    applySkillEffect(targetedTile) {
+    applySkillEffect(targetedTile, direction) {
       if (this.toggledSkill.nature === 'aggressive') {
-        const targetedEntity = targetedTile.monsters[0] || targetedTile.players[0];
-        if (targetedEntity && targetedEntity.isDead === false) {
-          // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
-          const damage = (this.player[this.toggledSkill.baseDmg]);
-          const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
-          this.movingDirection = attackDirection.direction;
-          this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
-          this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
-          this.applyManaGains();
-          if (targetedTile.monsters.length) {
+        if (this.toggledSkill.stepType === 'projectile') {
+
+          this.movingDirection = direction;
+        }
+        if (this.toggledSkill.stepType === 'foot') {
+
+          const targetedEntity = targetedTile.monsters[0] || targetedTile.players[0];
+          if (targetedEntity && targetedEntity.isDead === false) {
+
+            // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
+            const playerStatDamage = Math.floor(this.player[this.toggledSkill.baseDmg] * (1/4));
+            const damage = (playerStatDamage + this.toggledSkill.addedDmg);
+            const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
+            this.movingDirection = attackDirection.direction;
+
             if (this.toggledSkill.effectSprite) {
               this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile, damage, targetedEntity});
             }
@@ -310,11 +316,12 @@ export default {
       } else if (this.toggledSkill.nature === 'defensive') {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
-        this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
         processPlacement(this.toggledSkill, targetedTile, this.player.id, this.player.name);
-        this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
-        this.applyManaGains();
       }
+      this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
+
+      this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
+      this.applyManaGains();
       this.clearAttackState();
     },
     applyManaGains () {
@@ -362,6 +369,7 @@ export default {
     },
     clearAttackState() {
       this.toggleAttackRangeTiles();
+      this.toggleProjectileTiles();
       this.inAttackState = false;
       this.toggledSkill = null;
     },
@@ -373,7 +381,7 @@ export default {
     },
     setPlayerDelay (bool) {
       this.delayed = bool;
-    }
+    },
   },
   computed: {
       ...mapGetters('world', [
