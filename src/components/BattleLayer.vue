@@ -368,8 +368,10 @@ export default {
 
         const that = this;
         this.players.push(this.currentTurn);
+        const startTile = generatedMap[this.currentTurn.battleX][this.currentTurn.battleY];
+        startTile.density = 1;
         this.players.forEach((player) => {
-          that.setinWorldPlayerTile({player, tile: Object.assign({}, generatedMap[player.battleX][player.battleY])});
+          that.setinWorldPlayerTile({player, tile: startTile});
         });
 
         this.enemies = this.enemies.concat(enemies);

@@ -1,166 +1,96 @@
 <template>
   <div v-bind:style="{
-    width: width + 'px',
-    height: height + 'px',
-    /* top: ((x * CONST.tileHeight) + movingVerticalOffset + bumpVerticalFramePosition) + 'px',
-    left: ((y * CONST.tileWidth) + movingHorizontalOffset + bumpHorizontalFramePosition) + 'px', */
+    width: 64 + 'px',
+    height: 64 + 'px',
   }"
   class="projectile-component"
   >
   <!-- RESUSE EFFECTS -->
+
     <img
-    v-if="skill"
-    ref="dominionChangeSprite"
-    class="dominion-change"
-    :src="skill.effectSprite"
+    v-bind:class="{ visibility: this.animationComplete === false, 'projectile-sprite': true}"
+    ref="skillSprite"
+    :src="skill && skill.effectSprite"
     />
   </div>
 </template>
 
 <script>
-import CONST from '../CONST';
-import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection } from '../services/pathfinding';
+// import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Projectile',
   props: {
-    skill: {
-      default: {}
+    activeProjectileSkill: {
+      default: null
     }
-  },
-  mounted: function() {
-    // this.$root.$on('frameBump', this.frameAdvance);
-  },
-  beforeDestroy() {
-    // this.$root.$off('frameBump', this.frameAdvance);
   },
   data () {
     return {
-      width: CONST.tileWidth,
-      height: CONST.tileHeight,
-      CONST: CONST,
       publicPath: process.env.BASE_URL,
-      bumpVerticalFramePosition: 0,
-      bumpHorizontalFramePosition: 0,
-      movingVerticalOffset: 0,
-      movingHorizontalOffset: 0,
-      movingDirection: 4,
-      x: this.skill.startingX,
-      y: this.skill.startingY,
-      tilesToTravel: 0,
+      skill: this.activeProjectileSkill && this.activeProjectileSkill.skill,
+      width: this.activeProjectileSkill && this.activeProjectileSkill.skill.spriteWidth,
+      height: this.activeProjectileSkill && this.activeProjectileSkill.skill.spriteHeight,
+      animationComplete: true,
     }
   },
-  watch: {},
-  methods: {
-    ...mapMutations('world', [
-    ]),
-    updateMonsterMove () {
-      if (this.movingVerticalOffset === 0 && this.movingHorizontalOffset === 0 && this.path.length) {
-        const fullDirection = getEntityDirection({
-          x: this.x,
-          y: this.y,
-          path: this.path
-        });
-        this.movingDirection = fullDirection.direction;
-
-        this.animation = new Animation(8, 'Jump', false);
-      }
-      const moveDirection = this.movingDirection;
-
-      // Failsafe for no found path
-      if (this.path.length <= 0) {
-        this.isMoving = false;
-        this.$emit('turnEnded');
-
-        return;
-      }
-
-      // 1N, 2E, 3S, 4W
-      // south
-      if (moveDirection === 3) {
-        this.movingVerticalOffset += CONST.monsterAnimationPixelBump;
-        if (this.movingVerticalOffset === 64) {
-          this.tilesToTravel -= 1;
-          this.movingVerticalOffset = 0;
-          this.x = parseInt(this.x) + 1;
-          this.path.shift();
-        }
-      }
-      // east
-      if (moveDirection === 2) {
-        this.movingHorizontalOffset += CONST.monsterAnimationPixelBump;
-        if (this.movingHorizontalOffset === 64) {
-          this.tilesToTravel -= 1;
-          this.movingHorizontalOffset = 0;
-          this.y = parseInt(this.y) + 1;
-          this.path.shift();
-        }
-      }
-      // north
-      if (moveDirection === 1) {
-        this.movingVerticalOffset -= CONST.monsterAnimationPixelBump;
-        if (this.movingVerticalOffset === -64) {
-          this.tilesToTravel -= 1;
-          this.movingVerticalOffset = 0;
-          this.x = parseInt(this.x) - 1;
-          this.path.shift();
-        }
-      }
-      // west
-      if (moveDirection === 4) {
-        this.movingHorizontalOffset -= CONST.monsterAnimationPixelBump;
-        if (this.movingHorizontalOffset === -64) {
-          this.tilesToTravel -= 1;
-          this.movingHorizontalOffset = 0;
-          this.y = parseInt(this.y) - 1;
-          this.path.shift();
-        }
-      }
-
-      if (this.tilesToTravel === 0) {
-        // TODO: REMEMBER TO SET inworldTileOccupied ON BATTLE MOVE!
-        this.updateMonsterPosition({
-          monster: this.monster,
-          coords: {
-            x: this.x,
-            y: this.y,
-          }
-        })
-        this.animation = new Animation(2, 'Idle', true);
-        this.isMoving = false;
-        this.$emit('turnEnded'); // trigger event on the current instance
-      }
-    },
-    handleSkillEffect({monsterID, damage}) {
-      if (monsterID === this.monster.id && this.monster.isDead === false) {
-        this.animation = new Animation(2, 'hurt', false);
-        this.lastDamageSuffered = damage;
-        this.monster.hp = (this.monster.hp - damage < 0) ? 0 : this.monster.hp - damage;
-        this.shrinkGrow = true;
-        this.deathCheck();
-      }
-    },
+  watch: {
+    activeProjectileSkill: {
+      handler (newVal) {
+        this.skill = newVal.skill;
+        this.width = newVal.skill.spriteWidth;
+        this.height = newVal.skill.spriteHeight;
+        this.projectileStartup();
+      },
+       deep: true
+     },
   },
-  computed: {
-      ...mapGetters('world', [
-    ]),
-    direction: function () {
-      // 1N, 2E, 3S, 4W,  0 non moving South
-      switch (this.movingDirection) {
-        case 0:
-          return 'South'
-        case 1:
-          return 'North'
-        case 2:
-          return 'East'
-        case 3:
-          return 'South'
-        case 4:
-          return 'West'
-        default:
-          return '';
+  methods: {
+    projectileStartup () {
+      this.animationComplete = false;
+      const that = this;
+      const travelDirection = this.activeProjectileSkill.direction;
+      const projectileElem = this.$refs.skillSprite;
+      const stepSize = 6;
+      const tilesToTravel = this.activeProjectileSkill.tileCount;
+      let pixelsTraveled = 0;
+      let xPosition = 0;
+      let yPosition = 0;
+
+      function doAnimation() {
+
+        pixelsTraveled += stepSize;
+
+        if (travelDirection === 1) {
+          xPosition = 0;
+          yPosition = -(pixelsTraveled);
+        }
+        if (travelDirection === 2) {
+          xPosition = pixelsTraveled;
+          yPosition = 0;
+        }
+        if (travelDirection === 3) {
+          xPosition = 0;
+          yPosition = (pixelsTraveled);
+        }
+        if (travelDirection === 4) {
+          xPosition = -(pixelsTraveled);
+          yPosition = 0;
+        }
+
+        projectileElem.style.transform = 'translate3d(' + `${xPosition}px, ${yPosition}px, 0px)`;
+
+        // stop animation if total pixels traveled completed
+        if (pixelsTraveled >= (tilesToTravel * 64)) {
+          that.animationComplete = true;
+
+          return;
+        } else {
+          requestAnimationFrame(doAnimation);
+        }
       }
+
+      doAnimation();
     }
   },
 }
@@ -182,5 +112,11 @@ export default {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility:    hidden;
   -ms-backface-visibility:     hidden;
+}
+.projectile-sprite {
+  visibility: hidden;
+}
+.visibility {
+  visibility: visible!important;
 }
 </style>

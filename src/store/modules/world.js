@@ -384,7 +384,9 @@ const mutations = {
     }
     const tileMovingTo = map[coords.x][coords.y];
     if (isBattling) {
+      storePlayer.inworldTileOccupied.density = 0;
       storePlayer.inworldTileOccupied = tileMovingTo;
+      tileMovingTo.density = 1;
     } else {
       storePlayer.outworldTileOccupied = tileMovingTo;
     }

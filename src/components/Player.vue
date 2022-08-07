@@ -10,6 +10,7 @@
   v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles, hoverAvailable: !this.showBattleTiles}"
   class="player-component"
   >
+    <!-- IN STRUCTURE SPRITE -->
     <div
     v-bind:style="{
       'background-image': 'url(' + publicPath + player.occupiedSprite + '.png)',
@@ -21,6 +22,7 @@
     class="player-sprite"
     >
     </div>
+    <!-- PLAYER SPRITE -->
     <div
     v-on:click.stop="setEntity"
     v-bind:style="{
@@ -31,15 +33,18 @@
     class="player-sprite"
     >
     </div>
+    <!-- PLAYER PROJECTILES -->
+    <Projectile v-if="player.isBattling" :activeProjectileSkill="activeProjectileSkill"/>
   </div>
 </template>
 
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getDirectionToTile } from '../services/pathfinding';
+import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getDirectionToTile, getTilesInDirectionUntilDense } from '../services/pathfinding';
 import { processPlacement } from '../services/skillProcesses';
 import { Animation } from '../models/Animation.js';
+import Projectile from './Projectile.vue';
 
 export default {
   name: 'Player',
@@ -50,6 +55,9 @@ export default {
     battleMap: {
       default: null
     }
+  },
+  components: {
+    Projectile,
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
@@ -92,6 +100,7 @@ export default {
       inMoveState: false,
       inAttackState: false,
       toggledSkill: null,
+      activeProjectileSkill: null,
       delayed: false,
     }
   },
@@ -191,6 +200,8 @@ export default {
           isBattling: that.isBattling,
           map: that.isBattling ? that.battleMap : that.map
         });
+
+        // TODO: Move this to tile handling function
         const tileMovedTo = that.player.outworldTileOccupied;
 
         if (tileMovedTo.itemCharged) {
@@ -299,6 +310,7 @@ export default {
 
         if (this.toggledSkill.stepType === 'projectile') {
           // TODO: Add projectile moving logic
+          this.projectileAnimation(targetedTile);
         }
         if (this.toggledSkill.stepType === 'foot') {
 
@@ -382,6 +394,11 @@ export default {
     setPlayerDelay (bool) {
       this.delayed = bool;
     },
+    projectileAnimation(targetTile) {
+      const tileCount = getTilesInDirectionUntilDense(this.battleMap, targetTile, this.movingDirection);
+
+      this.activeProjectileSkill = ({skill: this.toggledSkill, direction: this.movingDirection, tileCount});
+    }
   },
   computed: {
       ...mapGetters('world', [

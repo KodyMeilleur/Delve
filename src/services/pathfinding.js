@@ -440,3 +440,37 @@ export function getCardinalTilesWithoutEntity(tile, map, range) {
 
     return tilesToCheck;
 }
+
+export function getTilesInDirectionUntilDense(map, startTile, direction) {
+
+  let densityReached = false;
+  let tileCount = 0;
+  // 1N 2E 3S 4W
+
+  while (densityReached === false) {
+
+    let nextTile;
+
+    if (direction === 1) {
+      nextTile = map[startTile.x - tileCount] && map[startTile.x - tileCount][startTile.y];
+    }
+    if (direction === 2) {
+      nextTile = map[startTile.x][startTile.y + tileCount];
+    }
+    if (direction === 3) {
+      nextTile = map[startTile.x + tileCount] && map[startTile.x + tileCount][startTile.y];
+    }
+    if (direction === 4) {
+      nextTile = map[startTile.x][startTile.y - tileCount];
+    }
+
+    if (!nextTile) {
+      densityReached = true;
+    } else {
+      densityReached = nextTile.density ? true : false;
+      tileCount += 1;
+    }
+  }
+
+  return tileCount;
+}
