@@ -41,7 +41,7 @@
 <script>
 import CONST from '../CONST';
 import { mapGetters, mapMutations } from 'vuex';
-import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getDirectionToTile, getTilesInDirectionUntilDense } from '../services/pathfinding';
+import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getCardinalTilesWithoutDensity, getDirectionToTile, getTilesInDirectionUntilDense } from '../services/pathfinding';
 import { processPlacement } from '../services/skillProcesses';
 import { Animation } from '../models/Animation.js';
 import Projectile from './Projectile.vue';
@@ -289,7 +289,7 @@ export default {
         this.inAttackState = true;
         const map = this.isBattling ? this.battleMap : this.map;
         const areaAroundPlayer = returnShallowMapChunk(this.player, map, this.isBattling, skill.range, true);
-        const battleTilesToLight = getCardinalTiles(this.player, areaAroundPlayer, this.isBattling, skill.range);
+        const battleTilesToLight = getCardinalTilesWithoutDensity(this.player, areaAroundPlayer, this.isBattling, skill.range);
 
         if (skill.stepType === 'foot') {
           this.toggleAttackRangeTiles(battleTilesToLight);

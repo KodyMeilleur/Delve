@@ -216,6 +216,75 @@ export function getCardinalTiles(startEntity, map, isBattling, range) {
 }
 
 // CARDINAL MOVEMENT SLICES
+export function getCardinalTilesWithoutDensity(startEntity, map, isBattling, range) {
+  const totalRange = range || startEntity.movement;
+  const tilesToCheck = [];
+  const entityX = isBattling ? startEntity.battleX : startEntity.x;
+  const entityY = isBattling ? startEntity.battleY : startEntity.y;
+  const startX = parseInt(entityX);
+  const startY = parseInt(entityY);
+  let totalMP = totalRange;
+  const gridAdjustmentX = startX - totalMP < 0 ? 0 : startX - totalMP;
+  const gridAdjustmentY = startY - totalMP < 0 ? 0 : startY - totalMP;
+
+  function cardinalCellCheck(cell, lastMPCost) {
+
+      // north
+      if ((cell.x - gridAdjustmentX) - 1 >= 0) {
+        const northCell = map[(cell.x - gridAdjustmentX) - 1][(cell.y - gridAdjustmentY)];
+        const mpRange = (lastMPCost + northCell.mpCost) <= totalMP;
+        if (northCell  && mpRange) {
+          if ((northCell.x === startCell.x && northCell.y === startCell.y) === false) {
+            tilesToCheck.push(northCell);
+            cardinalCellCheck(northCell, lastMPCost + northCell.mpCost);
+          }
+        }
+      }
+      // east
+      if ((cell.y - gridAdjustmentY) + 1 < map[0].length) {
+        const eastCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) + 1];
+        const mpRange = (lastMPCost + eastCell.mpCost) <= totalMP;
+        if (eastCell && mpRange) {
+          if ((eastCell.x === startCell.x && eastCell.y === startCell.y) === false) {
+            tilesToCheck.push(eastCell);
+            cardinalCellCheck(eastCell, lastMPCost + eastCell.mpCost);
+          }
+        }
+      }
+      // south
+      if ((cell.x - gridAdjustmentX) + 1 < map.length) {
+        const southCell = map[(cell.x - gridAdjustmentX) + 1][(cell.y - gridAdjustmentY)];
+        const mpRange = (lastMPCost + southCell.mpCost) <= totalMP;
+        if (southCell && mpRange) {
+          if ((southCell.x === startCell.x && southCell.y === startCell.y) === false) {
+            tilesToCheck.push(southCell);
+            cardinalCellCheck(southCell, lastMPCost + southCell.mpCost);
+          }
+        }
+      }
+      // west
+      if ((cell.y - gridAdjustmentY) - 1 >= 0) {
+        const westCell = map[(cell.x - gridAdjustmentX)][(cell.y - gridAdjustmentY) - 1];
+        const mpRange = (lastMPCost + westCell.mpCost) <= totalMP;
+        if (westCell && mpRange) {
+          if ((westCell.x === startCell.x && westCell.y === startCell.y) === false) {
+            tilesToCheck.push(westCell);
+            cardinalCellCheck(westCell, lastMPCost + westCell.mpCost);
+          }
+        }
+      }
+
+      return false;
+    }
+
+    const startCell = map[startX - gridAdjustmentX][startY - gridAdjustmentY];
+
+    cardinalCellCheck(startCell, 0);
+
+    return tilesToCheck;
+}
+
+// CARDINAL MOVEMENT SLICES
 export function getCardinalDiagonalTiles(startEntity, map, isBattling, range) {
   const totalRange = range || startEntity.movement;
   const tilesToCheck = [];
@@ -445,7 +514,7 @@ export function getTilesInDirectionUntilDense(map, startTile, direction) {
 
   let densityReached = false;
   let tileCount = 0;
-  // 1N 2E 3S 4W
+  // 1N 2E 3S 4WgetCardinalTiles
 
   while (densityReached === false) {
 
