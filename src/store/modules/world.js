@@ -195,10 +195,14 @@ const mutations = {
   },
   //TODO: Will need a search function for finding all tiles within an MP limit
   toggleMovingTiles (state, tilesToLight) {
+
     if (!tilesToLight) {
       state.showMoveTiles = false;
+      state.moveTiles = [];
     } else {
-      state.moveTiles = tilesToLight.map((tile) => {return {x: tile.x, y: tile.y}});
+      state.moveTiles = tilesToLight.map((tile) => {
+        return {x: tile.x, y: tile.y}
+      });
       state.showMoveTiles = true;
     }
   },

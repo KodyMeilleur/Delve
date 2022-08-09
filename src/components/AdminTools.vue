@@ -43,7 +43,6 @@ export default {
       'mergeFirstLandmass',
       'updateFrame',
       'addNewPlayerToGame',
-      'toggleMovingTiles',
       'updateLogs'
     ]),
     ...mapActions('world', [

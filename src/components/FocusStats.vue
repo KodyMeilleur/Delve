@@ -167,8 +167,10 @@ export default {
       this.expanded = !this.expanded;
     },
     frameAdvance (frame) {
-      if (frame % 2 === 0) {
-        this.currentFrame = frame === 4 ? 1 : 0;
+      if (frame === 0) {
+        this.currentFrame = 0;
+      } else if (frame === 3) {
+        this.currentFrame = 1;
       }
     },
     setDevotion (color) {
