@@ -75,6 +75,9 @@ export default {
 
         window.requestAnimFrame(loop);
         frameCount++;
+        if (frameCount >= 4) {
+          frameCount = 0;
+        }
 
         now = Date.now();
         elapsed = now - then;
