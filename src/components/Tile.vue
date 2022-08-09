@@ -105,15 +105,11 @@
           <div>
             <!-- DEMOLISH EFFECT -->
             <div
-            v-if="tile.structure.demolished === true && demolishFrame < 20"
-            v-bind:style="{
-              'background-position': -(65 * demolishFrame) + 'px ' + (0) + 'px',
-              top: (bumpVerticalFramePosition - 5) + 'px',
-              left: (bumpHorizontalFramePosition) + 'px',
-            }"
+            v-if="tile.structure.demolished === true"
             class="demolish-sprite"
             >
             </div>
+            <!-- UNEXPLORED STRUCTURE EFFECT SPRITE -->
             <div
             v-bind:style="{
               top: (bumpVerticalFramePosition - 20) + 'px',
@@ -230,7 +226,6 @@ export default {
       currentSkillData: null,
       yOffset: 0,
       currentFrame: 0,
-      demolishFrame: 0,
       structureEffectDelayList: [],
       moveHighlighted: false,
       bumpVerticalFramePosition: 0,
@@ -399,7 +394,7 @@ export default {
       'showBattleTiles'
     ]),
     structureSprite () {
-      return this.tile.structure.demolished && this.demolishFrame >= 7 ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
+      return this.tile.structure.demolished ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;
     },
     frameStyle () {
       return (-(64 * this.frame) + 'px ' + (0) + 'px')
@@ -439,12 +434,6 @@ export default {
 
       this.frame = frame;
 
-      if (this.tile.structure && this.tile.structure.demolished === true && this.demolishFrame < 20) {
-        this.demolishFrame += 1;
-      }
-
-      const bumpFrames = this.bumpAnimationMap;
-
       const delayOption = this.getRandomIntBetween(0, 1);
       let nextFrame = delayOption ? (this.currentFrame + 1) : this.currentFrame;
       this.currentFrame = this.currentFrame >= this.tile.animationFrames ? 0 : nextFrame;
@@ -460,7 +449,7 @@ export default {
         this.quarterFrame = 0;
       }
 
-      const bFrame = bumpFrames[this.currentFrame];
+      const bFrame = this.bumpAnimationMap[this.currentFrame];
       if (bFrame) {
         this.bumpVerticalFramePosition = bFrame.vertical;
         this.bumpHorizontalFramePosition = bFrame.horizontal;

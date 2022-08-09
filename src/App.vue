@@ -56,35 +56,45 @@ export default {
                 };
       })();
 
-      let secondsPassed;
-      let now;
-      let oldTimeStamp;
-      let frame = 1;
+      // let secondsPassed;
+      // let now;
+      // let oldTimeStamp;
+      let frameCount = 0;
+      let fpsInterval, now, then, elapsed;
+
+
+      // initialize the timer variables and start the animation
+
+      function startAnimating(fps) {
+          fpsInterval = 1000 / fps;
+          then = Date.now();
+          loop();
+      }
 
       const loop = () => {
-        now = new Date().getTime();
-        if (!oldTimeStamp) oldTimeStamp = new Date().getTime();
-
-        // Calculate the number of seconds passed since the last frame
-
-        secondsPassed = (now - oldTimeStamp) / 1000;
-
 
         window.requestAnimFrame(loop);
-        // every 4th of a second?
-        // every 10th of a second?
-        if (secondsPassed > .05) {
-          if (frame === 4) {
-            frame = 1;
-          } else {
-            frame++;
-          }
-          oldTimeStamp = now;
-          this.$root.$emit('frameBump', frame);
+        frameCount++;
+
+        now = Date.now();
+        elapsed = now - then;
+
+        // if enough time has elapsed, draw the next frame
+
+        if (elapsed > fpsInterval) {
+
+            // Get ready for next frame by setting then=now, but also adjust for your
+            // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+            then = now - (elapsed % fpsInterval);
+
+            // Put your drawing code here
+            this.$root.$emit('frameBump', frameCount);
         }
+
+
       };
 
-      loop();
+      startAnimating(15);
     }
   },
   computed: {
