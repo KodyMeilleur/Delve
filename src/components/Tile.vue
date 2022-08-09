@@ -10,6 +10,7 @@
   v-on:mouseover="onMouseOver"
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
+  v-bind:class="{tileZoom: tile.type !== 'Void' && isTop, tileOut: tile.type !== 'Void' && isBottom}"
   >
     <span
       v-if="(this.showMoveTiles && !this.moveHighlighted && this.hover) || (this.hover && this.showMoveTiles && (this.tile.x === this.currentTurn.x && this.tile.y === this.currentTurn.y))"
@@ -111,9 +112,6 @@
             </div>
             <!-- UNEXPLORED STRUCTURE EFFECT SPRITE -->
             <div
-            v-bind:style="{
-              top: (bumpVerticalFramePosition - 20) + 'px',
-            }"
             v-if="tile.structure.explorable && tile.structure.explored === false"
             class="structure-sprite-effect unexplored"
             >
@@ -125,7 +123,7 @@
             'background-image': 'url(' + publicPath + structureSprite + '01' +'.png)',
             'background-position': this.frameStyle,
           }"
-          v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false, tileZoom: isTop, tileOut: isBottom}"
+          v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false}"
           class="structure-sprite"
           >
           </div>
@@ -174,7 +172,6 @@
           'background-image': 'url(' + publicPath + tile.sprite + ')',
           'background-position': (64 * (isBattling ? quarterFrame : currentFrame)) + 'px ' + (0) + 'px',
         }"
-        v-bind:class="{tileZoom: tile.type !== 'Void' && isTop, tileOut: tile.type !== 'Void' && isBottom}"
         class="tile-sprite tile-sprite-img"
         >
         </div>
@@ -576,6 +573,8 @@ export default {
   align-items: center;
   color: rgba(0, 0, 0, 0.1);
   position: relative;
+  min-width: 64px;
+  min-height: 64px;
 }
 /* .tile-component:hover {
   cursor: pointer;
@@ -706,6 +705,7 @@ export default {
   max-height: 64px;
   z-index: 2;
   pointer-events: none;
+  top: -26px;
 }
 .dominion-change, .dominion-sprite {
   width: 64px;
