@@ -1,8 +1,5 @@
 <template>
-  <div v-bind:style="{
-    minWidth: width + 'px',
-    minHeight: height + 'px'
-  }"
+  <div
   class="active tile-component"
   >
   <div
@@ -121,15 +118,13 @@
           v-if="!tile.structure.eventStructure"
           v-bind:style="{
             'background-image': 'url(' + publicPath + structureSprite + '01' +'.png)',
-            'background-position': this.frameStyle,
           }"
-          v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false}"
           class="structure-sprite"
           >
           </div>
         </div>
         <!-- PATHS -->
-        <Paths v-if="!tile.structure" :tile="tile" :bumpVerticalFramePosition="bumpVerticalFramePosition" :isTop="isTop" :isBottom="isBottom"/>
+        <Paths v-if="!tile.structure" :tile="tile" :isTop="isTop" :isBottom="isBottom"/>
         <!-- DOMINIONS -->
         <div class="tile-dominions" v-if="tile.battleTile">
           <div>
@@ -138,7 +133,6 @@
             v-bind:style="{
               'background-position': this.quarterFrameStyle,
               'background-image': 'url(' + publicPath + 'assets/Tiles/Dominions/' + capitalizeString(tile.manaTypeSlotOne) + '/sheet0.png' + ')',
-
             }"
             class="dominion-sprite"
             >
@@ -157,16 +151,6 @@
         </div>
         <!-- EVENT SPRITE -->
         <!-- TODO: Make Event GIF -->
-        <!-- <div
-        v-if="tile.structure && tile.structure.eventStructure || tile.event"
-        v-bind:style="{
-          'background-position': (64 * eventSpriteFrames) + 'px ' + (0) + 'px',
-          top: (bumpVerticalFramePosition - 5) + 'px',
-          left: (bumpHorizontalFramePosition) + 'px',
-        }"
-        class="event-sprite"
-        >
-        </div> -->
         <div
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
