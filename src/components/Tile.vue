@@ -471,7 +471,6 @@ export default {
       }
     },
     skillOnTile () {
-      console.log('wtf');
       this.$root.$emit('applySkillEffect', this.tile);
     },
     exitBattleState() {

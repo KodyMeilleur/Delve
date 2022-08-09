@@ -329,6 +329,8 @@ export default {
             const damage = (playerStatDamage + this.toggledSkill.addedDmg);
 
             this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile, damage, targetedEntity});
+          } else {
+            this.$emit('toggleAttackState', false);
           }
         }
       } else if (this.toggledSkill.nature === 'defensive') {
