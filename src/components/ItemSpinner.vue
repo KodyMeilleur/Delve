@@ -164,7 +164,9 @@ export default {
   z-index: 100;
   top: 0;
   left: 0;
-  animation: createBox .25s;
+  animation: createBox .5s;
+  /* animation: shake 0.5s;
+  animation-iteration-count: 1; */
 }
 .itemSpinner {
   position: absolute;
@@ -248,6 +250,19 @@ export default {
   to {
     transform: scale(1);
   }
+}
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 .unselectable {
   -webkit-touch-callout: none;

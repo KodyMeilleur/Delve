@@ -93,7 +93,7 @@ export default {
   position: absolute;
   z-index: 1;
   position: absolute;
-  top: 30px;
+  top: 0px;
 }
 .path {
   position: absolute;
@@ -105,6 +105,7 @@ export default {
   left: 29px;
   position: absolute;
   z-index: 2;
+  top: 28px;
 }
 .chest {
   z-index: 2;
@@ -112,7 +113,6 @@ export default {
   width: 32px;
   height: 32px;
   left: 16px;
-  top: -28px;
 }
 .horizontal {
   width: 25px;
@@ -124,17 +124,19 @@ export default {
 }
 .NORTH {
   left: 30px;
-  top: -23px;
+  top: 6px;
 }
 .WEST {
   left: 6px;
+  top: 28px;
 }
 .SOUTH {
   left: 30px;
-  top: 3px;
+  bottom: 5px;
 }
 .EAST {
   left: 32px;
+  top: 28px;
 }
 .tileZoom {
   transform: scale(1.01)!important;
