@@ -302,11 +302,11 @@ export default {
         this.clearPlayerMoveState();
       }
     },
-    toggleAttackState () {
-      this.$emit('toggleAttackState');
+    toggleAttackState (bool) {
+      this.$emit('toggleAttackState', bool);
     },
     applySkillEffect(targetedTile) {
-      this.$emit('toggleAttackState');
+      this.$emit('toggleAttackState', true);
       if (this.toggledSkill.nature === 'aggressive') {
 
         const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);

@@ -115,6 +115,7 @@
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
       <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn" :toggleEndMenu="toggleEndMenu" :isMoving="isMoving" :isAttacking="isAttacking"/>
     </div>
+    {{isAttacking}}
   </div>
 </template>
 
@@ -202,8 +203,8 @@ export default {
     toggleMoveState() {
       this.isMoving = !this.isMoving;
     },
-    toggleAttackState() {
-      this.isAttacking = !this.isAttacking;
+    toggleAttackState(bool) {
+      this.isAttacking = bool;
     },
     updatePotentialPath (path) {
       this.potentialPath = path;

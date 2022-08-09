@@ -240,6 +240,7 @@ export default {
       if (monsterID === this.monster.id && this.monster.isDead === false) {
         this.animation = new Animation(2, 'hurt', false);
         this.$root.$emit('damageTaken');
+        this.$emit('toggleAttackState', false);
         const totalDamage = this.handleDamage(damage, skill);
         this.lastDamageSuffered = totalDamage;
         this.monster.hp = (this.monster.hp - totalDamage < 0) ? 0 : this.monster.hp - totalDamage;

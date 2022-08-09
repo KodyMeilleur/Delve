@@ -113,7 +113,7 @@ export default {
           that.$root.$emit('damageTaken');
           setTimeout(() => {
             that.showSplash = false;
-            that.$emit('toggleAttackState');
+            that.$emit('toggleAttackState', false);
             if (that.activeProjectileSkill.targetId) {
               that.$root.$emit('applyMonsterSkillEffect', {monsterID: that.activeProjectileSkill.targetId, skill: that.skill, damage: that.activeProjectileSkill.damage});
             }
