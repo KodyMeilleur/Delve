@@ -111,6 +111,7 @@ export default {
         if (pixelsTraveled >= (tilesToTravel * 64)) {
           that.animationComplete = true;
           that.showSplash = true;
+          that.$root.$emit('damageTaken');
           setTimeout(() => {
             that.showSplash = false;
             console.log(that.activeProjectileSkill);

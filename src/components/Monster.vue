@@ -239,6 +239,7 @@ export default {
     handleSkillEffect({monsterID, damage}) {
       if (monsterID === this.monster.id && this.monster.isDead === false) {
         this.animation = new Animation(2, 'hurt', false);
+        this.$root.$emit('damageTaken');
         this.lastDamageSuffered = damage;
         this.monster.hp = (this.monster.hp - damage < 0) ? 0 : this.monster.hp - damage;
         this.shrinkGrow = true;

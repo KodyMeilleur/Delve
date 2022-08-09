@@ -7,7 +7,12 @@
     class="end-battle-menu">
       <button v-on:click="endBattle">Leave</button>
     </span>
-    <div class="in-world">
+    <div
+    v-bind:class="{
+      'in-world': true,
+      shaking,
+    }"
+    >
       <div class="battle-border">
         <!-- Wall Borders -->
         <div class="north-border">
@@ -156,10 +161,17 @@ export default {
       toggleEndMenu: false,
       isMoving: false,
       activeProjectileSkills: [],
+      shaking: false,
     }
   },
   updated () {
     console.log('BattleLayer render...');
+  },
+  mounted: function() {
+    this.$root.$on('damageTaken', this.shakeEffect);
+  },
+  beforeDestroy() {
+    this.$root.$off('damageTaken', this.shakeEffect);
   },
   computed: {
     ...mapGetters('world', [
@@ -180,6 +192,12 @@ export default {
       'endMonsterTurn',
       'refreshPlayer'
     ]),
+    shakeEffect () {
+      this.shaking = true;
+      setTimeout(() => {
+        this.shaking = false;
+      }, 300)
+    },
     toggleMoveState() {
       console.log('togglemove state');
       this.isMoving = !this.isMoving;
@@ -507,5 +525,24 @@ export default {
   z-index: 2;
   width: 100%;
   height: 100%;
+}
+.shaking {
+  animation: shake 0.5s;
+
+/* When the animation is finished, start again */
+  animation-iteration-count: infinite;
+}
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 </style>
