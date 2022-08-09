@@ -62,7 +62,6 @@ export default {
   watch: {
     activeProjectileSkill: {
       handler (newVal) {
-        console.log(newVal);
         this.skill = newVal.skill;
         this.width = newVal.skill.spriteWidth;
         this.height = newVal.skill.spriteHeight;
@@ -114,7 +113,7 @@ export default {
           that.$root.$emit('damageTaken');
           setTimeout(() => {
             that.showSplash = false;
-            console.log(that.activeProjectileSkill);
+            that.$emit('toggleAttackState');
             if (that.activeProjectileSkill.targetId) {
               that.$root.$emit('applyMonsterSkillEffect', {monsterID: that.activeProjectileSkill.targetId, skill: that.skill, damage: that.activeProjectileSkill.damage});
             }

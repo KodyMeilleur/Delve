@@ -13,7 +13,7 @@
     <div
     v-on:click="useSkill"
     v-if="skill"
-    v-bind:class="{ 'skill-disabled': !canUseSkill || isMoving}"
+    v-bind:class="{ 'skill-disabled': !canUseSkill || isMoving || isAttacking}"
     v-bind:style="{
       'background-image': 'url(' + publicPath + skill.icon,
       /* 'background-position': ((64) * currentFrame) + 'px ' + (0) + 'px', */
@@ -98,6 +98,9 @@ export default {
     },
     isMoving: {
       type: Boolean
+    },
+    isAttacking: {
+      type: Boolean
     }
   },
   data () {
@@ -152,6 +155,7 @@ export default {
       } else if (this.skill && this.skill.costType === 'mp') {
         let canAfford = true;
         canAfford = this.skill.costSlotOne ? (this.heldMana[this.skill.type] >= this.skill.costSlotOne) : true;
+
         if (canAfford) {
           canAfford = this.skill.costSlotTwo ? (this.heldMana[this.skill.typeTwo] >= this.skill.costSlotTwo) : true;
         }

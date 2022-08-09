@@ -103,8 +103,8 @@
         </div>
         <div class="battle-container">
           <div class="battle-entity-layer">
-            <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap" v-on:toggleMoveState="toggleMoveState"/>
-            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn" v-on:monsterDied="countDead"/>
+            <Player v-for="player in players" v-bind:key="player.name" :player="player" :battleMap="currentMap" v-on:toggleMoveState="toggleMoveState" v-on:toggleAttackState="toggleAttackState"/>
+            <Monster v-for="enemy in enemies" v-bind:key="enemy.id" :monster="enemy" v-on:turnEnded="nextMonsterTurn" v-on:monsterDied="countDead" v-on:toggleAttackState="toggleAttackState"/>
             <Projectile v-for="projectile in activeProjectileSkills" v-bind:key="projectile.name" :skill="projectile"/>
           </div>
           <TileLayer :currentMap="currentMap" :map="currentMap" :shouldShow="isBattling"/>
@@ -113,7 +113,7 @@
     </div>
     <div class="battle-controls">
       <BattleHeader :title="isMonsterTurn ? currentMonsterTurn.name : currentBattleTurnEntity && currentBattleTurnEntity.name"/>
-      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn" :toggleEndMenu="toggleEndMenu" :isMoving="isMoving"/>
+      <BattleControls :entity="currentBattleTurnEntity" v-on:cycleBattleTurn="cyclePlayerTurn" :toggleEndMenu="toggleEndMenu" :isMoving="isMoving" :isAttacking="isAttacking"/>
     </div>
   </div>
 </template>
@@ -160,6 +160,7 @@ export default {
       lifeMap: {},
       toggleEndMenu: false,
       isMoving: false,
+      isAttacking: false,
       activeProjectileSkills: [],
       shaking: false,
     }
@@ -199,8 +200,10 @@ export default {
       }, 300)
     },
     toggleMoveState() {
-      console.log('togglemove state');
       this.isMoving = !this.isMoving;
+    },
+    toggleAttackState() {
+      this.isAttacking = !this.isAttacking;
     },
     updatePotentialPath (path) {
       this.potentialPath = path;
@@ -294,8 +297,6 @@ export default {
         };
 
         manaGains[this.currentBattleTurn.discipline] +=1;
-
-        console.log(this.currentBattleTurn);
 
         this.currentMap.forEach((row) => {
           row.forEach((cell) => {

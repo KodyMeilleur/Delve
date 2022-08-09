@@ -34,7 +34,7 @@
     >
     </div>
     <!-- PLAYER PROJECTILES -->
-    <Projectile v-if="player.isBattling" :activeProjectileSkill="activeProjectileSkill"/>
+    <Projectile v-if="player.isBattling" :activeProjectileSkill="activeProjectileSkill" v-on:toggleAttackState="toggleAttackState"/>
   </div>
 </template>
 
@@ -302,7 +302,11 @@ export default {
         this.clearPlayerMoveState();
       }
     },
+    toggleAttackState () {
+      this.$emit('toggleAttackState');
+    },
     applySkillEffect(targetedTile) {
+      this.$emit('toggleAttackState');
       if (this.toggledSkill.nature === 'aggressive') {
 
         const attackDirection = getDirectionToTile(this.player, targetedTile, this.isBattling);
@@ -312,7 +316,6 @@ export default {
 
           const playerStatDamage = Math.floor(this.player[this.toggledSkill.baseDmg] * (1/4));
           const damage = (playerStatDamage + this.toggledSkill.addedDmg);
-
           // TODO: Add projectile moving logic
           this.projectileAnimation(targetedTile, damage);
         }

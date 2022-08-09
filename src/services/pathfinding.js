@@ -520,7 +520,7 @@ export function getTilesInDirectionUntilDense(map, startTile, direction) {
   while (densityReached === false) {
 
     let nextTile;
-    
+
     if (direction === 1) {
       nextTile = map[startTile.x - tileCount] && map[startTile.x - tileCount][startTile.y];
     }
@@ -538,7 +538,6 @@ export function getTilesInDirectionUntilDense(map, startTile, direction) {
       densityReached = true;
     } else {
       densityReached = nextTile.density ? true : false;
-      console.log(nextTile);
       if (densityReached && nextTile.monsters.length) {
         monsterId = nextTile.monsters[0].id;
       }

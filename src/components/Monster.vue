@@ -236,15 +236,27 @@ export default {
         this.$emit('turnEnded'); // trigger event on the current instance
       }
     },
-    handleSkillEffect({monsterID, damage}) {
+    handleSkillEffect({monsterID, damage, skill}) {
       if (monsterID === this.monster.id && this.monster.isDead === false) {
         this.animation = new Animation(2, 'hurt', false);
         this.$root.$emit('damageTaken');
-        this.lastDamageSuffered = damage;
-        this.monster.hp = (this.monster.hp - damage < 0) ? 0 : this.monster.hp - damage;
+        const totalDamage = this.handleDamage(damage, skill);
+        this.lastDamageSuffered = totalDamage;
+        this.monster.hp = (this.monster.hp - totalDamage < 0) ? 0 : this.monster.hp - totalDamage;
         this.shrinkGrow = true;
         this.deathCheck();
       }
+    },
+    handleDamage(damage, skill) {
+      let totalDamage = 0;
+      if (skill.baseDmg === 'intelligence') {
+        totalDamage = (damage - this.monster.arcana);
+      }
+      if (skill.baseDmg === 'might') {
+        totalDamage = (damage - this.monster.toughness);
+      }
+
+      return totalDamage;
     },
     deathCheck () {
       if (this.monster.hp <= 0) {

@@ -128,7 +128,7 @@
           v-if="!tile.structure.eventStructure"
           v-bind:style="{
             'background-image': 'url(' + publicPath + structureSprite + '01' +'.png)',
-            'background-position': (64 * currentFrame) + 'px ' + (0) + 'px',
+            'background-position': this.frameStyle,
             top: (bumpVerticalFramePosition + tile.structure.structureVerticalOffset) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
