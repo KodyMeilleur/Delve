@@ -17,7 +17,6 @@
 <script>
 import CONST from '../CONST';
 import Tile from './Tile.vue';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'TileLayer',
@@ -43,11 +42,6 @@ export default {
   },
   updated () {
     console.log('TileLayer render...');
-  },
-  computed: {
-    ...mapGetters('world', [
-      'isBattling',
-    ])
   },
   methods: {
     updatePotentialPath (path) {

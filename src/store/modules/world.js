@@ -36,6 +36,7 @@ const state = () => ({
   showBattleTiles: false,
   eventCountdown: CONST.eventCountdown,
   emptyTileList: [],
+  itemSpinnerGoing: false,
 })
 
 // getters
@@ -48,6 +49,9 @@ const getters = {
   },
   isBattling: (state) => {
     return state.isBattling;
+  },
+  itemSpinnerGoing: (state) => {
+    return state.itemSpinnerGoing;
   },
   battleTile: (state) => {
     return state.battleTile;
@@ -167,6 +171,9 @@ const mutations = {
   },
   togglePlayerShop (state, {player, status}) {
     player.inShop = status;
+  },
+  toggleItemSpinner (state, bool) {
+    state.itemSpinnerGoing = bool;
   },
   sellPlayerItem (state, {player, merch}) {
     const inventory = player.items;

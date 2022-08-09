@@ -3,7 +3,7 @@
   class="active tile-component"
   >
   <div
-  v-if="shouldShow"
+  v-if="shouldShow && !itemSpinnerGoing"
   v-on:mouseover="onMouseOver"
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
@@ -367,7 +367,8 @@ export default {
       'rangeTiles',
       'showMoveTiles',
       'isBattling',
-      'showBattleTiles'
+      'showBattleTiles',
+      'itemSpinnerGoing'
     ]),
     structureSprite () {
       return this.tile.structure.demolished ? this.tile.structure.demolishedSprite : this.tile.structure.sprite;

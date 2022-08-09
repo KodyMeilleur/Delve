@@ -1,65 +1,72 @@
 <template>
   <div
-  v-if="showSpinner"
-  class="itemSpinner unselectable"
-  >
-  <div class="spinner-text"></div>
-  <div
-    v-if="this.potentialItems.length"
-    class="potentialItems"
+    v-if="showSpinner"
+    class="item-spinner-bg"
   >
     <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[0].sprite,
-    }"
-    class="potential-item potential-item-1">
+      class="itemSpinner unselectable"
+    >
+    <div class="spinner-text"></div>
+    <div
+      v-if="this.potentialItems.length"
+      class="potentialItems"
+    >
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[0].sprite,
+      }"
+      class="potential-item potential-item-1">
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[1].sprite,
+      }"
+      class="potential-item potential-item-2">
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[2].sprite,
+      }"
+      class="potential-item potential-item-3">
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[3].sprite,
+      }"
+      class="potential-item potential-item-4">
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[4].sprite,
+      }"
+      class="potential-item potential-item-5">
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[5].sprite,
+      }"
+      class="potential-item potential-item-6">
+      </div>
+      <div
+      v-bind:style="{
+        'background-image': 'url(' + publicPath + potentialItems[6].sprite,
+      }"
+      class="potential-item potential-item-7">
+      </div>
+      <div
+        v-bind:style="{
+          'background-image': 'url(' + publicPath + potentialItems[7].sprite,
+        }"
+        class="potential-item potential-item-8"
+      >
+      </div>
     </div>
     <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[1].sprite,
-    }"
-    class="potential-item potential-item-2">
-    </div>
-    <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[2].sprite,
-    }"
-    class="potential-item potential-item-3">
-    </div>
-    <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[3].sprite,
-    }"
-    class="potential-item potential-item-4">
-    </div>
-    <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[4].sprite,
-    }"
-    class="potential-item potential-item-5">
-    </div>
-    <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[5].sprite,
-    }"
-    class="potential-item potential-item-6">
-    </div>
-    <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[6].sprite,
-    }"
-    class="potential-item potential-item-7">
-    </div>
-    <div
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + potentialItems[7].sprite,
-    }"
-    class="potential-item potential-item-8">
+      ref="spinner"
+      class="pointer"
+    >
     </div>
   </div>
-  <div
-  ref="spinner"
-  class="pointer"></div>
 </div>
 </template>
 
@@ -87,9 +94,11 @@ export default {
   methods: {
     ...mapMutations('world', [
       'addItemsToInventory',
+      'toggleItemSpinner',
     ]),
     openSpinner () {
       const that = this;
+      this.toggleItemSpinner(true);
       this.showSpinner = true;
 
       setTimeout(() => {
@@ -126,6 +135,7 @@ export default {
           that.selectedItem = values[Math.floor(((angle / 360) * values.length) - 0.20)];
           that.$root.$emit('lootAdded', {items: [ that.selectedItem ]});
           that.showSpinner = false;
+          that.toggleItemSpinner(false);
           that.$root.$emit('playerDelay', false);
           return;
         } else {
@@ -146,10 +156,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.itemSpinner {
+.item-spinner-bg {
+  width: 896px;
+  height: 576px;
+  background-image: url(/assets/hudSprites/uiSpinnerBackground.png);
   position: sticky;
-  left: 415px;
-  top: 140px;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  animation: createBox .25s;
+}
+.itemSpinner {
+  position: absolute;
+  left: 385px;
+  top: 210px;
   width: 128px;
   height: 128px;
   background-color: transparent;
@@ -220,6 +240,14 @@ export default {
 .potential-item-8 {
   left: 32px;
   top: 5px;
+}
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 .unselectable {
   -webkit-touch-callout: none;
