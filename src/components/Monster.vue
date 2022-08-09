@@ -150,6 +150,7 @@ export default {
       }
     },
     setEntity () {
+      console.log('fuck u');
       this.$root.$emit('clearPlayerMoveState');
       this.$root.$emit('clearAttackState');
       if (this.showBattleTiles) {

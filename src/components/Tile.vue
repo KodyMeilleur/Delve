@@ -10,7 +10,7 @@
   v-on:mouseover="onMouseOver"
   v-on:mouseleave="onMouseExit"
   v-on:click="setEntity"
-  v-bind:class="{tileZoom: tile.type !== 'Void' && isTop, tileOut: tile.type !== 'Void' && isBottom}"
+  v-bind:class="{tileZoom: tile.type !== 'Void' && isTop && isBattling === false, tileOut: tile.type !== 'Void' && isBottom && isBattling === false}"
   >
     <span
       v-if="(this.showMoveTiles && !this.moveHighlighted && this.hover) || (this.hover && this.showMoveTiles && (this.tile.x === this.currentTurn.x && this.tile.y === this.currentTurn.y))"
@@ -486,6 +486,7 @@ export default {
       }
     },
     skillOnTile () {
+      console.log('wtf');
       this.$root.$emit('applySkillEffect', this.tile);
     },
     exitBattleState() {
@@ -625,7 +626,7 @@ export default {
 .attack-highlighted {
   width: 100%;
   height: 100%;
-  z-index: 9;
+  z-index: 20;
   position: absolute;
   left: 0;
   background-image: url('/assets/hudSprites/battleHighlightSheet.png');
