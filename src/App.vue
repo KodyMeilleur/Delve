@@ -74,10 +74,6 @@ export default {
       const loop = () => {
 
         window.requestAnimFrame(loop);
-        frameCount++;
-        if (frameCount >= 4) {
-          frameCount = 0;
-        }
 
         now = Date.now();
         elapsed = now - then;
@@ -86,6 +82,11 @@ export default {
 
         if (elapsed > fpsInterval) {
 
+          frameCount += 1;
+
+          if (frameCount > 3) {
+            frameCount = 0;
+          }
             // Get ready for next frame by setting then=now, but also adjust for your
             // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
             then = now - (elapsed % fpsInterval);

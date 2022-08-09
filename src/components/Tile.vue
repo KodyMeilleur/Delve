@@ -113,7 +113,6 @@
             <div
             v-bind:style="{
               top: (bumpVerticalFramePosition - 20) + 'px',
-              left: (bumpHorizontalFramePosition) + 'px',
             }"
             v-if="tile.structure.explorable && tile.structure.explored === false"
             class="structure-sprite-effect unexplored"
@@ -125,8 +124,6 @@
           v-bind:style="{
             'background-image': 'url(' + publicPath + structureSprite + '01' +'.png)',
             'background-position': this.frameStyle,
-            top: (bumpVerticalFramePosition + tile.structure.structureVerticalOffset) + 'px',
-            left: (bumpHorizontalFramePosition) + 'px',
           }"
           v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false, tileZoom: isTop, tileOut: isBottom}"
           class="structure-sprite"
@@ -134,7 +131,7 @@
           </div>
         </div>
         <!-- PATHS -->
-        <Paths v-if="!tile.structure" :tile="tile" :bumpVerticalFramePosition="bumpVerticalFramePosition"/>
+        <Paths v-if="!tile.structure" :tile="tile" :bumpVerticalFramePosition="bumpVerticalFramePosition" :isTop="isTop" :isBottom="isBottom"/>
         <!-- DOMINIONS -->
         <div class="tile-dominions" v-if="tile.battleTile">
           <div>
@@ -176,8 +173,6 @@
         v-bind:style="{
           'background-image': 'url(' + publicPath + tile.sprite + ')',
           'background-position': (64 * (isBattling ? quarterFrame : currentFrame)) + 'px ' + (0) + 'px',
-          top: (tile.type === 'Void' || tile.battleTile ? 0 : bumpVerticalFramePosition) + 'px',
-          left: (tile.type === 'Void' ? 0 : bumpHorizontalFramePosition) + 'px',
         }"
         v-bind:class="{tileZoom: tile.type !== 'Void' && isTop, tileOut: tile.type !== 'Void' && isBottom}"
         class="tile-sprite tile-sprite-img"

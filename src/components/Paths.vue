@@ -1,12 +1,16 @@
 <template>
-  <div class="paths unselectable">
+  <div
+    v-bind:class="{tileZoom: isTop, tileOut: isBottom}"
+    class="paths unselectable"
+  >
     <div
     v-if="tile.itemCharged === true"
     v-bind:style="{
       'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/chest.gif)',
       top: (bumpVerticalFramePosition + 5) + 'px',
     }"
-    class="chest"></div>
+    class="chest">
+    </div>
     <span>
       <div
       v-if="tile.type !== 'Void' && tile.battleTile === false && !tile.itemCharged && !tile.moneycharged"
@@ -67,7 +71,13 @@ export default {
     },
     bumpVerticalFramePosition: {
       default: 0
-    }
+    },
+    isTop: {
+      type: Boolean
+    },
+    isBottom: {
+      type: Boolean
+    },
   },
   data () {
     return {
@@ -95,6 +105,11 @@ export default {
 .path {
   position: absolute;
   z-index: 1;
+}
+.paths {
+  z-index: 1;
+  position: absolute;
+  top: 6px;
 }
 .pathSlot, .pathSlotAlternate {
   width: 6px;
@@ -129,6 +144,14 @@ export default {
 }
 .EAST {
   left: 32px;
+}
+.tileZoom {
+  transform: scale(1.01)!important;
+  top: 7px;
+}
+.tileOut {
+  transform: scale(0.99)!important;
+  top: 5px;
 }
 .unselectable {
   -webkit-touch-callout: none;
