@@ -749,10 +749,10 @@ export default {
   background-image: url('/assets/Tiles/Outworld/Sections/Status/Unexplored/sheet.gif');
 }
 .tileZoom {
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 .tileOut {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 @keyframes fadeIn {
   0% { opacity: 0; }
