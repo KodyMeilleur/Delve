@@ -28,7 +28,7 @@ export const SKILL_TYPES = {
 
 export const MeleeAttack = {
   name: 'Melee Attack',
-  animation: '1hAttack',
+  animation: 'Attack',
   animationFrames: 4,
   type: NEUTRAL,
   typeTwo: null,
@@ -51,7 +51,7 @@ export const MeleeAttack = {
 
 export const SculptEarth = {
   name: 'Sculpt Earth',
-  animation: 'Cast',
+  animation: 'homingCast',
   type: GREEN,
   typeTwo: null,
   baseDmg: 'intelligence',
@@ -81,7 +81,7 @@ export const SculptEarth = {
 
 export const Thunder = {
   name: 'Thunder',
-  animation: 'Cast',
+  animation: 'homingCast',
   type: BLUE,
   typeTwo: null,
   baseDmg: 'intelligence',
@@ -110,12 +110,12 @@ export const Thunder = {
 
 export const Fireball = {
   name: 'Fireball',
-  animation: 'Cast',
+  animation: 'directionCast',
   type: RED,
   typeTwo: null,
   baseDmg: 'intelligence',
   addedDmg: 5,
-  animationFrames: 5,
+  animationFrames: 2,
   costType: 'mp',
   costSlotOne: 1,
   costSlotTwo: 0,
@@ -125,6 +125,7 @@ export const Fireball = {
   placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
   icon: 'assets/Icons/Skills/Red/fireball.png',
   effectSprite: 'assets/Spells/Red/fireBall/sheet.gif',
+  splashSprite: 'assets/Spells/Red/fireBall/splash.gif',
   projectileClass: 'small',
   spriteWidth: 32,
   spriteHeight: 32,
@@ -140,7 +141,7 @@ export const Fireball = {
 
 export const Reforestation = {
   name: 'Reforestation',
-  animation: 'Cast',
+  animation: 'homingCast',
   animationFrames: 5,
   type: GREEN,
   typeTwo: null,

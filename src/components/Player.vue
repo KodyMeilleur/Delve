@@ -309,8 +309,12 @@ export default {
         this.movingDirection = attackDirection.direction;
 
         if (this.toggledSkill.stepType === 'projectile') {
+
+          const playerStatDamage = Math.floor(this.player[this.toggledSkill.baseDmg] * (1/4));
+          const damage = (playerStatDamage + this.toggledSkill.addedDmg);
+
           // TODO: Add projectile moving logic
-          this.projectileAnimation(targetedTile);
+          this.projectileAnimation(targetedTile, damage);
         }
         if (this.toggledSkill.stepType === 'foot') {
 
@@ -320,11 +324,8 @@ export default {
             // TODO: ADD WEAPON DAMAGE AND EXTRA DAMAGE TO THIS FORMULA
             const playerStatDamage = Math.floor(this.player[this.toggledSkill.baseDmg] * (1/4));
             const damage = (playerStatDamage + this.toggledSkill.addedDmg);
-            this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
 
-            if (this.toggledSkill.effectSprite) {
-              this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile, damage, targetedEntity});
-            }
+            this.$root.$emit('applyTileSkillEffect', {skill: this.toggledSkill, tile: targetedTile, damage, targetedEntity});
           }
         }
       } else if (this.toggledSkill.nature === 'defensive') {
@@ -332,6 +333,7 @@ export default {
       } else if (this.toggledSkill.nature === 'placement') {
         processPlacement(this.toggledSkill, targetedTile, this.player.id, this.player.name);
       }
+      this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
       this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
       this.applyManaGains();
       this.clearAttackState();
@@ -394,10 +396,12 @@ export default {
     setPlayerDelay (bool) {
       this.delayed = bool;
     },
-    projectileAnimation(targetTile) {
-      const tileCount = getTilesInDirectionUntilDense(this.battleMap, targetTile, this.movingDirection);
+    projectileAnimation(targetTile, damage) {
+      const tileInfo = getTilesInDirectionUntilDense(this.battleMap, targetTile, this.movingDirection);
+      const tileCount = tileInfo.tileCount;
+      const targetId = tileInfo.monsterId;
 
-      this.activeProjectileSkill = ({skill: this.toggledSkill, direction: this.movingDirection, tileCount});
+      this.activeProjectileSkill = ({skill: this.toggledSkill, direction: this.movingDirection, tileCount, targetId, damage});
     }
   },
   computed: {

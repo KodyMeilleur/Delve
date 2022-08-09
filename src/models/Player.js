@@ -40,12 +40,12 @@ export function DefaultPlayer(name, x, y) {
   this.movement = 3; // moving points
 
   this.heldMana = {
-    'RED': 0,
-    'BLUE': 0,
-    'GREEN': 0,
-    'WHITE': 0,
-    'BLACK': 0,
-    'PURPLE': 0,
+    'RED': 99,
+    'BLUE': 99,
+    'GREEN': 99,
+    'WHITE': 99,
+    'BLACK': 99,
+    'PURPLE': 99,
     'NEUTRAL': 0
   }
 
@@ -54,7 +54,7 @@ export function DefaultPlayer(name, x, y) {
   this.maxHp = CONST.defaultHP;
   this.might = CONST.defaultStartingStat;
   this.toughness = CONST.defaultStartingStat;
-  this.intelligence = 99;
+  this.intelligence = 10;
   this.arcana = CONST.defaultStartingStat;
 
   // DEVOTION POINTS ARE FOR DEFAULT HELD MANA, GRANTED EVERY X LEVEL
