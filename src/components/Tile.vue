@@ -132,7 +132,7 @@
             top: (bumpVerticalFramePosition + tile.structure.structureVerticalOffset) + 'px',
             left: (bumpHorizontalFramePosition) + 'px',
           }"
-          v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false}"
+          v-bind:class="{ unexplored: tile.structure.explorable && tile.structure.explored === false, tileZoom: isTop, tileOut: isBottom}"
           class="structure-sprite"
           >
           </div>
@@ -183,6 +183,7 @@
           top: (tile.type === 'Void' || tile.battleTile ? 0 : bumpVerticalFramePosition) + 'px',
           left: (tile.type === 'Void' ? 0 : bumpHorizontalFramePosition) + 'px',
         }"
+        v-bind:class="{tileZoom: tile.type !== 'Void' && isTop, tileOut: tile.type !== 'Void' && isBottom}"
         class="tile-sprite tile-sprite-img"
         >
         </div>
@@ -238,6 +239,8 @@ export default {
       travelPath: null,
       potentialPath: false,
       showCurrentEffect: false,
+      isTop: false,
+      isBottom: false,
       bumpAnimationMap : {
         // pixels to bump by on frame
         0: {
@@ -461,6 +464,19 @@ export default {
       if (bFrame) {
         this.bumpVerticalFramePosition = bFrame.vertical;
         this.bumpHorizontalFramePosition = bFrame.horizontal;
+
+        if (bFrame.vertical === -7) {
+          this.isTop = true;
+        } else {
+          this.isTop = false;
+        }
+
+        if (bFrame.vertical === -5) {
+          this.isBottom = true;
+        } else {
+          this.isBottom = false;
+        }
+
       } else {
         this.bumpVerticalFramePosition = 0;
         this.bumpHorizontalFramePosition = 0;
@@ -746,6 +762,12 @@ export default {
 }
 .unexplored {
   background-image: url('/assets/Tiles/Outworld/Sections/Status/Unexplored/sheet.gif');
+}
+.tileZoom {
+  transform: scale(1.02);
+}
+.tileOut {
+  transform: scale(0.98);
 }
 @keyframes fadeIn {
   0% { opacity: 0; }
