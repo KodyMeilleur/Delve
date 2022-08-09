@@ -335,6 +335,7 @@ export default {
         console.log('defense');
       } else if (this.toggledSkill.nature === 'placement') {
         processPlacement(this.toggledSkill, targetedTile, this.player.id, this.player.name);
+        this.$emit('toggleAttackState', false);
       }
       this.animation = new Animation(this.toggledSkill.animationFrames, this.toggledSkill.animation, false);
       this.applySkillEffectsOnPlayer({player: this.player, skill: this.toggledSkill});
