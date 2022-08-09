@@ -20,7 +20,7 @@
       <div
       v-if="tile.itemCharged || tile.moneycharged"
       v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'activePathSlot.png)',
+        'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'activePathSlot.gif)',
       }"
       class="pathSlotAlternate"></div>
     </span>
