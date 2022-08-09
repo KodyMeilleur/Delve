@@ -3,6 +3,7 @@
   v-if="showSpinner"
   class="itemSpinner unselectable"
   >
+  <div class="spinner-text"></div>
   <div
     v-if="this.potentialItems.length"
     class="potentialItems"
@@ -148,7 +149,7 @@ export default {
 .itemSpinner {
   position: sticky;
   left: 415px;
-  top: 125px;
+  top: 140px;
   width: 128px;
   height: 128px;
   background-color: transparent;
@@ -170,7 +171,14 @@ export default {
   top: 14px;
   transform-origin: bottom center;
 }
-
+.spinner-text {
+  top: -40px;
+  left: -45px;
+  width: 220px;
+  height: 128px;
+  background-image: url(/assets/hudSprites/spinnerGraphicItems.gif);
+  position: absolute;
+}
 .potential-item  {
   position: absolute;
   width: 32px;
