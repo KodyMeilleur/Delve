@@ -116,6 +116,7 @@ export const Fireball = {
   baseDmg: 'intelligence',
   addedDmg: 12,
   animationFrames: 2,
+  splashDelay: 750,
   costType: 'mp',
   costSlotOne: 1,
   costSlotTwo: 0,

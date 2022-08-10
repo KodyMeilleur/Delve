@@ -117,7 +117,7 @@ export default {
             if (that.activeProjectileSkill.targetId) {
               that.$root.$emit('applyMonsterSkillEffect', {monsterID: that.activeProjectileSkill.targetId, skill: that.skill, damage: that.activeProjectileSkill.damage});
             }
-          }, 400);
+          }, that.skill.splashDelay);
 
           return;
         } else {
