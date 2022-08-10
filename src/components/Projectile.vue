@@ -77,7 +77,7 @@ export default {
       const travelDirection = this.activeProjectileSkill.direction;
       this.direction = travelDirection;
       const projectileElem = this.$refs.skillSprite;
-      const stepSize = 4;
+      const stepSize = 8;
       const tilesToTravel = this.activeProjectileSkill.tileCount;
       let pixelsTraveled = 0;
       let xPosition = 0;
@@ -85,7 +85,7 @@ export default {
 
       function doAnimation() {
 
-        pixelsTraveled += (stepSize * 2);
+        pixelsTraveled += (stepSize);
 
         if (travelDirection === 1) {
           xPosition = 0;
@@ -107,7 +107,7 @@ export default {
         projectileElem.style.transform = 'translate3d(' + `${xPosition}px, ${yPosition}px, 0px)`;
 
         // stop animation if total pixels traveled completed
-        if (pixelsTraveled >= (tilesToTravel * 64)) {
+        if (pixelsTraveled >= (tilesToTravel * 64) - 32) {
           that.animationComplete = true;
           that.showSplash = true;
           that.$root.$emit('damageTaken');
@@ -117,7 +117,7 @@ export default {
             if (that.activeProjectileSkill.targetId) {
               that.$root.$emit('applyMonsterSkillEffect', {monsterID: that.activeProjectileSkill.targetId, skill: that.skill, damage: that.activeProjectileSkill.damage});
             }
-          }, 300);
+          }, 400);
 
           return;
         } else {
@@ -170,20 +170,20 @@ export default {
   left: -25px;
 }
 .east-splash {
-  left: -40px;
+  left: -26px;
 }
 .west-splash {
-  left: 40px;
+  left: 26px;
   transform: rotate(180deg);
 }
 .north-splash {
-  top: 30px;
+  top: 26px;
   left: 0;
   transform: rotate(270deg);
 }
 .south-splash {
-  bottom: -5px;
-  transform: rotate(270deg);
+  bottom: -26px;
+  transform: rotate(90deg);
   left: 0;
 }
 </style>

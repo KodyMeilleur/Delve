@@ -536,6 +536,7 @@ export function getTilesInDirectionUntilDense(map, startTile, direction) {
 
     if (!nextTile) {
       densityReached = true;
+      tileCount++;
     } else {
       densityReached = nextTile.density ? true : false;
       if (densityReached && nextTile.monsters.length) {
