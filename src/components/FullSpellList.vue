@@ -2,7 +2,9 @@
   <div class="spellbook-ui"
   >
   <div class="spellbook-sprite" v-on:click="toggle"></div>
-  <div class="spellbook-menu" v-if="expanded">
+  <div
+  v-bind:class="{ 'battle-menu': isBattling}"
+  class="spellbook-menu" v-if="expanded">
     <div class="close-sprite" v-on:click="toggle"></div>
     <div class="spell-tabs">
       <div
@@ -86,10 +88,13 @@ export default {
   computed: {
     ...mapGetters('world', [
       'currentBattleTurn',
+      'isBattling',
+      'currentTurn',
     ]),
     filteredSpellList: function() {
-      if (this.currentBattleTurn.skills) {
-        return this.currentBattleTurn.skills[this.filterString];
+      const entity = this.isBattling ? this.currentBattleTurn : this.currentTurn;
+      if (entity.skills) {
+        return entity.skills[this.filterString];
       }
 
       return [];
@@ -112,16 +117,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.inventory-ui {
-  position: sticky;
-  left: 275px;
-  top: 510px;
-  background-color: transparent;
-  z-index: 11;
-  font-variant: small-caps;
-  font-family: system-ui;
-  float: right;
-  margin-right: 578px;
+.spellbook-ui {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 .spellbook-sprite {
   background-image: url('/assets/hudSprites/spellBookIconAnimated.gif');
@@ -129,8 +129,9 @@ export default {
   height: 128px;
   cursor: pointer;
   position: absolute;
-  right: 0;
+  right: -40px;
   z-index: 4;
+  top: -60px;
 }
 .spellbook-sprite:hover, .close-sprite:hover, .spell-type:hover {
   transform: scale(1.1,1.1);
@@ -144,9 +145,13 @@ export default {
   height: 384px;
   background-image: url('/assets/hudSprites/spellBookBackground.png');
   position: absolute;
-  top: -395px;
-  left: 255px;
+  top: -412px;
+  left: -478px;
   animation: createBox .25s;
+}
+.spellbook-menu.battle-menu {
+  top: -455px;
+  left: -436px;
 }
 @keyframes createBox {
   from {

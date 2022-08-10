@@ -34,6 +34,12 @@
         >
         </div>
         <div
+          v-if="!isBattling"
+          class="spellbook-container"
+        >
+          <Spellbook />
+        </div>
+        <div
         v-bind:class="{
           shaking,
         }"
@@ -62,6 +68,7 @@ import BattleLayer from './BattleLayer.vue';
 import EntityLayer from './EntityLayer.vue';
 import TileLayer from './TileLayer.vue';
 import ItemSpinner from './ItemSpinner.vue';
+import Spellbook from './FullSpellList.vue';
 import CONST from '../CONST';
 
 export default {
@@ -81,6 +88,7 @@ export default {
     Header,
     Dwelling,
     ItemSpinner,
+    Spellbook
   },
   mounted () {
     this.$root.$on('shakeWorld', this.shakeEffect);
@@ -226,6 +234,18 @@ export default {
   transform: scale(1.1,1.1);
   background-image: url('/assets/hudSprites/centerIconFocus.png');
 
+}
+.spellbook-container {
+  position: sticky;
+  top: 519px;
+  background-color: transparent;
+  float: right;
+  width: 31px;
+  height: 32px;
+  z-index: 11;
+  bottom: 12px;
+  left: 825px;
+  cursor: pointer;
 }
 .shaking {
   animation: shake 0.5s;

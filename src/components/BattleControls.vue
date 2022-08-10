@@ -98,7 +98,7 @@
         {{entity.heldMana.PURPLE}}
       </div>
     </div>
-    <div class="all-spells">
+    <div class="spellbook-container">
       <Spellbook />
     </div>
   </div>
@@ -331,8 +331,15 @@ export default {
   left: 124px;
   top: 15px;
 }
-.stat-container {
-
+.spellbook-container {
+  position: absolute;
+  top: 55px;
+  background-color: transparent;
+  width: 31px;
+  height: 32px;
+  z-index: 11;
+  left: 692px;
+  cursor: pointer;
 }
 .battle-skills {
   display: flex;
