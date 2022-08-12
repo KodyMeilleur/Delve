@@ -45,7 +45,7 @@
         }"
         >
           <div class="entities" v-if="isBattling === false">
-            <EntityLayer :key="JSON.stringify(map[0])"/>
+            <EntityLayer :key="Math.random()"/>
           </div>
           <TileLayer :map="map" :shouldShow="!isBattling"/>
         </div>
@@ -78,7 +78,6 @@ export default {
   ],
   components: {
     SelectedEntity,
-    // Log,
     BattleLayer,
     EntityLayer,
     TileLayer,

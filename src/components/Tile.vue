@@ -6,7 +6,7 @@
   v-if="shouldShow && !itemSpinnerGoing"
   v-on:mouseover="onMouseOver"
   v-on:mouseleave="onMouseExit"
-  v-on:click="setEntity"
+  v-on:click.stop="setEntity"
   v-bind:class="{tileZoom: tile.type !== 'Void' && isTop && isBattling === false, tileOut: tile.type !== 'Void' && isBottom && isBattling === false}"
   >
     <span
@@ -178,6 +178,9 @@ export default {
       default: {},
     },
     battleMap: {
+      default: null
+    },
+    map: {
       default: null
     }
   },
@@ -356,7 +359,6 @@ export default {
   },
   computed: {
       ...mapGetters('world', [
-      'map',
       'leftOffset',
       'topOffset',
       'focusedEntity',
@@ -456,7 +458,9 @@ export default {
       if (this.showMoveTiles) {
         this.toggleMovingTiles();
       } else {
-        this.$root.$emit('clearAttackState');
+        if (this.isBattling) {
+          this.$root.$emit('clearAttackState');
+        }
         this.setfocusedEntity(this.tile);
       }
     },

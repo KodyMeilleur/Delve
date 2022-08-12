@@ -4,6 +4,7 @@
   class="landmass">
     <div class="row" v-for="row in map" v-bind:key="row.length + Math.random()">
       <Tile v-for="cell in row"
+        :map="map"
         :battleMap="currentMap"
         :tile="cell"
         v-on:potentialPathCalc="updatePotentialPath"
