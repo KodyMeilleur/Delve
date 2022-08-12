@@ -3,12 +3,12 @@
     <AdminTools />
     <div class="banner">
     </div>
-    <World msg="Delve"/>
+    <World />
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState, mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 
 import World from './components/World.vue';
 import AdminTools from './components/AdminTools.vue';
@@ -32,9 +32,6 @@ export default {
   methods: {
     ...mapMutations('world', [
       'setMap',
-      'updateMove',
-      'updateMonsterMove',
-      'updatePlayerAnimations',
     ]),
     initializeWorld () {
       const defaultRowAndColumnCount = CONST.defaultRowAndColumnCount;
@@ -101,18 +98,6 @@ export default {
       startAnimating(60);
     }
   },
-  computed: {
-      ...mapState('world', {
-        world: state => state.map,
-      }),
-      ...mapGetters('world', [
-        'currentTurn',
-        'isMoving',
-        'isMonsterMoving',
-        'players',
-        'monsters',
-      ])
-  }
 }
 </script>
 
