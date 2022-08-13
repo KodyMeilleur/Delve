@@ -124,7 +124,7 @@
           </div>
         </div>
         <!-- PATHS -->
-        <Paths v-if="!tile.structure" :tile="tile" :isTop="isTop" :isBottom="isBottom"/>
+        <Paths v-if="!tile.structure" :tile="tile"/>
         <!-- DOMINIONS -->
         <div class="tile-dominions" v-if="tile.battleTile">
           <div>
@@ -387,7 +387,6 @@ export default {
       'setfocusedEntity',
       'setfocusedEntityOverride',
       'setPath',
-      'updateLogs',
       'toggleMovingTiles',
       'toggleAttackRangeTiles',
       'toggleProjectileTiles'
@@ -471,7 +470,6 @@ export default {
       if (this.travelPath) {
         this.setPath({entity: this.isBattling ? this.currentBattleTurn : this.currentTurn, path: this.travelPath});
         this.$emit('clearPotentialPath');
-        this.updateLogs(`${this.currentTurn.name} is on the move.`);
       }
     },
     skillOnTile () {
