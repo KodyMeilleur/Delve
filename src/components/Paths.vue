@@ -1,27 +1,17 @@
 <template>
   <div
-    v-bind:class="{tileZoom: isTop, tileOut: isBottom}"
     class="paths unselectable"
   >
     <div
     v-if="tile.itemCharged === true"
-    v-bind:style="{
-      'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/chest.gif)',
-    }"
     class="chest">
     </div>
     <span>
       <div
       v-if="tile.type !== 'Void' && tile.battleTile === false && !tile.itemCharged && !tile.moneycharged"
-      v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'emptyPathSlot.png)',
-      }"
       class="pathSlot"></div>
       <div
       v-if="tile.itemCharged || tile.moneycharged"
-      v-bind:style="{
-        'background-image': 'url(' + publicPath + 'assets/Tiles/Outworld/Paths/' + 'activePathSlot.gif)',
-      }"
       class="pathSlotAlternate"></div>
     </span>
     <div
@@ -62,12 +52,6 @@ export default {
     tile: {
       default: {},
     },
-    isTop: {
-      type: Boolean
-    },
-    isBottom: {
-      type: Boolean
-    },
   },
   data () {
     return {
@@ -107,12 +91,19 @@ export default {
   z-index: 2;
   top: 28px;
 }
+.pathSlot {
+  background-image: url('/assets/Tiles/Outworld/Paths/emptyPathSlot.png');
+}
+.pathSlotAlternate {
+  background-image: url('/assets/Tiles/Outworld/Paths/activePathSlot.gif');
+}
 .chest {
   z-index: 2;
   position: absolute;
   width: 32px;
   height: 32px;
   left: 16px;
+  background-image: url('/assets/Tiles/Outworld/Paths/chest.gif');
 }
 .horizontal {
   width: 25px;
