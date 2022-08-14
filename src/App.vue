@@ -98,7 +98,7 @@ export default {
 
       };
 
-      startAnimating(60);
+      startAnimating(20);
     }
   },
   computed: {
