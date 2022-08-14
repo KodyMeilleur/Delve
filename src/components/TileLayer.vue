@@ -62,12 +62,15 @@ export default {
 .row {
   display: inline-flex;
   height: 64px;
+  width: 64px;
 }
 .landmass {
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

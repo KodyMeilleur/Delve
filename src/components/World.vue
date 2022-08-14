@@ -42,6 +42,7 @@
         <div
         v-bind:class="{
           shaking,
+          'entity-container': true,
         }"
         >
           <div class="entities" v-if="isBattling === false">
@@ -193,6 +194,10 @@ export default {
 }
 .world-box.isBattling {
   overflow: hidden;
+}
+.entity-container {
+  height: 100%;
+  width: 100%;
 }
 .world-ui-elements.isBattling {
   display: none;

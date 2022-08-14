@@ -26,7 +26,7 @@
       }"
       >
     </span>
-    <span v-if="((this.moveHighlighted && this.tile.density === 0) || focusedEntity === this.tile || this.hover) && !potentialPath && !this.attackHighlighted && !this.showBattleTiles"
+     <span v-if="((this.moveHighlighted && this.tile.density === 0) || focusedEntity === this.tile || this.hover) && !potentialPath && !this.attackHighlighted && !this.showBattleTiles"
     v-on:click="goToTile"
     class="highlighted"
     v-bind:style="{
@@ -65,11 +65,11 @@
     >
     </span>
     <span v-if="potentialPath"
-    v-on:click.stop="goToTile"
-    class="potentialPath"
-    v-bind:style="{
-      'background-position': this.frameStyle,
-    }"
+      v-on:click.stop="goToTile"
+      class="potentialPath"
+      v-bind:style="{
+        'background-position': this.frameStyle,
+      }"
     >
     </span>
       <div class="tile-sprite">

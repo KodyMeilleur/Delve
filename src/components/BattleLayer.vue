@@ -430,7 +430,9 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 64px;
+  top: 64px;
+  left: 128px;
+  position: relative;
 }
 .north-border {
   width: 100%;
@@ -496,12 +498,12 @@ export default {
   position: absolute;
   display: flex;
   top: -64px;
-  right: 1px;
+  right: -20px;
   flex-direction: column;
 }
 .battle-entity-layer {
   position: absolute;
-  left: 128px;
+  left: 0px;
   z-index: 2;
 }
 .end-battle-menu {
