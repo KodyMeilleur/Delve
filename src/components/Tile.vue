@@ -192,6 +192,7 @@ export default {
       width: CONST.tileWidth,
       height: CONST.tileHeight,
       publicPath: process.env.BASE_URL,
+      lastShouldShow: false,
       shouldShow: false,
       hover: false,
       frame: 0,
@@ -254,7 +255,6 @@ export default {
   },
   mounted: function() {
     this.$parent.$on('updateTilePaths', this.isPotentialPathTile);
-    this.$root.$on('frameBump', this.frameAdvance);
     this.$root.$on('applyTileSkillEffect', this.showSkillEffectOnTile);
     this.checkShouldShow(this.leftOffset, this.topOffset);
   },
@@ -392,18 +392,28 @@ export default {
       'toggleProjectileTiles'
     ]),
     checkShouldShow (leftOffset, topOffset) {
+
       const yOffset = leftOffset;
       const xOffset = topOffset;
 
       const xRange = ((this.tile.x * CONST.tileWidth));
       const yRange = ((this.tile.y * CONST.tileWidth));
-      const xShouldShow = (yRange >= (yOffset - (CONST.tileWidth * 2)) && (yRange <= yOffset + 896)) &&
-        (xRange >= (xOffset - (CONST.tileWidth * 2)) && xRange <= xOffset + 576 + (CONST.tileWidth));
 
-      const yShouldShow = (yRange >= (yOffset - (CONST.tileWidth * 2)) && (yRange <= yOffset + 896)) &&
-        (xRange >= (xOffset - (CONST.tileWidth * 2)) && xRange <= xOffset + 576 + (CONST.tileWidth));
+      const xShouldShow = ((xRange >= (xOffset - CONST.tileWidth)) && (xRange <= (xOffset + 576)));
 
-      this.shouldShow = xShouldShow && yShouldShow;
+      const yShouldShow = ((yRange >= (yOffset - CONST.tileWidth)) && (yRange <= (yOffset + 896)));
+
+      const showBool = xShouldShow && yShouldShow;
+      this.shouldShow = showBool;
+
+      if (showBool === true && this.lastShouldShow == false) {
+        this.$root.$on('frameBump', this.frameAdvance);
+      } else if (showBool === false) {
+        // console.log('before remove', this.$root._events.frameBump.length);
+        this.$root.$off('frameBump', this.frameAdvance);
+        // console.log('after remove wtf', this.$root._events.frameBump.length);
+      }
+      this.lastShouldShow = showBool;
     },
     frameAdvance (frame) {
       if (!this.shouldShow) {
