@@ -498,7 +498,7 @@ export default {
   position: absolute;
   display: flex;
   top: -64px;
-  right: -20px;
+  right: -6px;
   flex-direction: column;
 }
 .battle-entity-layer {
