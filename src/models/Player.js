@@ -1,7 +1,7 @@
 import CONST from '../CONST';
 import { v4 as uuidv4 } from 'uuid';
 import { Animation } from './Animation.js';
-import { MeleeAttack, Reforestation, SculptEarth, Thunder, Fireball } from './Skills.js';
+import { MeleeAttack, Reforestation, SculptEarth, Thunder, Fireball, ChargedAir } from './Skills.js';
 // import TYPES from './combatFields/combatTiles.js';
 
 export function DefaultPlayer(name, x, y) {
@@ -109,7 +109,8 @@ export function DefaultPlayer(name, x, y) {
       SculptEarth
     ],
     'BLUE': [
-      Thunder
+      Thunder,
+      ChargedAir
     ],
     'RED': [
       Fireball
@@ -121,6 +122,7 @@ export function DefaultPlayer(name, x, y) {
     Reforestation,
     SculptEarth,
     Thunder,
+    ChargedAir,
     Fireball
   ];
 

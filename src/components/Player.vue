@@ -7,7 +7,11 @@
     'background-position': -(64 * currentFrame) + 'px ' + (0) + 'px',
   }"
   v-on:click="setEntity"
-  v-bind:class="{ selected: focusedEntity === this.player, movingToStructure: this.movingToStructure, moveFocused: this.showMoveTiles, hoverAvailable: !this.showBattleTiles}"
+  v-bind:class="{ selected: (focusedEntity === this.player && this.showMoveTiles === false),
+                  movingToStructure: this.movingToStructure,
+                  moveFocused: this.showMoveTiles,
+                  hoverAvailable: !this.showBattleTiles
+                }"
   class="player-component"
   >
     <!-- IN STRUCTURE SPRITE -->
@@ -35,6 +39,7 @@
     </div>
     <!-- PLAYER PROJECTILES -->
     <Projectile v-if="player.isBattling" :activeProjectileSkill="activeProjectileSkill" v-on:toggleAttackState="toggleAttackState"/>
+    <Beam v-if="player.isBattling" :activeBeamSkill="activeBeamSkill" v-on:toggleAttackState="toggleAttackState"/>
   </div>
 </template>
 
@@ -45,6 +50,7 @@ import { getEntityDirection, returnShallowMapChunk, getCardinalTiles, getCardina
 import { processPlacement } from '../services/skillProcesses';
 import { Animation } from '../models/Animation.js';
 import Projectile from './Projectile.vue';
+import Beam from './Beam.vue';
 
 export default {
   name: 'Player',
@@ -58,6 +64,7 @@ export default {
   },
   components: {
     Projectile,
+    Beam,
   },
   mounted: function() {
     this.$root.$on('frameBump', this.frameAdvance);
@@ -101,6 +108,7 @@ export default {
       inAttackState: false,
       toggledSkill: null,
       activeProjectileSkill: null,
+      activeBeamSkill: null,
       delayed: false,
     }
   },
@@ -126,7 +134,8 @@ export default {
       'setfocusedEntityOverride',
       'applySkillEffectsOnPlayer',
       'unchargeTile',
-      'toggleProjectileTiles'
+      'toggleProjectileTiles',
+      'moveTiles',
     ]),
     frameAdvance () {
 
@@ -293,7 +302,7 @@ export default {
 
         if (skill.stepType === 'foot') {
           this.toggleAttackRangeTiles(battleTilesToLight);
-        } else if (skill.stepType === 'projectile') {
+        } else if (skill.stepType === 'projectile' || skill.stepType === 'beam') {
           this.toggleProjectileTiles(battleTilesToLight);
         }
         this.toggledSkill = skill;
@@ -318,6 +327,13 @@ export default {
           const damage = (playerStatDamage + this.toggledSkill.addedDmg);
           // TODO: Add projectile moving logic
           this.projectileAnimation(targetedTile, damage);
+        }
+        if (this.toggledSkill.stepType === 'beam') {
+
+          const playerStatDamage = Math.floor(this.player[this.toggledSkill.baseDmg] * (1/4));
+          const damage = (playerStatDamage + this.toggledSkill.addedDmg);
+          // TODO: Add projectile moving logic
+          this.beamAnimation(targetedTile, damage);
         }
         if (this.toggledSkill.stepType === 'foot') {
 
@@ -408,6 +424,13 @@ export default {
       const targetId = tileInfo.monsterId;
 
       this.activeProjectileSkill = ({skill: this.toggledSkill, direction: this.movingDirection, tileCount, targetId, damage});
+    },
+    beamAnimation(targetTile, damage) {
+      const tileInfo = getTilesInDirectionUntilDense(this.battleMap, targetTile, this.movingDirection);
+      const tileCount = tileInfo.tileCount;
+      const targetId = tileInfo.monsterId;
+
+      this.activeBeamSkill = ({skill: this.toggledSkill, direction: this.movingDirection, tileCount, targetId, damage});
     }
   },
   computed: {

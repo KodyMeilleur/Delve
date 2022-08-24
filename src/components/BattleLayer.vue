@@ -27,7 +27,7 @@
         </div>
         <div class="west-border">
           <div
-          v-for="index in 4"
+          v-for="index in 8"
           :key="index + 'west'"
           class="west-wall-item"
           v-bind:style="{
@@ -65,7 +65,7 @@
         </div>
         <div class="east-border">
           <div
-          v-for="index in 4"
+          v-for="index in 8"
           :key="index + 'east'"
           class="east-wall-item"
           v-bind:style="{
@@ -460,7 +460,7 @@ export default {
 }
 .west-border {
   width: 128px;
-  height: 512px;
+  height: 712px;
   position: absolute;
   display: flex;
   top: -64px;
@@ -477,7 +477,7 @@ export default {
   width: 64px;
   height: 128px;
   position: absolute;
-  z-index: 5;
+  z-index: 6;
   top: -50px;
 }
 .side-effect {
@@ -494,11 +494,11 @@ export default {
 }
 .east-border {
   width: 128px;
-  height: 512px;
+  height: 712px;
   position: absolute;
   display: flex;
   top: -64px;
-  right: -6px;
+  right: 1px;
   flex-direction: column;
 }
 .battle-entity-layer {

@@ -209,7 +209,8 @@ export function getCardinalTiles(startEntity, map, isBattling, range) {
     }
 
     const startCell = map[startX - gridAdjustmentX][startY - gridAdjustmentY];
-
+    startCell.density = 1;
+    
     cardinalCellCheck(startCell, 0);
 
     return tilesToCheck;

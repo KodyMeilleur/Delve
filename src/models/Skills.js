@@ -140,6 +140,38 @@ export const Fireball = {
   overchargeUnlocked: false,
 }
 
+export const ChargedAir = {
+  name: 'ChargedAir',
+  animation: 'directionCast',
+  type: BLUE,
+  typeTwo: null,
+  baseDmg: 'intelligence',
+  addedDmg: 7,
+  animationFrames: 2,
+  splashDelay: 750,
+  costType: 'mp',
+  costSlotOne: 1,
+  costSlotTwo: 0,
+  range: 1,
+  stepType: 'beam',
+  anchored: true, // anchored to user
+  placementShape: null, // default placement shape is single tile. Placements start at mouselocation - upper left corner
+  icon: 'assets/Icons/Skills/Blue/chargedAir.png',
+  effectSprite: 'assets/Spells/Blue/chargedAir/sheet.gif',
+  splashSprite: 'assets/Spells/Blue/chargedAir/splash.gif',
+  projectileClass: 'small',
+  spriteWidth: 64,
+  spriteHeight: 64,
+  top: 0,
+  left: 0,
+  effectDelay: 0,
+  nature: 'aggressive',
+  takeDominion: false,
+  dominionValue: 0,
+  dominionType: NEUTRAL,
+  overchargeUnlocked: false,
+}
+
 export const Reforestation = {
   name: 'Reforestation',
   animation: 'homingCast',
